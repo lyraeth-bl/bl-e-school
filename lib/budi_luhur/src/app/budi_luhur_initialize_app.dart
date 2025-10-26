@@ -4,24 +4,40 @@ import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:bl_e_school/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
-/// Initializes all the necessary components before running the application.
+/// Initializes essential application services and configurations before running the app.
+///
+/// This function ensures that all necessary setup tasks are completed, including:
+/// - Initializing the Flutter binding.
+/// - Setting up Firebase services.
+/// - Overriding default HTTP behavior for development.
+/// - Registering font licenses.
+/// - Configuring system UI overlays and screen orientation.
+/// - Loading localization (translation) files.
+/// - Initializing date formatting for the Indonesian locale.
 Future<void> budiLuhurInitializeApp() async {
+  // Ensure that the Flutter binding is initialized before any Flutter-specific code.
   WidgetsFlutterBinding.ensureInitialized();
 
-  /// Initialize Firebase
+  // Initialize Firebase with platform-specific options.
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
+  // Override the default HttpClient to bypass SSL certificate validation in development.
   HttpOverrides.global = MyHttpOverrides();
 
-  /// Registering the licences of [OpenSans](https://fonts.google.com/specimen/Open+Sans) font.
+  // Register the license for the Google Fonts used in the application.
   await initRegisterGoogleFontsLicences();
 
-  /// Override the Theme of user phone status bar and force the orientations.
+  // Set system UI overlay style and restrict screen orientation to portrait mode.
   await initSystemUIOverlay();
 
-  /// Initialize Languages.
+  // Load translation files for multi-language support.
   await AppTranslation.loadJsons();
 
+  // Initialize date formatting for the Indonesian locale ('id_ID').
+  await initializeDateFormatting("id_ID", null);
+
+  // Run the main application widget.
   runApp(const BudiLuhurApp());
 }

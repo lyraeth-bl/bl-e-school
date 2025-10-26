@@ -6,7 +6,7 @@ part 'app_language_entity.freezed.dart';
 abstract class AppLanguageEntity with _$AppLanguageEntity {
   const factory AppLanguageEntity({
     /// Name of the Languages.
-    /// ex: Indonesia, English.
+    /// ex: Indonesian, English.
     required String languageName,
 
     /// Code of the Languages.
