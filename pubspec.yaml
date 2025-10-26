@@ -35,6 +35,9 @@ dependencies:
   #    Firebase Dependencies   #
   # ========================== #
   firebase_core: ^4.2.0
+  #
+  # Messaging (FCM)
+  firebase_messaging: ^16.0.3
 
   # ==================== #
   #    UI Dependencies   #
@@ -49,11 +52,54 @@ dependencies:
   #
   # Date Format
   intl: ^0.20.2
+  #
+  # Animation / Image
+  lottie: ^3.3.2
+  cached_network_image: ^3.4.1
+  flutter_svg: ^2.2.1
+  #
+  # Notifications
+  awesome_notifications: ^0.10.1
+  #
+  # Calendar
+  table_calendar: ^3.2.0
+  #
+  # Loading
+  shimmer: ^3.0.0
+
 
   # ===================== #
   #    State Management   #
   # ===================== #
   freezed_annotation: ^3.1.0
+  get: ^4.7.2
+  flutter_bloc: ^9.1.1
+  hydrated_bloc: ^10.1.1
+
+  # =========================== #
+  #    Dependencies Injection   #
+  # =========================== #
+  get_it: ^8.2.0
+
+  # ============ #
+  #    Storage   #
+  # ============ #
+  flutter_secure_storage: ^9.2.4
+  shared_preferences: ^2.5.3
+  hive: ^2.2.3
+  path_provider: ^2.1.5
+
+  # ========= #
+  #    Http   #
+  # ========= #
+  dio: ^5.9.0
+  pretty_dio_logger: ^1.4.0
+
+  # =========================== #
+  #    Functional Programming   #
+  # =========================== #
+  fpdart: ^1.1.1
+
 
   # ================ #
   #    Json/toJson   #
