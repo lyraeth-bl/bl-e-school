@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:bl_e_school/budi_luhur/src/app/init/init_hive_open_box.dart';
 import 'package:bl_e_school/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ import 'package:intl/date_symbol_data_local.dart';
 /// - Registering font licenses.
 /// - Configuring system UI overlays and screen orientation.
 /// - Loading localization (translation) files.
+/// - Initializing Hive and open required Box.
 /// - Initializing date formatting for the Indonesian locale.
 Future<void> budiLuhurInitializeApp() async {
   // Ensure that the Flutter binding is initialized before any Flutter-specific code.
@@ -34,6 +36,9 @@ Future<void> budiLuhurInitializeApp() async {
 
   // Load translation files for multi-language support.
   await AppTranslation.loadJsons();
+
+  // Initialize Hive and open required box.
+  await initHiveOpenBox();
 
   // Initialize date formatting for the Indonesian locale ('id_ID').
   await initializeDateFormatting("id_ID", null);
