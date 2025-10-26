@@ -1,8 +1,6 @@
 import 'dart:io';
 
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/app/init/init_google_fonts_licences.dart';
-import 'package:bl_e_school/budi_luhur/src/app/init/init_system_overlay.dart';
 import 'package:bl_e_school/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +19,9 @@ Future<void> budiLuhurInitializeApp() async {
 
   /// Override the Theme of user phone status bar and force the orientations.
   await initSystemUIOverlay();
+
+  /// Initialize Languages.
+  await AppTranslation.loadJsons();
 
   runApp(const BudiLuhurApp());
 }

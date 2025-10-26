@@ -1,4 +1,4 @@
-import 'budi_luhur/src/app/budi_luhur_initialize_app.dart';
+import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 
 void main() async {
   await budiLuhurInitializeApp();
