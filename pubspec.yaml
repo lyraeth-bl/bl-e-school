@@ -46,6 +46,9 @@ dependencies:
   #
   # Fonts
   google_fonts: ^6.3.2
+  #
+  # Date Format
+  intl: ^0.20.2
 
   # ===================== #
   #    State Management   #
