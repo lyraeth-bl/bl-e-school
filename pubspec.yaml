@@ -43,9 +43,19 @@ dependencies:
   # Icons
   cupertino_icons: ^1.0.8
   lucide_icons_flutter: ^3.1.5
-
+  #
   # Fonts
   google_fonts: ^6.3.2
+
+  # ===================== #
+  #    State Management   #
+  # ===================== #
+  freezed_annotation: ^3.1.0
+
+  # ================ #
+  #    Json/toJson   #
+  # ================ #
+  json_annotation: ^4.9.0
 
 dev_dependencies:
   flutter_test:
@@ -57,6 +67,9 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  build_runner: ^2.10.1
+  freezed: ^3.2.3
+  json_serializable: ^6.11.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
