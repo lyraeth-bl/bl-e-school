@@ -3,11 +3,16 @@ import 'dart:io';
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:bl_e_school/budi_luhur/src/app/init/init_google_fonts_licences.dart';
 import 'package:bl_e_school/budi_luhur/src/app/init/init_system_overlay.dart';
+import 'package:bl_e_school/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 /// Initializes all the necessary components before running the application.
 Future<void> budiLuhurInitializeApp() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  /// Initialize Firebase
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   HttpOverrides.global = MyHttpOverrides();
 
