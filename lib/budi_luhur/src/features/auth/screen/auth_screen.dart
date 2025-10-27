@@ -163,7 +163,7 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
                             SizedBox(height: boxConstraints.maxHeight * (0.05)),
                             CustomRoundedButton(
                               onTap: () {
-                                Get.toNamed(BudiLuhurRoutes.studentLogin);
+                                Get.toNamed(BudiLuhurRoutes.authStudent);
                               },
                               widthPercentage: 0.8,
                               backgroundColor: Utils.getColorScheme(

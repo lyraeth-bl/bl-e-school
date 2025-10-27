@@ -23,6 +23,7 @@ class _BudiLuhurAppState extends State<BudiLuhurApp> {
         BlocProvider<AppLocalizationCubit>(
           create: (_) => AppLocalizationCubit(SettingsRepository()),
         ),
+        BlocProvider<AuthCubit>(create: (_) => AuthCubit(AuthRepository())),
       ],
       child: Builder(
         builder: (context) {
@@ -31,7 +32,7 @@ class _BudiLuhurAppState extends State<BudiLuhurApp> {
             theme: BudiLuhurTheme.lightMode(),
             darkTheme: BudiLuhurTheme.darkMode(),
             getPages: BudiLuhurRoutes.getPages,
-            initialRoute: BudiLuhurRoutes.auth,
+            initialRoute: BudiLuhurRoutes.splash,
             locale: context.read<AppLocalizationCubit>().state.language,
             fallbackLocale: const Locale("en"),
             translationsKeys: AppTranslation.translationsKeys,
