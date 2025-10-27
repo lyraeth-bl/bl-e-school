@@ -1,5 +1,9 @@
 // Cubit
+export 'cubit/auth/auth_cubit.dart';
+export 'cubit/sign_in/sign_in_cubit.dart';
 // Data
+export 'data/model/student/student.dart';
 // Repository
+export 'repository/auth_repository.dart';
 // Screen
 export 'screen/auth_screen.dart';
