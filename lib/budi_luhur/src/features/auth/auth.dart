@@ -7,3 +7,4 @@ export 'data/model/student/student.dart';
 export 'repository/auth_repository.dart';
 // Screen
 export 'screen/auth_screen.dart';
+export 'screen/auth_student_screen.dart';
