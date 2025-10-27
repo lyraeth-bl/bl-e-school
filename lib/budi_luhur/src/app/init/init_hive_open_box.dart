@@ -15,4 +15,5 @@ Future<void> initHiveOpenBox() async {
   // Open the boxes required for the application to function correctly.
   await Hive.openBox(showCaseBoxKey);
   await Hive.openBox(authBoxKey);
+  await Hive.openBox(settingsBoxKey);
 }
