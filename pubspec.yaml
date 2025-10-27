@@ -77,11 +77,6 @@ dependencies:
   flutter_bloc: ^9.1.1
   hydrated_bloc: ^10.1.1
 
-  # =========================== #
-  #    Dependencies Injection   #
-  # =========================== #
-  get_it: ^8.2.0
-
   # ============ #
   #    Storage   #
   # ============ #
@@ -96,6 +91,7 @@ dependencies:
   # ========= #
   dio: ^5.9.0
   pretty_dio_logger: ^1.4.0
+  curl_logger_dio_interceptor: ^1.0.0
 
   # =========================== #
   #    Functional Programming   #
