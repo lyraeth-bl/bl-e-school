@@ -7,3 +7,5 @@ export 'budi_luhur_initialize_app.dart';
 export 'init/init_google_fonts_licences.dart';
 export 'init/init_languages.dart';
 export 'init/init_system_overlay.dart';
+/// Routes
+export 'routes/app_routes.dart';
