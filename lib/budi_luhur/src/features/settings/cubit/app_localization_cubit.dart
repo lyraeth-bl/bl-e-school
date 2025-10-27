@@ -1,10 +1,11 @@
 import 'dart:ui';
 
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/settings/repository/settings_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:get/get.dart';
 
+part 'app_localization_cubit.freezed.dart';
 part 'app_localization_state.dart';
 
 /// A [Cubit] that manages the application's localization (language).
@@ -20,9 +21,9 @@ class AppLocalizationCubit extends Cubit<AppLocalizationState> {
   /// from the [_settingsRepository].
   AppLocalizationCubit(this._settingsRepository)
     : super(
-        AppLocalizationState(
-          Utils.getLocaleFromLanguageCode(
-            _settingsRepository.getCurrentLanguageCode(),
+        _Initial(
+          language: Utils.getLocaleFromLanguageCode(
+            SettingsRepository().getCurrentLanguageCode(),
           ),
         ),
       );
@@ -36,6 +37,6 @@ class AppLocalizationCubit extends Cubit<AppLocalizationState> {
     _settingsRepository.setCurrentLanguageCode(languageCode);
 
     Get.updateLocale(Utils.getLocaleFromLanguageCode(languageCode));
-    emit(AppLocalizationState(Utils.getLocaleFromLanguageCode(languageCode)));
+    emit(_Initial(language: Utils.getLocaleFromLanguageCode(languageCode)));
   }
 }
