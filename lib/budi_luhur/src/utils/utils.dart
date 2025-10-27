@@ -4,6 +4,8 @@ import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+/// Animations
+export 'shared/animations/animation_configurations.dart';
 /// Constant
 export 'shared/constant/constant.dart';
 /// Error Handling
