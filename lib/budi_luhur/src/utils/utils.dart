@@ -1,8 +1,19 @@
 library;
 
-/// Languages
-export 'languages/app_languages.dart';
+import 'dart:ui';
+
 /// Hive Box Keys
-export 'hive_box_keys/hive_box_keys.dart';
+export 'shared/hive_box_keys/hive_box_keys.dart';
+/// Languages
+export 'shared/languages/app_languages.dart';
 /// Theme
-export 'theme/theme.dart';
+export 'shared/theme/theme.dart';
+
+class Utils {
+  static Locale getLocaleFromLanguageCode(String languageCode) {
+    List<String> result = languageCode.split("-");
+    return result.length == 1
+        ? Locale(result.first)
+        : Locale(result.first, result.last);
+  }
+}

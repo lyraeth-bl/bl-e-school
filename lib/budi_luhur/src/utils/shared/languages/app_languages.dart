@@ -1,7 +1,7 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 
 /// Default languages of the App
-const String defaultLanguagesCode = "en";
+const String defaultLanguageCode = "en";
 
 /// Languages List
 /// add languages code to the list after ut app support new languages
