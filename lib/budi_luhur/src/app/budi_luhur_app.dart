@@ -16,6 +16,8 @@ class BudiLuhurApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: BudiLuhurTheme.lightMode(),
             darkTheme: BudiLuhurTheme.darkMode(),
+            fallbackLocale: const Locale("en"),
+            translationsKeys: AppTranslation.translationsKeys,
           );
         },
       ),

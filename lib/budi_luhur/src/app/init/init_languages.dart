@@ -9,7 +9,7 @@ abstract class AppTranslation {
   ///
   /// The outer map's key is the language code (e.g., 'en', 'id'),
   /// and the value is another map containing translation keys and their translated strings.
-  static Map<String, Map<String, dynamic>> translationsKeys = Map.fromEntries(
+  static Map<String, Map<String, String>> translationsKeys = Map.fromEntries(
     appLanguages
         .map((appLanguage) => appLanguage.languageCode)
         .toList()
@@ -25,7 +25,7 @@ abstract class AppTranslation {
   /// loads the corresponding JSON file from the 'assets/languages/' directory,
   /// decodes the JSON string, and populates the [translationsKeys] map
   /// with the translations for each language.
-  static Future<void> loadJsons() async {
+  static Future loadJsons() async {
     for (var languageCode in translationsKeys.keys) {
       final String jsonStringValues = await rootBundle.loadString(
         'assets/languages/$languageCode.json',
