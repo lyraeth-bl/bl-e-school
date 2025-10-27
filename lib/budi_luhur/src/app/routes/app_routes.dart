@@ -1,10 +1,11 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:bl_e_school/budi_luhur/src/features/splash/screen/splash_screen.dart';
 import 'package:get/get.dart';
 
 class BudiLuhurRoutes extends BudiLuhur {
   // Auth
   static const String auth = "/auth";
-  static const String studentLogin = "/studentLogin";
+  static const String authStudent = "/authStudent";
 
   // Student
   static const String studentOnboarding = "/studentOnboarding";
@@ -19,6 +20,8 @@ class BudiLuhurRoutes extends BudiLuhur {
 
   // getPages
   static List<GetPage> getPages = [
+    GetPage(name: splash, page: () => SplashScreen.routeInstance()),
     GetPage(name: auth, page: () => AuthScreen.routeInstance()),
+    GetPage(name: authStudent, page: () => AuthStudentScreen.routeInstance()),
   ];
 }
