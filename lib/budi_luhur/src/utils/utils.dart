@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 
 /// Constant
 export 'shared/constant/constant.dart';
+/// Error Handling
+export 'shared/error_handling/error_message_and_code.dart';
 /// Hive Box Keys
 export 'shared/hive_box_keys/hive_box_keys.dart';
 /// Label Keys
