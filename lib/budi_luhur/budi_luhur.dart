@@ -9,3 +9,5 @@ export 'src/core/core.dart';
 export 'src/features/features.dart';
 /// Utils
 export 'src/utils/utils.dart';
+
+abstract class BudiLuhur {}
