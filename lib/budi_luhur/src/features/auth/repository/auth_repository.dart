@@ -115,21 +115,17 @@ class AuthRepository {
     try {
       final body = {"nis": nis, "password": password};
 
-      final result = await ApiClient.post(
+      final response = await ApiClient.post(
         body: body,
         url: ApiEndpoints.login,
         useAuthToken: false,
       );
 
-      final Map<String, dynamic> studentData = result['siswa'];
-      final String jwtToken = result['access_token'];
-      final int jwtTokenExpiresIn = result['expires_in'];
-      final String studentUnit = result['siswa']['unit'].toLowerCase();
+      final Map<String, dynamic> studentData = response['siswa'];
+      final String jwtToken = response['access_token'];
 
       return {
         "jwtToken": jwtToken,
-        "jwtTokenExpiresIn": jwtTokenExpiresIn,
-        "unit": studentUnit,
         "student": Student.fromJson(Map.from(studentData)),
       };
     } catch (e) {

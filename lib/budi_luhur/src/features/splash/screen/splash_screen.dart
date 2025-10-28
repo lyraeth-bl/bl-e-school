@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final authState = context.read<AuthCubit>().state;
 
     authState.maybeWhen(
-      authenticated: (jwtToken, isStudent, student, unit) =>
+      authenticated: (jwtToken, isStudent, student) =>
           Get.offNamed(BudiLuhurRoutes.home),
       orElse: () => Get.offNamed(BudiLuhurRoutes.auth),
     );

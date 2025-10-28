@@ -20,9 +20,9 @@ abstract class Student with _$Student {
     @JsonKey(name: "Agama") String? agama,
     @JsonKey(name: "Kewarganegaraan") required String kewarganegaraan,
     @JsonKey(name: "Alamat") String? alamat,
-    @JsonKey(name: "KodePos") required String kodePos,
-    @JsonKey(name: "BertempatTinggalPada") required String bertempatTinggalPada,
-    @JsonKey(name: "JarakKeSekolah") required String jarakKeSekolah,
+    @JsonKey(name: "KodePos") String? kodePos,
+    @JsonKey(name: "BertempatTinggalPada") String? bertempatTinggalPada,
+    @JsonKey(name: "JarakKeSekolah") String? jarakKeSekolah,
     @JsonKey(name: "Telpon") String? noTelepon,
     @JsonKey(name: "DiterimaDiKelas") String? diTerimaDiKelas,
     @JsonKey(name: "NomorKelas") String? nomorKelas,
@@ -33,13 +33,13 @@ abstract class Student with _$Student {
     @JsonKey(name: "TahunIjasah") String? tahunIjazah,
     @JsonKey(name: "NoIjasah") String? noIjazah,
     @JsonKey(name: "TanggalIjazah") required String tanggalIjazah,
-    @JsonKey(name: "TahunSkhun") required String tahunSKHUN,
-    @JsonKey(name: "NoSkhun") required String noSKHUN,
-    @JsonKey(name: "PindahanDariSekolah") required String pindahanDariSekolah,
-    @JsonKey(name: "DariTingkat") required String dariTingkat,
-    @JsonKey(name: "DiterimaTanggal") required String diTerimaTanggal,
+    @JsonKey(name: "TahunSkhun") String? tahunSKHUN,
+    @JsonKey(name: "NoSkhun") String? noSKHUN,
+    @JsonKey(name: "PindahanDariSekolah") String? pindahanDariSekolah,
+    @JsonKey(name: "DariTingkat") String? dariTingkat,
+    @JsonKey(name: "DiterimaTanggal") String? diTerimaTanggal,
     @JsonKey(name: "NomorSuratKeteranganPindah")
-    required String nomorSuratKeteranganPindah,
+    String? nomorSuratKeteranganPindah,
     @JsonKey(name: "AnakKe") String? anakKe,
     @JsonKey(name: "JumlahSaudaraKandung") required String jumlahSaudaraKandung,
     @JsonKey(name: "JumlahSaudaraTiri") required String jumlahSaudaraTiri,
@@ -58,80 +58,74 @@ abstract class Student with _$Student {
     @JsonKey(name: "PekerjaanIbu") String? pekerjaanIbu,
     @JsonKey(name: "AlamatOrtu") String? alamatOrangTua,
     @JsonKey(name: "TelponOrtu") String? noTeleponOrangTua,
-    @JsonKey(name: "NmWali") required String namaWali,
-    @JsonKey(name: "AlamatWali") required String alamatWali,
-    @JsonKey(name: "HubKelDgnWali") required String hubunganKeluargaDenganWali,
-    @JsonKey(name: "PendidikanTerakhirWali")
-    required String pendidikanTerakhirWali,
-    @JsonKey(name: "TelpWali") required String noTeleponWali,
-    @JsonKey(name: "PekerjaanWali") required String pekerjaanWali,
+    @JsonKey(name: "NmWali") String? namaWali,
+    @JsonKey(name: "AlamatWali") String? alamatWali,
+    @JsonKey(name: "HubKelDgnWali") String? hubunganKeluargaDenganWali,
+    @JsonKey(name: "PendidikanTerakhirWali") String? pendidikanTerakhirWali,
+    @JsonKey(name: "TelpWali") String? noTeleponWali,
+    @JsonKey(name: "PekerjaanWali") String? pekerjaanWali,
     @JsonKey(name: "Email") String? email,
     @JsonKey(name: "Password") String? passsword,
     @JsonKey(name: "KelasSaatIni") String? kelasSaatIni,
     @JsonKey(name: "NomorKelasSaatIni") String? noKelasSaatIni,
-    @JsonKey(name: "TahunLulus") required String tahunLulus,
-    @JsonKey(name: "NomorIjazahLulus") required String nomorIjazahLulus,
-    @JsonKey(name: "MelanjutkanKeSekolah") required String melanjutkanKeSekolah,
+    @JsonKey(name: "TahunLulus") String? tahunLulus,
+    @JsonKey(name: "NomorIjazahLulus") String? nomorIjazahLulus,
+    @JsonKey(name: "MelanjutkanKeSekolah") String? melanjutkanKeSekolah,
     @JsonKey(name: "PindahSekolahKeSekolah")
     required String pindahSekolahKeSekolah,
     @JsonKey(name: "TingkatKelasYangDitinggalkan")
-    required String tingkatKelasYangDiTinggalkan,
-    @JsonKey(name: "AlasanKeluarSekolah") required String alasanKeluarSekolah,
+    String? tingkatKelasYangDiTinggalkan,
+    @JsonKey(name: "AlasanKeluarSekolah") String? alasanKeluarSekolah,
     @JsonKey(name: "HariDanTanggalKeluarSekolah")
-    required String hariDanTanggalKeluarSekolah,
+    String? hariDanTanggalKeluarSekolah,
     @JsonKey(name: "TinggiBadanSemesterGanjil")
     required String tinggiBadanSemesterGanjil,
     @JsonKey(name: "BeratBadanSemesterGanjil")
     required String beratBadanSemesterGanjil,
     @JsonKey(name: "PendengaranSemesterGanjil")
-    required String pendengaranSemesterGanjil,
+    String? pendengaranSemesterGanjil,
     @JsonKey(name: "PengelihatanSemesterGanjil")
-    required String penglihatanSemesterGanjil,
-    @JsonKey(name: "GigiSemesterGanjil") required String gigiSemesterGanjil,
-    @JsonKey(name: "TinggiBadanSemesterGenap")
-    required String tinggiBadanSemesterGenap,
-    @JsonKey(name: "BeratBadanSemesterGenap")
-    required String beratBadanSemesterGenap,
-    @JsonKey(name: "PendengaranSemesterGenap")
-    required String pendengaranSemesterGenap,
+    String? penglihatanSemesterGanjil,
+    @JsonKey(name: "GigiSemesterGanjil") String? gigiSemesterGanjil,
+    @JsonKey(name: "TinggiBadanSemesterGenap") String? tinggiBadanSemesterGenap,
+    @JsonKey(name: "BeratBadanSemesterGenap") String? beratBadanSemesterGenap,
+    @JsonKey(name: "PendengaranSemesterGenap") String? pendengaranSemesterGenap,
     @JsonKey(name: "PengelihatanSemesterGenap")
-    required String penglihatanSemesterGenap,
-    @JsonKey(name: "GigiSemesterGenap") required String gigiSemesterGenap,
+    String? penglihatanSemesterGenap,
+    @JsonKey(name: "GigiSemesterGenap") String? gigiSemesterGenap,
     @JsonKey(name: "JenisPrestasiSainsSeniAtauOlahraga")
-    required String jenisPrestasiSainsSeniAtauOlahraga,
+    String? jenisPrestasiSainsSeniAtauOlahraga,
     @JsonKey(
       name: "TingkatPrestasiSekolahKecamatanKabupatenProvinsiAtauNasional",
     )
-    required String
-    tingkatPrestasiSekolahKecamatanKabupatenProvinsiAtauNasional,
+    String? tingkatPrestasiSekolahKecamatanKabupatenProvinsiAtauNasional,
     @JsonKey(name: "NamaPrestasiLombaCerdasCermat")
-    required String namaPrestasiLombaCerdasCermat,
+    String? namaPrestasiLombaCerdasCermat,
     @JsonKey(name: "TahunPrestasiYangPernahDiraih")
-    required String tahunPrestasiYangPernahDiraih,
+    String? tahunPrestasiYangPernahDiraih,
     @JsonKey(
       name: "PenyelenggaraNamaPenyelenggaraAtauPanitiaKegiatanDariPrestasi",
     )
-    required String
-    penyelenggaraNamaPenyelenggaraAtauPanitiaKegiatanDariPrestasi,
+    String? penyelenggaraNamaPenyelenggaraAtauPanitiaKegiatanDariPrestasi,
     @JsonKey(name: "PeringkatAngkaPeringkatPrestasiYangPernahDiraih")
-    required String peringkatAngkaPeringkatPrestasiYangPernahDiraih,
+    String? peringkatAngkaPeringkatPrestasiYangPernahDiraih,
     @JsonKey(name: "JenisBeasiswaAnakBerprestasiAnakUnggulUnggulanAtauLainlain")
-    required String jenisBeasiswaAnakBerprestasiAnakUnggulUnggulanAtauLainlain,
+    String? jenisBeasiswaAnakBerprestasiAnakUnggulUnggulanAtauLainlain,
     @JsonKey(name: "KeteranganBeasiswaMuridBerprestasiTahun2022")
-    required String keteranganBeasiswaMuridBerprestasiTahun2022,
+    String? keteranganBeasiswaMuridBerprestasiTahun2022,
     @JsonKey(name: "TahunMulaiTahunMulaiDiterimanyaBeasiswaOlehPesertaDidik")
-    required String tahunMulaiTahunMulaiDiterimanyaBeasiswaOlehPesertaDidik,
+    String? tahunMulaiTahunMulaiDiterimanyaBeasiswaOlehPesertaDidik,
     @JsonKey(
       name: "TahunSelesaiTahunSelesaiDiterimanyaBeasiswaOlehPesertaDidik",
     )
-    required String tahunSelesaiTahunSelesaiDiterimanyaBeasiswaOlehPesertaDidik,
+    String? tahunSelesaiTahunSelesaiDiterimanyaBeasiswaOlehPesertaDidik,
     @JsonKey(name: "SetelahSelesaiPendidikanMeninggalkanSekolah")
-    required String setelahSelesaiPendidikanMeninggalkanSekolah,
-    @JsonKey(name: "KeluarKarena") required String keluarKarena,
-    @JsonKey(name: "TanggalKeluar") required String tanggalKeluar,
-    @JsonKey(name: "AkhirPendidikan") required String akhirPendidikan,
-    @JsonKey(name: "TamatBelajar") required String tamatBelajar,
-    @JsonKey(name: "NomorIjazah") required String nomorIjazah,
+    String? setelahSelesaiPendidikanMeninggalkanSekolah,
+    @JsonKey(name: "KeluarKarena") String? keluarKarena,
+    @JsonKey(name: "TanggalKeluar") String? tanggalKeluar,
+    @JsonKey(name: "AkhirPendidikan") String? akhirPendidikan,
+    @JsonKey(name: "TamatBelajar") String? tamatBelajar,
+    @JsonKey(name: "NomorIjazah") String? nomorIjazah,
     @JsonKey(name: "Aktif") String? aktif,
     @JsonKey(name: "StatNaik") required String statusNaik,
     @JsonKey(name: "UnameOrtu") required String usernameOrangTua,

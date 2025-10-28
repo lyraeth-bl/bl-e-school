@@ -347,6 +347,8 @@
   "typeMessageHere": "Type a message...",
   "schoolCode": "School Code",
   "pleaseEnterSchoolCode": "Please enter school code",
+  "nis": "NIS",
+  "pleaseEnterNis": "Please enter NIS",
   "selected": "Selected",
   "search": "Search",
   "noSearchResults": "No search results found",

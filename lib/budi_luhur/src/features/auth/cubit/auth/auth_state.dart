@@ -25,6 +25,5 @@ abstract class AuthState with _$AuthState {
     required String jwtToken,
     @Default(false) bool isStudent,
     required Student student,
-    required String unit,
   }) = _Authenticated;
 }

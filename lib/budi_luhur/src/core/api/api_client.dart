@@ -120,10 +120,6 @@ class ApiClient {
         options: useAuthToken ? Options(headers: headers()) : null,
       );
 
-      if (bool.parse(response.data['error'].toString())) {
-        throw ApiException(response.data['message'].toString());
-      }
-
       return Map.from(response.data);
     } on DioException catch (e) {
       if (kDebugMode) {

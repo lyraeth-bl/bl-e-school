@@ -106,6 +106,7 @@ const String selectKey = "select";
 const String submitKey = "submit";
 
 const String emailKey = "email";
+const String nisKey = "nis";
 const String passwordKey = "password";
 const String letsSignInKey = "letsSignIn";
 const String welcomeBackKey = "welcomeBack";
@@ -120,6 +121,7 @@ const String pleaseEnterEmailKey = "pleaseEnterEmail";
 const String pleaseEnterPasswordKey = "pleaseEnterPassword";
 const String pleaseEnterGRNumberKey = "pleaseEnterGRNumber";
 const String pleaseEnterSchoolCodeKey = "pleaseEnterSchoolCode";
+const String pleaseEnterNisKey = "pleaseEnterNis";
 
 const String mySubjectsKey = "mySubjects";
 const String selectAnyKey = "selectAny";

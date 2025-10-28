@@ -31,7 +31,6 @@ class AuthCubit extends Cubit<AuthState> {
       emit(
         _Authenticated(
           jwtToken: _authRepository.getJwtToken(),
-          unit: _authRepository.schoolCode,
           isStudent: AuthRepository.getIsStudentLogIn(),
           student: AuthRepository.getIsStudentLogIn()
               ? AuthRepository.getStudentDetails()
@@ -53,12 +52,10 @@ class AuthCubit extends Cubit<AuthState> {
   /// - [isStudent]: A boolean indicating if the user is a student.
   /// - [student]: The [Student] object containing the user's details.
   void authenticateUser({
-    required String unit,
     required String jwtToken,
     required bool isStudent,
     required Student student,
   }) {
-    _authRepository.schoolCode = unit;
     _authRepository.setJwtToken(jwtToken);
     _authRepository.setIsLogIn(true);
     _authRepository.setIsStudentLogIn(isStudent);
@@ -68,7 +65,6 @@ class AuthCubit extends Cubit<AuthState> {
       _Authenticated(
         jwtToken: jwtToken,
         student: student,
-        unit: unit,
         isStudent: isStudent,
       ),
     );
@@ -80,7 +76,7 @@ class AuthCubit extends Cubit<AuthState> {
   /// not authenticated, it returns an empty [Student] object.
   Student getStudentDetails() {
     return state.maybeWhen(
-      authenticated: (jwtToken, isStudent, student, unit) => student,
+      authenticated: (jwtToken, isStudent, student) => student,
       orElse: () => Student.fromJson({}),
     );
   }
