@@ -21,12 +21,94 @@ export 'shared/theme/theme.dart';
 /// UI
 export 'shared/ui/ui.dart';
 
-/// A utility class containing static helper methods for common tasks.
+/// A utility class containing static helper methods and constants for common tasks.
 ///
-/// This class provides a collection of convenient functions that can be used
+/// This class provides a collection of convenient functions and properties that can be used
 /// throughout the application, such as locale conversion, displaying custom snack bars,
-/// and accessing theme properties.
+/// accessing theme properties, and providing standardized dimensions for UI elements.
 class Utils {
+  // --- UI Sizing and Padding ---
+
+  /// Top padding for main screen content.
+  static double screenContentTopPadding = 15.0;
+
+  /// Horizontal padding for main screen content.
+  static double screenContentHorizontalPadding = 25.0;
+
+  /// Font size for main screen titles.
+  static double screenTitleFontSize = 18.0;
+
+  /// Font size for onboarding screen titles.
+  static double screenOnboardingTitleFontSize = 25.0;
+
+  /// Horizontal padding for screen content as a percentage of screen width.
+  static double screenContentHorizontalPaddingInPercentage = 0.075;
+
+  /// Font size for screen subtitles.
+  static double screenSubTitleFontSize = 14.0;
+
+  /// Extra top padding for scrolling content to avoid overlap with headers.
+  static double extraScreenContentTopPaddingForScrolling = 0.0275;
+
+  // --- AppBar Dimensions ---
+
+  /// Height percentage for a smaller app bar.
+  static double appBarSmallerHeightPercentage = 0.15;
+
+  /// Height percentage for a medium-sized app bar.
+  static double appBarMediumHeightPercentage = 0.18;
+
+  /// Height percentage for a larger app bar.
+  static double appBarBiggerHeightPercentage = 0.215;
+
+  /// Top padding for content within the app bar.
+  static double appBarContentTopPadding = 25.0;
+
+  // --- Bottom Navigation and Bottom Sheet ---
+
+  /// Height percentage for the bottom navigation bar.
+  static double bottomNavigationHeightPercentage = 0.08;
+
+  /// Bottom margin for the bottom navigation bar.
+  static double bottomNavigationBottomMargin = 25;
+
+  /// Top radius for bottom sheets to create rounded corners.
+  static double bottomSheetTopRadius = 20.0;
+
+  // --- Miscellaneous UI Constants ---
+
+  /// Font size for the first letter of a subject name, often used for avatars.
+  static double subjectFirstLetterFontSize = 20;
+
+  /// Default height and width percentage for profile pictures.
+  static double defaultProfilePictureHeightAndWidthPercentage = 0.175;
+
+  /// Height percentage for the container holding a question.
+  static double questionContainerHeightPercentage = 0.725;
+
+  // --- Animation Durations and Curves ---
+
+  /// Animation duration for the tab background container.
+  static Duration tabBackgroundContainerAnimationDuration = const Duration(
+    milliseconds: 300,
+  );
+
+  /// Delay before displaying a show-case (feature discovery) element.
+  static Duration showCaseDisplayDelayInDuration = const Duration(
+    milliseconds: 350,
+  );
+
+  /// Animation curve for the tab background container.
+  static Curve tabBackgroundContainerAnimationCurve = Curves.easeInOut;
+
+  // --- Shimmer Loading Placeholders ---
+
+  /// Default height for shimmer loading placeholder containers.
+  static double shimmerLoadingContainerDefaultHeight = 7;
+
+  /// Default number of content items to display in a shimmer loading animation.
+  static int defaultShimmerLoadingContentCount = 6;
+
   /// Converts a language code string into a [Locale] object.
   ///
   /// This method handles both simple language codes (e.g., "en") and codes
@@ -41,7 +123,7 @@ class Utils {
         : Locale(result.first, result.last);
   }
 
-  /// Displays a custom overlay message (similar to a snackbar).
+  /// Displays a custom overlay message (similar to a snack bar).
   ///
   /// This function shows a custom widget as an overlay for a specified duration.
   /// It is typically used for displaying brief messages like errors or confirmations.
