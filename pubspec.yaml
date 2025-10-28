@@ -91,7 +91,6 @@ dependencies:
   # ========= #
   dio: ^5.9.0
   pretty_dio_logger: ^1.4.0
-  curl_logger_dio_interceptor: ^1.0.0
 
   # =========================== #
   #    Functional Programming   #
