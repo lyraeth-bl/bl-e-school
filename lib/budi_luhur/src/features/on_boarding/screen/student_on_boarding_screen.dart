@@ -1,5 +1,6 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 
@@ -19,6 +20,13 @@ class _StudentOnBoardingScreenState extends State<StudentOnBoardingScreen> {
   @override
   void initState() {
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<DeviceTokenCubit>().postDeviceToken(
+        nis: context.read<AuthCubit>().getStudentDetails().nis,
+      );
+    });
+
     _checkFirstTimeUser();
   }
 

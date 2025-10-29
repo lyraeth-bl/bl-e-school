@@ -24,6 +24,9 @@ class _BudiLuhurAppState extends State<BudiLuhurApp> {
           create: (_) => AppLocalizationCubit(SettingsRepository()),
         ),
         BlocProvider<AuthCubit>(create: (_) => AuthCubit(AuthRepository())),
+        BlocProvider<DeviceTokenCubit>(
+          create: (_) => DeviceTokenCubit(DeviceTokenRepository()),
+        ),
       ],
       child: Builder(
         builder: (context) {

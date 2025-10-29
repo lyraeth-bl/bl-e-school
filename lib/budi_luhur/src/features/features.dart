@@ -2,6 +2,8 @@ library;
 
 /// Auth
 export 'auth/auth.dart';
+/// Device Token
+export 'device_tokens/device_token.dart';
 /// Home
 export 'home/home.dart';
 /// Languages
