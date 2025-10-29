@@ -2,6 +2,8 @@ library;
 
 /// Auth
 export 'auth/auth.dart';
+/// Home
+export 'home/home.dart';
 /// Languages
 export 'languages/languages.dart';
 /// On Boarding

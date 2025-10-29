@@ -1,3 +1,4 @@
+import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -11,9 +12,402 @@ class HomeScreen extends StatefulWidget {
   }
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>
+    with TickerProviderStateMixin, WidgetsBindingObserver {
+  /// Animations
+  late final AnimationController _animationController = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 500),
+  );
+
+  late final Animation<double> _bottomNavAndTopProfileAnimation =
+      Tween<double>(begin: 0.0, end: 1.0).animate(
+        CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+      );
+
+  late final List<AnimationController> _bottomNavItemTitlesAnimationController =
+      [];
+
+  late final AnimationController _moreMenuBottomSheetAnimationController =
+      AnimationController(
+        vsync: this,
+        duration: homeMenuBottomSheetAnimationDuration,
+      );
+
+  late final Animation<Offset> _moreMenuBottomSheetAnimation =
+      Tween<Offset>(begin: const Offset(0.0, 1.0), end: Offset.zero).animate(
+        CurvedAnimation(
+          parent: _moreMenuBottomSheetAnimationController,
+          curve: Curves.easeInOut,
+        ),
+      );
+
+  late final Animation<double> _moreMenuBackgroundContainerColorAnimation =
+      Tween<double>(begin: 0.0, end: 1.0).animate(
+        CurvedAnimation(
+          parent: _moreMenuBottomSheetAnimationController,
+          curve: Curves.easeInOut,
+        ),
+      );
+
+  /// Variables
+  var canPop = false;
+  late int _currentSelectedBottomNavIndex = 0;
+  late int _previousSelectedBottomNavIndex = -1;
+
+  //index of opened homeBottomSheet menu
+  late int _currentlyOpenMenuIndex = -1;
+
+  late bool _isMoreMenuOpen = false;
+
+  late List<BottomNavModel> _bottomNavItems = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addObserver(this);
+    _animationController.forward();
+
+    /// TODO : Uncomment after notifications ready
+    // Future.delayed(Duration.zero, () {
+    //   loadTemporarilyStoredNotifications();
+    //   //setup notification callback here
+    //   NotificationUtility.setUpNotificationService();
+    // });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return PopScope(
+      canPop: _currentSelectedBottomNavIndex == 0 ? canPop : canPopScreen(),
+      onPopInvokedWithResult: (didPop, _) {
+        if (_currentSelectedBottomNavIndex == 0) {
+          _onWillPop();
+          return;
+        }
+        if (_isMoreMenuOpen) {
+          _closeBottomMenu();
+          return;
+        }
+        if (_currentSelectedBottomNavIndex != 0) {
+          changeBottomNavItem(0);
+          return;
+        }
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            HomeContainerTopProfileContainer(),
+
+            IndexedStack(
+              children: [
+                const HomeContainer(isForBottomMenuBackground: false),
+                _buildBottomSheetBackgroundContent(),
+              ],
+            ),
+
+            IgnorePointer(
+              ignoring: !_isMoreMenuOpen,
+              child: FadeTransition(
+                opacity: _moreMenuBackgroundContainerColorAnimation,
+                child: _buildMoreMenuBackgroundContainer(),
+              ),
+            ),
+
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: SlideTransition(
+                position: _moreMenuBottomSheetAnimation,
+                child: MoreMenuBottomSheetContainer(
+                  closeBottomMenu: _closeBottomMenu,
+                  onTapMoreMenuItemContainer: _onTapMoreMenuItemContainer,
+                ),
+              ),
+            ),
+
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: _buildBottomNavigationContainer(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Methods
+  ///
+  /// TODO : Uncomment after notifications ready
+  // void loadTemporarilyStoredNotifications() {
+  //   NotificationRepository.getTemporarilyStoredNotifications()
+  //       .then((notifications) {
+  //     //
+  //     for (var notificationData in notifications) {
+  //       NotificationRepository.addNotification(
+  //           notificationDetails:
+  //           NotificationDetails.fromJson(Map.from(notificationData)));
+  //     }
+  //     //
+  //     if (notifications.isNotEmpty) {
+  //       NotificationRepository.clearTemporarilyNotification();
+  //     }
+  //
+  //     //
+  //   });
+  // }
+
+  void updateBottomNavItems() {
+    _bottomNavItems = [
+      BottomNavModel(
+        activeImageUrl: "assets/images/home_active_icon.svg",
+        disableImageUrl: "assets/images/home_icon.svg",
+        title: homeKey,
+      ),
+      BottomNavModel(
+        activeImageUrl: "assets/images/menu_active_icon.svg",
+        disableImageUrl: "assets/images/menu_icon.svg",
+        title: menuKey,
+      ),
+    ];
+
+    //Update the animations controller based on assignment module enable
+    initAnimations();
+
+    setState(() {});
+  }
+
+  /// TODO : Uncomment after Assignment ready
+  // void navigateToAssignmentContainer() {
+  //   Get.until((route) => route.isFirst);
+  //   changeBottomNavItem(1);
+  // }
+
+  void initAnimations() {
+    for (var i = 0; i < _bottomNavItems.length; i++) {
+      _bottomNavItemTitlesAnimationController.add(
+        AnimationController(
+          value: i == _currentSelectedBottomNavIndex ? 0.0 : 1.0,
+          vsync: this,
+          duration: const Duration(milliseconds: 400),
+        ),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _animationController.dispose();
+    for (var animationController in _bottomNavItemTitlesAnimationController) {
+      animationController.dispose();
+    }
+    _moreMenuBottomSheetAnimationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    /// TODO : Uncomment after notifications ready
+    // if (state == AppLifecycleState.resumed) {
+    //   loadTemporarilyStoredNotifications();
+    // }
+  }
+
+  bool canPopScreen() {
+    if (_isMoreMenuOpen) {
+      return false;
+    }
+    if (_currentSelectedBottomNavIndex != 0) {
+      return false;
+    }
+    return true;
+  }
+
+  Future<void> changeBottomNavItem(int index) async {
+    if (_moreMenuBottomSheetAnimationController.isAnimating) {
+      return;
+    }
+    _bottomNavItemTitlesAnimationController[_currentSelectedBottomNavIndex]
+        .forward();
+
+    //need to assign previous selected bottom index only if menu is close
+    if (!_isMoreMenuOpen && _currentlyOpenMenuIndex == -1) {
+      _previousSelectedBottomNavIndex = _currentSelectedBottomNavIndex;
+    }
+
+    //change current selected bottom index
+    setState(() {
+      _currentSelectedBottomNavIndex = index;
+
+      //if user taps on non-last bottom nav item then change _currentlyOpenMenuIndex
+      if (_currentSelectedBottomNavIndex != _bottomNavItems.length - 1) {
+        _currentlyOpenMenuIndex = -1;
+      }
+    });
+
+    _bottomNavItemTitlesAnimationController[_currentSelectedBottomNavIndex]
+        .reverse();
+
+    //if bottom index is last means open/close the bottom sheet
+    if (index == _bottomNavItems.length - 1) {
+      if (_moreMenuBottomSheetAnimationController.isCompleted) {
+        //close the menu
+        await _moreMenuBottomSheetAnimationController.reverse();
+
+        setState(() {
+          _isMoreMenuOpen = !_isMoreMenuOpen;
+        });
+
+        //change bottom nav to previous selected index
+        //only if there is not any opened menu item container
+        if (_currentlyOpenMenuIndex == -1) {
+          changeBottomNavItem(_previousSelectedBottomNavIndex);
+        }
+      } else {
+        //open menu
+        await _moreMenuBottomSheetAnimationController.forward();
+        setState(() {
+          _isMoreMenuOpen = !_isMoreMenuOpen;
+        });
+      }
+    } else {
+      //if current selected index is not last index(bottom nav item)
+      //and menu is open then close the menu
+      if (_moreMenuBottomSheetAnimationController.isCompleted) {
+        await _moreMenuBottomSheetAnimationController.reverse();
+        setState(() {
+          _isMoreMenuOpen = !_isMoreMenuOpen;
+        });
+      }
+    }
+  }
+
+  Future<void> _closeBottomMenu() async {
+    if (_currentlyOpenMenuIndex == -1) {
+      //close the menu and change bottom sheet
+      changeBottomNavItem(_previousSelectedBottomNavIndex);
+    } else {
+      await _moreMenuBottomSheetAnimationController.reverse();
+      setState(() {
+        _isMoreMenuOpen = !_isMoreMenuOpen;
+      });
+    }
+  }
+
+  Future<void> _onTapMoreMenuItemContainer(int index) async {
+    await _moreMenuBottomSheetAnimationController.reverse();
+    _currentlyOpenMenuIndex = index;
+    _isMoreMenuOpen = !_isMoreMenuOpen;
+    setState(() {});
+  }
+
+  Widget _buildBottomNavigationContainer() {
+    updateBottomNavItems();
+    return FadeTransition(
+      opacity: _bottomNavAndTopProfileAnimation,
+      child: SlideTransition(
+        position: _bottomNavAndTopProfileAnimation.drive(
+          Tween<Offset>(begin: const Offset(0.0, 1.0), end: Offset.zero),
+        ),
+        child: Container(
+          alignment: Alignment.center,
+          margin: EdgeInsets.only(bottom: Utils.bottomNavigationBottomMargin),
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Utils.getColorScheme(
+                  context,
+                ).secondary.withValues(alpha: 0.15),
+                offset: const Offset(2.5, 2.5),
+                blurRadius: 20,
+              ),
+            ],
+            color: Theme.of(context).scaffoldBackgroundColor,
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          width: MediaQuery.of(context).size.width * (0.85),
+          height:
+              MediaQuery.of(context).size.height *
+              Utils.bottomNavigationHeightPercentage,
+          child: LayoutBuilder(
+            builder: (context, boxConstraints) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: _bottomNavItems.isEmpty
+                    ? [const SizedBox()]
+                    : _bottomNavItems.map((bottomNavItem) {
+                        final int index = _bottomNavItems.indexWhere(
+                          (e) => e.title == bottomNavItem.title,
+                        );
+                        return BottomNavContainer(
+                          showCaseDescription: bottomNavItem.title,
+                          onTap: changeBottomNavItem,
+                          boxConstraints: boxConstraints,
+                          currentIndex: _currentSelectedBottomNavIndex,
+                          bottomNavItem: _bottomNavItems[index],
+                          animationController:
+                              _bottomNavItemTitlesAnimationController[index],
+                          index: index,
+                        );
+                      }).toList(),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMoreMenuBackgroundContainer() {
+    return GestureDetector(
+      onTap: () async {
+        _closeBottomMenu();
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        color: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.75),
+      ),
+    );
+  }
+
+  /// TODO : Uncomment after Some Menu ready
+  //To load the selected menu item
+  //it _currentlyOpenMenuIndex is 0 then load the container based on homeBottomSheetMenu[_currentlyOpenMenuIndex]
+  Widget _buildMenuItemContainer() {
+    return const SizedBox();
+  }
+
+  Widget _buildBottomSheetBackgroundContent() {
+    //
+    //Based on previous selected index show background content
+    if (_currentlyOpenMenuIndex != -1) {
+      return _buildMenuItemContainer();
+    } else {
+      if (_previousSelectedBottomNavIndex == 0) {
+        return const HomeContainer(isForBottomMenuBackground: true);
+      }
+
+      return const SizedBox();
+    }
+  }
+
+  void _onWillPop() {
+    setState(() {
+      canPop = true;
+    });
+    Utils.showCustomSnackBar(
+      context: context,
+      errorMessage: Utils.getTranslatedLabel(pressBackAgainToExitKey),
+      backgroundColor: Theme.of(context).colorScheme.error,
+    ); // Do not exit the app
+    Future.delayed(Duration(seconds: 2), () {
+      setState(() {
+        canPop = false;
+      });
+    });
   }
 }
