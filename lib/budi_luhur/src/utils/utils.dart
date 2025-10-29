@@ -169,4 +169,32 @@ class Utils {
   static ColorScheme getColorScheme(BuildContext context) {
     return Theme.of(context).colorScheme;
   }
+
+  /// Calculates the top padding for a scrollable view.
+  ///
+  /// This is used to position content below an app bar, preventing overlap.
+  ///
+  /// - [context]: The build context to get media query information.
+  /// - [appBarHeightPercentage]: The height of the app bar as a percentage of the screen height.
+  /// - Returns: The calculated top padding value.
+  static double getScrollViewTopPadding({
+    required BuildContext context,
+    required double appBarHeightPercentage,
+  }) {
+    return MediaQuery.of(context).size.height *
+        (appBarHeightPercentage + extraScreenContentTopPaddingForScrolling);
+  }
+
+  /// Calculates the bottom padding for a scrollable view.
+  ///
+  /// This is used to ensure that content at the bottom of a scrollable list
+  /// is not obscured by the bottom navigation bar.
+  ///
+  /// - [context]: The build context to get media query information.
+  /// - Returns: The calculated bottom padding value.
+  static double getScrollViewBottomPadding(BuildContext context) {
+    return MediaQuery.of(context).size.height *
+            (Utils.bottomNavigationHeightPercentage) +
+        Utils.bottomNavigationBottomMargin * (1.5);
+  }
 }

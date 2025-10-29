@@ -64,7 +64,7 @@ List<Effect<dynamic>> customItemBounceScaleAppearanceEffects() {
       ? [
           const ScaleEffect(
             duration: Duration(
-              milliseconds: itemBouncScaleAnimationDurationInMilliseconds,
+              milliseconds: itemBounceScaleAnimationDurationInMilliseconds,
             ),
             curve: Curves.bounceOut,
           ),

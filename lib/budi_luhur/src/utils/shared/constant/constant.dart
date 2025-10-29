@@ -18,4 +18,9 @@ const int itemFadeAnimationDurationInMilliseconds = 250;
 const int itemZoomAnimationDurationInMilliseconds = 200;
 
 /// The duration in milliseconds for item bounce and scale animations.
-const int itemBouncScaleAnimationDurationInMilliseconds = 200;
+const int itemBounceScaleAnimationDurationInMilliseconds = 200;
+
+/// The duration in millisecond for menu bottom sheet
+const Duration homeMenuBottomSheetAnimationDuration = Duration(
+  milliseconds: 300,
+);
