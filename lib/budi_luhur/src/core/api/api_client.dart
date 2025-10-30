@@ -7,7 +7,7 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 /// A client for making HTTP requests to the application's API.
 ///
-/// This class provides static methods for performing GET, POST, and download
+/// This class provides static methods for performing GET, POST, PUT, and download
 /// operations. It handles common tasks such as adding authentication headers,
 /// logging requests and responses (in debug mode), and managing various
 /// error scenarios.
@@ -53,10 +53,6 @@ class ApiClient {
         options: useAuthToken ? Options(headers: headers()) : null,
       );
 
-      if (response.data['error']) {
-        throw ApiException(response.data['code'].toString());
-      }
-
       return Map.from(response.data);
     } on DioException catch (e) {
       if (e.response?.statusCode == 401) {
@@ -80,7 +76,68 @@ class ApiClient {
     }
   }
 
-  /// Performs a POST request, typically for submitting data.
+  /// Performs a PUT request, typically for updating existing data.
+  ///
+  /// - [body]: The data to be sent in the request body.
+  /// - [url]: The endpoint URL.
+  /// - [useAuthToken]: Whether to include the authentication token in the headers.
+  /// - Other optional parameters for cancellation and progress tracking.
+  ///
+  /// Throws an [ApiException] if the request fails.
+  /// Returns a `Future<Map<String, dynamic>>` containing the response data if successful.
+  static Future<Map<String, dynamic>> put({
+    required Map<String, dynamic> body,
+    required String url,
+    required bool useAuthToken,
+    Map<String, dynamic>? queryParameters,
+    CancelToken? cancelToken,
+    Function(int, int)? onSendProgress,
+    Function(int, int)? onReceiveProgress,
+  }) async {
+    try {
+      final Dio dio = Dio();
+
+      final FormData formData = FormData.fromMap(
+        body,
+        ListFormat.multiCompatible,
+      );
+
+      dio.interceptors.add(
+        PrettyDioLogger(requestHeader: true, requestBody: true),
+      );
+
+      final response = await dio.put(
+        url,
+        data: formData,
+        queryParameters: queryParameters,
+        cancelToken: cancelToken,
+        onReceiveProgress: onReceiveProgress,
+        onSendProgress: onSendProgress,
+        options: useAuthToken ? Options(headers: headers()) : null,
+      );
+
+      return Map.from(response.data);
+    } on DioException catch (e) {
+      if (kDebugMode) {
+        print(e.response?.data);
+      }
+      if (e.response?.statusCode == 503 || e.response?.statusCode == 500) {
+        throw ApiException(ErrorMessageKeysAndCode.internetServerErrorCode);
+      }
+
+      throw ApiException(
+        e.error is SocketException
+            ? ErrorMessageKeysAndCode.noInternetCode
+            : ErrorMessageKeysAndCode.defaultErrorMessageCode,
+      );
+    } on ApiException catch (e) {
+      throw ApiException(e.errorMessage);
+    } catch (e) {
+      throw ApiException(ErrorMessageKeysAndCode.defaultErrorMessageKey);
+    }
+  }
+
+  /// Performs a POST request, typically for creating new data.
   ///
   /// - [body]: The data to be sent in the request body.
   /// - [url]: The endpoint URL.

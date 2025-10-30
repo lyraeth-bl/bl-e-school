@@ -8,6 +8,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 /// 2. Opening the necessary boxes for the application, including:
 ///    - [showCaseBoxKey]: For storing data related to the showcase feature.
 ///    - [authBoxKey]: For caching authentication-related data.
+///    - [attendanceBoxKey]: For storing daily attendance information.
+///    - [settingsBoxKey]: For caching user-specific settings.
 Future<void> initHiveOpenBox() async {
   // Initialize Hive for use in a Flutter application.
   await Hive.initFlutter();
@@ -15,5 +17,6 @@ Future<void> initHiveOpenBox() async {
   // Open the boxes required for the application to function correctly.
   await Hive.openBox(showCaseBoxKey);
   await Hive.openBox(authBoxKey);
+  await Hive.openBox(attendanceBoxKey);
   await Hive.openBox(settingsBoxKey);
 }
