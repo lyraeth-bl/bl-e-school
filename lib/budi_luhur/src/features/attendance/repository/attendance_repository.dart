@@ -120,7 +120,7 @@ class AttendanceRepository {
   }) async {
     try {
       final response = await ApiClient.get(
-        url: "${ApiEndpoints.absensiHarian}/$nis/$month/$year/$unit",
+        url: "${ApiEndpoints.absensiHarian}/$nis/$year/$month/$unit",
         useAuthToken: true,
       );
 

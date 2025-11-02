@@ -1,5 +1,6 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -8,7 +9,14 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 
   static Widget routeInstance() {
-    return const HomeScreen();
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<FetchDailyAttendanceCubit>(
+          create: (_) => FetchDailyAttendanceCubit(AttendanceRepository()),
+        ),
+      ],
+      child: HomeScreen(),
+    );
   }
 }
 
@@ -68,6 +76,7 @@ class _HomeScreenState extends State<HomeScreen>
 
     WidgetsBinding.instance.addObserver(this);
     _animationController.forward();
+    _ensureBottomNavItems();
 
     /// TODO : Uncomment after notifications ready
     // Future.delayed(Duration.zero, () {
@@ -98,9 +107,8 @@ class _HomeScreenState extends State<HomeScreen>
       child: Scaffold(
         body: Stack(
           children: [
-            HomeContainerTopProfileContainer(),
-
             IndexedStack(
+              index: _currentSelectedBottomNavIndex,
               children: [
                 const HomeContainer(isForBottomMenuBackground: false),
                 _buildBottomSheetBackgroundContent(),
@@ -156,6 +164,10 @@ class _HomeScreenState extends State<HomeScreen>
   //     //
   //   });
   // }
+
+  void _ensureBottomNavItems() {
+    if (_bottomNavItems.isEmpty) updateBottomNavItems();
+  }
 
   void updateBottomNavItems() {
     _bottomNavItems = [
@@ -305,7 +317,6 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Widget _buildBottomNavigationContainer() {
-    updateBottomNavItems();
     return FadeTransition(
       opacity: _bottomNavAndTopProfileAnimation,
       child: SlideTransition(
@@ -378,6 +389,10 @@ class _HomeScreenState extends State<HomeScreen>
   //To load the selected menu item
   //it _currentlyOpenMenuIndex is 0 then load the container based on homeBottomSheetMenu[_currentlyOpenMenuIndex]
   Widget _buildMenuItemContainer() {
+    if (homeBottomSheetMenu[_currentlyOpenMenuIndex].title == attendanceKey) {
+      return AttendanceContainer();
+    }
+
     return const SizedBox();
   }
 

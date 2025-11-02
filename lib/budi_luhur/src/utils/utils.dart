@@ -3,21 +3,29 @@ library;
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 /// Animations
 export 'shared/animations/animation_configurations.dart';
+
 /// Constant
 export 'shared/constant/constant.dart';
+
 /// Error Handling
 export 'shared/error_handling/error_message_and_code.dart';
+
 /// Hive Box Keys
 export 'shared/hive_box_keys/hive_box_keys.dart';
+
 /// Label Keys
 export 'shared/label_keys/label_keys.dart';
+
 /// Languages
 export 'shared/languages/app_languages.dart';
+
 /// Theme
 export 'shared/theme/theme.dart';
+
 /// UI
 export 'shared/ui/ui.dart';
 
@@ -196,5 +204,121 @@ class Utils {
     return MediaQuery.of(context).size.height *
             (Utils.bottomNavigationHeightPercentage) +
         Utils.bottomNavigationBottomMargin * (1.5);
+  }
+
+  /// Formats a [DateTime] object into a "dd-MM-yyyy" string.
+  ///
+  /// Example: `22-09-2025`
+  static String formatDate(DateTime dateTime) {
+    return "${dateTime.day.toString().padLeft(2, '0')}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.year}";
+  }
+
+  /// Formats a [DateTime] into a "dd MMM yy" string.
+  ///
+  /// Example: `22 Sep 25`
+  ///
+  /// - [date]: The date to format.
+  /// - [locale]: The locale to use for formatting. Defaults to the current system locale if `null`.
+  static String formatDateTwo(DateTime date, {String? locale}) {
+    return DateFormat("dd MMM yy", locale).format(date);
+  }
+
+  /// Formats a [DateTime] into a "dd MMMM yyyy" string.
+  ///
+  /// Example: `22 September 2025`
+  ///
+  /// - [date]: The date to format.
+  /// - [locale]: The locale to use for formatting. Defaults to the current system locale if `null`.
+  static String formatToDayMonthYear(DateTime date, {String? locale}) {
+    return DateFormat("dd MMMM yyyy", locale).format(date);
+  }
+
+  /// Formats a [DateTime] into a "MMMM yyyy" string.
+  ///
+  /// Example: `September 2025`
+  ///
+  /// - [date]: The date to format.
+  /// - [locale]: The locale to use for formatting. Defaults to the current system locale if `null`.
+  static String formatToMonthYear(DateTime date, {String? locale}) {
+    return DateFormat("MMMM yyyy", locale).format(date);
+  }
+
+  /// Formats a [DateTime] into a "HH : mm : ss" string (24-hour clock).
+  ///
+  /// Example: `12 : 00 : 00`
+  ///
+  /// - [date]: The date to format.
+  /// - [locale]: The locale to use for formatting. Defaults to the current system locale if `null`.
+  static String formatClock(DateTime date, {String? locale}) {
+    return DateFormat("HH : mm : ss", locale).format(date);
+  }
+
+  /// Formats a [DateTime] into a "HH : mm" string (24-hour clock).
+  ///
+  /// Example: `12 : 00`
+  ///
+  /// - [date]: The date to format.
+  /// - [locale]: The locale to use for formatting. Defaults to the current system locale if `null`.
+  static String formatTime(DateTime date, {String? locale}) {
+    return DateFormat("HH : mm", locale).format(date);
+  }
+
+  /// Formats a [DateTime] into a "EEEE, dd MMM yyyy" string.
+  ///
+  /// Example: `Monday, 22 Sep 2025`
+  ///
+  /// - [date]: The date to format.
+  /// - [locale]: The locale to use for formatting. Defaults to the current system locale if `null`.
+  static String formatDay(DateTime date, {String? locale}) {
+    return DateFormat("EEEE, dd MMM yyyy", locale).format(date);
+  }
+
+  /// Formats a [DateTime] into a "EEEE, dd MMMM yyyy" string.
+  ///
+  /// Example: `Monday, 22 September 2025`
+  ///
+  /// - [date]: The date to format.
+  /// - [locale]: The locale to use for formatting. Defaults to the current system locale if `null`.
+  static String formatDays(DateTime date, {String? locale}) {
+    return DateFormat("EEEE, dd MMMM yyyy", locale).format(date);
+  }
+
+  /// Formats a [DateTime] into a "EEEE, dd MMM yyyy, HH : mm" string.
+  ///
+  /// Example: `Monday, 22 Sep 2025, 12 : 00`
+  ///
+  /// - [date]: The date to format.
+  /// - [locale]: The locale to use for formatting. Defaults to the current system locale if `null`.
+  static String formatDaysAndTime(DateTime date, {String? locale}) {
+    return DateFormat("EEEE, dd MMM yyyy, HH : mm", locale).format(date);
+  }
+
+  /// Determines the appropriate back button icon path based on the text directionality.
+  ///
+  /// This is used to support both Left-to-Right (LTR) and Right-to-Left (RTL) layouts.
+  ///
+  /// - [context]: The build context to get the current [TextDirection].
+  /// - Returns: The asset path for the correct back button icon.
+  static String getBackButtonPath(BuildContext context) {
+    return Directionality.of(context).name == TextDirection.RTL.value
+        ? ("assets/images/rtl_back_icon.svg")
+        : ("assets/images/back_icon.svg");
+  }
+
+  /// Retrieves a localized error message corresponding to a given error code.
+  ///
+  /// This function maps an error code to a message key and then uses the
+  /// localization system to get the translated error message.
+  ///
+  /// - [context]: The build context (currently unused but good practice to keep for future needs).
+  /// - [errorCode]: The error code to look up.
+  /// - Returns: The translated, user-friendly error message.
+  static String getErrorMessageFromErrorCode(
+    BuildContext context,
+    String errorCode,
+  ) {
+    return Utils.getTranslatedLabel(
+      ErrorMessageKeysAndCode.getErrorMessageKeyFromCode(errorCode),
+    );
   }
 }

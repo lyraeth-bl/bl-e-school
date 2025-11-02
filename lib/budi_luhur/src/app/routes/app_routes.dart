@@ -1,5 +1,4 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/home/screen/home_screen.dart';
 import 'package:get/get.dart';
 
 class BudiLuhurRoutes extends BudiLuhur {
@@ -28,5 +27,9 @@ class BudiLuhurRoutes extends BudiLuhur {
       page: () => StudentOnBoardingScreen.routeInstance(),
     ),
     GetPage(name: home, page: () => HomeScreen.routeInstance()),
+    GetPage(
+      name: studentAttendance,
+      page: () => StudentAttendanceScreen.routeInstance(),
+    ),
   ];
 }

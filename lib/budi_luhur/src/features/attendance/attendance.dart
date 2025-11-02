@@ -11,3 +11,10 @@ export 'data/model/attendance_history/response/attendance_history_response.dart'
 export 'data/model/daily_attendance/daily_attendance.dart';
 // Repository
 export 'repository/attendance_repository.dart';
+// Screen
+export 'screen/attendance_container.dart';
+export 'screen/student_attendance_screen.dart';
+export 'screen/widgets/attendance_legends.dart';
+export 'screen/widgets/attendance_shimmer.dart';
+export 'screen/widgets/attendance_summary.dart';
+export 'screen/widgets/change_calendar_month_button.dart';

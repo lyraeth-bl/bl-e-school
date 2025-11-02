@@ -1,3 +1,5 @@
+import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+
 class MenuModel {
   final String title;
   final String iconUrl;
@@ -10,4 +12,10 @@ class MenuModel {
   });
 }
 
-final List<MenuModel> homeBottomSheetMenu = [];
+final List<MenuModel> homeBottomSheetMenu = [
+  MenuModel(
+    menuModuleId: attendanceManagementModuleId.toString(),
+    iconUrl: "assets/images/attendance_icon.svg",
+    title: attendanceKey,
+  ),
+];
