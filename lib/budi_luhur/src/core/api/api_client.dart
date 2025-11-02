@@ -20,10 +20,6 @@ class ApiClient {
   static Map<String, dynamic> headers() {
     final String jwtToken = AuthRepository().getJwtToken();
 
-    if (kDebugMode) {
-      print(jwtToken);
-    }
-
     return {"Authorization": "Bearer $jwtToken", "Accept": "application/json"};
   }
 
