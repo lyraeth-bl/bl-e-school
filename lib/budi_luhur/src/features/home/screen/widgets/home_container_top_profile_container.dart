@@ -111,7 +111,7 @@ class HomeContainerTopProfileContainer extends StatelessWidget {
                               children: [
                                 Flexible(
                                   child: Text(
-                                    "${Utils.getTranslatedLabel(classKey)} : ${context.read<AuthCubit>().getStudentDetails().kelasSaatIni} - ${context.read<AuthCubit>().getStudentDetails().nomorKelas}",
+                                    "${Utils.getTranslatedLabel(classKey)} : ${context.read<AuthCubit>().getStudentDetails().kelasSaatIni} - ${context.read<AuthCubit>().getStudentDetails().noKelasSaatIni}",
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(

@@ -136,7 +136,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
       child: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surfaceContainer,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(16),
         ),
         child: Row(
@@ -241,6 +241,27 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
               onTapRetry: () => _fetchCurrentMonthDailyAttendanceData(),
             ),
             success: (dailyAttendanceList) {
+              final hadirCount = dailyAttendanceList
+                  .where((d) => d.status == 'Hadir')
+                  .length;
+              final sakitCount = dailyAttendanceList
+                  .where((d) => d.status == 'Sakit')
+                  .length;
+              final izinCount = dailyAttendanceList
+                  .where((d) => d.status == 'Izin')
+                  .length;
+              final alphaCount = dailyAttendanceList
+                  .where((d) => d.status == 'Alpha')
+                  .length;
+
+              final Map<String, double> pieData = {};
+              if (hadirCount > 0) pieData['Hadir'] = hadirCount.toDouble();
+              if (sakitCount > 0) pieData['Sakit'] = sakitCount.toDouble();
+              if (izinCount > 0) pieData['Izin'] = izinCount.toDouble();
+              if (alphaCount > 0) pieData['Alpha'] = alphaCount.toDouble();
+
+              final order = ['Hadir', 'Sakit', 'Izin', 'Alpha'];
+
               final presentDays = dailyAttendanceList
                   .where((status) => status.status == "Hadir")
                   .toList();
@@ -263,12 +284,11 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
                       absentDays: absentDays,
                     ),
 
-                    AttendanceSummary(
-                      absent: absentDays.length,
-                      hadir: presentDays.length,
-                    ),
-
-                    AttendanceLegends(),
+                    if (hadirCount != 0 ||
+                        alphaCount != 0 ||
+                        sakitCount != 0 ||
+                        izinCount != 0 && pieData.isNotEmpty)
+                      AttendanceCharts(data: pieData, order: order),
                   ],
                 ),
               );
@@ -286,18 +306,11 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
     required List<DailyAttendance> absentDays,
   }) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 24),
+      margin: const EdgeInsets.symmetric(vertical: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainer,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.05),
-            offset: const Offset(5.0, 5),
-            blurRadius: 10,
-          ),
-        ],
       ),
       child: TableCalendar(
         focusedDay: _now,

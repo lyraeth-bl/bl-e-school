@@ -14,6 +14,7 @@ export 'repository/attendance_repository.dart';
 // Screen
 export 'screen/attendance_container.dart';
 export 'screen/student_attendance_screen.dart';
+export 'screen/widgets/attendance_charts.dart';
 export 'screen/widgets/attendance_legends.dart';
 export 'screen/widgets/attendance_shimmer.dart';
 export 'screen/widgets/attendance_summary.dart';

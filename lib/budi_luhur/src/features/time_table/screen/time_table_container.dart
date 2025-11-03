@@ -254,7 +254,7 @@ class _TimeTableContainerState extends State<TimeTableContainer>
     final jamSelesaiToDateTime = Utils.timeStringToToday(timeTable.jamSelesai);
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(

@@ -14,6 +14,9 @@ class StudentAttendanceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: AttendanceContainer());
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
+      body: AttendanceContainer(),
+    );
   }
 }

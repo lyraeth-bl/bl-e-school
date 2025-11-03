@@ -105,6 +105,7 @@ class _HomeScreenState extends State<HomeScreen>
         }
       },
       child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
         body: Stack(
           children: [
             IndexedStack(
