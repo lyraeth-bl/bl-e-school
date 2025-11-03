@@ -4,13 +4,17 @@ import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:bl_e_school/budi_luhur/src/app/init/init_hive_open_box.dart';
 import 'package:bl_e_school/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:path_provider/path_provider.dart';
 
 /// Initializes essential application services and configurations before running the app.
 ///
 /// This function ensures that all necessary setup tasks are completed, including:
 /// - Initializing the Flutter binding.
+/// - Initializing the HydratedBloc Storage.
 /// - Setting up Firebase services.
 /// - Overriding default HTTP behavior for development.
 /// - Registering font licenses.
@@ -21,6 +25,13 @@ import 'package:intl/date_symbol_data_local.dart';
 Future<void> budiLuhurInitializeApp() async {
   // Ensure that the Flutter binding is initialized before any Flutter-specific code.
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize HydratedBloc.
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: kIsWeb
+        ? HydratedStorageDirectory.web
+        : HydratedStorageDirectory((await getTemporaryDirectory()).path),
+  );
 
   // Initialize Firebase with platform-specific options.
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);

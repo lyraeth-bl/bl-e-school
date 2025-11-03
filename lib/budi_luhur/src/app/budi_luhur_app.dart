@@ -27,6 +27,9 @@ class _BudiLuhurAppState extends State<BudiLuhurApp> {
         BlocProvider<DeviceTokenCubit>(
           create: (_) => DeviceTokenCubit(DeviceTokenRepository()),
         ),
+        BlocProvider<TimeTableCubit>(
+          create: (_) => TimeTableCubit(TimeTableRepository()),
+        ),
       ],
       child: Builder(
         builder: (context) {

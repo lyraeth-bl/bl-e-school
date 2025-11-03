@@ -18,3 +18,5 @@ export 'settings/settings.dart';
 export 'shared/shared.dart';
 /// Splash
 export 'splash/splash.dart';
+/// TimeTable / Jadwal KBM
+export 'time_table/time_table.dart';

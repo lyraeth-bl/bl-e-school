@@ -293,6 +293,30 @@ class Utils {
     return DateFormat("EEEE, dd MMM yyyy, HH : mm", locale).format(date);
   }
 
+  /// Converts a time string in "H:mm" format to a [DateTime] object for the current day.
+  ///
+  /// This function takes a string representing a time (e.g., "07:00" or "14:30") and
+  /// combines it with the current date (year, month, day) to create a full [DateTime] object.
+  ///
+  /// Example:
+  /// If today is 2023-10-27 and `hhmm` is "15:45", the function will return
+  /// a `DateTime` object representing October 27, 2023, at 3:45 PM.
+  ///
+  /// - [hhmm]: The time string to parse, in "H:mm" format. Can be null.
+  /// - Returns: A [DateTime] object representing the parsed time on today's date,
+  ///   or `null` if the input string is null or cannot be parsed.
+  static DateTime? timeStringToToday(String? hhmm) {
+    if (hhmm == null) return null;
+    try {
+      final fmt = DateFormat('H:mm');
+      final time = fmt.parse(hhmm);
+      final now = DateTime.now();
+      return DateTime(now.year, now.month, now.day, time.hour, time.minute);
+    } catch (e) {
+      return null;
+    }
+  }
+
   /// Determines the appropriate back button icon path based on the text directionality.
   ///
   /// This is used to support both Left-to-Right (LTR) and Right-to-Left (RTL) layouts.
@@ -321,4 +345,37 @@ class Utils {
       ErrorMessageKeysAndCode.getErrorMessageKeyFromCode(errorCode),
     );
   }
+
+  /// A list of keys for the days of the week, used for localization.
+  static final List<String> weekDays = [
+    mondayKey,
+    tuesdayKey,
+    wednesdayKey,
+    thursdayKey,
+    fridayKey,
+    saturdayKey,
+    sundayKey,
+  ];
+
+  /// A list of the full names of the days of the week in English.
+  static final List<String> weekDaysFullForm = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
+
+  /// A list of the full names of the days of the week in Indonesian.
+  static final List<String> weekDaysFullFormTranslated = [
+    "Senin",
+    "Selasa",
+    "Rabu",
+    "Kamis",
+    "Jumat",
+    "Sabtu",
+    "Minggu",
+  ];
 }

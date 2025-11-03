@@ -10,6 +10,7 @@ class BudiLuhurRoutes extends BudiLuhur {
   static const String studentOnboarding = "/studentOnboarding";
   static const String studentProfile = "/studentProfile";
   static const String studentAttendance = "/studentAttendance";
+  static const String studentTimeTable = "/studentTimeTable";
 
   // Splash
   static const String splash = "/splash";
@@ -30,6 +31,10 @@ class BudiLuhurRoutes extends BudiLuhur {
     GetPage(
       name: studentAttendance,
       page: () => StudentAttendanceScreen.routeInstance(),
+    ),
+    GetPage(
+      name: studentTimeTable,
+      page: () => StudentTimeTableScreen.routeInstance(),
     ),
   ];
 }

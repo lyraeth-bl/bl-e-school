@@ -392,6 +392,9 @@ class _HomeScreenState extends State<HomeScreen>
     if (homeBottomSheetMenu[_currentlyOpenMenuIndex].title == attendanceKey) {
       return AttendanceContainer();
     }
+    if (homeBottomSheetMenu[_currentlyOpenMenuIndex].title == timeTableKey) {
+      return TimeTableContainer();
+    }
 
     return const SizedBox();
   }

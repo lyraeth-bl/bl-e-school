@@ -18,4 +18,9 @@ final List<MenuModel> homeBottomSheetMenu = [
     iconUrl: "assets/images/attendance_icon.svg",
     title: attendanceKey,
   ),
+  MenuModel(
+    menuModuleId: timetableManagementModuleId.toString(),
+    iconUrl: "assets/images/timetable_icon.svg",
+    title: timeTableKey,
+  ),
 ];
