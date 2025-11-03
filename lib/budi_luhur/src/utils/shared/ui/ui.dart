@@ -1,4 +1,5 @@
 export 'bordered_profile_picture_container.dart';
+export 'custom_app_bar.dart';
 export 'custom_back_button.dart';
 export 'custom_rounded_button.dart';
 export 'custom_shimmer_container.dart';

@@ -378,4 +378,16 @@ class Utils {
     "Sabtu",
     "Minggu",
   ];
+
+  /// Formats an empty string to a hyphen, otherwise returns the original string.
+  ///
+  /// This is a simple helper function to ensure that empty data fields are
+  /// displayed with a placeholder ("-") in the UI, improving readability.
+  ///
+  /// - [value]: The input string to format.
+  /// - Returns: A hyphen ("-") if the input string is empty, otherwise the
+  ///   original string.
+  static String formatEmptyValue(String value) {
+    return value.isEmpty ? "-" : value;
+  }
 }

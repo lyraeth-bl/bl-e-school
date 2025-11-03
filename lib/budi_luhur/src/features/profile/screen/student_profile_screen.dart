@@ -1,0 +1,333 @@
+import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+class StudentProfileScreen extends StatelessWidget {
+  const StudentProfileScreen({super.key});
+
+  static Widget routeInstance() {
+    return StudentProfileScreen();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          _buildProfileDetailsContainer(
+            context,
+            studentDetails: context.read<AuthCubit>().getStudentDetails(),
+          ),
+          _buildAppBar(),
+        ],
+      ),
+    );
+  }
+
+  /// UI
+  Widget _buildProfileDetailsTile(
+    BuildContext context, {
+    required String label,
+    required String value,
+    required String iconUrl,
+    Color? iconColor,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 14.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12.5),
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              boxShadow: const [
+                BoxShadow(
+                  color: Color(0x1a212121),
+                  offset: Offset(0, 10),
+                  blurRadius: 16,
+                ),
+              ],
+              color: Theme.of(context).colorScheme.primary,
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            child: SvgPicture.asset(
+              iconUrl,
+              theme: SvgTheme(
+                currentColor:
+                    iconColor ?? Theme.of(context).scaffoldBackgroundColor,
+              ),
+              colorFilter: iconColor == null
+                  ? null
+                  : ColorFilter.mode(iconColor, BlendMode.srcIn),
+            ),
+          ),
+          SizedBox(width: MediaQuery.of(context).size.width * (0.05)),
+          Flexible(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 3.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    label,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12.0,
+                    ),
+                  ),
+                  Text(
+                    value,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14.0,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAppBar() {
+    return Align(
+      alignment: Alignment.topCenter,
+      child: CustomAppBar(title: Utils.getTranslatedLabel(profileKey)),
+    );
+  }
+
+  Widget _buildProfileDetailsContainer(
+    BuildContext context, {
+    required Student studentDetails,
+  }) {
+    return Align(
+      alignment: Alignment.topCenter,
+      child: SingleChildScrollView(
+        padding: EdgeInsets.only(
+          top: Utils.getScrollViewTopPadding(
+            context: context,
+            appBarHeightPercentage: Utils.appBarSmallerHeightPercentage,
+          ),
+        ),
+        child: Column(
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width * (0.25),
+              height: MediaQuery.of(context).size.width * (0.25),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              child: CustomUserProfileImageWidget(
+                profileUrl: studentDetails.profileImageUrl ?? "",
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            Text(
+              studentDetails.nama ?? "-",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: Theme.of(context).colorScheme.secondary,
+                fontSize: 18.0,
+              ),
+            ),
+
+            const SizedBox(height: 5.0),
+
+            Text(
+              studentDetails.email ?? "",
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurface,
+                fontSize: 12.0,
+              ),
+            ),
+
+            const SizedBox(height: 10.0),
+
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width * (0.075),
+              ),
+              child: Divider(
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.75),
+              ),
+            ),
+
+            const SizedBox(height: 10.0),
+
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width * (0.075),
+              ),
+              child: Column(
+                children: [
+                  Align(
+                    alignment: AlignmentDirectional.centerStart,
+                    child: Text(
+                      Utils.getTranslatedLabel(personalDetailsKey),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+
+                  _buildProfileDetailsTile(
+                    context,
+                    label: Utils.getTranslatedLabel(schoolKey),
+                    value: Utils.formatEmptyValue(
+                      ("${studentDetails.unit?.substring(0, 3)} Budi Luhur"),
+                    ),
+                    iconUrl: "assets/images/school.svg",
+                  ),
+                  _buildProfileDetailsTile(
+                    context,
+                    label: Utils.getTranslatedLabel(nisKey),
+                    value: Utils.formatEmptyValue(studentDetails.nis),
+                    iconUrl: "assets/images/user_pro_roll_no_icon.svg",
+                  ),
+                  _buildProfileDetailsTile(
+                    context,
+                    label: Utils.getTranslatedLabel(nisnKey),
+                    value: Utils.formatEmptyValue(studentDetails.nisn ?? ""),
+                    iconUrl: "assets/images/user_pro_roll_no_icon.svg",
+                  ),
+                  _buildProfileDetailsTile(
+                    context,
+                    label: Utils.getTranslatedLabel(classKey),
+                    value: Utils.formatEmptyValue(
+                      "${studentDetails.kelasSaatIni} ${studentDetails.noKelasSaatIni}",
+                    ),
+                    iconUrl: "assets/images/user_pro_class_icon.svg",
+                  ),
+                  _buildProfileDetailsTile(
+                    context,
+                    label: Utils.getTranslatedLabel(dateOfBirthKey),
+                    value: Utils.formatEmptyValue(
+                      DateTime.tryParse(
+                                studentDetails.tanggalLahir
+                                        ?.toIso8601String() ??
+                                    "",
+                              ) ==
+                              null
+                          ? "-"
+                          : Utils.formatDays(
+                              DateTime.tryParse(
+                                studentDetails.tanggalLahir!.toIso8601String(),
+                              )!,
+                              locale: "id_ID",
+                            ),
+                    ),
+                    iconUrl: "assets/images/user_pro_dob_icon.svg",
+                  ),
+                  _buildProfileDetailsTile(
+                    context,
+                    label: Utils.getTranslatedLabel(currentAddressKey),
+                    value: Utils.formatEmptyValue(studentDetails.alamat ?? ""),
+                    iconUrl: "assets/images/user_pro_address_icon.svg",
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * (0.1)),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStudentDetailsValueShimmerLoading(
+    BoxConstraints boxConstraints,
+  ) {
+    return Column(
+      children: [
+        const SizedBox(height: 20),
+        ShimmerLoadingContainer(
+          child: CustomShimmerContainer(
+            margin: EdgeInsetsDirectional.only(
+              end: boxConstraints.maxWidth * (0.7),
+            ),
+            height: 8,
+          ),
+        ),
+        const SizedBox(height: 10),
+        ShimmerLoadingContainer(
+          child: CustomShimmerContainer(
+            margin: EdgeInsetsDirectional.only(
+              end: boxConstraints.maxWidth * (0.5),
+            ),
+            height: 8,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStudentDetailsShimmerLoading(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        top: Utils.getScrollViewTopPadding(
+          context: context,
+          appBarHeightPercentage: Utils.appBarSmallerHeightPercentage,
+        ),
+      ),
+      child: Center(
+        child: LayoutBuilder(
+          builder: (context, boxConstraints) {
+            return Column(
+              children: [
+                ShimmerLoadingContainer(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * (0.25),
+                    height: MediaQuery.of(context).size.width * (0.25),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 30),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ShimmerLoadingContainer(
+                        child: Divider(
+                          color: Colors.white.withValues(alpha: 0.85),
+                          height: 2,
+                        ),
+                      ),
+                      _buildStudentDetailsValueShimmerLoading(boxConstraints),
+                      const SizedBox(height: 20),
+                      _buildStudentDetailsValueShimmerLoading(boxConstraints),
+                      const SizedBox(height: 20),
+                      _buildStudentDetailsValueShimmerLoading(boxConstraints),
+                      const SizedBox(height: 20),
+                      _buildStudentDetailsValueShimmerLoading(boxConstraints),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+      ),
+    );
+  }
+}

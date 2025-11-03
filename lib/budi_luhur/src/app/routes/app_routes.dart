@@ -1,33 +1,64 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:get/get.dart';
 
+/// A class that holds the application's routes and their bindings.
+///
+/// This class defines all the navigation routes as static constants and provides a
+/// `getPages` list that maps these routes to their corresponding screen widgets.
+/// This setup is used by the `GetX` package to manage navigation.
 class BudiLuhurRoutes extends BudiLuhur {
-  // Auth
+  // --- Authentication Routes ---
+
+  /// The route for the main authentication screen (e.g., for parents/staff).
   static const String auth = "/auth";
+
+  /// The route for the student-specific authentication screen.
   static const String authStudent = "/authStudent";
 
-  // Student
+  // --- Student-Specific Routes ---
+
+  /// The route for the student onboarding process.
   static const String studentOnboarding = "/studentOnboarding";
+
+  /// The route to the student's profile page.
   static const String studentProfile = "/studentProfile";
+
+  /// The route to the student's attendance tracking page.
   static const String studentAttendance = "/studentAttendance";
+
+  /// The route to the student's class timetable.
   static const String studentTimeTable = "/studentTimeTable";
 
-  // Splash
+  // --- Core Application Routes ---
+
+  /// The route for the splash screen, shown on app startup.
   static const String splash = "/splash";
 
-  // Home
+  /// The main home screen route, typically the default screen after login.
   static const String home = "/";
 
-  // getPages
+  /// A list of [GetPage] objects that defines the application's route table.
+  ///
+  /// Each [GetPage] entry maps a route name to a page-building function,
+  /// allowing for named navigation throughout the app using `Get.toNamed()`.
   static List<GetPage> getPages = [
+    // Splash screen route
     GetPage(name: splash, page: () => SplashScreen.routeInstance()),
+
+    // Authentication routes
     GetPage(name: auth, page: () => AuthScreen.routeInstance()),
     GetPage(name: authStudent, page: () => AuthStudentScreen.routeInstance()),
+
+    // Onboarding route
     GetPage(
       name: studentOnboarding,
       page: () => StudentOnBoardingScreen.routeInstance(),
     ),
+
+    // Main home screen route
     GetPage(name: home, page: () => HomeScreen.routeInstance()),
+
+    // Student feature routes
     GetPage(
       name: studentAttendance,
       page: () => StudentAttendanceScreen.routeInstance(),
@@ -35,6 +66,10 @@ class BudiLuhurRoutes extends BudiLuhur {
     GetPage(
       name: studentTimeTable,
       page: () => StudentTimeTableScreen.routeInstance(),
+    ),
+    GetPage(
+      name: studentProfile,
+      page: () => StudentProfileScreen.routeInstance(),
     ),
   ];
 }

@@ -107,6 +107,7 @@ const String submitKey = "submit";
 
 const String emailKey = "email";
 const String nisKey = "nis";
+const String nisnKey = "nisn";
 const String passwordKey = "password";
 const String letsSignInKey = "letsSignIn";
 const String welcomeBackKey = "welcomeBack";

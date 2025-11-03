@@ -12,6 +12,8 @@ export 'home/home.dart';
 export 'languages/languages.dart';
 /// On Boarding
 export 'on_boarding/on_boarding.dart';
+/// Profile
+export 'profile/profile.dart';
 /// Settings
 export 'settings/settings.dart';
 /// Shared
