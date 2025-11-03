@@ -67,6 +67,9 @@ dependencies:
   #
   # Loading
   shimmer: ^3.0.0
+  #
+  # Chart
+  fl_chart: ^1.1.1
 
 
   # ===================== #
