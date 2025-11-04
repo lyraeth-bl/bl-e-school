@@ -24,7 +24,7 @@ class BorderedProfilePictureContainer extends StatelessWidget {
         padding: const EdgeInsets.all(4.0),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          border: Border.all(color: Theme.of(context).scaffoldBackgroundColor),
+          border: Border.all(color: Theme.of(context).colorScheme.outline),
         ),
         width: heightAndWidth,
         height: heightAndWidth,

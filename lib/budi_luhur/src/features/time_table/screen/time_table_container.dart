@@ -159,8 +159,9 @@ class _TimeTableContainerState extends State<TimeTableContainer>
             child: Text(
               Utils.getTranslatedLabel(timeTableKey),
               style: TextStyle(
-                color: Theme.of(context).scaffoldBackgroundColor,
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
                 fontSize: Utils.screenTitleFontSize,
+                fontWeight: FontWeight.w600,
               ),
             ),
           ),

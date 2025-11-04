@@ -9,7 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 /// for various UI components like text and progress indicators.
 class BudiLuhurTheme extends BudiLuhur {
   // Default seed color used for generating color schemes.
-  static const Color _seedColor = Colors.lightBlueAccent;
+  static const Color _seedColor = Colors.blue;
 
   /// Provides access to the default seed color.
   Color get seedColor => _seedColor;
@@ -30,7 +30,7 @@ class BudiLuhurTheme extends BudiLuhur {
       colorScheme: colorScheme,
       useMaterial3: true,
       brightness: Brightness.light,
-      textTheme: GoogleFonts.openSansTextTheme(),
+      textTheme: GoogleFonts.poppinsTextTheme(),
       progressIndicatorTheme: ProgressIndicatorThemeData(
         strokeWidth: 5,
         circularTrackColor: colorScheme.secondaryContainer,
@@ -54,7 +54,7 @@ class BudiLuhurTheme extends BudiLuhur {
       colorScheme: colorScheme,
       useMaterial3: true,
       brightness: Brightness.dark,
-      textTheme: GoogleFonts.openSansTextTheme(),
+      textTheme: GoogleFonts.poppinsTextTheme(),
       progressIndicatorTheme: ProgressIndicatorThemeData(
         strokeWidth: 5,
         circularTrackColor: colorScheme.secondaryContainer,

@@ -24,6 +24,7 @@ class CustomBackButton extends StatelessWidget {
           start: Utils.screenContentHorizontalPadding,
         ),
         child: SvgButton(
+          buttonColor: Theme.of(context).colorScheme.onSurface,
           onTap: () {
             if (onTap != null) {
               onTap?.call();

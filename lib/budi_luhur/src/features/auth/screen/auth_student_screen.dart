@@ -265,7 +265,7 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
                                 ),
                                 backgroundColor: Theme.of(
                                   context,
-                                ).colorScheme.error,
+                                ).colorScheme.errorContainer,
                               );
                             },
                             orElse: () {},
@@ -286,13 +286,11 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
                               _signInStudent();
                             },
                             widthPercentage: 0.8,
-                            backgroundColor: Utils.getColorScheme(
+                            backgroundColor: Theme.of(
                               context,
-                            ).primary,
+                            ).colorScheme.primary,
                             buttonTitle: Utils.getTranslatedLabel(signInKey),
-                            titleColor: Theme.of(
-                              context,
-                            ).scaffoldBackgroundColor,
+                            titleColor: Theme.of(context).colorScheme.onPrimary,
                             showBorder: false,
                             child: isLoading
                                 ? CircularProgressIndicator()

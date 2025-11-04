@@ -26,7 +26,7 @@ class HomeContainerTopProfileContainer extends StatelessWidget {
                     border: Border.all(
                       color: Theme.of(
                         context,
-                      ).colorScheme.surface.withValues(alpha: 0.1),
+                      ).colorScheme.outlineVariant.withValues(alpha: 0.5),
                     ),
                     shape: BoxShape.circle,
                   ),
@@ -37,7 +37,7 @@ class HomeContainerTopProfileContainer extends StatelessWidget {
                       border: Border.all(
                         color: Theme.of(
                           context,
-                        ).colorScheme.surface.withValues(alpha: 0.1),
+                        ).colorScheme.outlineVariant.withValues(alpha: 0.5),
                       ),
                       shape: BoxShape.circle,
                     ),
@@ -53,7 +53,7 @@ class HomeContainerTopProfileContainer extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Theme.of(
                       context,
-                    ).scaffoldBackgroundColor.withValues(alpha: 0.1),
+                    ).colorScheme.outlineVariant.withValues(alpha: 0.3),
                     shape: BoxShape.circle,
                   ),
                   width: MediaQuery.of(context).size.width * (0.4),
@@ -103,7 +103,9 @@ class HomeContainerTopProfileContainer extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 18.0,
                                 fontWeight: FontWeight.w600,
-                                color: Theme.of(context).colorScheme.onPrimary,
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onPrimaryContainer,
                               ),
                             ),
 
@@ -119,7 +121,7 @@ class HomeContainerTopProfileContainer extends StatelessWidget {
                                       fontWeight: FontWeight.w400,
                                       color: Theme.of(
                                         context,
-                                      ).colorScheme.onPrimary,
+                                      ).colorScheme.onPrimaryContainer,
                                     ),
                                   ),
                                 ),
