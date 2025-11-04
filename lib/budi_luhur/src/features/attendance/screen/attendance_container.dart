@@ -59,7 +59,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
     }
   }
 
-  void _fetchCurrentMonthDailyAttendanceData() {
+  void _fetchCurrentMonthDailyAttendanceData({bool forceRefresh = false}) {
     final authDetails = context.read<AuthCubit>().getStudentDetails();
 
     context.read<FetchDailyAttendanceCubit>().fetchCustomDailyAttendanceUser(
@@ -67,6 +67,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
       year: _now.year,
       month: _now.month,
       unit: authDetails.unit ?? "SMAKT",
+      forceRefresh: forceRefresh,
     );
   }
 
@@ -85,7 +86,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
         appBarHeightPercentage: 0.1,
       ),
       onRefresh: () async {
-        _fetchCurrentMonthDailyAttendanceData();
+        _fetchCurrentMonthDailyAttendanceData(forceRefresh: true);
       },
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
@@ -240,7 +241,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
               showErrorImage: false,
               onTapRetry: () => _fetchCurrentMonthDailyAttendanceData(),
             ),
-            success: (dailyAttendanceList) {
+            success: (dailyAttendanceList, _, _, lastUpdated) {
               final hadirCount = dailyAttendanceList
                   .where((d) => d.status == 'Hadir')
                   .length;
@@ -284,6 +285,8 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
                       absentDays: absentDays,
                     ),
 
+                    _buildLastFetchData(timeUpdate: lastUpdated),
+
                     if (hadirCount != 0 ||
                         alphaCount != 0 ||
                         sakitCount != 0 ||
@@ -300,13 +303,30 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
     );
   }
 
+  Widget _buildLastFetchData({required DateTime timeUpdate}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Text(
+            "Last updated: ${Utils.formatDaysAndTime(timeUpdate, locale: "id_ID")}",
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildCalendarContainer({
     required List<DailyAttendance> dailyAttendanceList,
     required List<DailyAttendance> presentDays,
     required List<DailyAttendance> absentDays,
   }) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 12),
+      margin: const EdgeInsets.only(top: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,

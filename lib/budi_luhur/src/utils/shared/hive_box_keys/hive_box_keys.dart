@@ -40,6 +40,9 @@ const String attendanceBoxKey = 'attendanceBox';
 /// The key for storing the student's daily attendance record.
 const String studentDailyAttendanceKey = 'attendanceBox.dailyAttendance';
 
+/// The key for storing the student's monthly daily attendance record.
+const String studentMonthlyDailyAttendanceKey = 'attendanceBox.monthlyDailyAttendance';
+
 /// A flag to check if the daily attendance has been posted.
 const String studentHasPostDailyAttendanceKey =
     "attendanceBox.hasPostDailyAttendance";
