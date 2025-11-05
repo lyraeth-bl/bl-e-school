@@ -3,18 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-class BudiLuhurApp extends StatefulWidget {
+class BudiLuhurApp extends StatelessWidget {
   const BudiLuhurApp({super.key});
-
-  @override
-  State<BudiLuhurApp> createState() => _BudiLuhurAppState();
-}
-
-class _BudiLuhurAppState extends State<BudiLuhurApp> {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

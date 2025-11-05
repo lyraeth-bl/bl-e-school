@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:bl_e_school/budi_luhur/src/app/init/init_hive_open_box.dart';
 import 'package:bl_e_school/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -20,6 +22,7 @@ import 'package:path_provider/path_provider.dart';
 /// - Registering font licenses.
 /// - Configuring system UI overlays and screen orientation.
 /// - Loading localization (translation) files.
+/// - Initializing notifications.
 /// - Initializing Hive and open required Box.
 /// - Initializing date formatting for the Indonesian locale.
 Future<void> budiLuhurInitializeApp() async {
@@ -47,6 +50,25 @@ Future<void> budiLuhurInitializeApp() async {
 
   // Load translation files for multi-language support.
   await AppTranslation.loadJsons();
+
+  // Initialize notifications.
+  await NotificationsUtility.initializeAwesomeNotification();
+
+  await NotificationsUtility.setUpNotificationService();
+
+  FirebaseMessaging.onMessage.listen(
+    NotificationsUtility.foregroundMessageListener,
+  );
+
+  AwesomeNotifications().setListeners(
+    onActionReceivedMethod: NotificationsUtility.onActionReceivedMethod,
+    onNotificationCreatedMethod:
+        NotificationsUtility.onNotificationCreatedMethod,
+    onNotificationDisplayedMethod:
+        NotificationsUtility.onNotificationDisplayedMethod,
+    onDismissActionReceivedMethod:
+        NotificationsUtility.onDismissActionReceivedMethod,
+  );
 
   // Initialize Hive and open required box.
   await initHiveOpenBox();

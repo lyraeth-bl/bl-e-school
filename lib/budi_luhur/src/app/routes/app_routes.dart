@@ -37,6 +37,8 @@ class BudiLuhurRoutes extends BudiLuhur {
   /// The main home screen route, typically the default screen after login.
   static const String home = "/";
 
+  static const String notifications = "/notifications";
+
   /// A list of [GetPage] objects that defines the application's route table.
   ///
   /// Each [GetPage] entry maps a route name to a page-building function,

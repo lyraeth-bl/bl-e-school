@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
+  static GlobalKey<_HomeScreenState> homeScreenKey =
+      GlobalKey<_HomeScreenState>();
+
   const HomeScreen({super.key});
 
   @override
@@ -78,12 +81,10 @@ class _HomeScreenState extends State<HomeScreen>
     _animationController.forward();
     _ensureBottomNavItems();
 
-    /// TODO : Uncomment after notifications ready
-    // Future.delayed(Duration.zero, () {
-    //   loadTemporarilyStoredNotifications();
-    //   //setup notification callback here
-    //   NotificationUtility.setUpNotificationService();
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      loadTemporarilyStoredNotifications();
+      NotificationsUtility.setUpNotificationService();
+    });
   }
 
   @override
@@ -146,25 +147,27 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   /// Methods
-  ///
-  /// TODO : Uncomment after notifications ready
-  // void loadTemporarilyStoredNotifications() {
-  //   NotificationRepository.getTemporarilyStoredNotifications()
-  //       .then((notifications) {
-  //     //
-  //     for (var notificationData in notifications) {
-  //       NotificationRepository.addNotification(
-  //           notificationDetails:
-  //           NotificationDetails.fromJson(Map.from(notificationData)));
-  //     }
-  //     //
-  //     if (notifications.isNotEmpty) {
-  //       NotificationRepository.clearTemporarilyNotification();
-  //     }
-  //
-  //     //
-  //   });
-  // }
+
+  void loadTemporarilyStoredNotifications() {
+    NotificationsRepository.getTemporarilyStoredNotifications().then((
+      notifications,
+    ) {
+      //
+      for (var notificationData in notifications) {
+        NotificationsRepository.addNotification(
+          notificationDetails: NotificationsDetails.fromJson(
+            Map.from(notificationData),
+          ),
+        );
+      }
+      //
+      if (notifications.isNotEmpty) {
+        NotificationsRepository.clearTemporarilyNotification();
+      }
+
+      //
+    });
+  }
 
   void _ensureBottomNavItems() {
     if (_bottomNavItems.isEmpty) updateBottomNavItems();
@@ -223,10 +226,9 @@ class _HomeScreenState extends State<HomeScreen>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
 
-    /// TODO : Uncomment after notifications ready
-    // if (state == AppLifecycleState.resumed) {
-    //   loadTemporarilyStoredNotifications();
-    // }
+    if (state == AppLifecycleState.resumed) {
+      loadTemporarilyStoredNotifications();
+    }
   }
 
   bool canPopScreen() {
@@ -386,7 +388,6 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  /// TODO : Uncomment after Some Menu ready
   //To load the selected menu item
   //it _currentlyOpenMenuIndex is 0 then load the container based on homeBottomSheetMenu[_currentlyOpenMenuIndex]
   Widget _buildMenuItemContainer() {

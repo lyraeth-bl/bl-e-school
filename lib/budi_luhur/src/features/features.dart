@@ -10,6 +10,8 @@ export 'device_tokens/device_token.dart';
 export 'home/home.dart';
 /// Languages
 export 'languages/languages.dart';
+/// Notifications
+export 'notifications/notifications.dart';
 /// On Boarding
 export 'on_boarding/on_boarding.dart';
 /// Profile

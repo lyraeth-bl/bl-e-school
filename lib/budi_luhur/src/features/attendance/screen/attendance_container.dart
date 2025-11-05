@@ -92,9 +92,9 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
         physics: const AlwaysScrollableScrollPhysics(),
         child: Stack(
           children: [
+            _buildAppBar(),
             _buildPreviousNextButtonContainer(context),
             _buildCalendarOnly(),
-            _buildAppBar(),
           ],
         ),
       ),
@@ -104,7 +104,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
   // UI
   Widget _buildAppBar() {
     return ScreenTopBackgroundContainer(
-      heightPercentage: 0.125,
+      heightPercentage: Utils.appBarMediumHeightPercentage,
       child: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -119,6 +119,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
               ),
             ),
           ),
+          CustomBackButton(),
         ],
       ),
     );
@@ -309,10 +310,17 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Text(
-            "Last updated: ${Utils.formatDaysAndTime(timeUpdate, locale: "id_ID")}",
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.tertiaryContainer,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Text(
+              "Last updated: ${Utils.formatDaysAndTime(timeUpdate, locale: "id_ID")}",
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: Theme.of(context).colorScheme.onTertiaryContainer,
+              ),
             ),
           ),
         ],
