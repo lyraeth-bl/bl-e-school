@@ -7,7 +7,7 @@ part 'time_table_response.g.dart';
 /// Represents the response from the API when fetching a list of timetable entries.
 ///
 /// This model encapsulates the paginated response structure, including metadata
-/// about the request status, pagination details, and the list of [TimeTable] data.
+/// about the request status, message, and the list of [TimeTable] data.
 @freezed
 abstract class TimeTableResponse with _$TimeTableResponse {
   /// Creates an instance of a [TimeTableResponse].
@@ -18,20 +18,6 @@ abstract class TimeTableResponse with _$TimeTableResponse {
 
     /// A message from the API, which can be an error message or a success confirmation.
     @JsonKey(name: "message") required String message,
-
-    /// The current page number of the paginated result set.
-    @JsonKey(name: "page") required int page,
-
-    /// The number of items included per page.
-    @JsonKey(name: "per_page") required int perPage,
-
-    /// The total number of data entries available across all pages.
-    /// This can be `null` if the API does not provide it.
-    @JsonKey(name: "total_data") int? totalData,
-
-    /// The total number of pages available.
-    /// This can be `null` if the API does not provide it.
-    @JsonKey(name: "total_pages") int? totalPages,
 
     /// The list of timetable entries for the current page.
     /// This can be `null` if there is no data or an error occurred.

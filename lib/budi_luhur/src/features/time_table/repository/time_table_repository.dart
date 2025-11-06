@@ -8,18 +8,17 @@ class TimeTableRepository {
   /// Fetches a paginated list of timetable entries.
   ///
   /// This method sends a GET request to the [ApiEndpoints.timeTable] endpoint
-  /// to retrieve timetable data. It supports pagination through the optional
-  /// [page] parameter.
+  /// to retrieve timetable data. It supports pagination through the [kelas] parameter.
   ///
-  /// - [page]: The page number to fetch. If `null`, the API's default page (usually 1) will be used.
+  /// - [kelas]: The class of student to fetch.
   ///
   /// Returns a [Future] that completes with a [TimeTableResponse] containing
-  /// the list of [TimeTable] entries and pagination details.
+  /// the list of [TimeTable] entries.
   ///
   /// Throws an [ApiException] if the API call fails, for example, due to
   /// network issues or a server-side error.
-  Future<TimeTableResponse> fetchTimeTable({int? page}) async {
-    late final Map<String, dynamic> queryParameters = {'page': page};
+  Future<TimeTableResponse> fetchTimeTable({required String kelas}) async {
+    late final Map<String, dynamic> queryParameters = {'kelas': kelas};
 
     try {
       // Make the API call to get the timetable data.
@@ -38,10 +37,6 @@ class TimeTableRepository {
       return TimeTableResponse(
         status: response['status'],
         message: response['message'],
-        page: response['page'],
-        perPage: response['per_page'],
-        totalData: response['total_data'],
-        totalPages: response['total_pages'],
         listTimeTable: timeTableList,
       );
     } catch (e) {

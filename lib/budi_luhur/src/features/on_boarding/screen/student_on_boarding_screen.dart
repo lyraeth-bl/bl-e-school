@@ -22,12 +22,24 @@ class _StudentOnBoardingScreenState extends State<StudentOnBoardingScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<DeviceTokenCubit>().postDeviceToken(
-        nis: context.read<AuthCubit>().getStudentDetails().nis,
-      );
+      _postDeviceToken();
+      _fetchTimeTable();
     });
 
     _checkFirstTimeUser();
+  }
+
+  void _postDeviceToken() {
+    context.read<DeviceTokenCubit>().postDeviceToken(
+      nis: context.read<AuthCubit>().getStudentDetails().nis,
+    );
+  }
+
+  void _fetchTimeTable() {
+    final detailsStudent = context.read<AuthCubit>().getStudentDetails();
+    final classStudent =
+        "${detailsStudent.kelasSaatIni}${detailsStudent.noKelasSaatIni}";
+    context.read<TimeTableCubit>().fetchTimeTable(kelas: classStudent);
   }
 
   Future<void> _checkFirstTimeUser() async {

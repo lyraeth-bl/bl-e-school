@@ -12,40 +12,15 @@ class TimeTableContainer extends StatefulWidget {
 class _TimeTableContainerState extends State<TimeTableContainer>
     with SingleTickerProviderStateMixin {
   late int _currentSelectedDayIndex = DateTime.now().weekday - 1;
-  final ScrollController _scrollController = ScrollController();
-
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) => _fetchTimeTable());
-
-    _scrollController.addListener(_onScroll);
-  }
-
-  void _onScroll() {
-    final cubit = context.read<TimeTableCubit>();
-    final state = cubit.state;
-
-    // Kalau udah scroll mendekati bawah
-    if (_scrollController.position.pixels >=
-            _scrollController.position.maxScrollExtent - 200 &&
-        state.maybeWhen(
-          success: (_, __, loadMore) => !loadMore && cubit.hasMore,
-          orElse: () => false,
-        )) {
-      cubit.fetchMoreTimeTable();
-    }
-  }
 
   void _fetchTimeTable() {
-    context.read<TimeTableCubit>().fetchTimeTable();
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
+    final detailsStudent = context.read<AuthCubit>().getStudentDetails();
+    final classStudent =
+        "${detailsStudent.kelasSaatIni}${detailsStudent.noKelasSaatIni}";
+    context.read<TimeTableCubit>().fetchTimeTable(
+      kelas: classStudent,
+      forceRefresh: true,
+    );
   }
 
   @override
@@ -350,7 +325,7 @@ class _TimeTableContainerState extends State<TimeTableContainer>
             errorMessageCode: errorMessage,
             onTapRetry: _fetchTimeTable,
           ),
-          success: (timeTableResponse, timeTableList, loadMore) {
+          success: (timeTableList) {
             final timetableSlots = _buildTimeTableSlots(timeTableList);
 
             if (timetableSlots.isEmpty) {
@@ -366,24 +341,11 @@ class _TimeTableContainerState extends State<TimeTableContainer>
                 height: MediaQuery.of(context).size.height * 0.7,
                 width: MediaQuery.of(context).size.width,
                 child: ListView.builder(
-                  controller: _scrollController,
                   padding: EdgeInsets.only(
                     bottom: Utils.getScrollViewBottomPadding(context),
                   ),
-                  itemCount: timetableSlots.length + (loadMore ? 1 : 0),
+                  itemCount: timetableSlots.length,
                   itemBuilder: (context, index) {
-                    if (index == timetableSlots.length) {
-                      // loader di bawah
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 20.0),
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                        ),
-                      );
-                    }
-
                     final timeTable = timetableSlots[index];
                     return _buildTimeTableSlotDetailsContainer(
                       timeTable: timeTable,
