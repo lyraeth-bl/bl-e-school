@@ -124,6 +124,13 @@ class _StudentOnBoardingScreenState extends State<StudentOnBoardingScreen> {
               ),
               textAlign: TextAlign.center,
             ),
+
+            SizedBox(height: context.height * 0.03),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: LinearProgressIndicator(),
+            ),
           ],
         ),
       ),

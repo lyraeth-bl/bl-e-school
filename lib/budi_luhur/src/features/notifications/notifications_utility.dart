@@ -9,6 +9,46 @@ import 'package:permission_handler/permission_handler.dart';
 /// The key for the primary notification channel used for general alerts.
 const String notificationChannelKey = "basic_channel";
 
+/// A top-level callback to handle incoming messages when the app is in the
+/// background or terminated.
+///
+/// This function must be a top-level function (not a class method) to be
+/// used as a background handler. It checks the notification `type` and, if it's
+/// a standard "Notification", it stores it in local storage to be viewed later.
+@pragma('vm:entry-point')
+Future<void> firebaseMessagingBackgroundHandler(
+  RemoteMessage remoteMessage,
+) async {
+  // Initialize Hive for background processing.
+  await Hive.initFlutter();
+  await Hive.openBox(authBoxKey);
+  await Hive.openBox(notificationsBoxKey);
+
+  final type = (remoteMessage.data['type'] ?? "").toString();
+  if (kDebugMode) {
+    print("Background Notification Type: $type");
+  }
+
+  // If it's a general notification, store it temporarily.
+  if (type.toLowerCase() ==
+      NotificationsUtility.notificationType.toLowerCase()) {
+    final studentDetails = AuthRepository.getStudentDetails();
+    NotificationsRepository.addNotificationTemporarily(
+      data: NotificationsDetails(
+        nis: studentDetails.nis,
+        title: remoteMessage.notification?.title ?? "",
+        body: remoteMessage.notification?.body ?? "",
+        type: remoteMessage.data['type'] ?? "",
+        attachmentUrl: remoteMessage.data['image_url'] ?? "",
+        createdAt: DateTime.timestamp(),
+      ).toJson(),
+    );
+    if (kDebugMode) {
+      print("Notifikasi background disimpan sementara.");
+    }
+  }
+}
+
 /// A utility class responsible for managing all notification-related functionalities.
 ///
 /// This class handles the setup of Firebase Cloud Messaging (FCM), manages
@@ -20,19 +60,19 @@ class NotificationsUtility {
   // --- Notification Type Constants ---
 
   /// Type identifier for general-purpose notifications.
-  static String generalNotificationType = "General";
+  static String generalNotificationType = "general";
 
   /// Type identifier for notifications related to assignments.
-  static String assignmentNotificationType = "Assignment";
+  static String assignmentNotificationType = "assignment";
 
   /// Type identifier for notifications related to payments.
-  static String paymentNotificationType = "Payment";
+  static String paymentNotificationType = "payment";
 
   /// Type identifier for standard informational notifications.
-  static String notificationType = "Notification";
+  static String notificationType = "notification";
 
   /// Type identifier for chat messages.
-  static String messageType = "Message";
+  static String messageType = "message";
 
   /// Sets up the notification service by checking and requesting permissions.
   ///
@@ -76,38 +116,8 @@ class NotificationsUtility {
   static void initNotificationListener() {
     // Note: FirebaseMessaging.onMessage is handled directly in `main.dart`
     // or another initialization point to call `foregroundMessageListener`.
-    FirebaseMessaging.onBackgroundMessage(onBackgroundMessage);
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
     FirebaseMessaging.onMessageOpenedApp.listen(onMessageOpenedAppListener);
-  }
-
-  /// A top-level callback to handle incoming messages when the app is in the
-  /// background or terminated.
-  ///
-  /// This function must be a top-level function (not a class method) to be
-  /// used as a background handler. It checks the notification `type` and, if it's
-  /// a standard "Notification", it stores it in local storage to be viewed later.
-  @pragma('vm:entry-point')
-  static Future<void> onBackgroundMessage(RemoteMessage remoteMessage) async {
-    final type = (remoteMessage.data['type'] ?? "").toString();
-    if (kDebugMode) {
-      print("Background Notification Type: $type");
-    }
-
-    // If it's a general notification, store it locally.
-    if (type.toLowerCase() == notificationType.toLowerCase()) {
-      await Hive.initFlutter();
-      await Hive.openBox(authBoxKey);
-      NotificationsRepository.addNotificationTemporarily(
-        data: NotificationsDetails(
-          nis: AuthRepository.getStudentDetails().nis,
-          title: remoteMessage.notification?.title ?? "",
-          body: remoteMessage.notification?.body ?? "",
-          type: remoteMessage.data['type'] ?? "",
-          attachmentUrl: remoteMessage.data['image_url'] ?? "",
-          createdAt: DateTime.timestamp(),
-        ).toJson(),
-      );
-    }
   }
 
   /// Handles incoming FCM messages when the app is in the foreground.
@@ -120,7 +130,7 @@ class NotificationsUtility {
     final type = (remoteMessage.data['type'] ?? "").toString();
 
     // Specific logic for payment notifications.
-    if (type == paymentNotificationType) {
+    if (type == paymentNotificationType.toLowerCase()) {
       // Example: could auto-refresh a payment screen.
     } else if (type.toLowerCase() == notificationType.toLowerCase()) {
       // For general notifications, add to the repository for persistence.
@@ -134,6 +144,9 @@ class NotificationsUtility {
           title: remoteMessage.notification?.title ?? "",
         ),
       );
+      if (kDebugMode) {
+        print("Notifikasi foreground disimpan.");
+      }
     }
 
     // Display the incoming message as a local notification.
@@ -307,7 +320,8 @@ class NotificationsUtility {
         content: NotificationContent(
           id: notificationId,
           channelKey: 'download_channel',
-          title: '${Utils.getTranslatedLabel(downloadingFileKey)} ($progress%)',
+          title:
+              '\${Utils.getTranslatedLabel(downloadingFileKey)} (\$progress%)',
           body: fileName,
           notificationLayout: NotificationLayout.ProgressBar,
           progress: progress.toDouble(),
@@ -349,9 +363,9 @@ class NotificationsUtility {
         content: NotificationContent(
           id: completionNotificationId,
           channelKey: 'download_complete_channel',
-          title: '${Utils.getTranslatedLabel(downloadCompleteKey)} ✅',
+          title: '\${Utils.getTranslatedLabel(downloadCompleteKey)} ✅',
           body:
-              '$fileName ${Utils.getTranslatedLabel(fileDownloadedSuccessfullyKey)}',
+              '\$fileName \${Utils.getTranslatedLabel(fileDownloadedSuccessfullyKey)}',
           notificationLayout: NotificationLayout.Default,
           category: NotificationCategory.Status,
           autoDismissible: true,
@@ -385,9 +399,9 @@ class NotificationsUtility {
         content: NotificationContent(
           id: notificationId,
           channelKey: 'download_channel',
-          title: '${Utils.getTranslatedLabel(downloadFailedKey)} ❌',
+          title: '\${Utils.getTranslatedLabel(downloadFailedKey)} ❌',
           body:
-              '${Utils.getTranslatedLabel(failedToDownloadFileKey)} $fileName',
+              '\${Utils.getTranslatedLabel(failedToDownloadFileKey)} \$fileName',
           notificationLayout: NotificationLayout.Default,
           category: NotificationCategory.Error,
           autoDismissible: true,

@@ -73,5 +73,11 @@ class BudiLuhurRoutes extends BudiLuhur {
       name: studentProfile,
       page: () => StudentProfileScreen.routeInstance(),
     ),
+
+    // Notifications route
+    GetPage(
+      name: notifications,
+      page: () => NotificationsScreen.routeInstance(),
+    ),
   ];
 }

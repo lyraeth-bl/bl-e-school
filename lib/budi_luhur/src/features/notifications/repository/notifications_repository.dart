@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -63,7 +64,12 @@ class NotificationsRepository {
       );
 
       return notifications;
-    } catch (e) {
+    } catch (e, st) {
+      if (kDebugMode) {
+        print(
+          "Error on fetchNotifications : ${e.toString()}, ${st.toString()}",
+        );
+      }
       throw ApiException(ErrorMessageKeysAndCode.defaultErrorMessageKey);
     }
   }
@@ -84,7 +90,7 @@ class NotificationsRepository {
       await sharedPreferences.reload();
       List<String> notifications =
           sharedPreferences.getStringList(temporarilyStoredNotificationsKey) ??
-              List<String>.from([]);
+          List<String>.from([]);
 
       notifications.add(jsonEncode(data));
 
@@ -92,8 +98,11 @@ class NotificationsRepository {
         temporarilyStoredNotificationsKey,
         notifications,
       );
+
+      debugPrint("addNotificationTemporarily success");
     } catch (_) {
       // Errors are silently ignored.
+      debugPrint("addNotificationTemporarily failed");
     }
   }
 
@@ -104,12 +113,12 @@ class NotificationsRepository {
   ///
   /// Returns a `Future<List<Map<String, dynamic>>>`.
   static Future<List<Map<String, dynamic>>>
-      getTemporarilyStoredNotifications() async {
+  getTemporarilyStoredNotifications() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.reload();
     List<String> notifications =
         sharedPreferences.getStringList(temporarilyStoredNotificationsKey) ??
-            List<String>.from([]);
+        List<String>.from([]);
 
     return notifications
         .map(

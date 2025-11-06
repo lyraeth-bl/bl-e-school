@@ -83,7 +83,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
     return RefreshIndicator(
       edgeOffset: Utils.getScrollViewTopPadding(
         context: context,
-        appBarHeightPercentage: 0.1,
+        appBarHeightPercentage: 0.19,
       ),
       onRefresh: () async {
         _fetchCurrentMonthDailyAttendanceData(forceRefresh: true);

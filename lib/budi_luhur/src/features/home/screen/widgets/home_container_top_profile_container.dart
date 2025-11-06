@@ -1,6 +1,7 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 class HomeContainerTopProfileContainer extends StatelessWidget {
   const HomeContainerTopProfileContainer({super.key});
@@ -128,6 +129,21 @@ class HomeContainerTopProfileContainer extends StatelessWidget {
                               ],
                             ),
                           ],
+                        ),
+                      ),
+
+                      InkWell(
+                        onTap: () {
+                          Get.toNamed(BudiLuhurRoutes.notifications);
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 8),
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(Icons.notifications_outlined),
                         ),
                       ),
                     ],
