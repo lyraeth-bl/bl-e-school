@@ -36,14 +36,10 @@ class MoreMenuBottomSheetContainer extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.onSurface.withValues(alpha: 0.5),
+                  color: Theme.of(context).colorScheme.outlineVariant,
                 ),
-                color: Theme.of(
-                  context,
-                ).colorScheme.onSecondary.withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(15.0),
+                color: Theme.of(context).colorScheme.surfaceContainer,
+                borderRadius: BorderRadius.circular(16.0),
               ),
               margin: EdgeInsets.symmetric(
                 horizontal: boxConstraints.maxWidth * (0.065),
@@ -62,7 +58,7 @@ class MoreMenuBottomSheetContainer extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
+                  color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 14.0,
                 ),
               ),
@@ -102,7 +98,7 @@ class MoreMenuBottomSheetContainer extends StatelessWidget {
                     decoration: BoxDecoration(
                       border: Border.all(
                         width: 2.0,
-                        color: Theme.of(context).colorScheme.onSurface,
+                        color: Theme.of(context).colorScheme.outline,
                       ),
                       borderRadius: BorderRadius.circular(
                         boxConstraints.maxWidth * (0.11),
@@ -151,7 +147,7 @@ class MoreMenuBottomSheetContainer extends StatelessWidget {
                                   fontWeight: FontWeight.w400,
                                   color: Theme.of(
                                     context,
-                                  ).colorScheme.onSurface,
+                                  ).colorScheme.onSurfaceVariant,
                                 ),
                               ),
                             ),
