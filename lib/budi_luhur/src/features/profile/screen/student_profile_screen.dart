@@ -2,6 +2,7 @@ import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class StudentProfileScreen extends StatelessWidget {
   const StudentProfileScreen({super.key});
@@ -50,14 +51,15 @@ class StudentProfileScreen extends StatelessWidget {
                   blurRadius: 16,
                 ),
               ],
-              color: Theme.of(context).colorScheme.primary,
+              color: Theme.of(context).colorScheme.primaryContainer,
               borderRadius: BorderRadius.circular(15.0),
             ),
             child: SvgPicture.asset(
               iconUrl,
               theme: SvgTheme(
                 currentColor:
-                    iconColor ?? Theme.of(context).scaffoldBackgroundColor,
+                    iconColor ??
+                    Theme.of(context).colorScheme.onPrimaryContainer,
               ),
               colorFilter: iconColor == null
                   ? null
@@ -74,16 +76,16 @@ class StudentProfileScreen extends StatelessWidget {
                   Text(
                     label,
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurface,
-                      fontWeight: FontWeight.w400,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontSize: 12.0,
                     ),
                   ),
+                  const SizedBox(height: 4),
                   Text(
-                    value,
+                    value.isEmpty ? "-" : value,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onSurface,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                       fontSize: 14.0,
                     ),
                   ),
@@ -175,13 +177,39 @@ class StudentProfileScreen extends StatelessWidget {
                 children: [
                   Align(
                     alignment: AlignmentDirectional.centerStart,
-                    child: Text(
-                      Utils.getTranslatedLabel(personalDetailsKey),
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.w500,
-                      ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          Utils.getTranslatedLabel(personalDetailsKey),
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface,
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+
+                        TextButton(
+                          onPressed: () => Get.toNamed(
+                            BudiLuhurRoutes.studentDetailsProfile,
+                          ),
+                          child: Row(
+                            children: [
+                              Text(
+                                Utils.getTranslatedLabel(detailsProfileKey),
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.primary,
+                                    ),
+                              ),
+                              SizedBox(width: 4),
+                              Icon(Icons.keyboard_arrow_right),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
 
@@ -192,18 +220,21 @@ class StudentProfileScreen extends StatelessWidget {
                       ("${studentDetails.unit?.substring(0, 3)} Budi Luhur"),
                     ),
                     iconUrl: "assets/images/school.svg",
+                    iconColor: Theme.of(context).colorScheme.onPrimaryContainer,
                   ),
                   _buildProfileDetailsTile(
                     context,
                     label: Utils.getTranslatedLabel(nisKey),
                     value: Utils.formatEmptyValue(studentDetails.nis),
                     iconUrl: "assets/images/user_pro_roll_no_icon.svg",
+                    iconColor: Theme.of(context).colorScheme.onPrimaryContainer,
                   ),
                   _buildProfileDetailsTile(
                     context,
                     label: Utils.getTranslatedLabel(nisnKey),
                     value: Utils.formatEmptyValue(studentDetails.nisn ?? ""),
                     iconUrl: "assets/images/user_pro_roll_no_icon.svg",
+                    iconColor: Theme.of(context).colorScheme.onPrimaryContainer,
                   ),
                   _buildProfileDetailsTile(
                     context,
@@ -212,6 +243,7 @@ class StudentProfileScreen extends StatelessWidget {
                       "${studentDetails.kelasSaatIni} ${studentDetails.noKelasSaatIni}",
                     ),
                     iconUrl: "assets/images/user_pro_class_icon.svg",
+                    iconColor: Theme.of(context).colorScheme.onPrimaryContainer,
                   ),
                   _buildProfileDetailsTile(
                     context,
@@ -232,12 +264,14 @@ class StudentProfileScreen extends StatelessWidget {
                             ),
                     ),
                     iconUrl: "assets/images/user_pro_dob_icon.svg",
+                    iconColor: Theme.of(context).colorScheme.onPrimaryContainer,
                   ),
                   _buildProfileDetailsTile(
                     context,
                     label: Utils.getTranslatedLabel(currentAddressKey),
                     value: Utils.formatEmptyValue(studentDetails.alamat ?? ""),
                     iconUrl: "assets/images/user_pro_address_icon.svg",
+                    iconColor: Theme.of(context).colorScheme.onPrimaryContainer,
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * (0.1)),
                 ],

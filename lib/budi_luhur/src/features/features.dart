@@ -1,5 +1,7 @@
 library;
 
+/// Academic Calendar
+export 'academic_calendar/academic_calendar.dart';
 /// Attendance
 export 'attendance/attendance.dart';
 /// Auth

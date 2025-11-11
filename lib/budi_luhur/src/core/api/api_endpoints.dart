@@ -29,6 +29,9 @@ class ApiEndpoints {
   /// Endpoint for fetching user notifications.
   static String notifications = "$databaseUrl/notifications";
 
+  /// Endpoint for fetching academic calendar.
+  static String academicCalendar = "$databaseUrl/kalender-akademik";
+
   /// Endpoint for sending notifications.
   static String sendNotification = "$databaseUrl/send-notification";
 

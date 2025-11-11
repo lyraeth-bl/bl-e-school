@@ -17,6 +17,9 @@ class HomeScreen extends StatefulWidget {
         BlocProvider<FetchDailyAttendanceCubit>(
           create: (_) => FetchDailyAttendanceCubit(AttendanceRepository()),
         ),
+        BlocProvider<AcademicCalendarCubit>(
+          create: (_) => AcademicCalendarCubit(AcademicCalendarRepository()),
+        ),
       ],
       child: HomeScreen(),
     );
@@ -396,6 +399,10 @@ class _HomeScreenState extends State<HomeScreen>
     }
     if (homeBottomSheetMenu[_currentlyOpenMenuIndex].title == timeTableKey) {
       return TimeTableContainer();
+    }
+    if (homeBottomSheetMenu[_currentlyOpenMenuIndex].title ==
+        academicCalendarKey) {
+      return AcademicCalendarContainer();
     }
 
     return const SizedBox();

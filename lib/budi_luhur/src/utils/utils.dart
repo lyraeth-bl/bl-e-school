@@ -7,25 +7,18 @@ import 'package:intl/intl.dart';
 
 /// Animations
 export 'shared/animations/animation_configurations.dart';
-
 /// Constant
 export 'shared/constant/constant.dart';
-
 /// Error Handling
 export 'shared/error_handling/error_message_and_code.dart';
-
 /// Hive Box Keys
 export 'shared/hive_box_keys/hive_box_keys.dart';
-
 /// Label Keys
 export 'shared/label_keys/label_keys.dart';
-
 /// Languages
 export 'shared/languages/app_languages.dart';
-
 /// Theme
 export 'shared/theme/theme.dart';
-
 /// UI
 export 'shared/ui/ui.dart';
 
@@ -233,6 +226,14 @@ class Utils {
     return DateFormat("dd MMMM yyyy", locale).format(date);
   }
 
+  static String formatFromDateToDate(
+    DateTime fromDate,
+    DateTime toDate, {
+    String? locale,
+  }) {
+    return "${formatToDayMonthYear(fromDate)} - ${formatToDayMonthYear(toDate)}";
+  }
+
   /// Formats a [DateTime] into a "MMMM yyyy" string.
   ///
   /// Example: `September 2025`
@@ -379,6 +380,21 @@ class Utils {
     "Minggu",
   ];
 
+  static final List<String> months = [
+    januaryKey,
+    februaryKey,
+    marchKey,
+    aprilKey,
+    mayKey,
+    juneKey,
+    julyKey,
+    augustKey,
+    septemberKey,
+    octoberKey,
+    novemberKey,
+    decemberKey,
+  ];
+
   /// Formats an empty string to a hyphen, otherwise returns the original string.
   ///
   /// This is a simple helper function to ensure that empty data fields are
@@ -389,5 +405,28 @@ class Utils {
   ///   original string.
   static String formatEmptyValue(String value) {
     return value.isEmpty ? "-" : value;
+  }
+
+  static String getMonthName(int monthNumber) {
+    return months[monthNumber - 1];
+  }
+
+  static IconData iconForReligion(String religion) {
+    switch (religion) {
+      case "islam":
+        return Icons.mosque;
+      case "kristen":
+        return Icons.church;
+      case "katolik":
+        return Icons.church;
+      case "protestan":
+        return Icons.church;
+      case "budha":
+        return Icons.self_improvement;
+      case "hindu":
+        return Icons.temple_hindu;
+      default:
+        return Icons.help_outline;
+    }
   }
 }

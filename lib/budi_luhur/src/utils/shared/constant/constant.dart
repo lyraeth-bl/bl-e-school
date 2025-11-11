@@ -92,6 +92,9 @@ const int galleryManagementModuleId = 17;
 /// The unique identifier for the Chat module.
 const int chatModuleId = 20;
 
+/// The unique identifier for the academic calendar module.
+const int academicCalendarModuleId = 21;
+
 /// A default module ID, used as a fallback or for unassigned modules.
 const int defaultModuleId = -1;
 

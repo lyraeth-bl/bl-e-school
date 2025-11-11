@@ -23,4 +23,9 @@ final List<MenuModel> homeBottomSheetMenu = [
     iconUrl: "assets/images/timetable_icon.svg",
     title: timeTableKey,
   ),
+  MenuModel(
+    menuModuleId: academicsManagementModuleId.toString(),
+    iconUrl: "assets/images/holiday_icon.svg",
+    title: academicCalendarKey,
+  ),
 ];

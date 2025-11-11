@@ -1,0 +1,664 @@
+import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:table_calendar/table_calendar.dart';
+
+class AcademicCalendarContainer extends StatefulWidget {
+  const AcademicCalendarContainer({super.key});
+
+  @override
+  State<AcademicCalendarContainer> createState() =>
+      _AcademicCalendarContainerState();
+}
+
+class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
+  bool isApplicationItemAnimationOn = false;
+
+  // Selected Day
+  DateTime? _selectedDay;
+
+  AcademicCalendar? _selectedAcademicCalendar;
+
+  late DateTime focusedDay = DateTime.now();
+  late DateTime firstDay = DateTime(focusedDay.year, focusedDay.month, 1);
+  late DateTime lastDay = DateTime(
+    focusedDay.year,
+    focusedDay.month + 1,
+    1,
+  ).subtract(const Duration(days: 1));
+
+  late List<AcademicCalendar> listAcademicCalendar = [];
+  PageController? _calendarPageController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => _fetchAcademicCalendarThisMonth(),
+    );
+  }
+
+  void _fetchAcademicCalendarThisMonth({bool forceRefresh = false}) {
+    final studentDetails = context.read<AuthCubit>().getStudentDetails();
+    context.read<AcademicCalendarCubit>().fetchCustomAcademicCalendar(
+      year: focusedDay.year,
+      month: focusedDay.month,
+      unit: studentDetails.unit!,
+      forceRefresh: forceRefresh,
+    );
+
+    final academicState = context.read<AcademicCalendarCubit>().state;
+    academicState.maybeWhen(
+      success: (apiList, year, month, lastUpdated) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          updateMonthViceAcademicCalendar();
+        });
+      },
+      orElse: () {},
+    );
+  }
+
+  bool _disableChangeNextMonthButton() {
+    final now = DateTime.now();
+
+    return focusedDay.year == now.year && focusedDay.month == now.month;
+  }
+
+  void updateMonthViceAcademicCalendar() {
+    final academicCalendarState = context.read<AcademicCalendarCubit>().state;
+
+    final List<AcademicCalendar> dataAcademicCalendar = academicCalendarState
+        .maybeWhen(
+          success: (listAcademicCalendar, year, month, lastUpdated) =>
+              listAcademicCalendar,
+          orElse: () => [],
+        );
+
+    final List<AcademicCalendar> filtered = [];
+
+    for (final academicCalendar in dataAcademicCalendar) {
+      final dt = DateTime.tryParse(academicCalendar.tanggalMulai);
+      if (dt != null &&
+          dt.month == focusedDay.month &&
+          dt.year == focusedDay.year) {
+        filtered.add(academicCalendar);
+      }
+    }
+
+    filtered.sort((first, second) {
+      final a = DateTime.tryParse(first.tanggalMulai) ?? DateTime(0);
+      final b = DateTime.tryParse(second.tanggalMulai) ?? DateTime(0);
+      return a.compareTo(b);
+    });
+
+    setState(() {
+      listAcademicCalendar = filtered;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return RefreshIndicator(
+      edgeOffset: Utils.getScrollViewTopPadding(
+        context: context,
+        appBarHeightPercentage: 0.19,
+      ),
+      onRefresh: () async {
+        _fetchAcademicCalendarThisMonth(forceRefresh: true);
+      },
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Stack(
+          children: [
+            _buildAppBar(),
+            _buildPreviousNextButtonContainer(context),
+            _buildHolidaysCalendar(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHolidayDetailsList() {
+    return Column(
+      children: List.generate(
+        listAcademicCalendar.length,
+        (index) => Animate(
+          key: isApplicationItemAnimationOn ? UniqueKey() : null,
+          effects: listItemAppearanceEffects(
+            itemIndex: index,
+            totalLoadedItems: listAcademicCalendar.length,
+          ),
+          child: Container(
+            margin: const EdgeInsets.only(bottom: 15),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 8.0,
+            ),
+            width: MediaQuery.of(context).size.width * (0.85),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: BorderRadius.circular(16.0),
+            ),
+            child: LayoutBuilder(
+              builder: (context, boxConstraints) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            listAcademicCalendar[index].judul,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onSurface,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          Utils.formatToDayMonthYear(
+                            DateTime.tryParse(
+                              listAcademicCalendar[index].tanggalMulai,
+                            )!,
+                          ),
+                          style: TextStyle(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
+                            fontSize: 12.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: listAcademicCalendar[index].keterangan.isEmpty
+                          ? 0
+                          : 2.5,
+                    ),
+                    listAcademicCalendar[index].keterangan.isEmpty
+                        ? const SizedBox()
+                        : Text(
+                            listAcademicCalendar[index].keterangan,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onSurface,
+                              fontSize: 11.5,
+                            ),
+                          ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCalendarContainer({
+    required List<AcademicCalendar> listAcademicCalendar,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        boxShadow: [
+          BoxShadow(
+            color: Theme.of(
+              context,
+            ).colorScheme.secondary.withValues(alpha: 0.075),
+            offset: const Offset(5.0, 5),
+            blurRadius: 10,
+          ),
+        ],
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      margin: const EdgeInsets.only(top: 20),
+      child: TableCalendar(
+        headerVisible: false,
+        daysOfWeekHeight: 40,
+        onPageChanged: (DateTime dateTime) {
+          setState(() {
+            focusedDay = dateTime;
+            firstDay = DateTime(dateTime.year, dateTime.month, 1);
+            lastDay = DateTime(
+              dateTime.year,
+              dateTime.month + 1,
+              1,
+            ).subtract(const Duration(days: 1));
+          });
+          updateMonthViceAcademicCalendar();
+        },
+
+        onCalendarCreated: (contoller) {
+          _calendarPageController = contoller;
+        },
+
+        holidayPredicate: (dateTime) {
+          try {
+            return listAcademicCalendar.indexWhere((ev) {
+                  final dt = DateTime.tryParse(ev.tanggalMulai);
+                  return dt != null && isSameDay(dt, dateTime);
+                }) !=
+                -1;
+          } catch (_) {
+            return false;
+          }
+        },
+
+        calendarBuilders: CalendarBuilders(
+          markerBuilder: (context, date, events) {
+            final hasEvent = listAcademicCalendar.any((ev) {
+              final dt = DateTime.tryParse(ev.tanggalMulai);
+              return dt != null && isSameDay(dt, date);
+            });
+
+            if (!hasEvent) return null;
+
+            return Positioned(
+              bottom: 6,
+              child: Container(
+                width: 6,
+                height: 6,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            );
+          },
+        ),
+
+        onDaySelected: (selected, focused) {
+          setState(() {
+            _selectedDay = selected;
+            focusedDay = focused;
+
+            _selectedAcademicCalendar = listAcademicCalendar.firstWhere((date) {
+              final dt = DateTime.tryParse(date.tanggalMulai);
+              return dt != null && isSameDay(dt, selected);
+            }, orElse: () => AcademicCalendar.fromJson({}));
+          });
+
+          final selectedAttendance = listAcademicCalendar.firstWhere((date) {
+            final dt = DateTime.tryParse(date.tanggalMulai);
+            return dt != null && isSameDay(dt, selected);
+          }, orElse: () => AcademicCalendar.fromJson({}));
+
+          if ((selectedAttendance.tanggalMulai).isNotEmpty) {
+            // trigger ulang animasi list
+            setState(() {
+              isApplicationItemAnimationOn = !isApplicationItemAnimationOn;
+            });
+
+            // show bottom sheet, dan saat bottomsheet close, toggle lagi supaya bisa di-trigger next time
+            _showAcademicBottomSheet(selectedAttendance).then((_) {
+              // setelah ditutup, kita bisa toggle kembali agar animasi bisa di-trigger lagi
+              setState(() {
+                isApplicationItemAnimationOn = !isApplicationItemAnimationOn;
+              });
+            });
+          } else {
+            // no event
+          }
+        },
+
+        availableGestures: AvailableGestures.none,
+        calendarStyle: CalendarStyle(
+          isTodayHighlighted: false,
+          holidayDecoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+          holidayTextStyle: TextStyle(
+            color: Theme.of(context).colorScheme.onPrimary,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        daysOfWeekStyle: DaysOfWeekStyle(
+          weekendStyle: TextStyle(
+            color: Theme.of(context).colorScheme.primary,
+            fontWeight: FontWeight.bold,
+          ),
+          weekdayStyle: TextStyle(
+            color: Theme.of(context).colorScheme.primary,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        headerStyle: const HeaderStyle(
+          titleCentered: true,
+          formatButtonVisible: false,
+        ),
+        firstDay: firstDay,
+        //start education year
+        lastDay: lastDay,
+        //end education year
+        focusedDay: focusedDay,
+      ),
+    );
+  }
+
+  Widget _buildHolidaysCalendar() {
+    return Align(
+      alignment: Alignment.topCenter,
+      child: SingleChildScrollView(
+        padding: EdgeInsets.only(
+          left:
+              MediaQuery.of(context).size.width *
+              Utils.screenContentHorizontalPaddingInPercentage,
+          right:
+              MediaQuery.of(context).size.width *
+              Utils.screenContentHorizontalPaddingInPercentage,
+          bottom: Utils.getScrollViewBottomPadding(context),
+          top: Utils.getScrollViewTopPadding(
+            context: context,
+            appBarHeightPercentage: Utils.appBarMediumHeightPercentage,
+          ),
+        ),
+        child: BlocConsumer<AcademicCalendarCubit, AcademicCalendarState>(
+          listener: (context, state) {
+            state.maybeWhen(
+              success: (_, __, ___, ____) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  updateMonthViceAcademicCalendar();
+                });
+              },
+              orElse: () {},
+            );
+          },
+          builder: (context, state) {
+            return state.maybeWhen(
+              success: (listAcademicCalendar, year, month, lastUpdated) {
+                return Column(
+                  children: [
+                    _buildCalendarContainer(
+                      listAcademicCalendar: listAcademicCalendar,
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * (0.025),
+                    ),
+                    _buildHolidayDetailsList(),
+                  ],
+                );
+              },
+              failure: (errorMessage) => Center(
+                child: ErrorContainer(
+                  errorMessageCode: errorMessage,
+                  onTapRetry: () => updateMonthViceAcademicCalendar(),
+                ),
+              ),
+              orElse: () => Column(
+                children: [
+                  const SizedBox(height: 20),
+                  ShimmerLoadingContainer(
+                    child: CustomShimmerContainer(
+                      height: MediaQuery.of(context).size.height * (0.425),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAppBar() {
+    return ScreenTopBackgroundContainer(
+      heightPercentage: Utils.appBarMediumHeightPercentage,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Align(
+            alignment: Alignment.topCenter,
+            child: Text(
+              Utils.getTranslatedLabel(academicCalendarKey),
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
+                fontSize: Utils.screenTitleFontSize,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          CustomBackButton(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPreviousNextButtonContainer(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        top: Utils.getScrollViewTopPadding(
+          context: context,
+          appBarHeightPercentage: 0.125,
+        ),
+        left: 24,
+        right: 24,
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ChangeCalendarMonthButton(
+              onTap: () {
+                final academicCalendarState = context
+                    .read<AcademicCalendarCubit>()
+                    .state;
+
+                final isLoading = academicCalendarState.maybeWhen(
+                  loading: () => true,
+                  orElse: () => false,
+                );
+
+                if (isLoading) return;
+
+                _calendarPageController?.previousPage(
+                  duration: const Duration(milliseconds: 400),
+                  curve: Curves.easeInOut,
+                );
+              },
+              isDisable: false,
+              icon: Icons.keyboard_arrow_left,
+            ),
+
+            Text(
+              Utils.formatToMonthYear(focusedDay),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
+
+            ChangeCalendarMonthButton(
+              onTap: () {
+                if (_disableChangeNextMonthButton()) return;
+
+                final academicCalendarState = context
+                    .read<AcademicCalendarCubit>()
+                    .state;
+                final isLoading = academicCalendarState.maybeWhen(
+                  loading: () => true,
+                  orElse: () => false,
+                );
+                if (isLoading) return;
+
+                // animasi next page
+                _calendarPageController?.nextPage(
+                  duration: const Duration(milliseconds: 400),
+                  curve: Curves.easeInOut,
+                );
+              },
+              isDisable: _disableChangeNextMonthButton(),
+              icon: _disableChangeNextMonthButton()
+                  ? Icons.close
+                  : Icons.keyboard_arrow_right,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _showAcademicBottomSheet(AcademicCalendar academicCalendar) {
+    return showModalBottomSheet(
+      useSafeArea: true,
+      showDragHandle: true,
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (c) {
+        return Padding(
+          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    academicCalendar.judul,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  ),
+
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.tertiaryContainer.withValues(alpha: 0.8),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Text(
+                      academicCalendar.unit,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onTertiaryContainer,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              SizedBox(height: 24),
+
+              if (academicCalendar.keterangan.isNotEmpty) ...[
+                Text(
+                  "Keterangan",
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                ),
+
+                SizedBox(height: 8),
+
+                Text(
+                  academicCalendar.keterangan,
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ),
+
+                SizedBox(height: 24),
+
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Tanggal mulai",
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface,
+                                ),
+                          ),
+
+                          const SizedBox(height: 4),
+
+                          Text(
+                            Utils.formatToDayMonthYear(
+                              DateTime.tryParse(academicCalendar.tanggalMulai)!,
+                            ),
+                            style: Theme.of(context).textTheme.bodyLarge
+                                ?.copyWith(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurfaceVariant,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Tanggal selesai',
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface,
+                                ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            Utils.formatToDayMonthYear(
+                              DateTime.tryParse(
+                                academicCalendar.tanggalSelesai,
+                              )!,
+                            ),
+                            style: Theme.of(context).textTheme.bodyLarge
+                                ?.copyWith(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurfaceVariant,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ] else
+                Text(
+                  "Tidak ada data event",
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}

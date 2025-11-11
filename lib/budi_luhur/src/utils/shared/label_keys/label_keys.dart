@@ -13,10 +13,13 @@ const String reportsKey = "reports";
 const String examsKey = "exams";
 const String profileKey = "profile";
 const String personalDetailsKey = "personalDetails";
+const String detailsProfileKey = "detailsProfile";
 const String nameKey = "name";
 const String classKey = "class";
 const String rollNumberKey = "rollNumber";
 const String dateOfBirthKey = "dateOfBirth";
+const String genderKey = "gender";
+const String religionKey = "religion";
 const String addressKey = "address";
 const String logoutKey = "logout";
 const String appVersionKey = "appVersion";
@@ -81,6 +84,7 @@ const String faqsKey = "faqs";
 const String rateUsKey = "rateUs";
 const String shareKey = "share";
 const String motherNameKey = "motherName";
+const String admissionDateKey = "admissionDate";
 const String guardianKey = "guardian";
 const String guardianNameKey = "guardianName";
 
@@ -106,6 +110,7 @@ const String selectKey = "select";
 const String submitKey = "submit";
 
 const String emailKey = "email";
+const String unitKey = "unit";
 const String nisKey = "nis";
 const String nisnKey = "nisn";
 const String passwordKey = "password";
@@ -237,6 +242,8 @@ const String assignmentSubmissionDisclaimerKey =
     "assignmentSubmissionDisclaimer";
 const String holidaysKey = "holidays";
 
+const String academicCalendarKey = "academicCalendar";
+
 const String appUnderMaintenanceKey = "appUnderMaintenance";
 
 const String updateKey = "update";
@@ -337,6 +344,7 @@ const String fileDownloadingFailedKey = "fileDownloadingFailed";
 
 const String streamKey = "stream";
 const String semesterKey = "semester";
+const String classNumberKey = "classNumber";
 
 const String mondayKey = "mon";
 const String tuesdayKey = "tue";

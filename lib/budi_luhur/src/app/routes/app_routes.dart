@@ -1,4 +1,5 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:bl_e_school/budi_luhur/src/features/profile/screen/student_details_student_screen.dart';
 import 'package:get/get.dart';
 
 /// A class that holds the application's routes and their bindings.
@@ -23,6 +24,9 @@ class BudiLuhurRoutes extends BudiLuhur {
   /// The route to the student's profile page.
   static const String studentProfile = "/studentProfile";
 
+  /// The route to the student's details profile page.
+  static const String studentDetailsProfile = "/studentDetailsProfile";
+
   /// The route to the student's attendance tracking page.
   static const String studentAttendance = "/studentAttendance";
 
@@ -38,6 +42,8 @@ class BudiLuhurRoutes extends BudiLuhur {
   static const String home = "/";
 
   static const String notifications = "/notifications";
+
+  static const String academicCalendar = "/academicCalendar";
 
   /// A list of [GetPage] objects that defines the application's route table.
   ///
@@ -73,11 +79,21 @@ class BudiLuhurRoutes extends BudiLuhur {
       name: studentProfile,
       page: () => StudentProfileScreen.routeInstance(),
     ),
+    GetPage(
+      name: studentDetailsProfile,
+      page: () => StudentDetailsStudentScreen.routeInstance(),
+    ),
 
     // Notifications route
     GetPage(
       name: notifications,
       page: () => NotificationsScreen.routeInstance(),
+    ),
+
+    // Academic Calendar route
+    GetPage(
+      name: academicCalendar,
+      page: () => AcademicCalendarScreen.routeInstance(),
     ),
   ];
 }
