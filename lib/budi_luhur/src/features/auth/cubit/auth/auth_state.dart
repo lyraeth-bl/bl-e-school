@@ -17,13 +17,12 @@ abstract class AuthState with _$AuthState {
   ///
   /// This state holds the authenticated user's session information.
   ///
-  /// - [jwtToken]: The JSON Web Token for the user's session.
   /// - [isStudent]: A flag indicating whether the authenticated user is a student. Defaults to `false`.
   /// - [student]: The [Student] object containing the details of the authenticated user.
-  /// - [unit]: The school code or unit identifier associated with the user.
+  /// - [timeAuth]: The [DateTime] when the authentication occurred.
   const factory AuthState.authenticated({
-    required String jwtToken,
     @Default(false) bool isStudent,
     required Student student,
+    DateTime? timeAuth,
   }) = _Authenticated;
 }

@@ -15,18 +15,20 @@ abstract class SignInState with _$SignInState {
   /// The state representing a successful sign-in.
   ///
   /// This state carries the data associated with the authenticated user.
-  ///
-  /// - [jwtToken]: The JSON Web Token for the user's session.
-  /// - [isStudentLogIn]: A flag indicating if the logged-in user is a student.
-  /// - [student]: The [Student] object with the user's details.
   const factory SignInState.success({
-    required String jwtToken,
+    /// A flag indicating if the logged-in user is a student.
     required bool isStudentLogIn,
+
+    /// The [Student] object with the user's details.
     required Student student,
+
+    /// The timestamp of the successful login.
+    DateTime? timeLogin,
   }) = _Success;
 
   /// The state representing a failed sign-in attempt.
-  ///
-  /// - [errorMessage]: A message describing the reason for the failure.
-  const factory SignInState.failure(String errorMessage) = _Failure;
+  const factory SignInState.failure(
+    /// A message describing the reason for the failure.
+    String errorMessage,
+  ) = _Failure;
 }

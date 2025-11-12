@@ -1,4 +1,5 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:bl_e_school/budi_luhur/src/features/settings/screen/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -403,6 +404,9 @@ class _HomeScreenState extends State<HomeScreen>
     if (homeBottomSheetMenu[_currentlyOpenMenuIndex].title ==
         academicCalendarKey) {
       return AcademicCalendarContainer();
+    }
+    if (homeBottomSheetMenu[_currentlyOpenMenuIndex].title == settingsKey) {
+      return SettingsScreen();
     }
 
     return const SizedBox();

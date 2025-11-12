@@ -31,12 +31,12 @@ class _StudentOnBoardingScreenState extends State<StudentOnBoardingScreen> {
 
   void _postDeviceToken() {
     context.read<DeviceTokenCubit>().postDeviceToken(
-      nis: context.read<AuthCubit>().getStudentDetails().nis,
+      nis: context.read<AuthCubit>().getStudentDetails.nis,
     );
   }
 
   void _fetchTimeTable() {
-    final detailsStudent = context.read<AuthCubit>().getStudentDetails();
+    final detailsStudent = context.read<AuthCubit>().getStudentDetails;
     final classStudent =
         "${detailsStudent.kelasSaatIni}${detailsStudent.noKelasSaatIni}";
     context.read<TimeTableCubit>().fetchTimeTable(kelas: classStudent);

@@ -1,6 +1,7 @@
 // Cubit
 export 'cubit/auth/auth_cubit.dart';
 export 'cubit/sign_in/sign_in_cubit.dart';
+export 'data/model/refresh_token_response/refresh_token_response.dart';
 // Data
 export 'data/model/student/student.dart';
 // Repository

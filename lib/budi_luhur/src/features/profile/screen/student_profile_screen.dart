@@ -14,13 +14,29 @@ class StudentProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          Utils.getTranslatedLabel(profileKey),
+          style: TextStyle(fontWeight: FontWeight.w600),
+        ),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              context.read<AuthCubit>().signOut();
+
+              Get.offNamed(BudiLuhurRoutes.auth);
+            },
+            icon: Icon(Icons.logout),
+          ),
+        ],
+      ),
       body: Stack(
         children: [
           _buildProfileDetailsContainer(
             context,
-            studentDetails: context.read<AuthCubit>().getStudentDetails(),
+            studentDetails: context.read<AuthCubit>().getStudentDetails,
           ),
-          _buildAppBar(),
         ],
       ),
     );
@@ -98,13 +114,6 @@ class StudentProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAppBar() {
-    return Align(
-      alignment: Alignment.topCenter,
-      child: CustomAppBar(title: Utils.getTranslatedLabel(profileKey)),
-    );
-  }
-
   Widget _buildProfileDetailsContainer(
     BuildContext context, {
     required Student studentDetails,
@@ -112,14 +121,9 @@ class StudentProfileScreen extends StatelessWidget {
     return Align(
       alignment: Alignment.topCenter,
       child: SingleChildScrollView(
-        padding: EdgeInsets.only(
-          top: Utils.getScrollViewTopPadding(
-            context: context,
-            appBarHeightPercentage: Utils.appBarSmallerHeightPercentage,
-          ),
-        ),
         child: Column(
           children: [
+            SizedBox(height: 24),
             Container(
               width: MediaQuery.of(context).size.width * (0.25),
               height: MediaQuery.of(context).size.width * (0.25),

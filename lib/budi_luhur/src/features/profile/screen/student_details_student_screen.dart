@@ -21,7 +21,7 @@ class StudentDetailsStudentScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final detailsProfile = context.read<AuthCubit>().getStudentDetails();
+    final detailsProfile = context.read<AuthCubit>().getStudentDetails;
 
     String safeNullable(String? v) => v == null || v.isEmpty ? "-" : v;
 

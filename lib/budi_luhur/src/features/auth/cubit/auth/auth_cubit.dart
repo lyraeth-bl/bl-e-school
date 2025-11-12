@@ -1,92 +1,196 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 part 'auth_cubit.freezed.dart';
 part 'auth_state.dart';
 
-/// A [Cubit] for managing the application's authentication state.
+/// Manages the application's authentication state, including user details and login status.
 ///
-/// This cubit determines whether a user is currently logged in or not,
-/// and provides methods to handle authentication, sign-out, and retrieval
-/// of user details. It relies on an [AuthRepository] to persist and
-/// retrieve authentication data.
-class AuthCubit extends Cubit<AuthState> {
+/// This Cubit extends [HydratedCubit] to automatically persist and restore
+/// the authentication state, providing a seamless user experience across app restarts.
+class AuthCubit extends HydratedCubit<AuthState> {
   final AuthRepository _authRepository;
+  final BiometricAuth _biometricAuth;
 
   /// Creates an instance of [AuthCubit].
   ///
-  /// Upon creation, it immediately checks the current authentication status
-  /// by calling [_checkIsAuthenticated].
-  AuthCubit(this._authRepository) : super(_Initial()) {
-    _checkIsAuthenticated();
+  /// Requires an [AuthRepository] for handling authentication logic and a
+  /// [BiometricAuth] utility for biometric operations.
+  AuthCubit(this._authRepository, this._biometricAuth)
+      : super(const _Initial()) {
+    _init();
   }
 
-  /// Checks the persisted authentication state to determine if the user is logged in.
+  /// Initializes the authentication state when the cubit is first created.
   ///
-  /// If the user is logged in, it emits an [_Authenticated] state with the
-  /// user's data. Otherwise, it emits an [_Unauthenticated] state.
-  void _checkIsAuthenticated() {
-    if (_authRepository.getIsLogIn()) {
+  /// It checks the persisted login status from the repository. If the user is
+  /// not logged in, it emits an `unauthenticated` state. Otherwise, it attempts
+  /// to restore the authenticated state from storage or fetches fresh user
+  /// data if no state was restored.
+  void _init() {
+    if (!_authRepository.getIsLogIn()) {
+      emit(const AuthState.unauthenticated());
+      return;
+    }
+
+    final current = state;
+    final isAlreadyAuth = current.maybeWhen(
+      authenticated: (isStudent, student, timeAuth) => true,
+      orElse: () => false,
+    );
+
+    if (isAlreadyAuth) {
+      // State has been successfully restored by HydratedCubit.
+      return;
+    }
+
+    // If state wasn't restored, fetch data from the repository.
+    try {
+      final student = AuthRepository.getStudentDetails();
+      final isStudent = AuthRepository.getIsStudentLogIn();
+      final timeAuth = getTimeLogin;
+
       emit(
         _Authenticated(
-          jwtToken: _authRepository.getJwtToken(),
-          isStudent: AuthRepository.getIsStudentLogIn(),
-          student: AuthRepository.getIsStudentLogIn()
-              ? AuthRepository.getStudentDetails()
-              : Student.fromJson({}),
+          isStudent: isStudent,
+          student: student,
+          timeAuth: timeAuth,
         ),
       );
-    } else {
-      emit(_Unauthenticated());
+    } catch (e) {
+      // If fetching fails, revert to unauthenticated state.
+      emit(const AuthState.unauthenticated());
     }
   }
 
-  /// Authenticates the user and persists their session data.
+  /// Attempts to refresh the user's session using biometric authentication.
   ///
-  /// This method saves the user's details, token, and login status to
-  /// local storage via the [_authRepository] and emits an [_Authenticated] state.
+  /// Returns `true` on successful refresh, `false` otherwise.
+  /// This is typically used to re-authenticate the user after a period of inactivity.
+  Future<bool> biometricRefreshToken() async {
+    try {
+      final isBiometricStatusActive = SettingsRepository().getBiometricStatus();
+      if (!isBiometricStatusActive) return false;
+
+      final isAuthenticated = await _biometricAuth.biometricAuth();
+      if (!isAuthenticated) return false;
+
+      final lastJwtToken = _authRepository.getJwtToken();
+      if (lastJwtToken.isEmpty) return false;
+
+      try {
+        await _authRepository.refreshToken();
+      } catch (e) {
+        debugPrint("RefreshTokenError : ${e.toString()}");
+        return false;
+      }
+
+      final student = AuthRepository.getStudentDetails();
+      final isStudent = AuthRepository.getIsStudentLogIn();
+      final nowTime = DateTime.now();
+
+      emit(
+        _Authenticated(
+          isStudent: isStudent,
+          student: student,
+          timeAuth: nowTime,
+        ),
+      );
+
+      return true;
+    } catch (e) {
+      debugPrint("biometricRefreshTokenError: ${e.toString()}");
+      return false;
+    }
+  }
+
+  /// Manually sets the authentication state to authenticated.
   ///
-  /// - [unit]: The school code or unit identifier.
-  /// - [jwtToken]: The JSON Web Token for the user's session.
-  /// - [isStudent]: A boolean indicating if the user is a student.
-  /// - [student]: The [Student] object containing the user's details.
+  /// This is used after a successful login or registration to update the app state.
   void authenticateUser({
-    required String jwtToken,
+    DateTime? time,
     required bool isStudent,
     required Student student,
   }) {
-    _authRepository.setJwtToken(jwtToken);
-    _authRepository.setIsLogIn(true);
-    _authRepository.setIsStudentLogIn(isStudent);
-    _authRepository.setStudentDetails(student);
-
     emit(
-      _Authenticated(
-        jwtToken: jwtToken,
-        student: student,
-        isStudent: isStudent,
-      ),
+      _Authenticated(isStudent: isStudent, student: student, timeAuth: time),
     );
   }
 
-  /// Retrieves the [Student] details if the user is authenticated.
+  /// Gets the [Student] details from the current authenticated state.
   ///
-  /// Returns the current [Student] object from the state. If the user is
-  /// not authenticated, it returns an empty [Student] object.
-  Student getStudentDetails() {
-    return state.maybeWhen(
-      authenticated: (jwtToken, isStudent, student) => student,
-      orElse: () => Student.fromJson({}),
-    );
-  }
+  /// Returns an empty [Student] object if the user is not authenticated.
+  Student get getStudentDetails => state.maybeWhen(
+        authenticated: (isStudent, student, timeAuth) => student,
+        orElse: () => Student.fromJson({}),
+      );
 
-  /// Signs the user out of the application.
+  /// Checks if the currently authenticated user is a student.
   ///
-  /// This method clears all authentication data from local storage
-  /// via the [_authRepository] and emits an [_Unauthenticated] state.
+  /// Returns `false` if the user is not authenticated.
+  bool get getIsStudentLogin => state.maybeWhen(
+        authenticated: (isStudent, student, timeAuth) => isStudent,
+        orElse: () => false,
+      );
+
+  /// Gets the timestamp of the last authentication.
+  ///
+  /// Returns the current time if the user is not authenticated or if the time is not set.
+  DateTime get getTimeLogin => state.maybeWhen(
+        authenticated: (isStudent, student, timeAuth) => timeAuth ?? DateTime.now(),
+        orElse: () => DateTime.now(),
+      );
+
+  /// Retrieves the current JWT token from the repository.
+  String get getJwtToken => _authRepository.getJwtToken();
+
+  /// Signs the user out and transitions to the unauthenticated state.
   void signOut() {
     _authRepository.signOutUser();
-    emit(_Unauthenticated());
+    emit(const AuthState.unauthenticated());
+  }
+
+  // -------------------------------
+  // Hydrated: State Persistence
+  // -------------------------------
+
+  /// Deserializes the JSON map into an [AuthState] object.
+  @override
+  AuthState? fromJson(Map<String, dynamic> json) {
+    final type = json['type'] as String?;
+    switch (type) {
+      case 'authenticated':
+        final m = (json['student'] as Map?)?.cast<String, dynamic>();
+        if (m == null) return const AuthState.unauthenticated();
+        final timeStr = json['timeAuth'] as String?;
+        final time = timeStr == null ? null : DateTime.tryParse(timeStr);
+        return AuthState.authenticated(
+          isStudent: (json['isStudent'] as bool?) ?? false,
+          student: Student.fromJson(m),
+          timeAuth: time,
+        );
+      case 'unauthenticated':
+        return const AuthState.unauthenticated();
+      case 'initial':
+      default:
+        return const AuthState.initial();
+    }
+  }
+
+  /// Serializes the current [AuthState] into a JSON map for storage.
+  @override
+  Map<String, dynamic>? toJson(AuthState state) {
+    return state.map(
+      initial: (_) => {'type': 'initial'},
+      unauthenticated: (_) => {'type': 'unauthenticated'},
+      authenticated: (s) => {
+        'type': 'authenticated',
+        'isStudent': s.isStudent,
+        'student': s.student.toJson(),
+        'timeAuth': s.timeAuth?.toIso8601String(),
+      },
+    );
   }
 }

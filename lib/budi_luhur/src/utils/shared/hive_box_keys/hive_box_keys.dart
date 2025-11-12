@@ -19,8 +19,14 @@ const String schoolCodeKey = "authBox.schoolCode";
 /// A flag to indicate if the logged-in user is a student.
 const String isStudentLogInKey = "authBox.isStudentLogIn";
 
+/// A flag to indicate if the status biometric user.
+const String biometricStatusKey = "authBox.biometricStatus";
+
 /// The key for storing student details.
 const String studentDetailsKey = "authBox.studentDetails";
+
+/// The key fro storing secure password student.
+const String studentSecurePasswordKey = "authBox.studentSecurePassword";
 
 /// The key for storing parent details.
 const String parentDetailsKey = "authBox.parentDetails";
@@ -41,7 +47,8 @@ const String attendanceBoxKey = 'attendanceBox';
 const String studentDailyAttendanceKey = 'attendanceBox.dailyAttendance';
 
 /// The key for storing the student's monthly daily attendance record.
-const String studentMonthlyDailyAttendanceKey = 'attendanceBox.monthlyDailyAttendance';
+const String studentMonthlyDailyAttendanceKey =
+    'attendanceBox.monthlyDailyAttendance';
 
 /// A flag to check if the daily attendance has been posted.
 const String studentHasPostDailyAttendanceKey =

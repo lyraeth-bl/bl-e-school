@@ -5,12 +5,13 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 part 'daily_attendance_cubit.freezed.dart';
 part 'daily_attendance_state.dart';
 
-/// A [HydratedCubit] responsible for managing the daily attendance state of a user.
+/// Manages the state for daily attendance, including fetching, caching, and
+/// persisting data.
 ///
-/// This cubit handles fetching, caching, and updating the user's daily
-/// attendance information. It persists its state using [HydratedBloc] to ensure
-/// data is retained across app restarts, providing a seamless user experience.
-/// It also manages check-in, check-out, and post statuses.
+/// This cubit extends [HydratedCubit] to automatically save and restore its state,
+/// ensuring that attendance information is preserved across application restarts.
+/// It handles user actions like check-in and check-out, and keeps track of
+/// whether the attendance has been posted.
 class DailyAttendanceCubit extends HydratedCubit<DailyAttendanceState> {
   /// The repository for accessing attendance-related data from the API and
   /// local storage.
@@ -30,22 +31,22 @@ class DailyAttendanceCubit extends HydratedCubit<DailyAttendanceState> {
     _init();
   }
 
-  /// Initializes the cubit by loading data if the state is initial.
+  /// Initializes the cubit by loading data from cache if the state is initial.
   ///
-  /// This method is called in the constructor to ensure that the cubit has data
-  /// as soon as it's created.
+  /// This method is called in the constructor to ensure that the cubit is
+  /// hydrated with data as soon as it is created.
   void _init() {
     if (state is _Initial) {
       loadFromCacheOrFetch();
     }
   }
 
-  /// Loads daily attendance data from the cache or fetches it from the server.
+  /// Loads daily attendance data from local storage.
   ///
-  /// If [force] is `true`, it will always fetch fresh data from the server.
-  /// Otherwise, it checks if the cached data is stale based on the [ttl].
+  /// If [force] is `true`, it will always reload the data from the local cache.
+  /// Otherwise, it first checks if the current state data is fresh based on the [ttl].
   /// If the data is fresh, no action is taken. If it's stale or doesn't exist,
-  /// it fetches from the repository.
+  /// it reloads from the locally stored attendance data in the repository.
   Future<void> loadFromCacheOrFetch({bool force = false}) async {
     if (!force && state is _HasData) {
       final last = (state as _HasData).lastUpdate;
@@ -172,40 +173,46 @@ class DailyAttendanceCubit extends HydratedCubit<DailyAttendanceState> {
   }
 
   /// Returns the current [DailyAttendance] data, or `null` if not available.
-  DailyAttendance? getDailyAttendance() => state.maybeWhen(
+  DailyAttendance? get getDailyAttendance => state.maybeWhen(
     hasData: (dailyAttendance, hasPost, hasCheckIn, hasCheckOut, lastUpdate) =>
         dailyAttendance,
     orElse: () => null,
   );
 
   /// Returns `true` if the user has checked in, `false` otherwise.
-  bool getHasCheckIn() => state.maybeWhen(
+  bool get getHasCheckIn => state.maybeWhen(
     hasData: (dailyAttendance, hasPost, hasCheckIn, hasCheckOut, lastUpdate) =>
         hasCheckIn,
     orElse: () => false,
   );
 
   /// Returns `true` if the user has checked out, `false` otherwise.
-  bool getHasCheckOut() => state.maybeWhen(
+  bool get getHasCheckOut => state.maybeWhen(
     hasData: (dailyAttendance, hasPost, hasCheckIn, hasCheckOut, lastUpdate) =>
         hasCheckOut,
     orElse: () => false,
   );
 
   /// Returns `true` if the daily attendance has been posted, `false` otherwise.
-  bool getHasPost() => state.maybeWhen(
+  bool get getHasPost => state.maybeWhen(
     hasData: (dailyAttendance, hasPost, hasCheckIn, hasCheckOut, lastUpdate) =>
         hasPost,
     orElse: () => false,
   );
 
   /// Returns the last update [DateTime], or `null` if not available.
-  DateTime? getLastUpdate() => state.maybeWhen(
+  DateTime? get getLastUpdate => state.maybeWhen(
     hasData: (dailyAttendance, hasPost, hasCheckIn, hasCheckOut, lastUpdate) =>
         lastUpdate,
     orElse: () => null,
   );
 
+  /// Deserializes the cubit's state from a JSON map.
+  ///
+  /// This method is called by [HydratedCubit] when restoring the state. It handles
+  /// converting the stored JSON back into a valid [DailyAttendanceState]. If the
+  /// JSON is invalid or an error occurs during parsing, it returns `null` to
+  /// fall back to the initial state.
   @override
   DailyAttendanceState? fromJson(Map<String, dynamic> json) {
     try {
@@ -234,6 +241,10 @@ class DailyAttendanceCubit extends HydratedCubit<DailyAttendanceState> {
     }
   }
 
+  /// Serializes the current state to a JSON map for persistence.
+  ///
+  /// This method is called by [HydratedCubit] to save the state. It converts
+  /// the current [DailyAttendanceState] into a serializable map.
   @override
   Map<String, dynamic>? toJson(DailyAttendanceState state) {
     return state.map(

@@ -60,7 +60,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
   }
 
   void _fetchCurrentMonthDailyAttendanceData({bool forceRefresh = false}) {
-    final authDetails = context.read<AuthCubit>().getStudentDetails();
+    final authDetails = context.read<AuthCubit>().getStudentDetails;
 
     context.read<FetchDailyAttendanceCubit>().fetchCustomDailyAttendanceUser(
       nis: authDetails.nis,
@@ -359,11 +359,11 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
             context
                 .read<FetchDailyAttendanceCubit>()
                 .fetchCustomDailyAttendanceUser(
-                  nis: context.read<AuthCubit>().getStudentDetails().nis,
+                  nis: context.read<AuthCubit>().getStudentDetails.nis,
                   year: dateTime.year,
                   month: dateTime.month,
                   unit:
-                      context.read<AuthCubit>().getStudentDetails().unit ??
+                      context.read<AuthCubit>().getStudentDetails.unit ??
                       "SMAKT",
                 );
           });

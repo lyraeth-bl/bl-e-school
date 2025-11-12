@@ -84,8 +84,9 @@ class AuthRepository {
 
   /// Signs out the current user.
   ///
-  /// This method sends a request to the logout endpoint and clears all
-  /// local authentication data, including login status, JWT token, and student details.
+  /// This method sends a request to the logout endpoint to invalidate the session on the server.
+  /// It then clears all local authentication and session data, including login status,
+  /// JWT token, student details, and any cached attendance data.
   Future<void> signOutUser() async {
     try {
       // Attempt to notify the backend of the logout.
@@ -94,10 +95,16 @@ class AuthRepository {
       // Errors are ignored as the local data will be cleared regardless.
     }
 
-    // Clear local session data.
-    setIsLogIn(false);
-    setJwtToken("");
-    setStudentDetails(Student.fromJson({}));
+    // Clear local data
+    await Future.wait([
+      setIsLogIn(false),
+      setIsStudentLogIn(false),
+      setJwtToken(""),
+      setStudentDetails(Student.fromJson({})),
+      AttendanceRepository().setStoredDailyAttendance(
+        DailyAttendance.fromJson({}),
+      ),
+    ]);
   }
 
   /// Signs in a student with their credentials.
@@ -106,8 +113,11 @@ class AuthRepository {
   /// - [password]: The student's password.
   ///
   /// Throws an [ApiException] if the sign-in process fails.
-  /// Returns a `Map<String, dynamic>` containing the JWT token, its expiration,
-  /// and the student's details upon successful authentication.
+  ///
+  /// Returns a `Map<String, dynamic>` upon successful authentication, containing:
+  /// - `jwtToken`: The new JWT token.
+  /// - `student`: The authenticated [Student] object.
+  /// - `expiresIn`: The timestamp of when the authentication occurred.
   Future<Map<String, dynamic>> signInStudent({
     required String nis,
     required String password,
@@ -124,10 +134,57 @@ class AuthRepository {
       final Map<String, dynamic> studentData = response['siswa'];
       final String jwtToken = response['access_token'];
 
+      await Future.wait([
+        setJwtToken(jwtToken),
+        setStudentDetails(
+          Student.fromJson(Map<String, dynamic>.from(studentData)),
+        ),
+        setIsLogIn(true),
+        setIsStudentLogIn(true),
+      ]);
+
       return {
         "jwtToken": jwtToken,
         "student": Student.fromJson(Map.from(studentData)),
+        'expiresIn': DateTime.now(),
       };
+    } catch (e) {
+      throw ApiException(e.toString());
+    }
+  }
+
+  /// Refreshes the authentication token.
+  ///
+  /// Sends a request to the refresh token endpoint to get a new JWT token.
+  /// The new token is then saved to local storage.
+  ///
+  /// Throws an [ApiException] if the token refresh fails.
+  /// Returns a [RefreshTokenResponse] containing the new token and its expiration time.
+  Future<RefreshTokenResponse> refreshToken() async {
+    try {
+      final response = await ApiClient.post(
+        body: {},
+        url: ApiEndpoints.refreshToken,
+        useAuthToken: true,
+      );
+
+      final jwtToken = response['access_token'];
+
+      int? expiresIn;
+
+      if (response.containsKey('expires_in')) {
+        final raw = response['expires_in'];
+
+        try {
+          expiresIn = raw is int ? raw : int.tryParse(raw.toString());
+        } catch (e) {
+          expiresIn = null;
+        }
+      }
+
+      await Future.wait([setJwtToken(jwtToken)]);
+
+      return RefreshTokenResponse(jwtToken: jwtToken, expiredIn: expiresIn);
     } catch (e) {
       throw ApiException(e.toString());
     }

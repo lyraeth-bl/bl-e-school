@@ -28,7 +28,7 @@ class BiometricAuth {
   /// This method checks for device support and registered biometrics before
   /// attempting to authenticate. It also handles platform exceptions and
   /// other potential errors.
-  Future<bool> getBiometricAuth() async {
+  Future<bool> biometricAuth() async {
     try {
       final isSupported = await _localAuthentication.isDeviceSupported();
 

@@ -32,6 +32,7 @@ const String dueDateLatestKey = "dueDateLatest";
 const String dueDateOldestKey = "dueDateOldest";
 const String dueKey = "due";
 const String assignmentKey = "assignment";
+const String biometricLoginKey = "biometricLogin";
 
 const String feesKey = "fees";
 const String statusKey = "status";

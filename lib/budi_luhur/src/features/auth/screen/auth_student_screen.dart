@@ -26,7 +26,7 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
     duration: const Duration(milliseconds: 1000),
   );
 
-  late final Animation<double> _patterntAnimation =
+  late final Animation<double> _patternAnimation =
       Tween<double>(begin: 0.0, end: 1.0).animate(
         CurvedAnimation(
           parent: _animationController,
@@ -51,6 +51,17 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
   void initState() {
     super.initState();
     _animationController.forward();
+
+    final args = Get.arguments as Map<String, dynamic>?;
+    final wantBiometric = args?['biometricState'] == "true";
+    if (wantBiometric) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        final ok = await context.read<AuthCubit>().biometricRefreshToken();
+        if (ok) {
+          Get.offNamed(BudiLuhurRoutes.home);
+        } else {}
+      });
+    }
   }
 
   @override
@@ -108,9 +119,9 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
     return Align(
       alignment: AlignmentDirectional.topEnd,
       child: FadeTransition(
-        opacity: _patterntAnimation,
+        opacity: _patternAnimation,
         child: SlideTransition(
-          position: _patterntAnimation.drive(
+          position: _patternAnimation.drive(
             Tween<Offset>(begin: const Offset(0.0, -1.0), end: Offset.zero),
           ),
           child: SvgPicture.asset("assets/images/upper_pattern.svg"),
@@ -123,9 +134,9 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
     return Align(
       alignment: AlignmentDirectional.bottomStart,
       child: FadeTransition(
-        opacity: _patterntAnimation,
+        opacity: _patternAnimation,
         child: SlideTransition(
-          position: _patterntAnimation.drive(
+          position: _patternAnimation.drive(
             Tween<Offset>(begin: const Offset(0.0, 1.0), end: Offset.zero),
           ),
           child: SvgPicture.asset("assets/images/lower_pattern.svg"),
@@ -245,11 +256,11 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
                       child: BlocConsumer<SignInCubit, SignInState>(
                         listener: (context, state) {
                           state.maybeWhen(
-                            success: (jwtToken, isStudentLogIn, student) {
+                            success: (isStudentLogIn, student, time) {
                               context.read<AuthCubit>().authenticateUser(
-                                jwtToken: jwtToken,
                                 isStudent: isStudentLogIn,
                                 student: student,
+                                time: DateTime.now(),
                               );
 
                               Get.offNamedUntil(

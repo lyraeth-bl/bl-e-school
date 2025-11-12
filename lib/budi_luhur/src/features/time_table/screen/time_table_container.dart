@@ -14,7 +14,7 @@ class _TimeTableContainerState extends State<TimeTableContainer>
   late int _currentSelectedDayIndex = DateTime.now().weekday - 1;
 
   void _fetchTimeTable() {
-    final detailsStudent = context.read<AuthCubit>().getStudentDetails();
+    final detailsStudent = context.read<AuthCubit>().getStudentDetails;
     final classStudent =
         "${detailsStudent.kelasSaatIni}${detailsStudent.noKelasSaatIni}";
     context.read<TimeTableCubit>().fetchTimeTable(
@@ -120,7 +120,7 @@ class _TimeTableContainerState extends State<TimeTableContainer>
   Widget _buildAppBar() {
     String getStudentClassDetails = "";
     getStudentClassDetails =
-        "${context.read<AuthCubit>().getStudentDetails().kelasSaatIni} ${context.read<AuthCubit>().getStudentDetails().noKelasSaatIni}";
+        "${context.read<AuthCubit>().getStudentDetails.kelasSaatIni} ${context.read<AuthCubit>().getStudentDetails.noKelasSaatIni}";
 
     return ScreenTopBackgroundContainer(
       heightPercentage: Utils.appBarMediumHeightPercentage,

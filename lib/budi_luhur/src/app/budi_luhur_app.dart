@@ -1,4 +1,5 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:bl_e_school/budi_luhur/src/features/settings/cubit/settings/settings_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -10,10 +11,21 @@ class BudiLuhurApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider<SettingsCubit>(
+          create: (_) => SettingsCubit(
+            SettingsRepository(),
+            BiometricAuth("Please authenticate first"),
+          ),
+        ),
         BlocProvider<AppLocalizationCubit>(
           create: (_) => AppLocalizationCubit(SettingsRepository()),
         ),
-        BlocProvider<AuthCubit>(create: (_) => AuthCubit(AuthRepository())),
+        BlocProvider<AuthCubit>(
+          create: (_) => AuthCubit(
+            AuthRepository(),
+            BiometricAuth("Please authenticate to login"),
+          ),
+        ),
         BlocProvider<DeviceTokenCubit>(
           create: (_) => DeviceTokenCubit(DeviceTokenRepository()),
         ),

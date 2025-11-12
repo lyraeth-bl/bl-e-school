@@ -54,8 +54,7 @@ class AcademicCalendarCubit extends HydratedCubit<AcademicCalendarState> {
           lastUpdated: now,
         ),
       );
-    } catch (e, st) {
-      print("${e.toString()}, ${st.toString()}");
+    } catch (e) {
       emit(_Failure(e.toString()));
     }
   }

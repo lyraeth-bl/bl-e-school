@@ -41,7 +41,7 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
   }
 
   void _fetchAcademicCalendarThisMonth({bool forceRefresh = false}) {
-    final studentDetails = context.read<AuthCubit>().getStudentDetails();
+    final studentDetails = context.read<AuthCubit>().getStudentDetails;
     context.read<AcademicCalendarCubit>().fetchCustomAcademicCalendar(
       year: focusedDay.year,
       month: focusedDay.month,

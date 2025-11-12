@@ -28,4 +28,9 @@ final List<MenuModel> homeBottomSheetMenu = [
     iconUrl: "assets/images/holiday_icon.svg",
     title: academicCalendarKey,
   ),
+  MenuModel(
+    menuModuleId: defaultModuleId.toString(),
+    iconUrl: "assets/images/setting_icon.svg",
+    title: settingsKey,
+  ),
 ];

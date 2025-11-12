@@ -75,7 +75,7 @@ class HomeContainerTopProfileContainer extends StatelessWidget {
                     children: [
                       BlocSelector<AuthCubit, AuthState, String?>(
                         selector: (state) => state.maybeWhen(
-                          authenticated: (jwtToken, isStudent, student) =>
+                          authenticated: (isStudent, student, time) =>
                               student.profileImageUrl,
                           orElse: () => "",
                         ),
@@ -96,7 +96,7 @@ class HomeContainerTopProfileContainer extends StatelessWidget {
                             Text(
                               context
                                       .read<AuthCubit>()
-                                      .getStudentDetails()
+                                      .getStudentDetails
                                       .nama ??
                                   "",
                               maxLines: 1,
@@ -114,7 +114,7 @@ class HomeContainerTopProfileContainer extends StatelessWidget {
                               children: [
                                 Flexible(
                                   child: Text(
-                                    "${Utils.getTranslatedLabel(classKey)} : ${context.read<AuthCubit>().getStudentDetails().kelasSaatIni} - ${context.read<AuthCubit>().getStudentDetails().noKelasSaatIni}",
+                                    "${Utils.getTranslatedLabel(classKey)} : ${context.read<AuthCubit>().getStudentDetails.kelasSaatIni} - ${context.read<AuthCubit>().getStudentDetails.noKelasSaatIni}",
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
