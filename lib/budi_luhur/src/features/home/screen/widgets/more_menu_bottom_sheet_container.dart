@@ -122,36 +122,35 @@ class MoreMenuBottomSheetContainer extends StatelessWidget {
 
                   Expanded(
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           context.read<AuthCubit>().getStudentDetails.nama ??
                               "",
-                          maxLines: 1,
+                          maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18.0,
-                          ),
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onPrimaryContainer,
+                              ),
                         ),
-                        Row(
-                          children: [
-                            Flexible(
-                              child: Text(
-                                "${Utils.getTranslatedLabel(classKey)} : ${context.read<AuthCubit>().getStudentDetails.kelasSaatIni} - ${context.read<AuthCubit>().getStudentDetails.noKelasSaatIni}",
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 12.0,
-                                  fontWeight: FontWeight.w400,
+                        SizedBox(height: 4),
+                        Flexible(
+                          child: Text(
+                            "${Utils.getTranslatedLabel(classKey)} : ${context.read<AuthCubit>().getStudentDetails.kelasSaatIni} - ${context.read<AuthCubit>().getStudentDetails.noKelasSaatIni}",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
                                   color: Theme.of(
                                     context,
-                                  ).colorScheme.onSurfaceVariant,
+                                  ).colorScheme.onSurface,
                                 ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ],
                     ),
@@ -166,7 +165,7 @@ class MoreMenuBottomSheetContainer extends StatelessWidget {
                       angle: pi,
                       child: Icon(
                         Icons.arrow_back_ios,
-                        color: Theme.of(context).colorScheme.secondary,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                     ),
                   ),

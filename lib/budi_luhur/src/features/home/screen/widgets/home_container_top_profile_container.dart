@@ -99,34 +99,29 @@ class HomeContainerTopProfileContainer extends StatelessWidget {
                                       .getStudentDetails
                                       .nama ??
                                   "",
-                              maxLines: 1,
+                              maxLines: 2,
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w600,
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onPrimaryContainer,
-                              ),
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onPrimaryContainer,
+                                  ),
                             ),
-
-                            Row(
-                              children: [
-                                Flexible(
-                                  child: Text(
-                                    "${Utils.getTranslatedLabel(classKey)} : ${context.read<AuthCubit>().getStudentDetails.kelasSaatIni} - ${context.read<AuthCubit>().getStudentDetails.noKelasSaatIni}",
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w400,
+                            SizedBox(height: 4),
+                            Flexible(
+                              child: Text(
+                                "${Utils.getTranslatedLabel(classKey)} : ${context.read<AuthCubit>().getStudentDetails.kelasSaatIni} - ${context.read<AuthCubit>().getStudentDetails.noKelasSaatIni}",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(
                                       color: Theme.of(
                                         context,
-                                      ).colorScheme.onPrimaryContainer,
+                                      ).colorScheme.onSurface,
                                     ),
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
                           ],
                         ),
