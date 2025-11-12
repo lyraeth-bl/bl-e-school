@@ -15,6 +15,14 @@ class StudentProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 80,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadiusGeometry.only(
+            bottomLeft: Radius.circular(32),
+            bottomRight: Radius.circular(32),
+          ),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         title: Text(
           Utils.getTranslatedLabel(profileKey),
           style: TextStyle(fontWeight: FontWeight.w600),
@@ -131,8 +139,17 @@ class StudentProfileScreen extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: Theme.of(context).colorScheme.primary,
               ),
-              child: CustomUserProfileImageWidget(
-                profileUrl: studentDetails.profileImageUrl ?? "",
+              child: BlocSelector<AuthCubit, AuthState, String?>(
+                selector: (state) => state.maybeWhen(
+                  authenticated: (isStudent, student, time) =>
+                      student.profileImageUrl,
+                  orElse: () => "",
+                ),
+                builder: (context, profileImageUrl) =>
+                    BorderedProfilePictureContainer(
+                      imageUrl: profileImageUrl ?? "",
+                      heightAndWidth: 60,
+                    ),
               ),
             ),
 
@@ -141,37 +158,34 @@ class StudentProfileScreen extends StatelessWidget {
             Text(
               studentDetails.nama ?? "-",
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontSize: 18,
+                color: Theme.of(context).colorScheme.onSurface,
                 fontWeight: FontWeight.w600,
-                color: Theme.of(context).colorScheme.secondary,
-                fontSize: 18.0,
               ),
             ),
 
-            const SizedBox(height: 5.0),
+            const SizedBox(height: 8.0),
 
             Text(
               studentDetails.email ?? "",
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurface,
-                fontSize: 12.0,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
 
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 16.0),
 
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: MediaQuery.of(context).size.width * (0.075),
               ),
               child: Divider(
-                color: Theme.of(
-                  context,
-                ).colorScheme.onSurface.withValues(alpha: 0.75),
+                color: Theme.of(context).colorScheme.outlineVariant,
               ),
             ),
 
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 16.0),
 
             Padding(
               padding: EdgeInsets.symmetric(
@@ -186,31 +200,47 @@ class StudentProfileScreen extends StatelessWidget {
                       children: [
                         Text(
                           Utils.getTranslatedLabel(personalDetailsKey),
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface,
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.onSurface,
+                                fontWeight: FontWeight.w600,
+                              ),
                         ),
 
-                        TextButton(
-                          onPressed: () => Get.toNamed(
+                        InkWell(
+                          onTap: () => Get.toNamed(
                             BudiLuhurRoutes.studentDetailsProfile,
                           ),
-                          child: Row(
-                            children: [
-                              Text(
-                                Utils.getTranslatedLabel(detailsProfileKey),
-                                style: Theme.of(context).textTheme.bodySmall
-                                    ?.copyWith(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.primary,
-                                    ),
-                              ),
-                              SizedBox(width: 4),
-                              Icon(Icons.keyboard_arrow_right),
-                            ],
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.primaryContainer,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  Utils.getTranslatedLabel(detailsProfileKey),
+                                  style: Theme.of(context).textTheme.bodySmall
+                                      ?.copyWith(
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onPrimaryContainer,
+                                      ),
+                                ),
+                                Icon(
+                                  Icons.keyboard_arrow_right,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onPrimaryContainer,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],
