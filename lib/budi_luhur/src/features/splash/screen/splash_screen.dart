@@ -62,7 +62,7 @@ class _SplashScreenState extends State<SplashScreen> {
             );
           } else {
             // If biometrics are not active, navigate to the standard auth flow.
-            Get.offNamed(BudiLuhurRoutes.auth);
+            Get.offNamed(BudiLuhurRoutes.authStudent);
           }
         } else {
           // If the session is still valid, navigate to the home screen.
