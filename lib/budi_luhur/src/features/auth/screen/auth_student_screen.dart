@@ -209,20 +209,22 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
                   children: [
                     Text(
                       Utils.getTranslatedLabel(letsSignInKey),
-                      style: TextStyle(
-                        fontSize: 34.0,
-                        fontWeight: FontWeight.bold,
-                        color: Utils.getColorScheme(context).onSurface,
-                      ),
+                      style: Theme.of(context).textTheme.headlineLarge
+                          ?.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface,
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
                     const SizedBox(height: 10.0),
                     Text(
                       "${Utils.getTranslatedLabel(welcomeBackKey)}, \n${Utils.getTranslatedLabel(youHaveBeenMissedKey)}",
-                      style: TextStyle(
-                        fontSize: 24.0,
-                        height: 1.5,
-                        color: Utils.getColorScheme(context).onSurfaceVariant,
-                      ),
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(
+                            height: 1.5,
+                            color: Utils.getColorScheme(
+                              context,
+                            ).onSurfaceVariant,
+                          ),
                     ),
 
                     /// NIS field
@@ -271,12 +273,10 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
                             failure: (errorMessage) {
                               Utils.showCustomSnackBar(
                                 context: context,
-                                errorMessage: Utils.getTranslatedLabel(
-                                  errorMessage,
-                                ),
+                                errorMessage: errorMessage,
                                 backgroundColor: Theme.of(
                                   context,
-                                ).colorScheme.errorContainer,
+                                ).colorScheme.error,
                               );
                             },
                             orElse: () {},
@@ -288,24 +288,54 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
                             orElse: () => false,
                           );
 
-                          return CustomRoundedButton(
-                            onTap: () {
-                              if (isLoading) return;
+                          return Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 24),
+                            width: double.infinity,
+                            child: FilledButton(
+                              style: FilledButton.styleFrom(
+                                minimumSize: const Size.fromHeight(48),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 14,
+                                  horizontal: 16,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                              onPressed: () {
+                                if (isLoading) return;
 
-                              FocusScope.of(context).unfocus();
+                                FocusScope.of(context).unfocus();
 
-                              _signInStudent();
-                            },
-                            widthPercentage: 0.8,
-                            backgroundColor: Theme.of(
-                              context,
-                            ).colorScheme.primary,
-                            buttonTitle: Utils.getTranslatedLabel(signInKey),
-                            titleColor: Theme.of(context).colorScheme.onPrimary,
-                            showBorder: false,
-                            child: isLoading
-                                ? CircularProgressIndicator()
-                                : Text(Utils.getTranslatedLabel(signInKey)),
+                                _signInStudent();
+                              },
+                              child: isLoading
+                                  // Saat loading: berikan ruang vertikal dan center spinner
+                                  ? SizedBox(
+                                      height: 20,
+                                      child: Center(
+                                        child: SizedBox(
+                                          width: 20,
+                                          height: 20,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2.0,
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                  Theme.of(
+                                                    context,
+                                                  ).colorScheme.onPrimary,
+                                                ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : Text(
+                                      Utils.getTranslatedLabel(signInKey),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                            ),
                           );
                         },
                       ),

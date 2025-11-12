@@ -99,9 +99,9 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
         margin: EdgeInsets.only(
           top:
               MediaQuery.of(context).padding.top +
-              MediaQuery.of(context).size.height * (0.05),
+              MediaQuery.of(context).size.height * (0.1),
         ),
-        height: MediaQuery.of(context).size.height * (0.4),
+        height: MediaQuery.of(context).size.height * (0.25),
         child: Image.asset('assets/images/bl_logo.png'),
       ),
     );
@@ -151,27 +151,40 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
                                 textAlign: TextAlign.center,
                                 maxLines: 3,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w300,
-                                  color: Utils.getColorScheme(
-                                    context,
-                                  ).onSurface,
-                                ),
+                                style: Theme.of(context).textTheme.titleMedium
+                                    ?.copyWith(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSurface,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                               ),
                             ),
                             SizedBox(height: boxConstraints.maxHeight * (0.05)),
-                            CustomRoundedButton(
-                              onTap: () {
-                                Get.toNamed(BudiLuhurRoutes.authStudent);
-                              },
-                              widthPercentage: 0.8,
-                              backgroundColor: Utils.getColorScheme(
-                                context,
-                              ).primary,
-                              buttonTitle:
+                            Container(
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 24,
+                              ),
+                              width: double.infinity,
+                              child: FilledButton(
+                                style: FilledButton.styleFrom(
+                                  minimumSize: const Size.fromHeight(48),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 14,
+                                    horizontal: 16,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Get.toNamed(BudiLuhurRoutes.authStudent);
+                                },
+                                child: Text(
                                   "${Utils.getTranslatedLabel(loginAsKey)} ${Utils.getTranslatedLabel(studentKey)}",
-                              showBorder: false,
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                              ),
                             ),
                           ],
                         );

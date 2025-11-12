@@ -29,8 +29,8 @@ class CustomTextFieldContainer extends StatelessWidget {
       margin: EdgeInsets.only(bottom: bottomPadding ?? 20.0),
       padding: const EdgeInsetsDirectional.only(start: 20.0),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Utils.getColorScheme(context).secondary),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Theme.of(context).colorScheme.outline),
       ),
       child: TextField(
         controller: textEditingController,
@@ -42,7 +42,7 @@ class CustomTextFieldContainer extends StatelessWidget {
         autofocus: false,
         decoration: InputDecoration(
           suffixIcon: suffixWidget,
-          hintStyle: TextStyle(color: Utils.getColorScheme(context).secondary),
+          hintStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface),
           hintText: Utils.getTranslatedLabel(hintTextKey),
           border: InputBorder.none,
           contentPadding: suffixWidget != null

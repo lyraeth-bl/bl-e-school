@@ -74,13 +74,13 @@ class _ErrorMessageOverlayContainerState
                 ),
                 decoration: BoxDecoration(
                   color: widget.backgroundColor,
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(16.0),
                 ),
                 child: Text(
                   widget.errorMessage,
                   style: TextStyle(
                     fontSize: 13.5,
-                    color: Theme.of(context).scaffoldBackgroundColor,
+                    color: Theme.of(context).colorScheme.onError,
                   ),
                 ),
               ),
