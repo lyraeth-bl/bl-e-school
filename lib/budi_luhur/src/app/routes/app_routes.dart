@@ -1,5 +1,4 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/profile/screen/student_details_student_screen.dart';
 import 'package:get/get.dart';
 
 /// A class that holds the application's routes and their bindings.
@@ -7,7 +6,7 @@ import 'package:get/get.dart';
 /// This class defines all the navigation routes as static constants and provides a
 /// `getPages` list that maps these routes to their corresponding screen widgets.
 /// This setup is used by the `GetX` package to manage navigation.
-class BudiLuhurRoutes {
+class BudiLuhurRoutes extends BudiLuhur {
   // --- Authentication Routes ---
 
   /// The route for the main authentication screen (e.g., for parents/staff).
