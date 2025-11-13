@@ -12,7 +12,7 @@ class BiometricAuth {
   /// The reason for requesting biometric authentication.
   ///
   /// This is displayed to the user during the authentication prompt.
-  final String? reason;
+  final String reason;
 
   /// Creates an instance of [BiometricAuth].
   ///
@@ -45,7 +45,7 @@ class BiometricAuth {
       }
 
       return await _localAuthentication.authenticate(
-        localizedReason: reason ?? "Authentikasi untuk melanjutkan",
+        localizedReason: reason,
         biometricOnly: true,
         authMessages: const <AuthMessages>[
           AndroidAuthMessages(
