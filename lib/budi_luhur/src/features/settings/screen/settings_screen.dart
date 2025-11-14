@@ -138,8 +138,8 @@ class SettingsScreen extends StatelessWidget {
                               ),
                               if (isLoading) ...[
                                 SizedBox(
-                                  width: 36,
-                                  height: 36,
+                                  width: 24,
+                                  height: 24,
                                   child: CircularProgressIndicator(
                                     strokeWidth: 2,
                                   ),
