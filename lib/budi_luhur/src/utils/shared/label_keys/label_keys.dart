@@ -5,6 +5,7 @@ const String attendanceKey = "attendance";
 const String menuKey = "menu";
 const String assignmentsKey = "assignments";
 const String timeTableKey = "timeTable";
+const String timeKey = "time";
 const String noticeBoardKey = "noticeBoard";
 const String guardianDetailsKey = "guardianDetails";
 const String resultsKey = "results";
@@ -123,6 +124,7 @@ const String grNumberKey = "grNumber";
 const String loginAsKey = "loginAs";
 const String parentKey = "parent";
 const String studentKey = "student";
+const String scheduleKey = "schedule";
 
 const String pleaseEnterEmailKey = "pleaseEnterEmail";
 const String pleaseEnterPasswordKey = "pleaseEnterPassword";
@@ -355,6 +357,8 @@ const String fridayKey = "fri";
 const String saturdayKey = "sat";
 const String sundayKey = "sun";
 const String schoolKey = "school";
+const String breakKey = "break";
+const String nextClassKey = "nextClass";
 const String minimumPasswordLengthIs6CharactersKey =
     "minimumPasswordLengthIs6Characters";
 const String examStartsKey = "examStarts";

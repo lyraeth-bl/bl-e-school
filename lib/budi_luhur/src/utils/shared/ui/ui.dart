@@ -14,3 +14,4 @@ export 'screen_top_background_container.dart';
 export 'shimmer_loading_container.dart';
 export 'svg_button.dart';
 export 'svg_network_image.dart';
+export 'real_time_clock.dart';

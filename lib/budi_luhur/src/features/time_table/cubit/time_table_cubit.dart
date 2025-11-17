@@ -52,6 +52,11 @@ class TimeTableCubit extends HydratedCubit<TimeTableState> {
     }
   }
 
+  List<TimeTable> get getTimeTable => state.maybeWhen(
+    success: (timeTableList) => timeTableList,
+    orElse: () => [],
+  );
+
   /// Deserializes the cubit's state from a JSON map.
   ///
   /// This is part of the [HydratedCubit] functionality for state persistence.
