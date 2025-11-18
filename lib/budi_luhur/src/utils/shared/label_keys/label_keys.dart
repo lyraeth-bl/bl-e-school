@@ -2,6 +2,8 @@
 
 const String homeKey = "home";
 const String attendanceKey = "attendance";
+const String checkInKey = "checkIn";
+const String checkOutKey = "checkOut";
 const String menuKey = "menu";
 const String assignmentsKey = "assignments";
 const String timeTableKey = "timeTable";
@@ -448,7 +450,6 @@ const String sevenPeriodKey = "7thPeriod";
 const String eightPeriodKey = "8thPeriod";
 const String ninePeriodKey = "9thPeriod";
 const String tenPeriodKey = "10thPeriod";
-
 
 // Online Exam additional keys
 const String failedToLoadQuestionsKey = "failedToLoadQuestions";

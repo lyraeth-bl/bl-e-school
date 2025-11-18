@@ -1,5 +1,6 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeContainer extends StatelessWidget {
   // Need this flag in order to show the homeContainer
@@ -22,22 +23,38 @@ class HomeContainer extends StatelessWidget {
   }
 
   Widget _buildHomeContent(BuildContext context) {
-    return SingleChildScrollView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      padding: EdgeInsetsDirectional.only(
-        bottom: Utils.getScrollViewBottomPadding(context),
-        top: Utils.getScrollViewTopPadding(
-          context: context,
-          appBarHeightPercentage: Utils.appBarBiggerHeightPercentage,
-        ),
-        start: 24,
-        end: 24,
+    return RefreshIndicator(
+      edgeOffset: Utils.getScrollViewTopPadding(
+        context: context,
+        appBarHeightPercentage: Utils.appBarBiggerHeightPercentage,
       ),
-      child: Column(
-        children: [
-          // Schedule
-          HomeScheduleCard(),
-        ],
+      onRefresh: () async {
+        context.read<DailyAttendanceCubit>().fetchTodayDailyAttendance(
+          nis: context.read<AuthCubit>().getStudentDetails.nis,
+        );
+      },
+      child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: EdgeInsetsDirectional.only(
+          bottom: Utils.getScrollViewBottomPadding(context),
+          top: Utils.getScrollViewTopPadding(
+            context: context,
+            appBarHeightPercentage: Utils.appBarBiggerHeightPercentage,
+          ),
+          start: 24,
+          end: 24,
+        ),
+        child: Column(
+          children: [
+            // Schedule
+            HomeScheduleCard(),
+
+            SizedBox(height: 8),
+
+            // Attendance
+            HomeAttendanceCard(),
+          ],
+        ),
       ),
     );
   }

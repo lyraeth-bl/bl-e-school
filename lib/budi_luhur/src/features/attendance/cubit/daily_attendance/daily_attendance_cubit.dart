@@ -1,3 +1,8 @@
+/// This file defines the [DailyAttendanceCubit] and its corresponding state,
+/// responsible for managing daily attendance data in the application.
+///
+/// It uses the `hydrated_bloc` package for state persistence and `freezed`
+/// for immutable state objects.
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -66,6 +71,30 @@ class DailyAttendanceCubit extends HydratedCubit<DailyAttendanceState> {
         lastUpdate: storedData.updatedAt,
       ),
     );
+  }
+
+  /// Fetches the daily attendance for the current day from the remote server.
+  ///
+  /// Emits a [_Loading] state before fetching. On success, it updates the state
+  /// with the retrieved data. On failure, it emits a [_Failure] state with the
+  /// error message.
+  ///
+  /// This method is intended for the initial fetch of the day's attendance.
+  /// For refreshing existing data, use [refreshDataDailyAttendance].
+  Future<void> fetchTodayDailyAttendance({required String nis}) async {
+    emit(_Loading());
+
+    try {
+      final result = await _attendanceRepository.getDailyAttendanceUserForToday(
+        nis: nis,
+      );
+
+      final data = result['dailyAttendanceUser'];
+
+      emit(_HasData(dailyAttendance: data));
+    } catch (e) {
+      emit(_Failure(e.toString()));
+    }
   }
 
   /// Emits a new [_HasData] state with the provided attendance details.
@@ -248,6 +277,8 @@ class DailyAttendanceCubit extends HydratedCubit<DailyAttendanceState> {
   @override
   Map<String, dynamic>? toJson(DailyAttendanceState state) {
     return state.map(
+      loading: (_) => {'type': "loading"},
+      failure: (e) => {'type': "failure", 'errorMessage': e},
       initial: (_) => {'type': 'initial'},
       hasData: (s) => {
         'type': 'has',

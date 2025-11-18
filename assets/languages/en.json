@@ -390,5 +390,7 @@
   "7thPeriod": "7th Period",
   "8thPeriod": "8th Period",
   "9thPeriod": "9th Period",
-  "10thPeriod": "10th Period"
+  "10thPeriod": "10th Period",
+  "checkIn": "Check in",
+  "checkOut": "Check out"
 }

@@ -11,6 +11,10 @@ abstract class DailyAttendanceState with _$DailyAttendanceState {
   /// This is the starting point of the state machine.
   const factory DailyAttendanceState.initial() = _Initial;
 
+  /// A state indicating that data is currently being fetched from the server.
+  /// This is typically used to show a loading indicator in the UI.
+  const factory DailyAttendanceState.loading() = _Loading;
+
   /// Represents a state where no attendance data is available for the user.
   /// This could be because the user has not yet started their attendance, or
   /// there are no records in the database.
@@ -37,4 +41,11 @@ abstract class DailyAttendanceState with _$DailyAttendanceState {
     /// This is used for caching and determining if the data is stale.
     DateTime? lastUpdate,
   }) = _HasData;
+
+  /// A state representing that an error occurred while fetching or processing
+  /// attendance data.
+  ///
+  /// The [errorMessage] parameter contains a description of the error that can
+  /// be displayed to the user.
+  const factory DailyAttendanceState.failure(String errorMessage) = _Failure;
 }

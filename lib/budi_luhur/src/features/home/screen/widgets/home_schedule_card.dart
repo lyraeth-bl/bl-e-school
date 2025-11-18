@@ -32,7 +32,7 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Card.outlined(
+    return Card(
       elevation: 3,
       color: Theme.of(context).colorScheme.surface,
       child: Column(
@@ -53,6 +53,14 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                 RealTimeClock(onTick: _handleTick),
               ],
             ),
+          ),
+
+          Divider(
+            color: Theme.of(
+              context,
+            ).colorScheme.outlineVariant.withValues(alpha: 0.5),
+            indent: 16,
+            endIndent: 16,
           ),
 
           BlocBuilder<TimeTableCubit, TimeTableState>(
