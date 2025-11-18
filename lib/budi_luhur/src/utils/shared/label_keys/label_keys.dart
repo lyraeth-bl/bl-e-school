@@ -438,6 +438,18 @@ const String octoberKey = "october";
 const String novemberKey = "november";
 const String decemberKey = "december";
 
+const String firstPeriodKey = "1stPeriod";
+const String secondPeriodKey = "2ndPeriod";
+const String thirdPeriodKey = "3rdPeriod";
+const String fourthPeriodKey = "4thPeriod";
+const String fifthPeriodKey = "5thPeriod";
+const String sixPeriodKey = "6thPeriod";
+const String sevenPeriodKey = "7thPeriod";
+const String eightPeriodKey = "8thPeriod";
+const String ninePeriodKey = "9thPeriod";
+const String tenPeriodKey = "10thPeriod";
+
+
 // Online Exam additional keys
 const String failedToLoadQuestionsKey = "failedToLoadQuestions";
 const String noQuestionsAvailableForExamKey = "noQuestionsAvailableForExam";

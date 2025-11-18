@@ -380,5 +380,15 @@
   "failedToLoadQuestions": "Failed to load questions",
   "noQuestionsAvailableForExam": "No questions available for this exam.",
   "initializingExam": "Initializing exam...",
-  "examAlreadyAttempted": "You have already attempted this exam. You cannot take it again."
+  "examAlreadyAttempted": "You have already attempted this exam. You cannot take it again.",
+  "1stPeriod": "1st Period",
+  "2ndPeriod": "2nd Period",
+  "3rdPeriod": "3rd Period",
+  "4thPeriod": "4th Period",
+  "5thPeriod": "5th Period",
+  "6thPeriod": "6th Period",
+  "7thPeriod": "7th Period",
+  "8thPeriod": "8th Period",
+  "9thPeriod": "9th Period",
+  "10thPeriod": "10th Period"
 }

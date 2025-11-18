@@ -448,4 +448,31 @@ class Utils {
         return "minggu";
     }
   }
+
+  static String getPeriodString(String periodString) {
+    switch (periodString) {
+      case "1st period":
+        return getTranslatedLabel(firstPeriodKey);
+      case "2nd period":
+        return getTranslatedLabel(secondPeriodKey);
+      case "3rd period":
+        return getTranslatedLabel(thirdPeriodKey);
+      case "4th period":
+        return getTranslatedLabel(fourthPeriodKey);
+      case "5th period":
+        return getTranslatedLabel(fifthPeriodKey);
+      case "6th period":
+        return getTranslatedLabel(sixPeriodKey);
+      case "7th period":
+        return getTranslatedLabel(sevenPeriodKey);
+      case "8th period":
+        return getTranslatedLabel(eightPeriodKey);
+      case "9th period":
+        return getTranslatedLabel(ninePeriodKey);
+      case "10th period":
+        return getTranslatedLabel(tenPeriodKey);
+      default:
+        return getTranslatedLabel(breakKey);
+    }
+  }
 }
