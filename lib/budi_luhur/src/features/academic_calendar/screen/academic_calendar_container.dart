@@ -15,7 +15,6 @@ class AcademicCalendarContainer extends StatefulWidget {
 class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
   bool isApplicationItemAnimationOn = false;
 
-  // Selected Day
   DateTime? _selectedDay;
 
   AcademicCalendar? _selectedAcademicCalendar;
@@ -279,33 +278,32 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
             _selectedDay = selected;
             focusedDay = focused;
 
-            _selectedAcademicCalendar = listAcademicCalendar.firstWhere((date) {
-              final dt = DateTime.tryParse(date.tanggalMulai);
+            final eventsForSelectedDay = listAcademicCalendar.where((ev) {
+              final dt = DateTime.tryParse(ev.tanggalMulai);
               return dt != null && isSameDay(dt, selected);
-            }, orElse: () => AcademicCalendar.fromJson({}));
+            }).toList();
+
+            _selectedAcademicCalendar = eventsForSelectedDay.isNotEmpty
+                ? eventsForSelectedDay.first
+                : AcademicCalendar.fromJson({});
           });
 
-          final selectedAttendance = listAcademicCalendar.firstWhere((date) {
-            final dt = DateTime.tryParse(date.tanggalMulai);
+          final eventsForSelectedDay = listAcademicCalendar.where((ev) {
+            final dt = DateTime.tryParse(ev.tanggalMulai);
             return dt != null && isSameDay(dt, selected);
-          }, orElse: () => AcademicCalendar.fromJson({}));
+          }).toList();
 
-          if ((selectedAttendance.tanggalMulai).isNotEmpty) {
-            // trigger ulang animasi list
+          if (eventsForSelectedDay.isNotEmpty) {
             setState(() {
               isApplicationItemAnimationOn = !isApplicationItemAnimationOn;
             });
 
-            // show bottom sheet, dan saat bottomsheet close, toggle lagi supaya bisa di-trigger next time
-            _showAcademicBottomSheet(selectedAttendance).then((_) {
-              // setelah ditutup, kita bisa toggle kembali agar animasi bisa di-trigger lagi
+            _showAcademicBottomSheet(eventsForSelectedDay).then((_) {
               setState(() {
                 isApplicationItemAnimationOn = !isApplicationItemAnimationOn;
               });
             });
-          } else {
-            // no event
-          }
+          } else {}
         },
 
         availableGestures: AvailableGestures.none,
@@ -335,9 +333,9 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
           formatButtonVisible: false,
         ),
         firstDay: firstDay,
-        //start education year
+
         lastDay: lastDay,
-        //end education year
+
         focusedDay: focusedDay,
       ),
     );
@@ -494,7 +492,6 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
                 );
                 if (isLoading) return;
 
-                // animasi next page
                 _calendarPageController?.nextPage(
                   duration: const Duration(milliseconds: 400),
                   curve: Curves.easeInOut,
@@ -511,151 +508,175 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
     );
   }
 
-  Future<void> _showAcademicBottomSheet(AcademicCalendar academicCalendar) {
+  Future<void> _showAcademicBottomSheet(
+    List<AcademicCalendar> academicCalendarList,
+  ) {
+    if (academicCalendarList.isEmpty) return Future.value();
+
+    final DateTime? firstStart = DateTime.tryParse(
+      academicCalendarList.first.tanggalMulai,
+    );
+    final String dateHeader = firstStart != null
+        ? Utils.formatDateTwo(firstStart)
+        : "";
+
     return showModalBottomSheet(
       useSafeArea: true,
+      isScrollControlled: true,
       showDragHandle: true,
       context: context,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
       builder: (c) {
-        return Padding(
-          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    academicCalendar.judul,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-                  ),
+        final maxHeight = MediaQuery.of(context).size.height * 0.75;
 
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 4,
+        return Padding(
+          padding: EdgeInsets.only(
+            left: 16,
+            right: 16,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+            top: 16,
+          ),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: maxHeight),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      Utils.getTranslatedLabel(detailsEventsKey),
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
                     ),
-                    decoration: BoxDecoration(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.tertiaryContainer.withValues(alpha: 0.8),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Text(
-                      academicCalendar.unit,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
                         color: Theme.of(
                           context,
-                        ).colorScheme.onTertiaryContainer,
-                        fontWeight: FontWeight.w600,
+                        ).colorScheme.tertiaryContainer.withValues(alpha: 0.8),
+                        borderRadius: BorderRadius.circular(4),
                       ),
-                    ),
-                  ),
-                ],
-              ),
-
-              SizedBox(height: 24),
-
-              if (academicCalendar.keterangan.isNotEmpty) ...[
-                Text(
-                  "Keterangan",
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                ),
-
-                SizedBox(height: 8),
-
-                Text(
-                  academicCalendar.keterangan,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
-                ),
-
-                SizedBox(height: 24),
-
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Tanggal mulai",
-                            style: Theme.of(context).textTheme.titleMedium
-                                ?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onSurface,
-                                ),
-                          ),
-
-                          const SizedBox(height: 4),
-
-                          Text(
-                            Utils.formatToDayMonthYear(
-                              DateTime.tryParse(academicCalendar.tanggalMulai)!,
-                            ),
-                            style: Theme.of(context).textTheme.bodyLarge
-                                ?.copyWith(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onSurfaceVariant,
-                                ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Tanggal selesai',
-                            style: Theme.of(context).textTheme.titleMedium
-                                ?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onSurface,
-                                ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            Utils.formatToDayMonthYear(
-                              DateTime.tryParse(
-                                academicCalendar.tanggalSelesai,
-                              )!,
-                            ),
-                            style: Theme.of(context).textTheme.bodyLarge
-                                ?.copyWith(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onSurfaceVariant,
-                                ),
-                          ),
-                        ],
+                      child: Text(
+                        dateHeader,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onTertiaryContainer,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ],
                 ),
-              ] else
+
+                const SizedBox(height: 16),
+
                 Text(
-                  "Tidak ada data event",
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  "${academicCalendarList.length} event",
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
                 ),
-            ],
+
+                const SizedBox(height: 12),
+
+                Expanded(
+                  child: academicCalendarList.isEmpty
+                      ? Center(
+                          child: Text(
+                            "Tidak ada data event",
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        )
+                      : ListView.separated(
+                          padding: EdgeInsets.zero,
+                          itemCount: academicCalendarList.length,
+                          separatorBuilder: (_, __) =>
+                              const SizedBox(height: 12),
+                          itemBuilder: (context, index) {
+                            final ev = academicCalendarList[index];
+
+                            final start = DateTime.tryParse(ev.tanggalMulai);
+                            final end = DateTime.tryParse(ev.tanggalSelesai);
+
+                            final rangeText = (start != null && end != null)
+                                ? "${Utils.formatDateTwo(start)} - ${Utils.formatDateTwo(end)}"
+                                : (start != null
+                                      ? Utils.formatDateTwo(start)
+                                      : "");
+
+                            return Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 12,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.surface,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          ev.judul,
+                                          style: TextStyle(
+                                            color: Theme.of(
+                                              context,
+                                            ).colorScheme.onSurface,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 14.0,
+                                          ),
+                                        ),
+                                      ),
+                                      if (rangeText.isNotEmpty)
+                                        Text(
+                                          rangeText,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall
+                                              ?.copyWith(
+                                                color: Theme.of(
+                                                  context,
+                                                ).colorScheme.onSurfaceVariant,
+                                              ),
+                                        ),
+                                    ],
+                                  ),
+                                  if (ev.keterangan.isNotEmpty) ...[
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      ev.keterangan,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.copyWith(
+                                            color: Theme.of(
+                                              context,
+                                            ).colorScheme.onSurfaceVariant,
+                                          ),
+                                    ),
+                                  ],
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                ),
+              ],
+            ),
           ),
         );
       },

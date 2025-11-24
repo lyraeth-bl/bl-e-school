@@ -9,4 +9,5 @@ const String defaultLanguageCode = "en";
 /// https://developers.google.com/admin-sdk/directory/v1/languages
 const List<AppLanguageEntity> appLanguages = [
   AppLanguageEntity(languageName: "English", languageCode: "en"),
+  AppLanguageEntity(languageName: "Indonesia", languageCode: "id"),
 ];

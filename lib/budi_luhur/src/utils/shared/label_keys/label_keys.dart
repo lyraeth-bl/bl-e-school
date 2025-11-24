@@ -17,6 +17,7 @@ const String examsKey = "exams";
 const String profileKey = "profile";
 const String personalDetailsKey = "personalDetails";
 const String detailsProfileKey = "detailsProfile";
+const String detailsEventsKey = "detailsEvents";
 const String nameKey = "name";
 const String classKey = "class";
 const String rollNumberKey = "rollNumber";
