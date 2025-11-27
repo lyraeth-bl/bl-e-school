@@ -65,6 +65,9 @@ class NotificationsUtility {
   /// Type identifier for notifications related to assignments.
   static String assignmentNotificationType = "assignment";
 
+  /// Type identifier for notifications related to attendance.
+  static String attendanceNotificationType = "attendance";
+
   /// Type identifier for notifications related to payments.
   static String paymentNotificationType = "payment";
 
@@ -169,24 +172,31 @@ class NotificationsUtility {
   ///
   /// - [type]: The notification type (e.g., 'general', 'notification').
   /// - [data]: The full payload of the notification.
-  static void _onTapNotificationScreenNavigateCallback(
+  static Future<void> _onTapNotificationScreenNavigateCallback(
     String type,
     Map<String, dynamic> data,
-  ) {
-    if (type.isEmpty) {
-      return;
-    }
+  ) async {
+    if (type.isEmpty) return;
 
     if (type == generalNotificationType) {
       if (Get.currentRoute != BudiLuhurRoutes.home) {
         Get.toNamed(BudiLuhurRoutes.home);
       }
-    } else if (type == notificationType) {
-      // You might need a specific notifications screen route.
-      // Example:
-      // if (Get.currentRoute != BudiLuhurRoutes.notifications) {
-      //   Get.toNamed(BudiLuhurRoutes.notifications);
-      // }
+      return;
+    }
+
+    if (type == notificationType) {
+      if (Get.currentRoute != BudiLuhurRoutes.notifications) {
+        Get.toNamed(BudiLuhurRoutes.notifications);
+      }
+      return;
+    }
+
+    if (type == attendanceNotificationType.toLowerCase()) {
+      if (Get.currentRoute != BudiLuhurRoutes.home) {
+        Get.toNamed(BudiLuhurRoutes.home);
+      }
+      return;
     }
   }
 

@@ -265,7 +265,7 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
                 width: 6,
                 height: 6,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary,
+                  color: Theme.of(context).colorScheme.onTertiaryContainer,
                   shape: BoxShape.circle,
                 ),
               ),
@@ -311,10 +311,10 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
           isTodayHighlighted: false,
           holidayDecoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Theme.of(context).colorScheme.primary,
+            color: Theme.of(context).colorScheme.tertiaryContainer,
           ),
           holidayTextStyle: TextStyle(
-            color: Theme.of(context).colorScheme.onPrimary,
+            color: Theme.of(context).colorScheme.onTertiaryContainer,
             fontWeight: FontWeight.w700,
           ),
         ),

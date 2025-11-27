@@ -246,6 +246,9 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
               final hadirCount = dailyAttendanceList
                   .where((d) => d.status == 'Hadir')
                   .length;
+              final terlambatCount = dailyAttendanceList
+                  .where((d) => d.status == 'Terlambat')
+                  .length;
               final sakitCount = dailyAttendanceList
                   .where((d) => d.status == 'Sakit')
                   .length;
@@ -258,14 +261,20 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
 
               final Map<String, double> pieData = {};
               if (hadirCount > 0) pieData['Hadir'] = hadirCount.toDouble();
+              if (terlambatCount > 0)
+                pieData['Terlambat'] = terlambatCount.toDouble();
               if (sakitCount > 0) pieData['Sakit'] = sakitCount.toDouble();
               if (izinCount > 0) pieData['Izin'] = izinCount.toDouble();
               if (alphaCount > 0) pieData['Alpha'] = alphaCount.toDouble();
 
-              final order = ['Hadir', 'Sakit', 'Izin', 'Alpha'];
+              final order = ['Hadir', 'Terlambat', 'Sakit', 'Izin', 'Alpha'];
 
               final presentDays = dailyAttendanceList
-                  .where((status) => status.status == "Hadir")
+                  .where(
+                    (status) =>
+                        status.status == "Hadir" ||
+                        status.status == "Terlambat",
+                  )
                   .toList();
               final absentDays = dailyAttendanceList
                   .where(
@@ -289,6 +298,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
                     _buildLastFetchData(timeUpdate: lastUpdated),
 
                     if (hadirCount != 0 ||
+                        terlambatCount != 0 ||
                         alphaCount != 0 ||
                         sakitCount != 0 ||
                         izinCount != 0 && pieData.isNotEmpty)

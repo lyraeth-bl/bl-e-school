@@ -24,7 +24,7 @@ class HomeAttendanceCard extends StatelessWidget {
         );
       },
       child: Card(
-        color: Theme.of(context).colorScheme.primaryFixedDim,
+        color: Theme.of(context).colorScheme.secondaryContainer,
         elevation: 3,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -199,7 +199,7 @@ class HomeAttendanceCard extends StatelessWidget {
                               ),
                               SizedBox(height: 4),
                               Text(
-                                Utils.getTranslatedLabel(checkInKey),
+                                Utils.getTranslatedLabel(checkOutKey),
                                 style: Theme.of(context).textTheme.bodyMedium
                                     ?.copyWith(
                                       color: Theme.of(
