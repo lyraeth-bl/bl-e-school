@@ -104,7 +104,7 @@ class HomeAttendanceCard extends StatelessWidget {
                                           lastUpdate,
                                         ) {
                                           final checkIn = formatOrDash(
-                                            dailyAttendance.jamCheckIn,
+                                            dailyAttendance.jamCheckIn?.toLocal(),
                                           );
                                           return Text(
                                             checkIn,
@@ -183,7 +183,7 @@ class HomeAttendanceCard extends StatelessWidget {
                                           lastUpdate,
                                         ) {
                                           final checkIn = formatOrDash(
-                                            dailyAttendance.jamCheckOut,
+                                            dailyAttendance.jamCheckOut?.toLocal(),
                                           );
                                           return Text(
                                             checkIn,

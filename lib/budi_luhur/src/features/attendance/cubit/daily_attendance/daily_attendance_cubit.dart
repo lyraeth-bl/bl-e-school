@@ -1,8 +1,4 @@
-/// This file defines the [DailyAttendanceCubit] and its corresponding state,
-/// responsible for managing daily attendance data in the application.
-///
-/// It uses the `hydrated_bloc` package for state persistence and `freezed`
-/// for immutable state objects.
+
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';

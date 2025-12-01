@@ -236,6 +236,8 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
       ),
       child: BlocBuilder<FetchDailyAttendanceCubit, FetchDailyAttendanceState>(
         builder: (c, s) {
+          print("FetchDailyAttendanceCubit : $c");
+          print("FetchDailyAttendanceState : $s");
           return s.maybeWhen(
             failure: (errorMessage) => ErrorContainer(
               errorMessageCode: errorMessage,
@@ -261,8 +263,9 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
 
               final Map<String, double> pieData = {};
               if (hadirCount > 0) pieData['Hadir'] = hadirCount.toDouble();
-              if (terlambatCount > 0)
+              if (terlambatCount > 0) {
                 pieData['Terlambat'] = terlambatCount.toDouble();
+              }
               if (sakitCount > 0) pieData['Sakit'] = sakitCount.toDouble();
               if (izinCount > 0) pieData['Izin'] = izinCount.toDouble();
               if (alphaCount > 0) pieData['Alpha'] = alphaCount.toDouble();
@@ -404,13 +407,13 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
             _now = focused;
 
             _selectedDailyAttendance = dailyAttendanceList.firstWhere(
-              (date) => isSameDay(date.tanggal, selected),
+              (date) => isSameDay(date.tanggal.toLocal(), selected),
               orElse: () => DailyAttendance.fromJson({}),
             );
           });
 
           final selectedAttendance = dailyAttendanceList.firstWhere(
-            (date) => isSameDay(date.tanggal, selected),
+            (date) => isSameDay(date.tanggal.toLocal(), selected),
             orElse: () => DailyAttendance.fromJson({}),
           );
 
@@ -495,42 +498,15 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    Utils.formatDays(
-                      _selectedDay ?? DateTime.now(),
-                      locale: "id_ID",
-                    ),
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-                  ),
-
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.tertiaryContainer.withValues(alpha: 0.8),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Text(
-                      dailyAttendance.status,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.onTertiaryContainer,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ],
+              Text(
+                Utils.formatDays(
+                  _selectedDay ?? DateTime.now(),
+                  locale: "id_ID",
+                ),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
               ),
 
               SizedBox(height: 24),
@@ -553,7 +529,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
                 SizedBox(height: 8),
 
                 Text(
-                  dailyAttendance.alasan ?? "-",
+                  dailyAttendance.alasan ?? dailyAttendance.status,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
@@ -588,7 +564,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
 
                           Text(
                             dailyAttendance.jamCheckIn != null
-                                ? Utils.formatTime(dailyAttendance.jamCheckIn!)
+                                ? Utils.formatTime(dailyAttendance.jamCheckIn!.toLocal())
                                 : "-",
                             style: Theme.of(context).textTheme.bodyLarge
                                 ?.copyWith(
@@ -618,7 +594,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
                           const SizedBox(height: 4),
                           Text(
                             dailyAttendance.jamCheckOut != null
-                                ? Utils.formatTime(dailyAttendance.jamCheckOut!)
+                                ? Utils.formatTime(dailyAttendance.jamCheckOut!.toLocal())
                                 : "-",
                             style: Theme.of(context).textTheme.bodyLarge
                                 ?.copyWith(
