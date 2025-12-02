@@ -84,7 +84,7 @@ class _StudentOnBoardingScreenState extends State<StudentOnBoardingScreen> {
               ),
             ),
 
-            /// Uncomment this if photos ready
+            /// TODO: Uncomment this if photos ready
             // GridView.builder(
             //   padding: EdgeInsets.only(top: context.height * 0.03),
             //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

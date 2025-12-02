@@ -1,4 +1,3 @@
-
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -134,11 +133,14 @@ class DailyAttendanceCubit extends HydratedCubit<DailyAttendanceState> {
       final dailyAttendanceData =
           result['dailyAttendanceUser'] as DailyAttendance;
 
+      final hasCheckIn = dailyAttendanceData.jamCheckIn != null;
+      final hasCheckOut = dailyAttendanceData.jamCheckOut != null;
+
       emit(
         _HasData(
           dailyAttendance: dailyAttendanceData,
-          hasCheckIn: isCheckIn,
-          hasCheckOut: isCheckOut,
+          hasCheckIn: hasCheckIn,
+          hasCheckOut: hasCheckOut,
           hasPost: isPost,
           lastUpdate: dailyAttendanceData.updatedAt,
         ),
