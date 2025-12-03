@@ -26,7 +26,7 @@ abstract class DailyAttendanceState with _$DailyAttendanceState {
   /// flags for the user's check-in, check-out, and post statuses.
   const factory DailyAttendanceState.hasData({
     /// The main attendance data for the current day.
-    required DailyAttendance dailyAttendance,
+    DailyAttendance? dailyAttendance,
 
     /// A flag indicating whether the initial attendance for the day has been posted.
     @Default(false) bool hasPost,
