@@ -1,7 +1,6 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 
 class HomeContainer extends StatelessWidget {
   // Need this flag in order to show the homeContainer
@@ -58,47 +57,7 @@ class HomeContainer extends StatelessWidget {
             SizedBox(height: 8),
 
             // Feedback
-            InkWell(
-              onTap: () => Get.toNamed(BudiLuhurRoutes.feedback),
-              child: Card(
-                color: Theme.of(context).colorScheme.surface,
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            Utils.getTranslatedLabel(feedbackKey),
-                            style: Theme.of(context).textTheme.titleMedium
-                                ?.copyWith(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onSurface,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                          ),
-                          SizedBox(height: 8),
-                          Text(
-                            "Ayoooo! Berikan saranmu untuk aplikasi ini",
-                            style: Theme.of(context).textTheme.labelMedium
-                                ?.copyWith(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onSurfaceVariant,
-                                ),
-                          ),
-                        ],
-                      ),
-
-                      Icon(Icons.keyboard_arrow_right),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            HomeFeedbackCard(),
           ],
         ),
       ),
