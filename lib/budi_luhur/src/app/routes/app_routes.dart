@@ -61,6 +61,10 @@ class BudiLuhurRoutes extends BudiLuhur {
   /// Navigates to [SettingsScreen].
   static const String settings = "/settings";
 
+  /// The route for accessing feedback screen.
+  /// Navigates to [FeedbackScreen].
+  static const String feedback = "/feedback";
+
   /// A list of [GetPage] objects that defines the application's route table.
   ///
   /// Each [GetPage] entry maps a route name to a page-building function (`page`),
@@ -110,5 +114,6 @@ class BudiLuhurRoutes extends BudiLuhur {
       page: () => AcademicCalendarScreen.routeInstance(),
     ),
     GetPage(name: settings, page: () => SettingsScreen.routeInstance()),
+    GetPage(name: feedback, page: () => FeedbackScreen.routeInstance()),
   ];
 }

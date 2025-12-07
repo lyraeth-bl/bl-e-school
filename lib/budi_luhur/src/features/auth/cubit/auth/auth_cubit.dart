@@ -19,7 +19,7 @@ class AuthCubit extends HydratedCubit<AuthState> {
   /// Requires an [AuthRepository] for handling authentication logic and a
   /// [BiometricAuth] utility for biometric operations.
   AuthCubit(this._authRepository, this._biometricAuth)
-      : super(const _Initial()) {
+    : super(const _Initial()) {
     _init();
   }
 
@@ -123,32 +123,32 @@ class AuthCubit extends HydratedCubit<AuthState> {
   ///
   /// Returns an empty [Student] object if the user is not authenticated.
   Student get getStudentDetails => state.maybeWhen(
-        authenticated: (isStudent, student, timeAuth) => student,
-        orElse: () => Student.fromJson({}),
-      );
+    authenticated: (isStudent, student, timeAuth) => student,
+    orElse: () => Student.fromJson({}),
+  );
 
   /// Checks if the currently authenticated user is a student.
   ///
   /// Returns `false` if the user is not authenticated.
   bool get getIsStudentLogin => state.maybeWhen(
-        authenticated: (isStudent, student, timeAuth) => isStudent,
-        orElse: () => false,
-      );
+    authenticated: (isStudent, student, timeAuth) => isStudent,
+    orElse: () => false,
+  );
 
   /// Gets the timestamp of the last authentication.
   ///
   /// Returns the current time if the user is not authenticated or if the time is not set.
   DateTime get getTimeLogin => state.maybeWhen(
-        authenticated: (isStudent, student, timeAuth) => timeAuth ?? DateTime.now(),
-        orElse: () => DateTime.now(),
-      );
+    authenticated: (isStudent, student, timeAuth) => timeAuth ?? DateTime.now(),
+    orElse: () => DateTime.now(),
+  );
 
   /// Retrieves the current JWT token from the repository.
   String get getJwtToken => _authRepository.getJwtToken();
 
   /// Signs the user out and transitions to the unauthenticated state.
-  void signOut() {
-    _authRepository.signOutUser();
+  void signOut() async {
+    await _authRepository.signOutUser();
     emit(const AuthState.unauthenticated());
   }
 

@@ -40,6 +40,12 @@ const String coreSubjectsHiveKey = "authBox.coreSubjects";
 /// The key for storing the student's elective subjects.
 const String electiveSubjectsHiveKey = "authBox.electiveSubjects";
 
+/// Contains keys for caching student feedback data.
+const String feedbackBoxKey = 'feedbackBox';
+
+/// The key for storing the student's feedback record.
+const String studentFeedbackKey = 'feedbackBox.feedbackStudent';
+
 /// Contains keys for caching student attendance data.
 const String attendanceBoxKey = 'attendanceBox';
 

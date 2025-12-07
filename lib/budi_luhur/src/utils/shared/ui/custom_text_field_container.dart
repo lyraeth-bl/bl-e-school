@@ -33,6 +33,7 @@ class CustomTextFieldContainer extends StatelessWidget {
         border: Border.all(color: Theme.of(context).colorScheme.outline),
       ),
       child: TextField(
+        style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
         controller: textEditingController,
         obscureText: hideText,
         keyboardType: keyboardType,

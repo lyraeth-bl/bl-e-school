@@ -1,0 +1,11 @@
+// Cubit
+export 'cubit/feedback_cubit.dart';
+export 'cubit/get_feedback/get_feedback_cubit.dart';
+// Data
+export 'data/dto/feedback_dto.dart';
+export 'data/feedback.dart';
+// Repository
+export 'repository/feedback_repository.dart';
+export 'screen/feedback_container.dart';
+// Screen
+export 'screen/feedback_screen.dart';

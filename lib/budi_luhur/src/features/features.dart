@@ -8,6 +8,8 @@ export 'attendance/attendance.dart';
 export 'auth/auth.dart';
 /// Device Token
 export 'device_tokens/device_token.dart';
+/// Feedback
+export 'feedback/feedback.dart';
 /// Home
 export 'home/home.dart';
 /// Languages

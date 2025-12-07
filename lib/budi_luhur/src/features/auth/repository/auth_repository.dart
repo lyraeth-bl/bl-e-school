@@ -100,10 +100,9 @@ class AuthRepository {
       setIsLogIn(false),
       setIsStudentLogIn(false),
       setJwtToken(""),
-      setStudentDetails(Student.fromJson({})),
-      AttendanceRepository().setStoredDailyAttendance(
-        DailyAttendance.fromJson({}),
-      ),
+      clearStoredStudentData(),
+      AttendanceRepository().clearStoredDailyAttendanceData(),
+      FeedbackRepository().clearStoredFeedbackData(),
     ]);
   }
 
@@ -188,5 +187,12 @@ class AuthRepository {
     } catch (e) {
       throw ApiException(e.toString());
     }
+  }
+
+  Future<void> clearStoredStudentData() {
+    print("clearing Student Data");
+    return Hive.box(authBoxKey).clear().then((_) {
+      print("Student data cleared");
+    });
   }
 }
