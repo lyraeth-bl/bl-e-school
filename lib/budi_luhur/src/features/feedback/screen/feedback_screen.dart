@@ -6,9 +6,16 @@ class FeedbackScreen extends StatelessWidget {
   const FeedbackScreen({super.key});
 
   static Widget routeInstance() {
-    return BlocProvider<GetFeedbackCubit>(
-      create: (_) => GetFeedbackCubit(FeedbackRepository()),
-      child: FeedbackScreen(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<FeedbackCubit>(
+          create: (_) => FeedbackCubit(FeedbackRepository()),
+        ),
+        BlocProvider<GetFeedbackCubit>(
+          create: (_) => GetFeedbackCubit(FeedbackRepository()),
+        ),
+      ],
+      child: const FeedbackScreen(),
     );
   }
 
@@ -28,17 +35,13 @@ class FeedbackScreen extends StatelessWidget {
         builder: (context, state) {
           return state.maybeWhen(
             hasData: (feedbackUser, lastFetched) {
-              if (feedbackUser != null) {
-                FloatingActionButton(
-                  onPressed: () {},
-                  tooltip: "Add feedback",
-                  child: Icon(Icons.add),
-                );
-              }
-
               return SizedBox.shrink();
             },
-            orElse: () => SizedBox.shrink(),
+            orElse: () => FloatingActionButton(
+              onPressed: () {},
+              tooltip: "Add feedback",
+              child: Icon(Icons.add),
+            ),
           );
         },
       ),

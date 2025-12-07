@@ -34,9 +34,6 @@ class BudiLuhurApp extends StatelessWidget {
         BlocProvider<DailyAttendanceCubit>(
           create: (_) => DailyAttendanceCubit(AttendanceRepository()),
         ),
-        BlocProvider<FeedbackCubit>(
-          create: (_) => FeedbackCubit(FeedbackRepository()),
-        ),
       ],
       child: Builder(
         builder: (context) {

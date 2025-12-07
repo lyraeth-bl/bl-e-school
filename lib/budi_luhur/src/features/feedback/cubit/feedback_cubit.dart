@@ -52,8 +52,9 @@ class FeedbackCubit extends Cubit<FeedbackState> {
   }
 
   /// Updates the state with a new [Feedback] object.
-  void updateFeedbackUserData(Feedback feedback) =>
-      emit(_HasData(feedbackUser: feedback, lastFetched: feedback.updatedAt));
+  void updateFeedbackUserData(Feedback feedback) {
+    emit(_HasData(feedbackUser: feedback, lastFetched: feedback.updatedAt));
+  }
 
   /// Clears all feedback data and resets the state to initial.
   Future<void> clearAllData() async {
@@ -61,6 +62,8 @@ class FeedbackCubit extends Cubit<FeedbackState> {
     await _feedbackRepository.clearStoredFeedbackData();
     emit(const _Initial());
   }
+
+  void setInitial() => emit(const _Initial());
 
   /// Returns the current [Feedback] data, or `null` if not available.
   Feedback? get getFeedback => state.maybeWhen(

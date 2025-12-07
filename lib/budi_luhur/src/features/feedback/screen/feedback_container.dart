@@ -17,10 +17,11 @@ class _FeedbackContainerState extends State<FeedbackContainer> {
     WidgetsBinding.instance.addPostFrameCallback((_) => _fetchUserFeedback());
   }
 
-  void _fetchUserFeedback() async {
+  Future<void> _fetchUserFeedback() async {
     final authDetails = context.read<AuthCubit>().getStudentDetails;
-
-    context.read<GetFeedbackCubit>().fetchUserFeedback(nis: authDetails.nis);
+    await context.read<GetFeedbackCubit>().fetchUserFeedback(
+      nis: authDetails.nis,
+    );
   }
 
   String _formatDate(DateTime? d) {
@@ -39,9 +40,15 @@ class _FeedbackContainerState extends State<FeedbackContainer> {
     return BlocListener<GetFeedbackCubit, GetFeedbackState>(
       listener: (context, state) {
         state.maybeWhen(
-          success: (userFeedbackList, lastUpdate) => context
-              .read<FeedbackCubit>()
-              .updateFeedbackUserData(userFeedbackList.first),
+          success: (userFeedbackList, lastUpdate) {
+            if (userFeedbackList.isNotEmpty) {
+              context.read<FeedbackCubit>().updateFeedbackUserData(
+                userFeedbackList.first,
+              );
+            } else {
+              context.read<FeedbackCubit>().setInitial();
+            }
+          },
           orElse: () {},
         );
       },

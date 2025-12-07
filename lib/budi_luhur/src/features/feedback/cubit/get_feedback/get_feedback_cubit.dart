@@ -1,8 +1,3 @@
-/// Manages the state of user feedback data.
-///
-/// This cubit is responsible for fetching user feedback from the
-/// [FeedbackRepository] and emitting the appropriate states.
-// get_feedback_cubit.dart
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -30,17 +25,18 @@ class GetFeedbackCubit extends Cubit<GetFeedbackState> {
   /// Emits a [_Success] state with the fetched data if the request is
   /// successful.
   /// Emits a [_Failure] state with an error message if the request fails.
-  Future<void> fetchUserFeedback({
-    required String nis,
-  }) async {
+  Future<void> fetchUserFeedback({required String nis}) async {
     emit(const _Loading());
 
     try {
       final result = await _feedbackRepository.getUserFeedback(nis: nis);
-
       final data = result.feedbackList;
-
       final now = DateTime.now();
+
+      if (data.isEmpty) {
+        emit(_Success(userFeedbackList: [], lastUpdate: now));
+        return;
+      }
 
       emit(_Success(userFeedbackList: data, lastUpdate: now));
     } catch (e) {

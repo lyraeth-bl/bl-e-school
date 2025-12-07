@@ -72,6 +72,10 @@ class FeedbackRepository {
           .map((feedback) => Feedback.fromJson(feedback))
           .toList();
 
+      if (userFeedbackList.isEmpty) {
+        return FeedbackDTO(feedbackList: []);
+      }
+
       await Future.wait([setStoredFeedbackUser(userFeedbackList.first)]);
 
       return FeedbackDTO(feedbackList: userFeedbackList);
