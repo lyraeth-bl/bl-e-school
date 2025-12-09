@@ -39,7 +39,7 @@ class _StudentOnBoardingScreenState extends State<StudentOnBoardingScreen> {
     final detailsStudent = context.read<AuthCubit>().getStudentDetails;
     final classStudent =
         "${detailsStudent.kelasSaatIni}${detailsStudent.noKelasSaatIni}";
-    context.read<TimeTableCubit>().fetchTimeTable(kelas: classStudent);
+    context.read<TimeTableCubit>().fetchTimeTable(kelas: classStudent, forceRefresh: true);
   }
 
   Future<void> _checkFirstTimeUser() async {
