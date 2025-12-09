@@ -1,8 +1,11 @@
 import 'dart:io';
 
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:path/path.dart' as path;
 
 /// A repository for handling user feedback.
 ///
@@ -18,7 +21,7 @@ class FeedbackRepository {
   /// The optional [attachment] is a URL to an attachment.
   ///
   /// Throws an [ApiException] if the request fails.
-  Future<void> sendFeedback({
+  Future<Map<String, dynamic>> sendFeedback({
     required String nis,
     required String message,
     String? category,
@@ -30,26 +33,63 @@ class FeedbackRepository {
     final String resolvedAppVersion = packageInfo.version;
     final String resolvedOs = Platform.isIOS ? "iOS" : "Android";
 
+    // Build base payload (exclude null values where possible)
     final Map<String, dynamic> data = {
       "nis": nis,
       "message": message,
-      "category": category,
-      "type": type?.name,
-      "attachment": attachment,
+      if (category != null) "category": category,
+      if (type != null) "type": type.name,
       "app_version": resolvedAppVersion,
       "os": resolvedOs,
     };
 
+    // If attachment path provided and file exists -> convert to MultipartFile
+    if (attachment != null && attachment.isNotEmpty) {
+      final File file = File(attachment);
+      if (await file.exists()) {
+        final String filename = path.basename(file.path);
+        final MultipartFile multipartFile = await MultipartFile.fromFile(
+          file.path,
+          filename: filename,
+          // contentType: MediaType('image', 'jpeg'), // optional
+        );
+
+        // Use field name expected by backend. Your model uses "attachments"
+        // so we attach it under that key. If backend expects an array,
+        // use "attachments[]" or send a List<MultipartFile>.
+        data['attachments'] = multipartFile;
+      } else {
+        // file path given but file not exist - optional: throw or ignore
+        if (kDebugMode) {
+          print(
+            'Attachment path provided but file does not exist: $attachment',
+          );
+        }
+      }
+    }
+
     try {
+      // ApiClient.post already wraps body with FormData.fromMap(body),
+      // so passing MultipartFile in data map will make it a multipart request.
       final response = await ApiClient.post(
         body: data,
         url: ApiEndpoints.feedback,
         useAuthToken: true,
       );
 
-      final Feedback feedbackMap = response['data'];
+      final Map<String, dynamic> feedbackMap = response['data'];
 
-      await Future.wait([setStoredFeedbackUser(feedbackMap)]);
+      await Future.wait([
+        setStoredFeedbackUser(
+          Feedback.fromJson(Map<String, dynamic>.from(feedbackMap)),
+        ),
+      ]);
+
+      return {
+        'feedbackData': Feedback.fromJson(
+          Map<String, dynamic>.from(feedbackMap),
+        ),
+      };
     } catch (e) {
       throw ApiException(e.toString());
     }

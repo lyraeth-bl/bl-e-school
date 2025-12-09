@@ -1,9 +1,13 @@
 library;
 
+import 'dart:convert' as convert;
+
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// Animations
 export 'shared/animations/animation_configurations.dart';
@@ -474,5 +478,104 @@ class Utils {
       default:
         return getTranslatedLabel(breakKey);
     }
+  }
+
+  /// Feedback Utils ///
+
+  static List<String> parseAttachments(String? rawAttachments) {
+    if (rawAttachments == null) return [];
+
+    final s = rawAttachments.trim();
+    if (s.isEmpty) return [];
+
+    // JSON array string: '["a","b"]'
+    if (s.startsWith('[') && s.endsWith(']')) {
+      try {
+        final decoded = convert.jsonDecode(s);
+        if (decoded is List) {
+          return decoded
+              .map((e) => e?.toString() ?? '')
+              .map((e) => e.trim())
+              .where((e) => e.isNotEmpty)
+              .toList();
+        }
+      } catch (_) {
+        // ignore, fallback
+      }
+    }
+
+    // comma separated
+    if (s.contains(',')) {
+      return s
+          .split(',')
+          .map((e) => e.trim())
+          .where((e) => e.isNotEmpty)
+          .toList();
+    }
+
+    // single string
+    return [s];
+  }
+
+  /// Normalize relative/partial paths from backend to absolute URL
+  static String normalizeToFullUrl(String raw) {
+    final trimmed = raw.trim();
+    if (trimmed.isEmpty) return '';
+
+    if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+      return trimmed;
+    }
+
+    if (trimmed.startsWith('/')) {
+      return 'https://laravel.jh-beon.cloud$trimmed';
+    }
+
+    return 'https://laravel.jh-beon.cloud/spo/$trimmed';
+  }
+
+  /// Open url with fallback and user-friendly messages
+  static Future<bool> openUrl(String rawUrl) async {
+    final uri = Uri.tryParse(rawUrl);
+    if (uri == null) {
+      if (kDebugMode) print('openUrl: invalid uri -> $rawUrl');
+      return false;
+    }
+
+    try {
+      final launched = await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+      if (launched) return true;
+
+      // fallback try platform default
+      final fallback = await launchUrl(uri, mode: LaunchMode.platformDefault);
+      return fallback;
+    } catch (e) {
+      if (kDebugMode) print('openUrl error: $e');
+      return false;
+    }
+  }
+
+  /// Convert enum-like or dotted string to readable label
+  static String enumToLabel(Object? e) {
+    if (e == null) return '-';
+    final s = e.toString().split('.').last;
+    return s
+        .replaceAllMapped(RegExp(r'([A-Z])'), (m) => ' ${m[0]}')
+        .trim()
+        .replaceFirstMapped(RegExp(r'^[a-z]'), (m) => m[0]!.toUpperCase());
+  }
+
+  /// Simple date formatter used in UI
+  static String formatShortDate(DateTime? d) {
+    if (d == null) return '-';
+    final dt = d.toLocal();
+    final yyyy = dt.year.toString().padLeft(4, '0');
+    final mm = dt.month.toString().padLeft(2, '0');
+    final dd = dt.day.toString().padLeft(2, '0');
+    final hh = dt.hour.toString().padLeft(2, '0');
+    final min = dt.minute.toString().padLeft(2, '0');
+    return '$yyyy-$mm-$dd $hh:$min';
   }
 }

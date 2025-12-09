@@ -1,6 +1,7 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 class FeedbackScreen extends StatelessWidget {
   const FeedbackScreen({super.key});
@@ -38,7 +39,21 @@ class FeedbackScreen extends StatelessWidget {
               return SizedBox.shrink();
             },
             orElse: () => FloatingActionButton(
-              onPressed: () {},
+              onPressed: () async {
+                final result = await Get.toNamed(
+                  BudiLuhurRoutes.studentAddFeedback,
+                );
+
+                if (result == true) {
+                  final authDetails = context
+                      .read<AuthCubit>()
+                      .getStudentDetails;
+
+                  await context.read<GetFeedbackCubit>().fetchUserFeedback(
+                    nis: authDetails.nis,
+                  );
+                }
+              },
               tooltip: "Add feedback",
               child: Icon(Icons.add),
             ),

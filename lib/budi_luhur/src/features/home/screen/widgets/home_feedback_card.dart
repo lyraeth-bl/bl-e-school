@@ -8,7 +8,7 @@ class HomeFeedbackCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Get.toNamed(BudiLuhurRoutes.feedback),
+      onTap: () => Get.toNamed(BudiLuhurRoutes.studentFeedback),
       child: Card(
         color: Theme.of(context).colorScheme.surface,
         child: Padding(

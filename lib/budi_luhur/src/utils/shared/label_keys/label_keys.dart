@@ -299,6 +299,7 @@ const String examCompletedKey = "examCompleted";
 const String examMultipleAnsKey = "examMultipleAns";
 const String noteKey = "note";
 const String feedbackKey = "feedback";
+const String addFeedbackKey = "addFeedback";
 const String feedbackCardDescriptionKey = "feedbackCardDescriptionKey";
 const String examMultipleAnsNoteKey = "examMultipleAnsNote";
 
