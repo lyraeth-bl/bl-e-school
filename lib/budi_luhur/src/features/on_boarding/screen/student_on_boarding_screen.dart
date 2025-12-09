@@ -39,7 +39,7 @@ class _StudentOnBoardingScreenState extends State<StudentOnBoardingScreen> {
     final detailsStudent = context.read<AuthCubit>().getStudentDetails;
     final classStudent =
         "${detailsStudent.kelasSaatIni}${detailsStudent.noKelasSaatIni}";
-    context.read<TimeTableCubit>().fetchTimeTable(kelas: classStudent);
+    context.read<TimeTableCubit>().fetchTimeTable(kelas: classStudent, forceRefresh: true);
   }
 
   Future<void> _checkFirstTimeUser() async {
@@ -84,7 +84,7 @@ class _StudentOnBoardingScreenState extends State<StudentOnBoardingScreen> {
               ),
             ),
 
-            /// Uncomment this if photos ready
+            /// TODO: Uncomment this if photos ready
             // GridView.builder(
             //   padding: EdgeInsets.only(top: context.height * 0.03),
             //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

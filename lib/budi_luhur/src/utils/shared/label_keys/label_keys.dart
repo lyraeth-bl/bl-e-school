@@ -298,6 +298,9 @@ const String totalQuestionsKey = "totalQuestions";
 const String examCompletedKey = "examCompleted";
 const String examMultipleAnsKey = "examMultipleAns";
 const String noteKey = "note";
+const String feedbackKey = "feedback";
+const String addFeedbackKey = "addFeedback";
+const String feedbackCardDescriptionKey = "feedbackCardDescriptionKey";
 const String examMultipleAnsNoteKey = "examMultipleAnsNote";
 
 const String questionsKey = "questions";
@@ -379,6 +382,7 @@ const String paymentConfirmationKey = "paymentConfirmation";
 const String transactionsKey = "transactions";
 const String transactionIdKey = "transactionId";
 const String noHomeScreenDataFoundKey = "noHomeScreenDataFound";
+const String noDataFoundKey = "noDataFound";
 
 const String noTransactionsFoundKey = "noTransactionsFound";
 const String waitKey = "wait";

@@ -1,4 +1,3 @@
-
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -72,8 +71,7 @@ class DailyAttendanceCubit extends HydratedCubit<DailyAttendanceState> {
   /// Fetches the daily attendance for the current day from the remote server.
   ///
   /// Emits a [_Loading] state before fetching. On success, it updates the state
-  /// with the retrieved data. On failure, it emits a [_Failure] state with the
-  /// error message.
+  /// with the retrieved data. On failure, it emits a [_EmptyData] state.
   ///
   /// This method is intended for the initial fetch of the day's attendance.
   /// For refreshing existing data, use [refreshDataDailyAttendance].
@@ -89,7 +87,7 @@ class DailyAttendanceCubit extends HydratedCubit<DailyAttendanceState> {
 
       emit(_HasData(dailyAttendance: data));
     } catch (e) {
-      emit(_Failure(e.toString()));
+      emit(_EmptyData());
     }
   }
 
@@ -134,11 +132,14 @@ class DailyAttendanceCubit extends HydratedCubit<DailyAttendanceState> {
       final dailyAttendanceData =
           result['dailyAttendanceUser'] as DailyAttendance;
 
+      final hasCheckIn = dailyAttendanceData.jamCheckIn != null;
+      final hasCheckOut = dailyAttendanceData.jamCheckOut != null;
+
       emit(
         _HasData(
           dailyAttendance: dailyAttendanceData,
-          hasCheckIn: isCheckIn,
-          hasCheckOut: isCheckOut,
+          hasCheckIn: hasCheckIn,
+          hasCheckOut: hasCheckOut,
           hasPost: isPost,
           lastUpdate: dailyAttendanceData.updatedAt,
         ),
@@ -278,7 +279,7 @@ class DailyAttendanceCubit extends HydratedCubit<DailyAttendanceState> {
       initial: (_) => {'type': 'initial'},
       hasData: (s) => {
         'type': 'has',
-        'dailyAttendance': s.dailyAttendance.toJson(),
+        'dailyAttendance': s.dailyAttendance?.toJson(),
         'hasPost': s.hasPost,
         'hasCheckIn': s.hasCheckIn,
         'hasCheckOut': s.hasCheckOut,

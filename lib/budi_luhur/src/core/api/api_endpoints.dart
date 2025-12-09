@@ -35,6 +35,9 @@ class ApiEndpoints {
   /// Endpoint for sending notifications.
   static String sendNotification = "$databaseUrl/send-notification";
 
+  /// Endpoint for feedback.
+  static String feedback = "$databaseUrl/feedback";
+
   /// Endpoint for fetching timetables.
   static String timeTable = "$databaseInternalUrl/jadwal";
 }

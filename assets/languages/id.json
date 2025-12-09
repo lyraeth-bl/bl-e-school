@@ -1,6 +1,8 @@
 {
   "home": "Beranda",
   "biometricLogin": "Login biometrik",
+  "noDataFound": "Tidak ada data :[",
+  "feedbackCardDescriptionKey": "Berikan saranmu untuk aplikasi ini",
   "assignments": "Tugas",
   "menu": "Menu",
   "timeTable": "Jadwal Pelajaran",
@@ -21,6 +23,8 @@
   "class": "Kelas",
   "classNumber": "Nomor Kelas",
   "unit": "Unit",
+  "feedback": "Kritik dan Saran",
+  "addFeedback": "Tambah Kritik dan Saran",
   "rollNumber": "Nomor Absen",
   "dateOfBirth": "Tanggal Lahir",
   "address": "Alamat",

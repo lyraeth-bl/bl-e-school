@@ -236,8 +236,6 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
       ),
       child: BlocBuilder<FetchDailyAttendanceCubit, FetchDailyAttendanceState>(
         builder: (c, s) {
-          print("FetchDailyAttendanceCubit : $c");
-          print("FetchDailyAttendanceState : $s");
           return s.maybeWhen(
             failure: (errorMessage) => ErrorContainer(
               errorMessageCode: errorMessage,
@@ -564,7 +562,9 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
 
                           Text(
                             dailyAttendance.jamCheckIn != null
-                                ? Utils.formatTime(dailyAttendance.jamCheckIn!.toLocal())
+                                ? Utils.formatTime(
+                                    dailyAttendance.jamCheckIn!.toLocal(),
+                                  )
                                 : "-",
                             style: Theme.of(context).textTheme.bodyLarge
                                 ?.copyWith(
@@ -594,7 +594,9 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
                           const SizedBox(height: 4),
                           Text(
                             dailyAttendance.jamCheckOut != null
-                                ? Utils.formatTime(dailyAttendance.jamCheckOut!.toLocal())
+                                ? Utils.formatTime(
+                                    dailyAttendance.jamCheckOut!.toLocal(),
+                                  )
                                 : "-",
                             style: Theme.of(context).textTheme.bodyLarge
                                 ?.copyWith(

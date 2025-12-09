@@ -17,10 +17,21 @@ class HomeAttendanceCard extends StatelessWidget {
       listener: (context, state) {
         state.maybeWhen(
           hasData:
-              (dailyAttendance, hasPost, hasCheckIn, hasCheckOut, lastUpdate) =>
-                  context
-                      .read<DailyAttendanceCubit>()
-                      .updateDailyAttendanceData(dailyAttendance),
+              (dailyAttendance, hasPost, hasCheckIn, hasCheckOut, lastUpdate) {
+                final DailyAttendance daily = DailyAttendance(
+                  id: 0,
+                  nis: context.read<AuthCubit>().getStudentDetails.nis,
+                  tanggal: DateTime.now(),
+                  status: "",
+                  unit: "",
+                  createdAt: DateTime.now(),
+                  updatedAt: DateTime.now(),
+                );
+
+                context.read<DailyAttendanceCubit>().updateDailyAttendanceData(
+                  dailyAttendance ?? daily,
+                );
+              },
           orElse: () {},
         );
       },
@@ -104,7 +115,8 @@ class HomeAttendanceCard extends StatelessWidget {
                                           lastUpdate,
                                         ) {
                                           final checkIn = formatOrDash(
-                                            dailyAttendance.jamCheckIn?.toLocal(),
+                                            dailyAttendance?.jamCheckIn
+                                                ?.toLocal(),
                                           );
                                           return Text(
                                             checkIn,
@@ -183,7 +195,8 @@ class HomeAttendanceCard extends StatelessWidget {
                                           lastUpdate,
                                         ) {
                                           final checkIn = formatOrDash(
-                                            dailyAttendance.jamCheckOut?.toLocal(),
+                                            dailyAttendance?.jamCheckOut
+                                                ?.toLocal(),
                                           );
                                           return Text(
                                             checkIn,

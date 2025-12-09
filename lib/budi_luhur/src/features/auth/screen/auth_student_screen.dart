@@ -20,6 +20,9 @@ class AuthStudentScreen extends StatefulWidget {
 
 class _AuthStudentScreenState extends State<AuthStudentScreen>
     with TickerProviderStateMixin {
+
+  final DateTime _now = DateTime.now();
+
   /// Animations
   late final AnimationController _animationController = AnimationController(
     vsync: this,
@@ -57,7 +60,14 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
     if (wantBiometric) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         final ok = await context.read<AuthCubit>().biometricRefreshToken();
-        if (ok) {
+        if (ok && mounted) {
+          final dailyAttendanceCubit = context.read<DailyAttendanceCubit>();
+          final dailyAttendanceData = dailyAttendanceCubit.getDailyAttendance;
+
+          if (dailyAttendanceData?.tanggal.day != _now.day) {
+            dailyAttendanceCubit.clearAllData();
+          }
+
           Get.offNamed(BudiLuhurRoutes.home);
         } else {}
       });

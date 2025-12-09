@@ -39,6 +39,14 @@ class BudiLuhurRoutes extends BudiLuhur {
   /// Navigates to [StudentTimeTableScreen].
   static const String studentTimeTable = "/studentTimeTable";
 
+  /// The route for accessing feedback screen.
+  /// Navigates to [FeedbackScreen].
+  static const String studentFeedback = "/studentFeedback";
+
+  /// The route to the student's class timetable or schedule.
+  /// Navigates to [StudentTimeTableScreen].
+  static const String studentAddFeedback = "/studentAddFeedback";
+
   // --- Core Application Routes ---
 
   /// The route for the splash screen, displayed briefly on app startup.
@@ -110,5 +118,10 @@ class BudiLuhurRoutes extends BudiLuhur {
       page: () => AcademicCalendarScreen.routeInstance(),
     ),
     GetPage(name: settings, page: () => SettingsScreen.routeInstance()),
+    GetPage(name: studentFeedback, page: () => FeedbackScreen.routeInstance()),
+    GetPage(
+      name: studentAddFeedback,
+      page: () => AddFeedbackScreen.routeInstance(),
+    ),
   ];
 }

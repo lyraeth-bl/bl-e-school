@@ -1,6 +1,8 @@
 {
   "home": "Home",
   "biometricLogin": "Biometric login",
+  "noDataFound": "No data found :[",
+  "feedbackCardDescriptionKey": "Give your suggestion for this application",
   "assignments": "Assignments",
   "menu": "Menu",
   "timeTable": "Timetable",
@@ -37,6 +39,8 @@
   "subjectName": "Subject name",
   "assignmentName": "Assignment name",
   "dueDate": "Due date",
+  "feedback": "Feedback",
+  "addFeedback": "Add Feedback",
   "instructions": "Instructions",
   "referenceMaterials": "Reference materials",
   "uploadFiles": "Upload Files",
