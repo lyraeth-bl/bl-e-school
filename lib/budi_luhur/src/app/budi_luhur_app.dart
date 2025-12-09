@@ -40,7 +40,6 @@ class BudiLuhurApp extends StatelessWidget {
           return GetMaterialApp(
             debugShowCheckedModeBanner: false,
             theme: BudiLuhurTheme.lightMode(),
-            darkTheme: BudiLuhurTheme.darkMode(),
             getPages: BudiLuhurRoutes.getPages,
             initialRoute: BudiLuhurRoutes.splash,
             locale: context.read<AppLocalizationCubit>().state.language,
