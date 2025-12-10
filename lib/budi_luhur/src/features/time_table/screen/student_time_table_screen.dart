@@ -14,6 +14,8 @@ class StudentTimeTableScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: TimeTableContainer());
+    return Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
+        body: TimeTableContainer());
   }
 }

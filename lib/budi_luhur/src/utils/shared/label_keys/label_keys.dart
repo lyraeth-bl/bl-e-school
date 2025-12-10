@@ -461,3 +461,8 @@ const String failedToLoadQuestionsKey = "failedToLoadQuestions";
 const String noQuestionsAvailableForExamKey = "noQuestionsAvailableForExam";
 const String initializingExamKey = "initializingExam";
 const String examAlreadyAttemptedKey = "examAlreadyAttempted";
+
+const String weekendScheduleTextKey = "weekendScheduleText";
+const String thatAllForTodayKey = "thatAllForToday";
+const String noMoreScheduleTodayKey = "noMoreScheduleToday";
+const String noMoreScheduleKey = "noMoreSchedule";

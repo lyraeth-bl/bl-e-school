@@ -397,5 +397,9 @@
   "10thPeriod": "Jam Ke-10",
   "checkIn": "Check-in",
   "checkOut": "Check-out",
-  "detailsEvents": "Details events"
+  "detailsEvents": "Details events",
+  "weekendScheduleTextKey": "Nikmati libur kamu.",
+  "thatAllForToday": "Kelas sudah selesai.",
+  "noMoreScheduleToday": "Tidak ada jadwal lagi hari ini.",
+  "noMoreSchedule": "Tidak ada jadwal."
 }

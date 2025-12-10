@@ -7,4 +7,4 @@ export 'data/model/time_table.dart';
 export 'repository/time_table_repository.dart';
 // Screen
 export 'screen/student_time_table_screen.dart';
-export 'screen/time_table_container.dart';
+export 'screen/student_time_table_container.dart';

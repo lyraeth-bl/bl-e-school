@@ -397,5 +397,9 @@
   "10thPeriod": "10th Period",
   "checkIn": "Check in",
   "checkOut": "Check out",
-  "detailsEvents": "Details events"
+  "detailsEvents": "Details events",
+  "weekendScheduleTextKey": "Enjoy your weekend.",
+  "thatAllForToday": "That's all for today.",
+  "noMoreScheduleToday": "No more schedule today.",
+  "noMoreSchedule": "No more schedule."
 }

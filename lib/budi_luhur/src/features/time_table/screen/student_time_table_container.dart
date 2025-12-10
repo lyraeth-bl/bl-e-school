@@ -136,7 +136,7 @@ class _TimeTableContainerState extends State<TimeTableContainer>
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onPrimaryContainer,
                 fontSize: Utils.screenTitleFontSize,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ),
@@ -165,7 +165,7 @@ class _TimeTableContainerState extends State<TimeTableContainer>
                 "${Utils.getTranslatedLabel(classKey)} - $getStudentClassDetails",
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.secondary,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w700,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -245,7 +245,7 @@ class _TimeTableContainerState extends State<TimeTableContainer>
         borderRadius: BorderRadius.circular(10),
       ),
       width: MediaQuery.of(context).size.width * (0.85),
-      padding: const EdgeInsets.symmetric(horizontal: 12.5, vertical: 10.0),
+      padding: const EdgeInsets.all(16),
       child: Row(
         children: [
           Flexible(
@@ -259,10 +259,9 @@ class _TimeTableContainerState extends State<TimeTableContainer>
                     Expanded(
                       child: Text(
                         "${Utils.formatTime(jamMulaiToDateTime!)} - ${Utils.formatTime(jamSelesaiToDateTime!)}",
-                        style: TextStyle(
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           color: Theme.of(context).colorScheme.onSurface,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14.0,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                     ),
@@ -272,7 +271,7 @@ class _TimeTableContainerState extends State<TimeTableContainer>
                         horizontal: 8,
                       ),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(8),
                         color: Theme.of(context).colorScheme.tertiaryContainer,
                       ),
                       child: Text(
@@ -281,7 +280,7 @@ class _TimeTableContainerState extends State<TimeTableContainer>
                           color: Theme.of(
                             context,
                           ).colorScheme.onTertiaryContainer,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                     ),
@@ -292,20 +291,17 @@ class _TimeTableContainerState extends State<TimeTableContainer>
                   timeTable.namaMataPelajaran,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).colorScheme.onSurface,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12.0,
                   ),
                 ),
+                SizedBox(height: 4),
                 Text(
                   timeTable.namaGuru,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).colorScheme.onSurface,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12.0,
                   ),
                 ),
               ],
