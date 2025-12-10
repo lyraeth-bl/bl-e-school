@@ -1,6 +1,7 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart' hide Feedback;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 
 class FeedbackContainer extends StatefulWidget {
   const FeedbackContainer({super.key});
@@ -61,8 +62,33 @@ class _FeedbackContainerState extends State<FeedbackContainer> {
                   return ListView(
                     padding: const EdgeInsets.all(24),
                     children: [
-                      Center(
-                        child: Text(Utils.getTranslatedLabel(noDataFoundKey)),
+                      Container(
+                        padding: const EdgeInsets.all(24),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surface,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Lottie.asset(
+                              "assets/animations/empty-ghost.json",
+                              height: 150,
+                              width: 150,
+                            ),
+                            SizedBox(height: 24),
+                            Text(
+                              Utils.getTranslatedLabel(noDataFoundKey),
+                              style: Theme.of(context).textTheme.titleSmall
+                                  ?.copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurface,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                            ),
+                          ],
+                        ),
                       ),
 
                       SizedBox(height: 24),

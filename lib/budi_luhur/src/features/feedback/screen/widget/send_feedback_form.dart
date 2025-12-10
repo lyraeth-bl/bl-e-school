@@ -467,7 +467,7 @@ class _SendFeedbackFormState extends State<SendFeedbackForm> {
             Row(
               children: [
                 const Spacer(),
-                ElevatedButton(
+                FilledButton.tonal(
                   onPressed: _submitting ? null : _onSubmit,
                   child: _submitting
                       ? Row(
