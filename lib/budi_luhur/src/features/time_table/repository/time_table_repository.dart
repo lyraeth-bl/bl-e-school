@@ -18,29 +18,35 @@ class TimeTableRepository {
   /// Throws an [ApiException] if the API call fails, for example, due to
   /// network issues or a server-side error.
   Future<TimeTableResponse> fetchTimeTable({required String kelas}) async {
-    late final Map<String, dynamic> queryParameters = {'kelas': kelas};
+    String newKelas = kelas;
+
+    if (newKelas.isNotEmpty && newKelas.endsWith("1")) {
+      newKelas = newKelas.substring(0, newKelas.length - 1);
+    }
+
+    if (newKelas.startsWith("XANIMASI")) {
+      newKelas = "XANI";
+    }
+
+    final Map<String, dynamic> queryParameters = {'kelas': newKelas};
 
     try {
-      // Make the API call to get the timetable data.
       final response = await ApiClient.get(
         url: ApiEndpoints.timeTable,
         useAuthToken: false,
         queryParameters: queryParameters,
       );
 
-      // Parse the list of timetable entries from the response data.
       final timeTableList = (response['data'] as List)
           .map((e) => TimeTable.fromJson(Map<String, dynamic>.from(e)))
           .toList();
 
-      // Construct and return a TimeTableResponse object from the API response.
       return TimeTableResponse(
         status: response['status'],
         message: response['message'],
         listTimeTable: timeTableList,
       );
     } catch (e) {
-      // Wrap and rethrow any exceptions as a domain-specific ApiException.
       throw ApiException(e.toString());
     }
   }
