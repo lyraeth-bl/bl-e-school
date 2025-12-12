@@ -1,7 +1,7 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/settings/screen/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 class HomeScreen extends StatefulWidget {
   static GlobalKey<_HomeScreenState> homeScreenKey =
@@ -22,13 +22,19 @@ class HomeScreen extends StatefulWidget {
           create: (_) => AcademicCalendarCubit(AcademicCalendarRepository()),
         ),
       ],
-      child: HomeScreen(),
+      child: HomeScreen(key: HomeScreen.homeScreenKey),
     );
   }
 }
 
 class _HomeScreenState extends State<HomeScreen>
     with TickerProviderStateMixin, WidgetsBindingObserver {
+  final args = Get.arguments;
+
+  late final fromNotifications = (args is Map)
+      ? args['fromNotifications']
+      : false;
+
   /// Animations
   late final AnimationController _animationController = AnimationController(
     vsync: this,
@@ -86,9 +92,21 @@ class _HomeScreenState extends State<HomeScreen>
     _ensureBottomNavItems();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (fromNotifications) _fetchDailyAttendance();
       loadTemporarilyStoredNotifications();
       NotificationsUtility.setUpNotificationService();
     });
+  }
+
+  void fetchDailyAttendanceFromNotification() {
+    _fetchDailyAttendance();
+  }
+
+  void _fetchDailyAttendance() {
+    final detailsUser = context.read<AuthCubit>().getStudentDetails;
+    context.read<DailyAttendanceCubit>().fetchTodayDailyAttendance(
+      nis: detailsUser.nis,
+    );
   }
 
   @override
