@@ -33,15 +33,9 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
     }
   }
 
-  bool _isTimeInRange(
-    DateTime now,
-    int startH,
-    int startM,
-    int endH,
-    int endM,
-  ) {
-    final from = DateTime(now.year, now.month, now.day, startH, startM);
-    final to = DateTime(now.year, now.month, now.day, endH, endM);
+  bool _isTimeInRange(DateTime now, int sh, int sm, int eh, int em) {
+    final from = DateTime(now.year, now.month, now.day, sh, sm);
+    final to = DateTime(now.year, now.month, now.day, eh, em);
     return now.isAtSameMomentAs(from) ||
         (now.isAfter(from) && now.isBefore(to)) ||
         now.isAtSameMomentAs(to);
@@ -54,34 +48,30 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
 
   bool get _isAfterSchool {
     final now = _now ?? DateTime.now();
-    // After or at 15:30
     return _isTimeInRange(now, 15, 30, 23, 59);
   }
 
   bool get _isBreakMorning {
     final now = _now ?? DateTime.now();
-    // 10:00 - 10:30
     return _isTimeInRange(now, 10, 0, 10, 30);
   }
 
   bool get _isBreakAfternoon {
     final now = _now ?? DateTime.now();
-    // 12:45 - 13:30
     return _isTimeInRange(now, 12, 45, 13, 30);
   }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Get.toNamed(BudiLuhurRoutes.studentTimeTable);
-      },
+      onTap: () => Get.toNamed(BudiLuhurRoutes.studentTimeTable),
       child: Card(
         elevation: 3,
         color: Theme.of(context).colorScheme.surface,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Header clock
             Container(
               padding: const EdgeInsets.all(16),
               child: Row(
@@ -112,8 +102,11 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                 return state.maybeWhen(
                   success: (timeTableList) {
                     final now = _now ?? DateTime.now();
+                    final todayStr = Utils.formatNumberDaysToStringDays(
+                      now.weekday,
+                    ).toLowerCase();
 
-                    // Weekend view
+                    // ======== WEEKEND ========
                     if (_isWeekend) {
                       return ListTile(
                         leading: Icon(
@@ -129,11 +122,10 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                                 fontWeight: FontWeight.w700,
                               ),
                         ),
-                        subtitle: SizedBox.shrink(),
                       );
                     }
 
-                    // After school view
+                    // ======== AFTER SCHOOL ========
                     if (_isAfterSchool) {
                       return ListTile(
                         leading: Icon(
@@ -149,11 +141,10 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                                 fontWeight: FontWeight.w700,
                               ),
                         ),
-                        subtitle: SizedBox.shrink(),
                       );
                     }
 
-                    // Break windows: show Break only (no next class)
+                    // ======== BREAK (no next class) ========
                     if (_isBreakMorning || _isBreakAfternoon) {
                       final start = _isBreakMorning
                           ? DateTime(now.year, now.month, now.day, 10, 0)
@@ -177,7 +168,7 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                               ),
                         ),
                         subtitle: Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
+                          padding: const EdgeInsets.only(top: 8),
                           child: Row(
                             children: [
                               Icon(Icons.timer, size: 16, color: Colors.red),
@@ -191,36 +182,32 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                       );
                     }
 
-                    final rawPeriod = _periodLabel.isNotEmpty
+                    // ======== CURRENT PERIOD ========
+                    final period = _periodLabel.isNotEmpty
                         ? _periodLabel.substring(0, 1)
-                        : '';
-                    final isNumericPeriod = RegExp(
-                      r'^\d+\$',
-                    ).hasMatch(rawPeriod);
+                        : "";
+                    final isNum = RegExp(r'^\d+$').hasMatch(period);
 
-                    final todayStr = Utils.formatNumberDaysToStringDays(
-                      now.weekday,
-                    ).toLowerCase();
-
-                    final currentMatches = isNumericPeriod
+                    final current = isNum
                         ? timeTableList
                               .where(
                                 (e) =>
-                                    e.jamKe == rawPeriod &&
+                                    e.jamKe == period &&
                                     e.hari.toLowerCase() == todayStr,
                               )
                               .toList()
                         : <dynamic>[];
 
-                    if (currentMatches.isNotEmpty) {
-                      final timeTimeTable = currentMatches.first;
+                    if (current.isNotEmpty) {
+                      final tt = current.first;
+
                       return ListTile(
                         title: Row(
                           children: [
                             Icon(Icons.timer, size: 16, color: Colors.red),
                             SizedBox(width: 4),
                             Text(
-                              "${Utils.formatTime(Utils.timeStringToToday(timeTimeTable.jamMulai)!)} - ${Utils.formatTime(Utils.timeStringToToday(timeTimeTable.jamSelesai)!)}",
+                              "${Utils.formatTime(Utils.timeStringToToday(tt.jamMulai)!)} - ${Utils.formatTime(Utils.timeStringToToday(tt.jamSelesai)!)}",
                               style: Theme.of(context).textTheme.bodyMedium
                                   ?.copyWith(
                                     color: Theme.of(
@@ -265,9 +252,9 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                                 SizedBox(width: 4),
                                 Expanded(
                                   child: Text(
-                                    timeTimeTable.namaMataPelajaran,
-                                    overflow: TextOverflow.ellipsis,
+                                    tt.namaMataPelajaran,
                                     maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                               ],
@@ -283,9 +270,9 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                                 SizedBox(width: 4),
                                 Expanded(
                                   child: Text(
-                                    timeTimeTable.namaGuru ?? '-',
-                                    overflow: TextOverflow.ellipsis,
+                                    tt.namaGuru ?? '-',
                                     maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                               ],
@@ -296,12 +283,11 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                       );
                     }
 
-                    // Find next classes for today
+                    // ======== NEXT CLASS (only if NOT break) ========
                     final upcoming = timeTableList.where((e) {
-                      final hariMatch = e.hari.toLowerCase() == todayStr;
-                      if (!hariMatch) return false;
-                      final jamMulaiDt = Utils.timeStringToToday(e.jamMulai);
-                      return jamMulaiDt != null && jamMulaiDt.isAfter(now);
+                      if (e.hari.toLowerCase() != todayStr) return false;
+                      final dt = Utils.timeStringToToday(e.jamMulai);
+                      return dt != null && dt.isAfter(now);
                     }).toList();
 
                     if (upcoming.isNotEmpty) {
@@ -310,27 +296,24 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                         final bDt = Utils.timeStringToToday(b.jamMulai)!;
                         return aDt.compareTo(bDt);
                       });
+
                       final next = upcoming.first;
+
                       return ListTile(
-                        title: Row(
-                          children: [
-                            Icon(Icons.coffee, size: 16, color: Colors.orange),
-                            SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                "${Utils.getTranslatedLabel(breakKey)} - ${Utils.getTranslatedLabel(nextClassKey)} : ${next.namaMataPelajaran}",
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                                style: Theme.of(context).textTheme.bodyMedium
-                                    ?.copyWith(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.onSurface,
-                                      fontWeight: FontWeight.w700,
-                                    ),
+                        leading: Icon(
+                          Icons.schedule,
+                          color: Colors.orange,
+                          size: 20,
+                        ),
+                        title: Text(
+                          "${Utils.getTranslatedLabel(nextClassKey)} : ${next.namaMataPelajaran}",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.onSurface,
+                                fontWeight: FontWeight.w700,
                               ),
-                            ),
-                          ],
                         ),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -339,7 +322,7 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                             Row(
                               children: [
                                 Icon(Icons.timer, size: 16, color: Colors.red),
-                                SizedBox(width: 4),
+                                SizedBox(width: 6),
                                 Text(
                                   "${Utils.formatTime(Utils.timeStringToToday(next.jamMulai)!)} - ${Utils.formatTime(Utils.timeStringToToday(next.jamSelesai)!)}",
                                 ),
@@ -353,7 +336,7 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                                   size: 16,
                                   color: Colors.blue,
                                 ),
-                                SizedBox(width: 4),
+                                SizedBox(width: 6),
                                 Expanded(
                                   child: Text(
                                     next.namaGuru,
@@ -369,7 +352,7 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                       );
                     }
 
-                    // Default fallback: no more schedule today
+                    // ======== NO MORE SCHEDULE TODAY ========
                     return ListTile(
                       leading: Icon(
                         Icons.free_breakfast,
@@ -383,7 +366,6 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      subtitle: SizedBox.shrink(),
                     );
                   },
                   orElse: () => Center(
