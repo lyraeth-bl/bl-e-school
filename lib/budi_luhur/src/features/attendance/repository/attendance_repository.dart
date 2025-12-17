@@ -129,11 +129,28 @@ class AttendanceRepository {
 
       final customDailyAttendanceList = response['data'];
 
-      return {
-        'customDailyAttendanceList': (customDailyAttendanceList as List)
-            .map((e) => DailyAttendance.fromJson(e))
-            .toList(),
-      };
+      final formatData = (customDailyAttendanceList as List)
+          .map((e) => DailyAttendance.fromJson(e))
+          .toList();
+
+      final List<DailyAttendance> reformatData = formatData
+          .map(
+            (e) => DailyAttendance(
+              id: e.id,
+              nis: e.nis,
+              tanggal: e.tanggal.toLocal(),
+              status: e.status,
+              alasan: e.alasan,
+              jamCheckIn: e.jamCheckIn?.toLocal(),
+              jamCheckOut: e.jamCheckOut?.toLocal(),
+              unit: e.unit,
+              createdAt: e.createdAt.toLocal(),
+              updatedAt: e.updatedAt.toLocal(),
+            ),
+          )
+          .toList();
+
+      return {'customDailyAttendanceList': reformatData};
     } catch (e) {
       throw ApiException(e.toString());
     }

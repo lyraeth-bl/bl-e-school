@@ -89,14 +89,17 @@ class _HomeScreenState extends State<HomeScreen>
 
     WidgetsBinding.instance.addObserver(this);
     _animationController.forward();
-    _ensureBottomNavItems();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (fromNotifications) _fetchDailyAttendance();
       loadTemporarilyStoredNotifications();
+      _fetchAppConfiguration();
       NotificationsUtility.setUpNotificationService();
     });
   }
+
+  void _fetchAppConfiguration() =>
+      context.read<AppConfigurationCubit>().fetchAppConfiguration();
 
   void fetchDailyAttendanceFromNotification() {
     _fetchDailyAttendance();
@@ -129,41 +132,73 @@ class _HomeScreenState extends State<HomeScreen>
       },
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
-        body: Stack(
-          children: [
-            IndexedStack(
-              index: _currentSelectedBottomNavIndex,
-              children: [
-                const HomeContainer(isForBottomMenuBackground: false),
-                _buildBottomSheetBackgroundContent(),
-              ],
-            ),
+        body: context.read<AppConfigurationCubit>().getAppMaintenance
+            ? const AppUnderMaintenanceContainer()
+            : BlocConsumer<AppConfigurationCubit, AppConfigurationState>(
+                listener: (context, state) {
+                  state.maybeWhen(
+                    failure: (errorMessage) => updateBottomNavItems(),
+                    success: (appConfiguration) => updateBottomNavItems(),
+                    orElse: () {},
+                  );
+                },
+                builder: (context, state) {
+                  print(state);
+                  return state.maybeWhen(
+                    success: (appConfiguration) {
+                      return Stack(
+                        children: [
+                          IndexedStack(
+                            index: _currentSelectedBottomNavIndex,
+                            children: [
+                              const HomeContainer(
+                                isForBottomMenuBackground: false,
+                              ),
+                              _buildBottomSheetBackgroundContent(),
+                            ],
+                          ),
 
-            IgnorePointer(
-              ignoring: !_isMoreMenuOpen,
-              child: FadeTransition(
-                opacity: _moreMenuBackgroundContainerColorAnimation,
-                child: _buildMoreMenuBackgroundContainer(),
+                          IgnorePointer(
+                            ignoring: !_isMoreMenuOpen,
+                            child: FadeTransition(
+                              opacity:
+                                  _moreMenuBackgroundContainerColorAnimation,
+                              child: _buildMoreMenuBackgroundContainer(),
+                            ),
+                          ),
+
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: SlideTransition(
+                              position: _moreMenuBottomSheetAnimation,
+                              child: MoreMenuBottomSheetContainer(
+                                closeBottomMenu: _closeBottomMenu,
+                                onTapMoreMenuItemContainer:
+                                    _onTapMoreMenuItemContainer,
+                              ),
+                            ),
+                          ),
+
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: _buildBottomNavigationContainer(),
+                          ),
+                        ],
+                      );
+                    },
+                    orElse: () => Column(
+                      children: [
+                        HomeContainerTopProfileContainer(),
+                        Expanded(
+                          child: HomeScreenDataLoadingContainer(
+                            addTopPadding: false,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
-            ),
-
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: SlideTransition(
-                position: _moreMenuBottomSheetAnimation,
-                child: MoreMenuBottomSheetContainer(
-                  closeBottomMenu: _closeBottomMenu,
-                  onTapMoreMenuItemContainer: _onTapMoreMenuItemContainer,
-                ),
-              ),
-            ),
-
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: _buildBottomNavigationContainer(),
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -189,10 +224,6 @@ class _HomeScreenState extends State<HomeScreen>
 
       //
     });
-  }
-
-  void _ensureBottomNavItems() {
-    if (_bottomNavItems.isEmpty) updateBottomNavItems();
   }
 
   void updateBottomNavItems() {

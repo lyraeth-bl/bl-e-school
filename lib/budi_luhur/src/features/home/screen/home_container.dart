@@ -29,9 +29,17 @@ class HomeContainer extends StatelessWidget {
         appBarHeightPercentage: Utils.appBarBiggerHeightPercentage,
       ),
       onRefresh: () async {
+        final detailsStudent = context.read<AuthCubit>().getStudentDetails;
+        final classStudent =
+            "${detailsStudent.kelasSaatIni}${detailsStudent.noKelasSaatIni}";
+
         context.read<DailyAttendanceCubit>().fetchTodayDailyAttendance(
           nis: context.read<AuthCubit>().getStudentDetails.nis,
         );
+
+        context.read<TimeTableCubit>().fetchTimeTable(kelas: classStudent);
+
+        context.read<AppConfigurationCubit>().fetchAppConfiguration();
       },
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
