@@ -67,8 +67,8 @@ class HomeAttendanceCard extends StatelessWidget {
             Get.toNamed(BudiLuhurRoutes.studentAttendance);
           },
           child: Card(
-            color: Theme.of(context).colorScheme.secondaryContainer,
             elevation: 3,
+            color: Theme.of(context).colorScheme.surface,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -82,39 +82,48 @@ class HomeAttendanceCard extends StatelessWidget {
                         Utils.getTranslatedLabel(attendanceKey),
                         style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.onSecondaryContainer,
-                              fontWeight: FontWeight.w600,
+                              color: Theme.of(context).colorScheme.onSurface,
+                              fontWeight: FontWeight.w700,
                             ),
                       ),
-                      Text(
-                        Utils.formatDays(DateTime.now(), locale: "id_ID"),
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
                           color: Theme.of(
                             context,
-                          ).colorScheme.onSecondaryContainer,
+                          ).colorScheme.tertiaryContainer,
+                        ),
+                        child: Text(
+                          Utils.formatToDayMonthYear(
+                            DateTime.now(),
+                            locale: "id_ID",
+                          ),
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onTertiaryContainer,
+                              ),
                         ),
                       ),
                     ],
                   ),
                 ),
 
-                Divider(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.outlineVariant.withValues(alpha: 0.5),
-                  indent: 16,
-                  endIndent: 16,
-                ),
-
-                const SizedBox(height: 8),
-
                 Row(
                   children: [
                     Expanded(
                       child: Container(
-                        margin: const EdgeInsets.only(left: 16),
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surfaceContainer,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        margin: const EdgeInsets.only(left: 16, right: 8),
                         child: Row(
                           children: [
                             Icon(
@@ -133,7 +142,7 @@ class HomeAttendanceCard extends StatelessWidget {
                                       ?.copyWith(
                                         color: Theme.of(
                                           context,
-                                        ).colorScheme.onSecondaryContainer,
+                                        ).colorScheme.onSurface,
                                         fontWeight: FontWeight.w700,
                                       ),
                                 ),
@@ -144,7 +153,7 @@ class HomeAttendanceCard extends StatelessWidget {
                                       ?.copyWith(
                                         color: Theme.of(
                                           context,
-                                        ).colorScheme.onPrimaryFixed,
+                                        ).colorScheme.onSurfaceVariant,
                                       ),
                                 ),
                               ],
@@ -156,7 +165,12 @@ class HomeAttendanceCard extends StatelessWidget {
 
                     Expanded(
                       child: Container(
-                        margin: const EdgeInsets.only(left: 16),
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surfaceContainer,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        margin: const EdgeInsets.only(right: 16, left: 8),
                         child: Row(
                           children: [
                             Icon(
@@ -175,7 +189,7 @@ class HomeAttendanceCard extends StatelessWidget {
                                       ?.copyWith(
                                         color: Theme.of(
                                           context,
-                                        ).colorScheme.onSecondaryContainer,
+                                        ).colorScheme.onSurface,
                                         fontWeight: FontWeight.w700,
                                       ),
                                 ),
@@ -186,7 +200,7 @@ class HomeAttendanceCard extends StatelessWidget {
                                       ?.copyWith(
                                         color: Theme.of(
                                           context,
-                                        ).colorScheme.onPrimaryFixed,
+                                        ).colorScheme.onSurfaceVariant,
                                       ),
                                 ),
                               ],

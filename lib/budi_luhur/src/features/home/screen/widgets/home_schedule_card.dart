@@ -73,7 +73,12 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
           children: [
             // Header clock
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.only(
+                top: 16,
+                left: 16,
+                right: 16,
+                bottom: 8,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -84,17 +89,26 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  RealTimeClock(onTick: _handleTick),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.tertiaryContainer,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: RealTimeClock(
+                      onTick: _handleTick,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onTertiaryContainer,
+                      ),
+                    ),
+                  ),
                 ],
               ),
-            ),
-
-            Divider(
-              color: Theme.of(
-                context,
-              ).colorScheme.outlineVariant.withValues(alpha: 0.5),
-              indent: 16,
-              endIndent: 16,
             ),
 
             BlocBuilder<TimeTableCubit, TimeTableState>(
@@ -108,38 +122,58 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
 
                     // ======== WEEKEND ========
                     if (_isWeekend) {
-                      return ListTile(
-                        leading: Icon(
-                          Icons.beach_access,
-                          color: Colors.purple,
-                          size: 20,
+                      return Container(
+                        padding: const EdgeInsets.symmetric(vertical: 32),
+                        margin: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surfaceContainer,
+                          borderRadius: BorderRadius.circular(8),
                         ),
-                        title: Text(
-                          Utils.getTranslatedLabel(weekendScheduleTextKey),
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(
-                                color: Theme.of(context).colorScheme.onSurface,
-                                fontWeight: FontWeight.w700,
-                              ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.beach_access),
+                            SizedBox(width: 16),
+                            Text(
+                              Utils.getTranslatedLabel(weekendScheduleTextKey),
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurface,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                            ),
+                          ],
                         ),
                       );
                     }
 
                     // ======== AFTER SCHOOL ========
                     if (_isAfterSchool) {
-                      return ListTile(
-                        leading: Icon(
-                          Icons.school,
-                          color: Colors.black54,
-                          size: 20,
+                      return Container(
+                        padding: const EdgeInsets.symmetric(vertical: 32),
+                        margin: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surfaceContainer,
+                          borderRadius: BorderRadius.circular(8),
                         ),
-                        title: Text(
-                          Utils.getTranslatedLabel(thatAllForTodayKey),
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(
-                                color: Theme.of(context).colorScheme.onSurface,
-                                fontWeight: FontWeight.w700,
-                              ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.school),
+                            SizedBox(width: 16),
+                            Text(
+                              Utils.getTranslatedLabel(thatAllForTodayKey),
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurface,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                            ),
+                          ],
                         ),
                       );
                     }
@@ -153,31 +187,48 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                           ? DateTime(now.year, now.month, now.day, 10, 30)
                           : DateTime(now.year, now.month, now.day, 13, 30);
 
-                      return ListTile(
-                        leading: Icon(
-                          Icons.free_breakfast,
-                          color: Colors.orange,
-                          size: 20,
+                      return Container(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        margin: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surfaceContainer,
+                          borderRadius: BorderRadius.circular(8),
                         ),
-                        title: Text(
-                          Utils.getTranslatedLabel(breakKey),
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(
-                                color: Theme.of(context).colorScheme.onSurface,
-                                fontWeight: FontWeight.w700,
-                              ),
-                        ),
-                        subtitle: Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: Row(
-                            children: [
-                              Icon(Icons.timer, size: 16, color: Colors.red),
-                              SizedBox(width: 6),
-                              Text(
-                                "${Utils.formatTime(start)} - ${Utils.formatTime(end)}",
-                              ),
-                            ],
-                          ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.free_breakfast),
+                            SizedBox(width: 16),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  Utils.getTranslatedLabel(breakKey),
+                                  style: Theme.of(context).textTheme.bodyMedium
+                                      ?.copyWith(
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onSurface,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                ),
+                                SizedBox(height: 8),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.timer,
+                                      size: 16,
+                                      color: Colors.red,
+                                    ),
+                                    SizedBox(width: 6),
+                                    Text(
+                                      "${Utils.formatTime(start)} - ${Utils.formatTime(end)}",
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       );
                     }
@@ -201,84 +252,126 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                     if (current.isNotEmpty) {
                       final tt = current.first;
 
-                      return ListTile(
-                        title: Row(
-                          children: [
-                            Icon(Icons.timer, size: 16, color: Colors.red),
-                            SizedBox(width: 4),
-                            Text(
-                              "${Utils.formatTime(Utils.timeStringToToday(tt.jamMulai)!)} - ${Utils.formatTime(Utils.timeStringToToday(tt.jamSelesai)!)}",
-                              style: Theme.of(context).textTheme.bodyMedium
-                                  ?.copyWith(
-                                    color: Theme.of(
+                      String takeOnlyTwoOnName = "-";
+
+                      if (tt.namaGuru.trim().isNotEmpty) {
+                        takeOnlyTwoOnName = tt.namaGuru
+                            .split(' ')
+                            .take(2)
+                            .join(' ');
+                      }
+
+                      return Container(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        margin: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surfaceContainer,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: ListTile(
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(Icons.timer),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    Utils.getTranslatedLabel(timeKey),
+                                    style: Theme.of(
                                       context,
-                                    ).colorScheme.onSurface,
-                                    fontWeight: FontWeight.w700,
+                                    ).textTheme.bodyMedium,
                                   ),
-                            ),
-                            SizedBox(width: 8),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 2,
+                                ],
                               ),
-                              decoration: BoxDecoration(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.tertiaryContainer,
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: Text(
-                                Utils.getPeriodString(
-                                  _periodLabel.toLowerCase(),
-                                ),
-                                style: Theme.of(context).textTheme.labelSmall
+                              Text(
+                                "${Utils.formatTime(Utils.timeStringToToday(tt.jamMulai)!)} - ${Utils.formatTime(Utils.timeStringToToday(tt.jamSelesai)!)}",
+                                style: Theme.of(context).textTheme.bodyMedium
                                     ?.copyWith(
                                       color: Theme.of(
                                         context,
-                                      ).colorScheme.onTertiaryContainer,
+                                      ).colorScheme.onSurface,
+                                      fontWeight: FontWeight.w700,
                                     ),
                               ),
-                            ),
-                          ],
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 8),
-                            Row(
-                              children: [
-                                Icon(Icons.book, size: 16, color: Colors.green),
-                                SizedBox(width: 4),
-                                Expanded(
-                                  child: Text(
-                                    tt.namaMataPelajaran,
+                            ],
+                          ),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 12),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(Icons.book),
+                                      SizedBox(width: 8),
+                                      Text(
+                                        Utils.getTranslatedLabel(subjectsKey),
+                                        style: Theme.of(
+                                          context,
+                                        ).textTheme.bodyMedium,
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    tt.kodeMataPelajaran,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.onSurface,
+                                          fontWeight: FontWeight.w700,
+                                        ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 4),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.person,
-                                  size: 16,
-                                  color: Colors.blue,
-                                ),
-                                SizedBox(width: 4),
-                                Expanded(
-                                  child: Text(
-                                    tt.namaGuru ?? '-',
+                                ],
+                              ),
+                              SizedBox(height: 12),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.person,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onSurfaceVariant,
+                                      ),
+                                      SizedBox(width: 8),
+                                      Text(
+                                        Utils.getTranslatedLabel(teachersKey),
+                                        style: Theme.of(
+                                          context,
+                                        ).textTheme.bodyMedium,
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    takeOnlyTwoOnName,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.onSurface,
+                                          fontWeight: FontWeight.w700,
+                                        ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 8),
-                          ],
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     }
@@ -299,77 +392,170 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
 
                       final next = upcoming.first;
 
-                      return ListTile(
-                        leading: Icon(
-                          Icons.schedule,
-                          color: Colors.orange,
-                          size: 20,
+                      return Container(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        margin: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surfaceContainer,
+                          borderRadius: BorderRadius.circular(8),
                         ),
-                        title: Text(
-                          "${Utils.getTranslatedLabel(nextClassKey)} : ${next.namaMataPelajaran}",
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                        child: ListTile(
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(Icons.timer),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    Utils.getTranslatedLabel(timeKey),
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.bodyMedium,
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                "${Utils.formatTime(Utils.timeStringToToday(next.jamMulai)!)} - ${Utils.formatTime(Utils.timeStringToToday(next.jamSelesai)!)}",
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSurface,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                              ),
+                            ],
+                          ),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 12),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(Icons.book),
+                                      SizedBox(width: 8),
+                                      Text(
+                                        Utils.getTranslatedLabel(nextClassKey),
+                                        style: Theme.of(
+                                          context,
+                                        ).textTheme.bodyMedium,
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    next.kodeMataPelajaran,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.onSurface,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 12),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.person,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onSurfaceVariant,
+                                      ),
+                                      SizedBox(width: 8),
+                                      Text(
+                                        Utils.getTranslatedLabel(teachersKey),
+                                        style: Theme.of(
+                                          context,
+                                        ).textTheme.bodyMedium,
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    next.namaGuru,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.onSurface,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+
+                    // ======== NO MORE SCHEDULE TODAY ========
+                    return Container(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      margin: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surfaceContainer,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.free_breakfast),
+                          SizedBox(width: 16),
+                          Text(
+                            Utils.getTranslatedLabel(noMoreScheduleTodayKey),
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  orElse: () => Container(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    margin: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surfaceContainer,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.free_breakfast),
+                        SizedBox(width: 16),
+                        Text(
+                          Utils.getTranslatedLabel(noMoreScheduleTodayKey),
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
                                 color: Theme.of(context).colorScheme.onSurface,
                                 fontWeight: FontWeight.w700,
                               ),
                         ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 8),
-                            Row(
-                              children: [
-                                Icon(Icons.timer, size: 16, color: Colors.red),
-                                SizedBox(width: 6),
-                                Text(
-                                  "${Utils.formatTime(Utils.timeStringToToday(next.jamMulai)!)} - ${Utils.formatTime(Utils.timeStringToToday(next.jamSelesai)!)}",
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 4),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.person,
-                                  size: 16,
-                                  color: Colors.blue,
-                                ),
-                                SizedBox(width: 6),
-                                Expanded(
-                                  child: Text(
-                                    next.namaGuru,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 8),
-                          ],
-                        ),
-                      );
-                    }
-
-                    // ======== NO MORE SCHEDULE TODAY ========
-                    return ListTile(
-                      leading: Icon(
-                        Icons.free_breakfast,
-                        size: 16,
-                        color: Colors.grey,
-                      ),
-                      title: Text(
-                        Utils.getTranslatedLabel(noMoreScheduleTodayKey),
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    );
-                  },
-                  orElse: () => Center(
-                    child: Text(Utils.getTranslatedLabel(noMoreScheduleKey)),
+                      ],
+                    ),
                   ),
                 );
               },

@@ -30,11 +30,12 @@ class HomeScreenDataLoadingContainer extends StatelessWidget {
             borderRadius: 25,
             height:
                 MediaQuery.of(context).size.height *
-                Utils.appBarBiggerHeightPercentage *
-                (0.9),
+                Utils.appBarBiggerHeightPercentage * (1.15)
           ),
         ),
+
         SizedBox(height: MediaQuery.of(context).size.height * (0.025)),
+
         ShimmerLoadingContainer(
           child: CustomShimmerContainer(
             margin: EdgeInsets.symmetric(
@@ -45,10 +46,12 @@ class HomeScreenDataLoadingContainer extends StatelessWidget {
             height:
                 MediaQuery.of(context).size.height *
                 Utils.appBarBiggerHeightPercentage *
-                (0.6),
+                (0.7),
           ),
         ),
+
         SizedBox(height: MediaQuery.of(context).size.height * (0.025)),
+
         ShimmerLoadingContainer(
           child: CustomShimmerContainer(
             margin: EdgeInsets.symmetric(

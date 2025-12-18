@@ -266,6 +266,7 @@ const String onlineExamKey = "onlineExam";
 const String allExamsKey = "allExams";
 const String upComingKey = "upComing";
 const String onGoingKey = "onGoing";
+const String nowKey = "now";
 const String completedKey = "completed";
 
 const String attemptedKey = "attempted";
@@ -466,3 +467,14 @@ const String weekendScheduleTextKey = "weekendScheduleText";
 const String thatAllForTodayKey = "thatAllForToday";
 const String noMoreScheduleTodayKey = "noMoreScheduleToday";
 const String noMoreScheduleKey = "noMoreSchedule";
+
+const String currentClassTitleKey = "currentClassTitle";
+const String nextClassTitleKey = "nextClassTitle";
+const String breakTimeTitleKey = "breakTimeTitle";
+const String afterSchoolTitleKey = "afterSchoolTitle";
+const String afterSchoolSubtitleKey = "afterSchoolSubtitle";
+const String weekendTitleKey = "weekendTitle";
+const String weekendSubtitleKey = "weekendSubtitle";
+const String noScheduleTitleKey = "noScheduleTitle";
+const String noScheduleSubtitleKey = "noScheduleSubtitle";
+const String teacherKey = "teacher";

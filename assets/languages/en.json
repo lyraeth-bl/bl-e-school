@@ -401,5 +401,16 @@
   "weekendScheduleTextKey": "Enjoy your weekend.",
   "thatAllForToday": "That's all for today.",
   "noMoreScheduleToday": "No more schedule today.",
-  "noMoreSchedule": "No more schedule."
+  "noMoreSchedule": "No more schedule.",
+  "now": "Now",
+  "currentClassTitle": "Current Class",
+  "nextClassTitle": "Next Class",
+  "breakTimeTitle": "Break Time",
+  "afterSchoolTitle": "School Finished",
+  "afterSchoolSubtitle": "You can rest now",
+  "weekendTitle": "Weekend",
+  "weekendSubtitle": "No school schedule today",
+  "noScheduleTitle": "No Schedule",
+  "noScheduleSubtitle": "There are no more classes today",
+  "teacher": "Teacher"
 }

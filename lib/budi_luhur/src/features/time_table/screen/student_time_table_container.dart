@@ -228,86 +228,86 @@ class _TimeTableContainerState extends State<TimeTableContainer>
   Widget _buildTimeTableSlotDetailsContainer({required TimeTable timeTable}) {
     final jamMulaiToDateTime = Utils.timeStringToToday(timeTable.jamMulai);
     final jamSelesaiToDateTime = Utils.timeStringToToday(timeTable.jamSelesai);
+    final now = DateTime.now();
+    bool? isNow;
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Theme.of(
-              context,
-            ).colorScheme.secondary.withValues(alpha: 0.075),
-            offset: const Offset(4, 4),
-            blurRadius: 10,
-          ),
-        ],
-        color: Theme.of(context).scaffoldBackgroundColor,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      width: MediaQuery.of(context).size.width * (0.85),
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        children: [
-          Flexible(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        "${Utils.formatTime(jamMulaiToDateTime!)} - ${Utils.formatTime(jamSelesaiToDateTime!)}",
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
-                          fontWeight: FontWeight.w700,
+    isNow =
+        (now.isAfter(jamMulaiToDateTime!) &&
+        now.isBefore(jamSelesaiToDateTime!));
+
+    return Card(
+      margin: isNow ? const EdgeInsets.symmetric(vertical: 8) : null,
+      color: Theme.of(context).colorScheme.surface,
+      elevation: isNow ? 0 : 0,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Flexible(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Text(
+                              "${Utils.formatTime(jamMulaiToDateTime!)} - ${Utils.formatTime(jamSelesaiToDateTime!)}",
+                              style: Theme.of(context).textTheme.titleSmall
+                                  ?.copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurface,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 2,
-                        horizontal: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Theme.of(context).colorScheme.tertiaryContainer,
-                      ),
-                      child: Text(
-                        timeTable.kelas,
-                        style: TextStyle(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.onTertiaryContainer,
-                          fontWeight: FontWeight.w700,
+                      if (isNow) ...[
+                        SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 4,
+                            horizontal: 12,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.primaryContainer,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(Utils.getTranslatedLabel(nowKey)),
                         ),
-                      ),
+                      ],
+                    ],
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    timeTable.namaMataPelajaran,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
-                  ],
-                ),
-                SizedBox(height: 8),
-                Text(
-                  timeTable.namaMataPelajaran,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
                   ),
-                ),
-                SizedBox(height: 4),
-                Text(
-                  timeTable.namaGuru,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
+                  SizedBox(height: 8),
+                  Text(
+                    timeTable.namaGuru,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

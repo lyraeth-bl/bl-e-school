@@ -401,5 +401,16 @@
   "weekendScheduleTextKey": "Nikmati libur kamu.",
   "thatAllForToday": "Kelas sudah selesai.",
   "noMoreScheduleToday": "Tidak ada jadwal lagi hari ini.",
-  "noMoreSchedule": "Tidak ada jadwal."
+  "noMoreSchedule": "Tidak ada jadwal.",
+  "now": "Saat ini",
+  "currentClassTitle": "Sedang Pelajaran",
+  "nextClassTitle": "Pelajaran Selanjutnya",
+  "breakTimeTitle": "Waktu Istirahat",
+  "afterSchoolTitle": "Sekolah Selesai",
+  "afterSchoolSubtitle": "Saatnya istirahat",
+  "weekendTitle": "Akhir Pekan",
+  "weekendSubtitle": "Tidak ada jadwal sekolah",
+  "noScheduleTitle": "Tidak Ada Jadwal",
+  "noScheduleSubtitle": "Tidak ada pelajaran lagi hari ini",
+  "teacher": "Guru"
 }
