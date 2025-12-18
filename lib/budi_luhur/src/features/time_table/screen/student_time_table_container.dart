@@ -255,7 +255,7 @@ class _TimeTableContainerState extends State<TimeTableContainer>
                         child: Row(
                           children: [
                             Text(
-                              "${Utils.formatTime(jamMulaiToDateTime!)} - ${Utils.formatTime(jamSelesaiToDateTime!)}",
+                              "${Utils.formatTime(jamMulaiToDateTime)} - ${Utils.formatTime(jamSelesaiToDateTime!)}",
                               style: Theme.of(context).textTheme.titleSmall
                                   ?.copyWith(
                                     color: Theme.of(

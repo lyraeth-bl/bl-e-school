@@ -222,272 +222,201 @@ class _SendFeedbackFormState extends State<SendFeedbackForm> {
       child: Form(
         key: _formKey,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                SizedBox(
-                  width: 92,
-                  child: Text(
-                    'NIS',
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
+            /// NIS
+            _formSection(
+              label: 'NIS',
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 8,
+                  horizontal: 12,
                 ),
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 8,
-                      horizontal: 12,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surfaceContainer,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: TextFormField(
-                      controller: _nisController,
-                      enabled: false,
-                      decoration: const InputDecoration.collapsed(hintText: ''),
-                    ),
-                  ),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceContainer,
+                  borderRadius: BorderRadius.circular(8),
                 ),
-              ],
+                child: TextFormField(
+                  controller: _nisController,
+                  enabled: false,
+                  decoration: const InputDecoration.collapsed(hintText: ''),
+                ),
+              ),
             ),
 
             const SizedBox(height: 16),
 
-            // Category row
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 92,
-                  child: Text(
-                    'Category',
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
+            /// CATEGORY
+            _formSection(
+              label: 'Category',
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 8,
+                  horizontal: 12,
                 ),
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 8,
-                      horizontal: 12,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surfaceContainer,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: DropdownButtonFormField<String>(
-                      initialValue: _selectedCategory,
-                      hint: Text(
-                        'Select category',
-                        style: TextStyle(color: Theme.of(context).hintColor),
-                      ),
-                      items: widget.categories
-                          .map(
-                            (c) => DropdownMenuItem(value: c, child: Text(c)),
-                          )
-                          .toList(),
-                      onChanged: (v) => setState(() => _selectedCategory = v),
-                      decoration: const InputDecoration.collapsed(hintText: ''),
-                    ),
-                  ),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceContainer,
+                  borderRadius: BorderRadius.circular(8),
                 ),
-              ],
+                child: DropdownButtonFormField<String>(
+                  initialValue: _selectedCategory,
+                  hint: Text(
+                    'Select category',
+                    style: TextStyle(color: Theme.of(context).hintColor),
+                  ),
+                  items: widget.categories
+                      .map((c) => DropdownMenuItem(value: c, child: Text(c)))
+                      .toList(),
+                  onChanged: (v) => setState(() => _selectedCategory = v),
+                  decoration: const InputDecoration.collapsed(hintText: ''),
+                ),
+              ),
             ),
 
             const SizedBox(height: 16),
 
-            // Type chips row
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 92,
-                  child: Text(
-                    'Type',
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
+            /// TYPE
+            _formSection(
+              label: 'Type',
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _typeChip(FeedbackType.complaint),
+                    _typeChip(FeedbackType.suggestion),
+                    _typeChip(FeedbackType.bug),
+                    _typeChip(FeedbackType.question),
+                  ],
                 ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            /// PHOTO
+            _formSection(
+              label: 'Photo',
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surfaceContainer,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                     child: Row(
                       children: [
-                        _typeChip(FeedbackType.complaint),
-                        _typeChip(FeedbackType.suggestion),
-                        _typeChip(FeedbackType.bug),
-                        _typeChip(FeedbackType.question),
+                        ElevatedButton(
+                          onPressed: () => _pickImage(ImageSource.gallery),
+                          child: const Text('Gallery'),
+                        ),
+                        const SizedBox(width: 8),
+                        ElevatedButton(
+                          onPressed: () => _pickImage(ImageSource.camera),
+                          child: const Text('Camera'),
+                        ),
+                        const Spacer(),
+                        if (_attachmentFile != null)
+                          IconButton(
+                            onPressed: () =>
+                                setState(() => _attachmentFile = null),
+                            icon: const Icon(Icons.close),
+                          ),
                       ],
                     ),
                   ),
-                ),
-              ],
+                  if (_attachmentFile != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.file(
+                          _attachmentFile!,
+                          width: 120,
+                          height: 80,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
             ),
 
             const SizedBox(height: 16),
 
-            // Attachment row
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 92,
-                  child: Text(
-                    'Photo',
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
+            /// MESSAGE
+            _formSection(
+              label: 'Message',
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 8,
+                  horizontal: 12,
                 ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 4,
-                          horizontal: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surfaceContainer,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Row(
-                          children: [
-                            ElevatedButton.icon(
-                              onPressed: () => _pickImage(ImageSource.gallery),
-                              icon: const Icon(Icons.photo_library),
-                              label: const Text('Gallery'),
-                              style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 8,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            ElevatedButton.icon(
-                              onPressed: () => _pickImage(ImageSource.camera),
-                              icon: const Icon(Icons.camera_alt),
-                              label: const Text('Camera'),
-                              style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 8,
-                                ),
-                              ),
-                            ),
-                            const Spacer(),
-                            if (_attachmentFile != null)
-                              IconButton(
-                                onPressed: () {
-                                  setState(() => _attachmentFile = null);
-                                },
-                                icon: const Icon(Icons.close),
-                              ),
-                          ],
-                        ),
-                      ),
-                      if (_attachmentFile != null)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.file(
-                              _attachmentFile!,
-                              width: 120,
-                              height: 80,
-                              fit: BoxFit.cover,
-                            ),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceContainer,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: TextFormField(
+                  controller: _messageController,
+                  maxLines: 6,
+                  minLines: 4,
+                  decoration: InputDecoration.collapsed(
+                    hintText: 'Write your message here',
+                    hintStyle: TextStyle(color: Theme.of(context).hintColor),
+                  ),
+                  validator: (v) {
+                    if (v == null || v.trim().isEmpty) {
+                      return 'Message cannot be empty';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
+            /// SUBMIT
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton.tonal(
+                onPressed: _submitting ? null : _onSubmit,
+                child: _submitting
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          SizedBox(
+                            width: 14,
+                            height: 14,
+                            child: CircularProgressIndicator(strokeWidth: 2),
                           ),
-                        ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 16),
-
-            // Message textarea
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 92,
-                  child: Text(
-                    'Message',
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 8,
-                      horizontal: 12,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surfaceContainer,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: TextFormField(
-                      controller: _messageController,
-                      maxLines: 6,
-                      minLines: 4,
-                      decoration: InputDecoration.collapsed(
-                        hintText: 'Write your message here',
-                        hintStyle: TextStyle(
-                          color: Theme.of(context).hintColor,
-                        ),
-                      ),
-                      validator: (v) {
-                        if (v == null || v.trim().isEmpty) {
-                          return 'Message cannot be empty';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 18),
-
-            // Submit button
-            Row(
-              children: [
-                const Spacer(),
-                FilledButton.tonal(
-                  onPressed: _submitting ? null : _onSubmit,
-                  child: _submitting
-                      ? Row(
-                          children: const [
-                            SizedBox(
-                              width: 14,
-                              height: 14,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            ),
-                            SizedBox(width: 8),
-                            Text('Sending...'),
-                          ],
-                        )
-                      : const Text('Send Feedback'),
-                ),
-              ],
+                          SizedBox(width: 8),
+                          Text('Sending...'),
+                        ],
+                      )
+                    : const Text('Send Feedback'),
+              ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _formSection({required String label, required Widget child}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: Theme.of(
+            context,
+          ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+        ),
+        const SizedBox(height: 8),
+        child,
+      ],
     );
   }
 }
