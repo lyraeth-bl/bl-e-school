@@ -15,9 +15,19 @@ class AddFeedbackScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(title: Text(Utils.getTranslatedLabel(addFeedbackKey))),
-      body: AddFeedbackContainer(),
+      appBar: AppBar(
+        title: Text(
+          Utils.getTranslatedLabel(addFeedbackKey),
+          style: TextStyle(fontWeight: FontWeight.w700),
+        ),
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        physics: AlwaysScrollableScrollPhysics(),
+        child: AddFeedbackContainer(),
+      ),
     );
   }
 }

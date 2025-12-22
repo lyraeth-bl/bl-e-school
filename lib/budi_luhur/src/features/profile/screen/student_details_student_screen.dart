@@ -26,7 +26,12 @@ class StudentDetailsStudentScreen extends StatelessWidget {
     String safeNullable(String? v) => v == null || v.isEmpty ? "-" : v;
 
     return Scaffold(
-      appBar: AppBar(title: Text(Utils.getTranslatedLabel(detailsProfileKey))),
+      appBar: AppBar(
+        title: Text(
+          Utils.getTranslatedLabel(detailsProfileKey),
+          style: TextStyle(fontWeight: FontWeight.w700),
+        ),
+      ),
       body: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
@@ -51,7 +56,7 @@ class StudentDetailsStudentScreen extends StatelessWidget {
                               : "?",
                           style: const TextStyle(
                             fontSize: 24,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w700,
                           ),
                         )
                       : null,
@@ -63,18 +68,18 @@ class StudentDetailsStudentScreen extends StatelessWidget {
                     children: [
                       Text(
                         safeNullable(detailsProfile.nama),
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurface,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                        ),
+                        maxLines: 2,
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(
+                              color: Theme.of(context).colorScheme.onSurface,
+                              fontWeight: FontWeight.w700,
+                            ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         "NIS: ${safeNullable(detailsProfile.nis)}",
-                        style: TextStyle(
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
-                          fontSize: 13,
                         ),
                       ),
                     ],
@@ -192,6 +197,13 @@ class StudentDetailsStudentScreen extends StatelessWidget {
               icon: Icons.info,
             ),
             const SizedBox(height: 24),
+            Text(
+              "Silahkan ke TU unit masing-masing untuk merubah data.",
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
       ),
@@ -240,18 +252,16 @@ class StudentDetailsStudentScreen extends StatelessWidget {
                 children: [
                   Text(
                     label,
-                    style: TextStyle(
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      fontSize: 12.0,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     value.isEmpty ? "-" : value,
-                    style: TextStyle(
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: Theme.of(context).colorScheme.onSurface,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14.0,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ],

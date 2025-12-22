@@ -136,7 +136,7 @@ class _TimeTableContainerState extends State<TimeTableContainer>
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onPrimaryContainer,
                 fontSize: Utils.screenTitleFontSize,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ),
@@ -165,7 +165,7 @@ class _TimeTableContainerState extends State<TimeTableContainer>
                 "${Utils.getTranslatedLabel(classKey)} - $getStudentClassDetails",
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.secondary,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w700,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -228,90 +228,109 @@ class _TimeTableContainerState extends State<TimeTableContainer>
   Widget _buildTimeTableSlotDetailsContainer({required TimeTable timeTable}) {
     final jamMulaiToDateTime = Utils.timeStringToToday(timeTable.jamMulai);
     final jamSelesaiToDateTime = Utils.timeStringToToday(timeTable.jamSelesai);
+    final now = DateTime.now();
+    bool? isNow;
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Theme.of(
-              context,
-            ).colorScheme.secondary.withValues(alpha: 0.075),
-            offset: const Offset(4, 4),
-            blurRadius: 10,
-          ),
-        ],
-        color: Theme.of(context).scaffoldBackgroundColor,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      width: MediaQuery.of(context).size.width * (0.85),
-      padding: const EdgeInsets.symmetric(horizontal: 12.5, vertical: 10.0),
-      child: Row(
-        children: [
-          Flexible(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        "${Utils.formatTime(jamMulaiToDateTime!)} - ${Utils.formatTime(jamSelesaiToDateTime!)}",
-                        style: TextStyle(
+    isNow =
+        (now.isAfter(jamMulaiToDateTime!) &&
+        now.isBefore(jamSelesaiToDateTime!));
+
+    return Card(
+      margin: isNow ? const EdgeInsets.symmetric(vertical: 8) : null,
+      color: Theme.of(context).colorScheme.surface,
+      elevation: isNow ? 0 : 0,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Flexible(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Text(
+                              "${Utils.formatTime(jamMulaiToDateTime)} - ${Utils.formatTime(jamSelesaiToDateTime!)}",
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurface,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (isNow &&
+                          ((DateTime.now().weekday != (DateTime.saturday)) &&
+                              (DateTime.now().weekday !=
+                                  (DateTime.sunday)))) ...[
+                        SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 4,
+                            horizontal: 12,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.primaryContainer,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(Utils.getTranslatedLabel(nowKey)),
+                        ),
+                      ],
+                    ],
+                  ),
+                  SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Text(
+                        "${Utils.getTranslatedLabel(subjectsKey)} : ",
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.onSurface,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14.0,
                         ),
                       ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 2,
-                        horizontal: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        color: Theme.of(context).colorScheme.tertiaryContainer,
-                      ),
-                      child: Text(
-                        timeTable.kelas,
-                        style: TextStyle(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.onTertiaryContainer,
-                          fontWeight: FontWeight.w600,
+                      Text(
+                        timeTable.namaMataPelajaran,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 8),
-                Text(
-                  timeTable.namaMataPelajaran,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12.0,
+                    ],
                   ),
-                ),
-                Text(
-                  timeTable.namaGuru,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12.0,
+                  SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Text(
+                        "${Utils.getTranslatedLabel(teachersKey)} : ",
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
+                      Text(
+                        timeTable.namaGuru,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

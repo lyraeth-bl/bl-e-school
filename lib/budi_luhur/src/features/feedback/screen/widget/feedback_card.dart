@@ -239,7 +239,7 @@ class FeedbackCard extends StatelessWidget {
                         Expanded(
                           child: Text(
                             'Feedback #${feedback.id}',
-                            style: Theme.of(context).textTheme.titleMedium
+                            style: Theme.of(context).textTheme.titleLarge
                                 ?.copyWith(
                                   color: Theme.of(
                                     context,
@@ -273,200 +273,26 @@ class FeedbackCard extends StatelessWidget {
 
                     const SizedBox(height: 16),
 
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surfaceContainer,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Message',
-                              style: Theme.of(context).textTheme.titleMedium
-                                  ?.copyWith(
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.onSurface,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              feedback.message,
-                              style: Theme.of(context).textTheme.bodyMedium
-                                  ?.copyWith(
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.onSurfaceVariant,
-                                  ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    messageContainer(context),
 
-                    const SizedBox(height: 16),
-
+                    // Admin Response
                     if (feedback.adminResponse != null &&
                         feedback.adminResponse!.isNotEmpty) ...[
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.tertiaryContainer,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Admin Response',
-                                style: Theme.of(context).textTheme.titleMedium
-                                    ?.copyWith(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.onTertiaryContainer,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                              ),
-                              const SizedBox(height: 16),
-                              Text(
-                                feedback.adminResponse!,
-                                style: Theme.of(context).textTheme.bodyMedium
-                                    ?.copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onTertiaryContainer
-                                          .withValues(alpha: 0.8),
-                                    ),
-                              ),
-                              const SizedBox(height: 16),
-                              Text(
-                                Utils.formatDateTwo(
-                                  feedback.adminResponseTime!,
-                                ),
-                                style: Theme.of(context).textTheme.labelSmall
-                                    ?.copyWith(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.onTertiaryContainer,
-                                    ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      adminResponseContainer(context),
                     ],
 
                     SizedBox(height: 16),
 
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surfaceContainer,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              FeedbackCardDetailsItem(
-                                title: "Category",
-                                value: Utils.enumToLabel(feedback.category),
-                              ),
-                              const SizedBox(width: 12),
-                              FeedbackCardDetailsItem(
-                                title: "Type",
-                                value: Utils.enumToLabel(feedback.type),
-                              ),
-                            ],
-                          ),
-
-                          const SizedBox(height: 16),
-
-                          Row(
-                            children: [
-                              FeedbackCardDetailsItem(
-                                title: "OS",
-                                value: feedback.os ?? "-",
-                              ),
-                              const SizedBox(width: 12),
-                              FeedbackCardDetailsItem(
-                                title: "App",
-                                value: "v${feedback.appVersion}",
-                              ),
-                            ],
-                          ),
-
-                          const SizedBox(height: 16),
-
-                          Row(
-                            children: [
-                              FeedbackCardDetailsItem(
-                                title: "Created",
-                                value: Utils.formatDay(feedback.createdAt),
-                              ),
-
-                              const SizedBox(width: 16),
-
-                              FeedbackCardDetailsItem(
-                                title: "Updated",
-                                value: Utils.formatDay(feedback.updatedAt),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
+                    // Details
+                    detailsFeedbackContainer(context),
 
                     SizedBox(height: 16),
 
+                    // Attachments
                     if (Utils.parseAttachments(
                       feedback.attachments,
                     ).isNotEmpty) ...[
-                      Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surfaceContainer,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Attachment',
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                            const SizedBox(height: 16),
-                            AspectRatio(
-                              aspectRatio: 1,
-                              child: CachedNetworkImage(
-                                imageUrl: Utils.normalizeToFullUrl(
-                                  Utils.parseAttachments(
-                                    feedback.attachments,
-                                  ).first,
-                                ),
-                                placeholder: (c, s) => const Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                                errorWidget: (c, s, e) => const Center(
-                                  child: Icon(Icons.broken_image),
-                                ),
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      attachmentContainer(context),
                     ],
                     const SizedBox(height: 16),
                   ],
@@ -476,6 +302,176 @@ class FeedbackCard extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  // Message components
+  Widget messageContainer(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surfaceContainer,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              Utils.getTranslatedLabel(messageKey),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onSurface,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              feedback.message,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Admin Response components
+  Widget adminResponseContainer(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.tertiaryContainer,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              Utils.getTranslatedLabel(adminResponseKey),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onTertiaryContainer,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              feedback.adminResponse!,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Theme.of(
+                  context,
+                ).colorScheme.onTertiaryContainer.withValues(alpha: 0.8),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              Utils.formatDateTwo(feedback.adminResponseTime!),
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: Theme.of(context).colorScheme.onTertiaryContainer,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Details components
+  Widget detailsFeedbackContainer(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainer,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              FeedbackCardDetailsItem(
+                title: Utils.getTranslatedLabel(categoryKey),
+                value: Utils.enumToLabel(feedback.category),
+              ),
+              const SizedBox(width: 12),
+              FeedbackCardDetailsItem(
+                title: Utils.getTranslatedLabel(typeKey),
+                value: Utils.enumToLabel(feedback.type),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 16),
+
+          Row(
+            children: [
+              FeedbackCardDetailsItem(
+                title: Utils.getTranslatedLabel(osKey),
+                value: feedback.os ?? "-",
+              ),
+              const SizedBox(width: 12),
+              FeedbackCardDetailsItem(
+                title: Utils.getTranslatedLabel(appVersionKey),
+                value: "v${feedback.appVersion}",
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 16),
+
+          Row(
+            children: [
+              FeedbackCardDetailsItem(
+                title: Utils.getTranslatedLabel(createdKey),
+                value: Utils.formatDay(feedback.createdAt),
+              ),
+
+              const SizedBox(width: 16),
+
+              FeedbackCardDetailsItem(
+                title: Utils.getTranslatedLabel(updatedKey),
+                value: Utils.formatDay(feedback.updatedAt),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Attachments components
+  Widget attachmentContainer(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainer,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Attachment', style: Theme.of(context).textTheme.titleMedium),
+          const SizedBox(height: 16),
+          AspectRatio(
+            aspectRatio: 1,
+            child: CachedNetworkImage(
+              imageUrl: Utils.normalizeToFullUrl(
+                Utils.parseAttachments(feedback.attachments).first,
+              ),
+              placeholder: (c, s) =>
+                  const Center(child: CircularProgressIndicator()),
+              errorWidget: (c, s, e) =>
+                  const Center(child: Icon(Icons.broken_image)),
+              fit: BoxFit.contain,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

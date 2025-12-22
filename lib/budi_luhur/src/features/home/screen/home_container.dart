@@ -26,12 +26,20 @@ class HomeContainer extends StatelessWidget {
     return RefreshIndicator(
       edgeOffset: Utils.getScrollViewTopPadding(
         context: context,
-        appBarHeightPercentage: Utils.appBarBiggerHeightPercentage,
+        appBarHeightPercentage: Utils.appBarBiggerHeightPercentage - 0.025,
       ),
       onRefresh: () async {
+        final detailsStudent = context.read<AuthCubit>().getStudentDetails;
+        final classStudent =
+            "${detailsStudent.kelasSaatIni}${detailsStudent.noKelasSaatIni}";
+
         context.read<DailyAttendanceCubit>().fetchTodayDailyAttendance(
           nis: context.read<AuthCubit>().getStudentDetails.nis,
         );
+
+        context.read<TimeTableCubit>().fetchTimeTable(kelas: classStudent);
+
+        context.read<AppConfigurationCubit>().fetchAppConfiguration();
       },
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),

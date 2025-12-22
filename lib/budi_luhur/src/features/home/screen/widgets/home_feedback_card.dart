@@ -10,6 +10,7 @@ class HomeFeedbackCard extends StatelessWidget {
     return InkWell(
       onTap: () => Get.toNamed(BudiLuhurRoutes.studentFeedback),
       child: Card(
+        elevation: 3,
         color: Theme.of(context).colorScheme.surface,
         child: Padding(
           padding: const EdgeInsets.all(16),

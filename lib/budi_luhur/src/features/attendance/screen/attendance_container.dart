@@ -115,7 +115,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onPrimaryContainer,
                 fontSize: Utils.screenTitleFontSize,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ),
@@ -179,7 +179,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
             Text(
               Utils.formatToMonthYear(_now),
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w700,
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
@@ -296,7 +296,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
                       absentDays: absentDays,
                     ),
 
-                    _buildLastFetchData(timeUpdate: lastUpdated),
+                    SizedBox(height: 16),
 
                     if (hadirCount != 0 ||
                         terlambatCount != 0 ||
@@ -304,6 +304,8 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
                         sakitCount != 0 ||
                         izinCount != 0 && pieData.isNotEmpty)
                       AttendanceCharts(data: pieData, order: order),
+
+                    _buildLastFetchData(timeUpdate: lastUpdated),
                   ],
                 ),
               );
@@ -325,7 +327,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
             padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.tertiaryContainer,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
               "Last updated: ${Utils.formatDaysAndTime(timeUpdate, locale: "id_ID")}",
@@ -406,16 +408,50 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
 
             _selectedDailyAttendance = dailyAttendanceList.firstWhere(
               (date) => isSameDay(date.tanggal.toLocal(), selected),
-              orElse: () => DailyAttendance.fromJson({}),
+              orElse: () => DailyAttendance(
+                id: 0,
+                nis: context.read<AuthCubit>().getStudentDetails.nis,
+                tanggal: DateTime.now().toLocal(),
+                jamCheckIn: DateTime(_now.year, _now.month, 0, 0, 0, 0),
+                jamCheckOut: DateTime(_now.year, _now.month, 0, 0, 0, 0),
+                status: "Belum checkin",
+                unit:
+                    context.read<AuthCubit>().getStudentDetails.unit ?? "SMKKT",
+                createdAt: DateTime.now().toLocal(),
+                updatedAt: DateTime.now().toLocal(),
+              ),
             );
           });
 
           final selectedAttendance = dailyAttendanceList.firstWhere(
             (date) => isSameDay(date.tanggal.toLocal(), selected),
-            orElse: () => DailyAttendance.fromJson({}),
+            orElse: () => DailyAttendance(
+              id: 0,
+              nis: context.read<AuthCubit>().getStudentDetails.nis,
+              tanggal: DateTime.now().toLocal(),
+              jamCheckIn: DateTime(_now.year, _now.month, 0, 0, 0, 0),
+              jamCheckOut: DateTime(_now.year, _now.month, 0, 0, 0, 0),
+              status: "Belum checkin",
+              unit: context.read<AuthCubit>().getStudentDetails.unit ?? "SMKKT",
+              createdAt: DateTime.now().toLocal(),
+              updatedAt: DateTime.now().toLocal(),
+            ),
           );
 
-          _showAttendanceBottomSheet(selectedAttendance);
+          final dataSelectedAttendance = DailyAttendance(
+            id: selectedAttendance.id,
+            nis: selectedAttendance.nis,
+            tanggal: selectedAttendance.tanggal.toLocal(),
+            alasan: selectedAttendance.alasan,
+            jamCheckIn: selectedAttendance.jamCheckIn,
+            jamCheckOut: selectedAttendance.jamCheckOut,
+            status: selectedAttendance.status,
+            unit: selectedAttendance.unit,
+            createdAt: selectedAttendance.createdAt.toLocal(),
+            updatedAt: selectedAttendance.updatedAt.toLocal(),
+          );
+
+          _showAttendanceBottomSheet(dataSelectedAttendance);
         },
 
         calendarStyle: CalendarStyle(
@@ -487,7 +523,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
       showDragHandle: true,
       context: context,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
       ),
       builder: (c) {
         return Padding(
@@ -496,116 +532,142 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                Utils.formatDays(
-                  _selectedDay ?? DateTime.now(),
-                  locale: "id_ID",
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Theme.of(context).colorScheme.surfaceContainer,
                 ),
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
-              ),
-
-              SizedBox(height: 24),
-
-              // Divider(
-              //   color: Theme.of(context).colorScheme.outlineVariant,
-              //   height: 32,
-              //   thickness: 1.5,
-              //   radius: BorderRadius.circular(16),
-              // ),
-              if (dailyAttendance.status.isNotEmpty) ...[
-                Text(
-                  "Keterangan",
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
+                child: Text(
+                  Utils.formatDays(
+                    _selectedDay ?? DateTime.now(),
+                    locale: "id_ID",
+                  ),
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w700,
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
+              ),
 
-                SizedBox(height: 8),
+              SizedBox(height: 16),
 
-                Text(
-                  dailyAttendance.alasan ?? dailyAttendance.status,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+              if (dailyAttendance.status.isNotEmpty) ...[
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Theme.of(context).colorScheme.surfaceContainer,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Keterangan",
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(
+                              fontWeight: FontWeight.w700,
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                      ),
+
+                      SizedBox(height: 8),
+
+                      Text(
+                        dailyAttendance.alasan ?? dailyAttendance.status,
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
 
-                SizedBox(height: 24),
+                SizedBox(height: 16),
 
-                // Divider(
-                //   color: Theme.of(context).colorScheme.outlineVariant,
-                //   height: 32,
-                //   thickness: 1.5,
-                //   radius: BorderRadius.circular(16),
-                // ),
                 Row(
                   children: [
                     Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Jam Check-in",
-                            style: Theme.of(context).textTheme.titleMedium
-                                ?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onSurface,
-                                ),
-                          ),
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Theme.of(context).colorScheme.surfaceContainer,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Jam Check-in",
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurface,
+                                  ),
+                            ),
 
-                          const SizedBox(height: 4),
+                            const SizedBox(height: 4),
 
-                          Text(
-                            dailyAttendance.jamCheckIn != null
-                                ? Utils.formatTime(
-                                    dailyAttendance.jamCheckIn!.toLocal(),
-                                  )
-                                : "-",
-                            style: Theme.of(context).textTheme.bodyLarge
-                                ?.copyWith(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onSurfaceVariant,
-                                ),
-                          ),
-                        ],
+                            Text(
+                              dailyAttendance.jamCheckIn != null
+                                  ? Utils.formatTime(
+                                      dailyAttendance.jamCheckIn!.toLocal(),
+                                    )
+                                  : "-",
+                              style: Theme.of(context).textTheme.bodyLarge
+                                  ?.copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
+                                  ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
 
+                    SizedBox(width: 16),
+
                     Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Jam Check-out',
-                            style: Theme.of(context).textTheme.titleMedium
-                                ?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onSurface,
-                                ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            dailyAttendance.jamCheckOut != null
-                                ? Utils.formatTime(
-                                    dailyAttendance.jamCheckOut!.toLocal(),
-                                  )
-                                : "-",
-                            style: Theme.of(context).textTheme.bodyLarge
-                                ?.copyWith(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onSurfaceVariant,
-                                ),
-                          ),
-                        ],
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Theme.of(context).colorScheme.surfaceContainer,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Jam Check-out',
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurface,
+                                  ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              dailyAttendance.jamCheckOut != null
+                                  ? Utils.formatTime(
+                                      dailyAttendance.jamCheckOut!.toLocal(),
+                                    )
+                                  : "-",
+                              style: Theme.of(context).textTheme.bodyLarge
+                                  ?.copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
+                                  ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],

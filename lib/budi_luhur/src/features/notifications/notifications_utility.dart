@@ -194,7 +194,16 @@ class NotificationsUtility {
 
     if (type == attendanceNotificationType.toLowerCase()) {
       if (Get.currentRoute != BudiLuhurRoutes.home) {
-        Get.toNamed(BudiLuhurRoutes.home);
+        Get.toNamed(
+          BudiLuhurRoutes.home,
+          arguments: {'fromNotifications': true},
+        );
+      } else {
+        try {
+          HomeScreen.homeScreenKey.currentState
+              ?.fetchDailyAttendanceFromNotification();
+        } catch (_) {
+        }
       }
       return;
     }

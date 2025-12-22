@@ -1,7 +1,8 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/settings/screen/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class HomeScreen extends StatefulWidget {
   static GlobalKey<_HomeScreenState> homeScreenKey =
@@ -22,13 +23,19 @@ class HomeScreen extends StatefulWidget {
           create: (_) => AcademicCalendarCubit(AcademicCalendarRepository()),
         ),
       ],
-      child: HomeScreen(),
+      child: HomeScreen(key: HomeScreen.homeScreenKey),
     );
   }
 }
 
 class _HomeScreenState extends State<HomeScreen>
     with TickerProviderStateMixin, WidgetsBindingObserver {
+  final args = Get.arguments;
+
+  late final fromNotifications = (args is Map)
+      ? args['fromNotifications']
+      : false;
+
   /// Animations
   late final AnimationController _animationController = AnimationController(
     vsync: this,
@@ -75,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   late bool _isMoreMenuOpen = false;
 
-  late List<BottomNavModel> _bottomNavItems = [];
+  late List<BottomNavIconModel> _bottomNavItems = [];
 
   @override
   void initState() {
@@ -83,12 +90,27 @@ class _HomeScreenState extends State<HomeScreen>
 
     WidgetsBinding.instance.addObserver(this);
     _animationController.forward();
-    _ensureBottomNavItems();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (fromNotifications) _fetchDailyAttendance();
       loadTemporarilyStoredNotifications();
+      _fetchAppConfiguration();
       NotificationsUtility.setUpNotificationService();
     });
+  }
+
+  void _fetchAppConfiguration() =>
+      context.read<AppConfigurationCubit>().fetchAppConfiguration();
+
+  void fetchDailyAttendanceFromNotification() {
+    _fetchDailyAttendance();
+  }
+
+  void _fetchDailyAttendance() {
+    final detailsUser = context.read<AuthCubit>().getStudentDetails;
+    context.read<DailyAttendanceCubit>().fetchTodayDailyAttendance(
+      nis: detailsUser.nis,
+    );
   }
 
   @override
@@ -111,41 +133,72 @@ class _HomeScreenState extends State<HomeScreen>
       },
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
-        body: Stack(
-          children: [
-            IndexedStack(
-              index: _currentSelectedBottomNavIndex,
-              children: [
-                const HomeContainer(isForBottomMenuBackground: false),
-                _buildBottomSheetBackgroundContent(),
-              ],
-            ),
+        body: context.read<AppConfigurationCubit>().getAppMaintenance
+            ? const AppUnderMaintenanceContainer()
+            : BlocConsumer<AppConfigurationCubit, AppConfigurationState>(
+                listener: (context, state) {
+                  state.maybeWhen(
+                    failure: (errorMessage) => updateBottomNavItems(),
+                    success: (appConfiguration) => updateBottomNavItems(),
+                    orElse: () {},
+                  );
+                },
+                builder: (context, state) {
+                  return state.maybeWhen(
+                    success: (appConfiguration) {
+                      return Stack(
+                        children: [
+                          IndexedStack(
+                            index: _currentSelectedBottomNavIndex,
+                            children: [
+                              const HomeContainer(
+                                isForBottomMenuBackground: false,
+                              ),
+                              _buildBottomSheetBackgroundContent(),
+                            ],
+                          ),
 
-            IgnorePointer(
-              ignoring: !_isMoreMenuOpen,
-              child: FadeTransition(
-                opacity: _moreMenuBackgroundContainerColorAnimation,
-                child: _buildMoreMenuBackgroundContainer(),
+                          IgnorePointer(
+                            ignoring: !_isMoreMenuOpen,
+                            child: FadeTransition(
+                              opacity:
+                                  _moreMenuBackgroundContainerColorAnimation,
+                              child: _buildMoreMenuBackgroundContainer(),
+                            ),
+                          ),
+
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: SlideTransition(
+                              position: _moreMenuBottomSheetAnimation,
+                              child: MoreMenuBottomSheetContainer(
+                                closeBottomMenu: _closeBottomMenu,
+                                onTapMoreMenuItemContainer:
+                                    _onTapMoreMenuItemContainer,
+                              ),
+                            ),
+                          ),
+
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: _buildBottomNavigationContainer(),
+                          ),
+                        ],
+                      );
+                    },
+                    orElse: () => Column(
+                      children: [
+                        HomeContainerTopProfileContainer(),
+                        Expanded(
+                          child: HomeScreenDataLoadingContainer(
+                            addTopPadding: false,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
-            ),
-
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: SlideTransition(
-                position: _moreMenuBottomSheetAnimation,
-                child: MoreMenuBottomSheetContainer(
-                  closeBottomMenu: _closeBottomMenu,
-                  onTapMoreMenuItemContainer: _onTapMoreMenuItemContainer,
-                ),
-              ),
-            ),
-
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: _buildBottomNavigationContainer(),
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -173,20 +226,16 @@ class _HomeScreenState extends State<HomeScreen>
     });
   }
 
-  void _ensureBottomNavItems() {
-    if (_bottomNavItems.isEmpty) updateBottomNavItems();
-  }
-
   void updateBottomNavItems() {
     _bottomNavItems = [
-      BottomNavModel(
-        activeImageUrl: "assets/images/home_active_icon.svg",
-        disableImageUrl: "assets/images/home_icon.svg",
+      BottomNavIconModel(
+        activeImageUrl: LucideIcons.house,
+        disableImageUrl: LucideIcons.house,
         title: homeKey,
       ),
-      BottomNavModel(
-        activeImageUrl: "assets/images/menu_active_icon.svg",
-        disableImageUrl: "assets/images/menu_icon.svg",
+      BottomNavIconModel(
+        activeImageUrl: LucideIcons.squareMenu,
+        disableImageUrl: LucideIcons.menu,
         title: menuKey,
       ),
     ];
@@ -338,12 +387,12 @@ class _HomeScreenState extends State<HomeScreen>
               BoxShadow(
                 color: Utils.getColorScheme(
                   context,
-                ).secondary.withValues(alpha: 0.15),
+                ).shadow.withValues(alpha: 0.15),
                 offset: const Offset(2.5, 2.5),
                 blurRadius: 20,
               ),
             ],
-            color: Theme.of(context).scaffoldBackgroundColor,
+            color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(10.0),
           ),
           width: MediaQuery.of(context).size.width * (0.85),

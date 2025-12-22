@@ -1,13 +1,12 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class BottomNavContainer extends StatefulWidget {
   final BoxConstraints boxConstraints;
   final int index;
   final int currentIndex;
   final AnimationController animationController;
-  final BottomNavModel bottomNavItem;
+  final BottomNavIconModel bottomNavItem;
   final Function onTap;
   final String showCaseDescription;
 
@@ -50,10 +49,26 @@ class _BottomNavContainerState extends State<BottomNavContainer> {
                       curve: Curves.easeInOut,
                     ),
                   ),
-              child: SvgPicture.asset(
-                widget.index == widget.currentIndex
-                    ? widget.bottomNavItem.activeImageUrl
-                    : widget.bottomNavItem.disableImageUrl,
+              child: Container(
+                padding: widget.index == widget.currentIndex
+                    ? const EdgeInsets.symmetric(horizontal: 12, vertical: 8)
+                    : null,
+                decoration: BoxDecoration(
+                  color: widget.index == widget.currentIndex
+                      ? Theme.of(
+                          context,
+                        ).colorScheme.secondaryContainer.withValues(alpha: 0.8)
+                      : null,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(
+                  widget.index == widget.currentIndex
+                      ? widget.bottomNavItem.activeImageUrl
+                      : widget.bottomNavItem.disableImageUrl,
+                  color: widget.index == widget.currentIndex
+                      ? Theme.of(context).colorScheme.onSecondaryContainer
+                      : Theme.of(context).colorScheme.onSurface,
+                ),
               ),
             ),
             SizedBox(height: widget.boxConstraints.maxHeight * (0.051)),
@@ -77,7 +92,10 @@ class _BottomNavContainerState extends State<BottomNavContainer> {
                   Utils.getTranslatedLabel(widget.bottomNavItem.title),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontSize: 11.5),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
             ),

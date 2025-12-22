@@ -10,6 +10,9 @@ class BudiLuhurApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider<AppConfigurationCubit>(
+          create: (_) => AppConfigurationCubit(AppConfigurationRepository()),
+        ),
         BlocProvider<SettingsCubit>(
           create: (_) => SettingsCubit(
             SettingsRepository(),

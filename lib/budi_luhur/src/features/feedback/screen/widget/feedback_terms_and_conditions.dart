@@ -23,7 +23,7 @@ class FeedbackTermsAndConditions extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: 16),
+          SizedBox(height: 8),
 
           FeedbackTermsAndConditionsFriendly(),
         ],
@@ -51,7 +51,6 @@ class FeedbackTermsAndConditionsFriendly extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Container(
-      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
@@ -66,7 +65,7 @@ class FeedbackTermsAndConditionsFriendly extends StatelessWidget {
               child: ListView.separated(
                 padding: EdgeInsets.zero,
                 itemCount: _items.length,
-                separatorBuilder: (_, __) => SizedBox(height: 8,),
+                separatorBuilder: (_, __) => SizedBox(height: 8),
                 itemBuilder: (context, index) {
                   final item = _items[index];
                   return _TermItem(index: index + 1, title: item);
@@ -76,9 +75,8 @@ class FeedbackTermsAndConditionsFriendly extends StatelessWidget {
 
             const SizedBox(height: 16),
 
-            // small footer / hint
             Text(
-              "Butuh bantua n? Hubungi pihak sekolah.",
+              "Butuh bantuan? Hubungi pihak sekolah.",
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
               ),

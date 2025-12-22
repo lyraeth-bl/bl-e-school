@@ -38,6 +38,9 @@ class ApiEndpoints {
   /// Endpoint for feedback.
   static String feedback = "$databaseUrl/feedback";
 
+  /// Endpoint for appConfig.
+  static String appConfiguration = "$databaseUrl/app-config";
+
   /// Endpoint for fetching timetables.
   static String timeTable = "$databaseInternalUrl/jadwal";
 }

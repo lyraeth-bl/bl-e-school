@@ -25,7 +25,7 @@ class StudentProfileScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         title: Text(
           Utils.getTranslatedLabel(profileKey),
-          style: TextStyle(fontWeight: FontWeight.w600),
+          style: TextStyle(fontWeight: FontWeight.w700),
         ),
         centerTitle: true,
         actions: [
@@ -99,18 +99,16 @@ class StudentProfileScreen extends StatelessWidget {
                 children: [
                   Text(
                     label,
-                    style: TextStyle(
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      fontSize: 12.0,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     value.isEmpty ? "-" : value,
-                    style: TextStyle(
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: Theme.of(context).colorScheme.onSurface,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14.0,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ],
@@ -153,37 +151,29 @@ class StudentProfileScreen extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
 
             Text(
               studentDetails.nama ?? "-",
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontSize: 18,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: Theme.of(context).colorScheme.onSurface,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w700,
               ),
             ),
 
-            const SizedBox(height: 8.0),
+            const SizedBox(height: 16),
 
             Text(
               studentDetails.email ?? "",
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
 
             const SizedBox(height: 16.0),
 
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width * (0.075),
-              ),
-              child: Divider(
-                color: Theme.of(context).colorScheme.outlineVariant,
-              ),
-            ),
+            Divider(color: Theme.of(context).colorScheme.outlineVariant),
 
             const SizedBox(height: 16.0),
 
@@ -200,10 +190,10 @@ class StudentProfileScreen extends StatelessWidget {
                       children: [
                         Text(
                           Utils.getTranslatedLabel(personalDetailsKey),
-                          style: Theme.of(context).textTheme.bodyMedium
+                          style: Theme.of(context).textTheme.titleMedium
                               ?.copyWith(
                                 color: Theme.of(context).colorScheme.onSurface,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w700,
                               ),
                         ),
 
@@ -220,7 +210,7 @@ class StudentProfileScreen extends StatelessWidget {
                               color: Theme.of(
                                 context,
                               ).colorScheme.primaryContainer,
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(8),
                             ),
                             child: Row(
                               children: [
@@ -238,6 +228,7 @@ class StudentProfileScreen extends StatelessWidget {
                                   color: Theme.of(
                                     context,
                                   ).colorScheme.onPrimaryContainer,
+                                  size: 16,
                                 ),
                               ],
                             ),
@@ -246,6 +237,8 @@ class StudentProfileScreen extends StatelessWidget {
                       ],
                     ),
                   ),
+
+                  SizedBox(height: 8),
 
                   _buildProfileDetailsTile(
                     context,
@@ -307,7 +300,7 @@ class StudentProfileScreen extends StatelessWidget {
                     iconUrl: "assets/images/user_pro_address_icon.svg",
                     iconColor: Theme.of(context).colorScheme.onPrimaryContainer,
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height * (0.1)),
+                  SizedBox(height: MediaQuery.of(context).size.height * (0.05)),
                 ],
               ),
             ),

@@ -30,17 +30,41 @@ class HomeScreenDataLoadingContainer extends StatelessWidget {
             borderRadius: 25,
             height:
                 MediaQuery.of(context).size.height *
-                Utils.appBarBiggerHeightPercentage,
+                Utils.appBarBiggerHeightPercentage * (1.15)
           ),
         ),
+
         SizedBox(height: MediaQuery.of(context).size.height * (0.025)),
-        // const SubjectsShimmerLoadingContainer(),
+
+        ShimmerLoadingContainer(
+          child: CustomShimmerContainer(
+            margin: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * (0.075),
+            ),
+            width: MediaQuery.of(context).size.width,
+            borderRadius: 25,
+            height:
+                MediaQuery.of(context).size.height *
+                Utils.appBarBiggerHeightPercentage *
+                (0.7),
+          ),
+        ),
+
         SizedBox(height: MediaQuery.of(context).size.height * (0.025)),
-        // Column(
-        //   children: List.generate(3, (index) => index)
-        //       .map((notice) => const AnnouncementShimmerLoadingContainer())
-        //       .toList(),
-        // ),
+
+        ShimmerLoadingContainer(
+          child: CustomShimmerContainer(
+            margin: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * (0.075),
+            ),
+            width: MediaQuery.of(context).size.width,
+            borderRadius: 25,
+            height:
+                MediaQuery.of(context).size.height *
+                Utils.appBarBiggerHeightPercentage *
+                (0.4),
+          ),
+        ),
       ],
     );
   }
