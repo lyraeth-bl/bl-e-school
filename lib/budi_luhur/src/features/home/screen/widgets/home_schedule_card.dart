@@ -2,6 +2,7 @@ import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 class HomeScheduleCard extends StatefulWidget {
   const HomeScheduleCard({super.key});
@@ -129,22 +130,31 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                           color: Theme.of(context).colorScheme.surfaceContainer,
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.beach_access),
-                            SizedBox(width: 16),
-                            Text(
-                              Utils.getTranslatedLabel(weekendScheduleTextKey),
-                              style: Theme.of(context).textTheme.bodyMedium
-                                  ?.copyWith(
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.onSurface,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                            ),
-                          ],
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Lottie.asset(
+                                'assets/animations/beach.json',
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              ),
+                              SizedBox(height: 16),
+                              Text(
+                                Utils.getTranslatedLabel(
+                                  weekendScheduleTextKey,
+                                ),
+                                style: Theme.of(context).textTheme.bodyLarge
+                                    ?.copyWith(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSurface,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     }
@@ -194,17 +204,22 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                           color: Theme.of(context).colorScheme.surfaceContainer,
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Row(
+                        child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.free_breakfast),
-                            SizedBox(width: 16),
+                            Lottie.asset(
+                              'assets/animations/break.json',
+                              width: 100,
+                              height: 100,
+                              fit: BoxFit.cover,
+                            ),
+                            SizedBox(height: 16),
                             Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
                                   Utils.getTranslatedLabel(breakKey),
-                                  style: Theme.of(context).textTheme.bodyMedium
+                                  style: Theme.of(context).textTheme.bodyLarge
                                       ?.copyWith(
                                         color: Theme.of(
                                           context,
@@ -212,14 +227,11 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                                         fontWeight: FontWeight.w700,
                                       ),
                                 ),
-                                SizedBox(height: 8),
+                                SizedBox(height: 16),
                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(
-                                      Icons.timer,
-                                      size: 16,
-                                      color: Colors.red,
-                                    ),
+                                    Icon(Icons.timer, size: 16),
                                     SizedBox(width: 6),
                                     Text(
                                       "${Utils.formatTime(start)} - ${Utils.formatTime(end)}",

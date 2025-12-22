@@ -26,7 +26,7 @@ class HomeContainer extends StatelessWidget {
     return RefreshIndicator(
       edgeOffset: Utils.getScrollViewTopPadding(
         context: context,
-        appBarHeightPercentage: Utils.appBarBiggerHeightPercentage,
+        appBarHeightPercentage: Utils.appBarBiggerHeightPercentage - 0.025,
       ),
       onRefresh: () async {
         final detailsStudent = context.read<AuthCubit>().getStudentDetails;

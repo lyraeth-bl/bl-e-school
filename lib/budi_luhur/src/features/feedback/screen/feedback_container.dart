@@ -79,7 +79,7 @@ class _FeedbackContainerState extends State<FeedbackContainer> {
                             SizedBox(height: 24),
                             Text(
                               Utils.getTranslatedLabel(noDataFoundKey),
-                              style: Theme.of(context).textTheme.titleSmall
+                              style: Theme.of(context).textTheme.titleMedium
                                   ?.copyWith(
                                     color: Theme.of(
                                       context,

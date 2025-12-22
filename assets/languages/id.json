@@ -412,5 +412,12 @@
   "weekendSubtitle": "Tidak ada jadwal sekolah",
   "noScheduleTitle": "Tidak Ada Jadwal",
   "noScheduleSubtitle": "Tidak ada pelajaran lagi hari ini",
-  "teacher": "Guru"
+  "teacher": "Guru",
+  "message": "Pesan",
+  "adminResponse": "Respon admin",
+  "category": "Kategori",
+  "type": "Tipe",
+  "os": "OS",
+  "created": "Dibuat pada",
+  "updated": "Diperbaharui pada"
 }

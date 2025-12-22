@@ -478,3 +478,11 @@ const String weekendSubtitleKey = "weekendSubtitle";
 const String noScheduleTitleKey = "noScheduleTitle";
 const String noScheduleSubtitleKey = "noScheduleSubtitle";
 const String teacherKey = "teacher";
+
+const String messageKey = "message";
+const String adminResponseKey = "adminResponse";
+const String categoryKey = "category";
+const String typeKey = "type";
+const String osKey = "os";
+const String createdKey = "created";
+const String updatedKey = "updated";

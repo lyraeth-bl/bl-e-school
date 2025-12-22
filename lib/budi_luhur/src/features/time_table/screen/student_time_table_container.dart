@@ -256,7 +256,7 @@ class _TimeTableContainerState extends State<TimeTableContainer>
                           children: [
                             Text(
                               "${Utils.formatTime(jamMulaiToDateTime)} - ${Utils.formatTime(jamSelesaiToDateTime!)}",
-                              style: Theme.of(context).textTheme.titleSmall
+                              style: Theme.of(context).textTheme.titleMedium
                                   ?.copyWith(
                                     color: Theme.of(
                                       context,
@@ -267,7 +267,10 @@ class _TimeTableContainerState extends State<TimeTableContainer>
                           ],
                         ),
                       ),
-                      if (isNow) ...[
+                      if (isNow &&
+                          ((DateTime.now().weekday != (DateTime.saturday)) &&
+                              (DateTime.now().weekday !=
+                                  (DateTime.sunday)))) ...[
                         SizedBox(width: 8),
                         Container(
                           padding: const EdgeInsets.symmetric(
@@ -286,22 +289,42 @@ class _TimeTableContainerState extends State<TimeTableContainer>
                     ],
                   ),
                   SizedBox(height: 16),
-                  Text(
-                    timeTable.namaMataPelajaran,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        "${Utils.getTranslatedLabel(subjectsKey)} : ",
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
+                      Text(
+                        timeTable.namaMataPelajaran,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(height: 8),
-                  Text(
-                    timeTable.namaGuru,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        "${Utils.getTranslatedLabel(teachersKey)} : ",
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
+                      Text(
+                        timeTable.namaGuru,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

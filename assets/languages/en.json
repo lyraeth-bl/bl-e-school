@@ -398,7 +398,7 @@
   "checkIn": "Check in",
   "checkOut": "Check out",
   "detailsEvents": "Details events",
-  "weekendScheduleTextKey": "Enjoy your weekend.",
+  "weekendScheduleText": "Enjoy your weekend.",
   "thatAllForToday": "That's all for today.",
   "noMoreScheduleToday": "No more schedule today.",
   "noMoreSchedule": "No more schedule.",
@@ -412,5 +412,12 @@
   "weekendSubtitle": "No school schedule today",
   "noScheduleTitle": "No Schedule",
   "noScheduleSubtitle": "There are no more classes today",
-  "teacher": "Teacher"
+  "teacher": "Teacher",
+  "message": "Message",
+  "adminResponse": "Admin response",
+  "category": "Category",
+  "type": "Type",
+  "os": "OS",
+  "created": "Created at",
+  "updated": "Updated at"
 }

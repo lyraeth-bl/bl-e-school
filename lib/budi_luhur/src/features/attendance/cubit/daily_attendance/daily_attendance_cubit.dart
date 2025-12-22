@@ -85,7 +85,11 @@ class DailyAttendanceCubit extends HydratedCubit<DailyAttendanceState> {
 
       final data = result['dailyAttendanceUser'];
 
-      emit(_HasData(dailyAttendance: data));
+      if (data != null || data != []) {
+        emit(_HasData(dailyAttendance: data));
+      } else {
+        emit(_EmptyData());
+      }
     } catch (e) {
       emit(_EmptyData());
     }

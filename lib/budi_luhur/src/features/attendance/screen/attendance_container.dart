@@ -296,7 +296,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
                       absentDays: absentDays,
                     ),
 
-                    _buildLastFetchData(timeUpdate: lastUpdated),
+                    SizedBox(height: 16),
 
                     if (hadirCount != 0 ||
                         terlambatCount != 0 ||
@@ -304,6 +304,8 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
                         sakitCount != 0 ||
                         izinCount != 0 && pieData.isNotEmpty)
                       AttendanceCharts(data: pieData, order: order),
+
+                    _buildLastFetchData(timeUpdate: lastUpdated),
                   ],
                 ),
               );
@@ -325,7 +327,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
             padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.tertiaryContainer,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
               "Last updated: ${Utils.formatDaysAndTime(timeUpdate, locale: "id_ID")}",
