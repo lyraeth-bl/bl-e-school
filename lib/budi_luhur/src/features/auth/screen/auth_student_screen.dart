@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class AuthStudentScreen extends StatefulWidget {
   const AuthStudentScreen({super.key});
@@ -20,7 +21,6 @@ class AuthStudentScreen extends StatefulWidget {
 
 class _AuthStudentScreenState extends State<AuthStudentScreen>
     with TickerProviderStateMixin {
-
   final DateTime _now = DateTime.now();
 
   /// Animations
@@ -59,19 +59,23 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
     final wantBiometric = args?['biometricState'] == "true";
     if (wantBiometric) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
-        final ok = await context.read<AuthCubit>().biometricRefreshToken();
-        if (ok && mounted) {
-          final dailyAttendanceCubit = context.read<DailyAttendanceCubit>();
-          final dailyAttendanceData = dailyAttendanceCubit.getDailyAttendance;
-
-          if (dailyAttendanceData?.tanggal.day != _now.day) {
-            dailyAttendanceCubit.clearAllData();
-          }
-
-          Get.offNamed(BudiLuhurRoutes.home);
-        } else {}
+        biometricLogin();
       });
     }
+  }
+
+  void biometricLogin() async {
+    final ok = await context.read<AuthCubit>().biometricRefreshToken();
+    if (ok && mounted) {
+      final dailyAttendanceCubit = context.read<DailyAttendanceCubit>();
+      final dailyAttendanceData = dailyAttendanceCubit.getDailyAttendance;
+
+      if (dailyAttendanceData?.tanggal.day != _now.day) {
+        dailyAttendanceCubit.clearAllData();
+      }
+
+      Get.offNamed(BudiLuhurRoutes.home);
+    } else {}
   }
 
   @override
@@ -191,6 +195,9 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
   // }
 
   Widget _buildLoginForm() {
+    final args = Get.arguments as Map<String, dynamic>?;
+    final fromSessionBottomSheet = args?['fromSessionBottomSheet'] == "true";
+
     return Align(
       alignment: Alignment.topCenter,
       child: FadeTransition(
@@ -264,91 +271,113 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
                     ),
                     // _buildRequestResetPasswordContainer(),
                     const SizedBox(height: 30.0),
-                    Center(
-                      child: BlocConsumer<SignInCubit, SignInState>(
-                        listener: (context, state) {
-                          state.maybeWhen(
-                            success: (isStudentLogIn, student, time) {
-                              context.read<AuthCubit>().authenticateUser(
-                                isStudent: isStudentLogIn,
-                                student: student,
-                                time: DateTime.now(),
-                              );
+                    BlocConsumer<SignInCubit, SignInState>(
+                      listener: (context, state) {
+                        state.maybeWhen(
+                          success: (isStudentLogIn, student, time) {
+                            context.read<AuthCubit>().authenticateUser(
+                              isStudent: isStudentLogIn,
+                              student: student,
+                              time: DateTime.now(),
+                            );
 
-                              Get.offNamedUntil(
-                                BudiLuhurRoutes.studentOnboarding,
-                                (Route<dynamic> route) => false,
-                              );
-                            },
-                            failure: (errorMessage) {
-                              Utils.showCustomSnackBar(
-                                context: context,
-                                errorMessage: errorMessage,
-                                backgroundColor: Theme.of(
-                                  context,
-                                ).colorScheme.error,
-                              );
-                            },
-                            orElse: () {},
-                          );
-                        },
-                        builder: (context, state) {
-                          final isLoading = state.maybeWhen(
-                            loading: () => true,
-                            orElse: () => false,
-                          );
+                            Get.offNamedUntil(
+                              BudiLuhurRoutes.studentOnboarding,
+                              (Route<dynamic> route) => false,
+                            );
+                          },
+                          failure: (errorMessage) {
+                            Utils.showCustomSnackBar(
+                              context: context,
+                              errorMessage: errorMessage,
+                              backgroundColor: Theme.of(
+                                context,
+                              ).colorScheme.error,
+                            );
+                          },
+                          orElse: () {},
+                        );
+                      },
+                      builder: (context, state) {
+                        final isLoading = state.maybeWhen(
+                          loading: () => true,
+                          orElse: () => false,
+                        );
 
-                          return Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 24),
-                            width: double.infinity,
-                            child: FilledButton(
-                              style: FilledButton.styleFrom(
-                                minimumSize: const Size.fromHeight(48),
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 14,
-                                  horizontal: 16,
+                        final biometricOn = context
+                            .read<SettingsCubit>()
+                            .getBiometricLoginStatus;
+
+                        return Row(
+                          children: [
+                            if (fromSessionBottomSheet && biometricOn) ...[
+                              Container(
+                                margin: const EdgeInsets.only(right: 8),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
+                                child: IconButton(
+                                  onPressed: () async => biometricLogin(),
+                                  icon: Icon(
+                                    LucideIcons.fingerprintPattern,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onPrimary,
+                                  ),
                                 ),
                               ),
-                              onPressed: () {
-                                if (isLoading) return;
+                            ],
+                            Expanded(
+                              child: FilledButton(
+                                style: FilledButton.styleFrom(
+                                  minimumSize: const Size.fromHeight(48),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 14,
+                                    horizontal: 16,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  if (isLoading) return;
 
-                                FocusScope.of(context).unfocus();
+                                  FocusScope.of(context).unfocus();
 
-                                _signInStudent();
-                              },
-                              child: isLoading
-                                  // Saat loading: berikan ruang vertikal dan center spinner
-                                  ? SizedBox(
-                                      height: 20,
-                                      child: Center(
-                                        child: SizedBox(
-                                          width: 20,
-                                          height: 20,
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 2.0,
-                                            valueColor:
-                                                AlwaysStoppedAnimation<Color>(
-                                                  Theme.of(
-                                                    context,
-                                                  ).colorScheme.onPrimary,
-                                                ),
+                                  _signInStudent();
+                                },
+                                child: isLoading
+                                    // Saat loading: berikan ruang vertikal dan center spinner
+                                    ? SizedBox(
+                                        height: 20,
+                                        child: Center(
+                                          child: SizedBox(
+                                            width: 20,
+                                            height: 20,
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2.0,
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                    Theme.of(
+                                                      context,
+                                                    ).colorScheme.onPrimary,
+                                                  ),
+                                            ),
                                           ),
                                         ),
+                                      )
+                                    : Text(
+                                        Utils.getTranslatedLabel(signInKey),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
-                                    )
-                                  : Text(
-                                      Utils.getTranslatedLabel(signInKey),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
+                              ),
                             ),
-                          );
-                        },
-                      ),
+                          ],
+                        );
+                      },
                     ),
                     const SizedBox(height: 20),
                     // const TermsAndConditionAndPrivacyPolicyContainer(),

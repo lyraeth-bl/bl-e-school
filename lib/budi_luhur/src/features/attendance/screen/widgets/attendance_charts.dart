@@ -99,7 +99,7 @@ class _AttendanceChartsState extends State<AttendanceCharts> {
         title: total == 0 ? '' : '${percent.toStringAsFixed(0)}%',
         titleStyle: TextStyle(
           fontSize: isTouched ? 18 : 14,
-          fontWeight: FontWeight.w800,
+          fontWeight: FontWeight.w700,
           color: theme.colorScheme.onPrimaryContainer,
         ),
         titlePositionPercentageOffset: 0.6,
@@ -236,7 +236,7 @@ class _AttendanceChartsState extends State<AttendanceCharts> {
             ),
           ),
 
-          const SizedBox(height: 8),
+          const SizedBox(height: 16),
         ],
       ),
     );

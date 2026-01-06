@@ -31,7 +31,7 @@ class StudentProfileScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              context.read<AuthCubit>().signOut();
+              context.read<AuthCubit>().signOut(reason: LogoutReason.manual);
 
               Get.offNamed(BudiLuhurRoutes.auth);
             },

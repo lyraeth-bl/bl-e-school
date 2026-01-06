@@ -1,28 +1,29 @@
 part of 'auth_cubit.dart';
 
-/// Represents the different states of authentication within the application.
-///
-/// This sealed class is used by the [AuthCubit] to manage and emit states
-/// corresponding to whether a user is logged in, logged out, or in an
-/// initial undetermined state.
+/// Defines the reason for logging out.
+enum LogoutReason { manual, sessionExpired }
+
+/// Represents the authentication state of the user.
 @freezed
 abstract class AuthState with _$AuthState {
-  /// The initial state, representing that the authentication status has not yet been determined.
+  /// The initial authentication state.
   const factory AuthState.initial() = _Initial;
 
-  /// The state representing that the user is not authenticated.
-  const factory AuthState.unauthenticated() = _Unauthenticated;
+  /// The user is not authenticated.
+  const factory AuthState.unauthenticated({
+    /// The reason for being unauthenticated.
+    @Default(LogoutReason.manual) LogoutReason reason,
+  }) = _Unauthenticated;
 
-  /// The state representing that the user is successfully authenticated.
-  ///
-  /// This state holds the authenticated user's session information.
-  ///
-  /// - [isStudent]: A flag indicating whether the authenticated user is a student. Defaults to `false`.
-  /// - [student]: The [Student] object containing the details of the authenticated user.
-  /// - [timeAuth]: The [DateTime] when the authentication occurred.
+  /// The user is authenticated.
   const factory AuthState.authenticated({
+    /// A flag indicating if the user is a student.
     @Default(false) bool isStudent,
+
+    /// The authenticated student.
     required Student student,
+
+    /// The time of authentication.
     DateTime? timeAuth,
   }) = _Authenticated;
 }

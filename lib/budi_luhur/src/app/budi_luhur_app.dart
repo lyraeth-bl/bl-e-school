@@ -4,7 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 class BudiLuhurApp extends StatelessWidget {
-  const BudiLuhurApp({super.key});
+  final AuthCubit authCubit;
+
+  const BudiLuhurApp({super.key, required this.authCubit});
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +24,7 @@ class BudiLuhurApp extends StatelessWidget {
         BlocProvider<AppLocalizationCubit>(
           create: (_) => AppLocalizationCubit(SettingsRepository()),
         ),
-        BlocProvider<AuthCubit>(
-          create: (_) => AuthCubit(
-            AuthRepository(),
-            BiometricAuth("Please authenticate to login"),
-          ),
-        ),
+        BlocProvider.value(value: authCubit),
         BlocProvider<DeviceTokenCubit>(
           create: (_) => DeviceTokenCubit(DeviceTokenRepository()),
         ),
@@ -48,6 +45,31 @@ class BudiLuhurApp extends StatelessWidget {
             locale: context.read<AppLocalizationCubit>().state.language,
             fallbackLocale: const Locale("en"),
             translationsKeys: AppTranslation.translationsKeys,
+            builder: (context, child) {
+              return BlocListener<AuthCubit, AuthState>(
+                listenWhen: (previous, current) =>
+                    previous.maybeWhen(
+                      authenticated: (isStudent, student, timeAuth) => true,
+                      orElse: () => false,
+                    ) &&
+                    current.maybeWhen(
+                      unauthenticated: (reason) =>
+                          reason == LogoutReason.sessionExpired,
+                      orElse: () => false,
+                    ),
+                listener: (context, state) {
+                  if (!Get.isBottomSheetOpen!) {
+                    Get.bottomSheet(
+                      const SessionExpiredBottomSheet(),
+                      enableDrag: false,
+                      isDismissible: false,
+                      backgroundColor: Theme.of(context).colorScheme.surface,
+                    );
+                  }
+                },
+                child: child,
+              );
+            },
           );
         },
       ),

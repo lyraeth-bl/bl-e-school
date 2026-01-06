@@ -296,14 +296,14 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
                       absentDays: absentDays,
                     ),
 
-                    SizedBox(height: 16),
-
                     if (hadirCount != 0 ||
                         terlambatCount != 0 ||
                         alphaCount != 0 ||
                         sakitCount != 0 ||
-                        izinCount != 0 && pieData.isNotEmpty)
+                        izinCount != 0 && pieData.isNotEmpty) ...[
+                      SizedBox(height: 16),
                       AttendanceCharts(data: pieData, order: order),
+                    ],
 
                     _buildLastFetchData(timeUpdate: lastUpdated),
                   ],
@@ -318,26 +318,24 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
   }
 
   Widget _buildLastFetchData({required DateTime timeUpdate}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.tertiaryContainer,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Text(
-              "Last updated: ${Utils.formatDaysAndTime(timeUpdate, locale: "id_ID")}",
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: Theme.of(context).colorScheme.onTertiaryContainer,
-              ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Container(
+          margin: const EdgeInsets.only(top: 16),
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.tertiaryContainer,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Text(
+            "Last updated: ${Utils.formatDaysAndTime(timeUpdate, locale: "id_ID")}",
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              color: Theme.of(context).colorScheme.onTertiaryContainer,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

@@ -4,6 +4,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:bl_e_school/budi_luhur/src/app/init/init_hive_open_box.dart';
 import 'package:bl_e_school/firebase_options.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 /// Initializes essential application services and configurations before running the app.
 ///
@@ -76,6 +78,32 @@ Future<void> budiLuhurInitializeApp() async {
   // Initialize date formatting for the Indonesian locale ('id_ID').
   await initializeDateFormatting("id_ID", null);
 
+  final authCubit = AuthCubit(
+    AuthRepository(),
+    BiometricAuth("Please authenticate"),
+  );
+
+  final dio = Dio(
+    BaseOptions(
+      connectTimeout: const Duration(seconds: 15),
+      receiveTimeout: const Duration(seconds: 20),
+    ),
+  );
+
+  dio.interceptors.add(AuthInterceptor(dio: dio, authCubit: authCubit));
+
+  if (kDebugMode) {
+    dio.interceptors.add(
+      PrettyDioLogger(
+        requestHeader: true,
+        requestBody: true,
+        responseBody: true,
+      ),
+    );
+  }
+
+  ApiClient.init(dioInstance: dio);
+
   // Run the main application widget.
-  runApp(const BudiLuhurApp());
+  runApp(BudiLuhurApp(authCubit: authCubit));
 }

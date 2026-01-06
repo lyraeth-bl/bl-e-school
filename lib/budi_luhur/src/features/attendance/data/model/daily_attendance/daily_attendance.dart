@@ -57,4 +57,17 @@ abstract class DailyAttendance with _$DailyAttendance {
   /// into a `DailyAttendance` object.
   factory DailyAttendance.fromJson(Map<String, dynamic> json) =>
       _$DailyAttendanceFromJson(json);
+
+  static Map<String, dynamic> emptyJson() => {
+    'id': 0,
+    'nis': '',
+    'tanggal': DateTime.now().toIso8601String(),
+    'checkIn': null,
+    'checkOut': null,
+    'status': '',
+    'alasan': null,
+    'unit': '',
+    'created_at': DateTime.now().toIso8601String(),
+    'updated_at': DateTime.now().toIso8601String(),
+  };
 }

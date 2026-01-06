@@ -416,8 +416,17 @@
   "message": "Message",
   "adminResponse": "Admin response",
   "category": "Category",
+  "selectCategory": "Select category",
   "type": "Type",
   "os": "OS",
   "created": "Created at",
-  "updated": "Updated at"
+  "updated": "Updated at",
+  "login": "Login",
+  "sessionExpired": "Your session has expired",
+  "sessionExpiredDesc": "please re-login to continue",
+  "reLogin": "Login again",
+  "loading": "Loading...",
+  "send": "Send",
+  "messageFeedbackDesc": "Write your message here",
+  "pleaseWait": "Please wait..."
 }

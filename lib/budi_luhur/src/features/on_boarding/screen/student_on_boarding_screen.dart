@@ -39,7 +39,10 @@ class _StudentOnBoardingScreenState extends State<StudentOnBoardingScreen> {
     final detailsStudent = context.read<AuthCubit>().getStudentDetails;
     final classStudent =
         "${detailsStudent.kelasSaatIni}${detailsStudent.noKelasSaatIni}";
-    context.read<TimeTableCubit>().fetchTimeTable(kelas: classStudent, forceRefresh: true);
+    context.read<TimeTableCubit>().fetchTimeTable(
+      kelas: classStudent,
+      forceRefresh: true,
+    );
   }
 
   Future<void> _checkFirstTimeUser() async {
@@ -68,7 +71,7 @@ class _StudentOnBoardingScreenState extends State<StudentOnBoardingScreen> {
           children: [
             Image.asset(
               "assets/images/bl_logo.png",
-              height: context.height * 0.17,
+              height: context.height * 0.18,
               width: context.width * 0.4,
               fit: BoxFit.fill,
             ),
@@ -137,11 +140,22 @@ class _StudentOnBoardingScreenState extends State<StudentOnBoardingScreen> {
               textAlign: TextAlign.center,
             ),
 
-            SizedBox(height: context.height * 0.03),
+            SizedBox(height: context.height * 0.1),
+
+            Text(
+              Utils.getTranslatedLabel(pleaseWaitKey),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+            ),
+
+            SizedBox(height: context.height * 0.01),
 
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40),
-              child: LinearProgressIndicator(),
+              child: LinearProgressIndicator(
+                borderRadius: BorderRadius.circular(16),
+              ),
             ),
           ],
         ),

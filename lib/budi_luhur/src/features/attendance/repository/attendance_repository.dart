@@ -13,8 +13,13 @@ class AttendanceRepository {
   ///
   /// Returns a [DailyAttendance] object.
   DailyAttendance getStoredDailyAttendance() {
+    final DateTime now = DateTime.now();
+
     return DailyAttendance.fromJson(
-      Map.from(Hive.box(attendanceBoxKey).get(studentDailyAttendanceKey) ?? {}),
+      Map.from(
+        Hive.box(attendanceBoxKey).get(studentDailyAttendanceKey) ??
+            DailyAttendance.emptyJson(),
+      ),
     );
   }
 
