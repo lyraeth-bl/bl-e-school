@@ -416,8 +416,17 @@
   "message": "Pesan",
   "adminResponse": "Respon admin",
   "category": "Kategori",
+  "selectCategory": "Pilih kategori",
   "type": "Tipe",
   "os": "OS",
   "created": "Dibuat pada",
-  "updated": "Diperbaharui pada"
+  "updated": "Diperbaharui pada",
+  "login": "Login",
+  "sessionExpired": "Session kamu sudah habis",
+  "sessionExpiredDesc": "silahkan login kembali untuk melanjutkan",
+  "reLogin": "Login kembali",
+  "loading": "Loading...",
+  "send": "Kirim",
+  "messageFeedbackDesc": "Tulis pesanmu disini",
+  "pleaseWait": "Tunggu sebentar..."
 }

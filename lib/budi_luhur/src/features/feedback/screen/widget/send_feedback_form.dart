@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class SendFeedbackForm extends StatefulWidget {
   /// nis should be passed from AuthCubit (or any auth provider).
@@ -102,25 +103,24 @@ class _SendFeedbackFormState extends State<SendFeedbackForm> {
         setState(() => _selectedType = t);
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         margin: const EdgeInsets.only(right: 8),
         decoration: BoxDecoration(
           color: selected
-              ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.12)
+              ? Theme.of(context).colorScheme.primaryContainer
               : Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: selected
                 ? Theme.of(context).colorScheme.primary
-                : Colors.grey.withValues(alpha: 0.18),
+                : Theme.of(context).colorScheme.outlineVariant,
           ),
         ),
         child: Text(
           _typeLabel(t),
           style: TextStyle(
-            fontWeight: FontWeight.w600,
             color: selected
-                ? Theme.of(context).colorScheme.primary
+                ? Theme.of(context).colorScheme.onPrimaryContainer
                 : Theme.of(context).textTheme.bodyLarge?.color,
           ),
         ),
@@ -166,46 +166,56 @@ class _SendFeedbackFormState extends State<SendFeedbackForm> {
 
             showModalBottomSheet(
               context: context,
-              enableDrag: true,
+              enableDrag: false,
               showDragHandle: true,
+              isDismissible: false,
               backgroundColor: Theme.of(context).colorScheme.surface,
               builder: (context) {
-                return SafeArea(
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: 250,
-                          height: 250,
-                          child: Lottie.asset(
-                            "assets/animations/check-success.json",
+                return PopScope(
+                  canPop: false,
+                  onPopInvokedWithResult: (didPop, _) {
+                    if (!didPop) {
+                      Get.back();
+                      Get.back(result: true);
+                    }
+                  },
+                  child: SafeArea(
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 250,
+                            height: 250,
+                            child: Lottie.asset(
+                              "assets/animations/check-success.json",
+                            ),
                           ),
-                        ),
 
-                        SizedBox(height: 16),
+                          SizedBox(height: 16),
 
-                        Text(
-                          "Add feedback success",
-                          style: Theme.of(context).textTheme.titleLarge
-                              ?.copyWith(fontWeight: FontWeight.w700),
-                        ),
-
-                        Spacer(),
-
-                        Container(
-                          width: double.infinity,
-                          margin: const EdgeInsets.symmetric(horizontal: 16),
-                          child: FilledButton(
-                            onPressed: () {
-                              Get.back();
-                              Get.back(result: true);
-                            },
-                            child: Text(Utils.getTranslatedLabel(goBackKey)),
+                          Text(
+                            "Add feedback success",
+                            style: Theme.of(context).textTheme.titleLarge
+                                ?.copyWith(fontWeight: FontWeight.w700),
                           ),
-                        ),
-                      ],
+
+                          Spacer(),
+
+                          Container(
+                            width: double.infinity,
+                            margin: const EdgeInsets.symmetric(horizontal: 16),
+                            child: FilledButton(
+                              onPressed: () {
+                                Get.back();
+                                Get.back(result: true);
+                              },
+                              child: Text(Utils.getTranslatedLabel(goBackKey)),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );
@@ -226,7 +236,7 @@ class _SendFeedbackFormState extends State<SendFeedbackForm> {
           children: [
             /// NIS
             _formSection(
-              label: 'NIS',
+              label: Utils.getTranslatedLabel(nisKey),
               child: Container(
                 padding: const EdgeInsets.symmetric(
                   vertical: 8,
@@ -248,7 +258,7 @@ class _SendFeedbackFormState extends State<SendFeedbackForm> {
 
             /// CATEGORY
             _formSection(
-              label: 'Category',
+              label: Utils.getTranslatedLabel(categoryKey),
               child: Container(
                 padding: const EdgeInsets.symmetric(
                   vertical: 8,
@@ -261,14 +271,15 @@ class _SendFeedbackFormState extends State<SendFeedbackForm> {
                 child: DropdownButtonFormField<String>(
                   initialValue: _selectedCategory,
                   hint: Text(
-                    'Select category',
+                    Utils.getTranslatedLabel(selectCategoryKey),
                     style: TextStyle(color: Theme.of(context).hintColor),
                   ),
                   items: widget.categories
                       .map((c) => DropdownMenuItem(value: c, child: Text(c)))
                       .toList(),
                   onChanged: (v) => setState(() => _selectedCategory = v),
-                  decoration: const InputDecoration.collapsed(hintText: ''),
+                  decoration: InputDecoration.collapsed(hintText: ''),
+                  icon: Icon(LucideIcons.chevronDown),
                 ),
               ),
             ),
@@ -277,7 +288,7 @@ class _SendFeedbackFormState extends State<SendFeedbackForm> {
 
             /// TYPE
             _formSection(
-              label: 'Type',
+              label: Utils.getTranslatedLabel(typeKey),
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -295,46 +306,62 @@ class _SendFeedbackFormState extends State<SendFeedbackForm> {
 
             /// PHOTO
             _formSection(
-              label: 'Photo',
+              label: Utils.getTranslatedLabel(photosKey),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surfaceContainer,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      children: [
-                        ElevatedButton(
-                          onPressed: () => _pickImage(ImageSource.gallery),
-                          child: const Text('Gallery'),
+                  Row(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: Theme.of(context).colorScheme.primaryContainer,
                         ),
-                        const SizedBox(width: 8),
-                        ElevatedButton(
+                        child: IconButton(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onPrimaryContainer,
                           onPressed: () => _pickImage(ImageSource.camera),
-                          child: const Text('Camera'),
+                          icon: Icon(LucideIcons.camera),
+                          tooltip: Utils.getTranslatedLabel(cameraKey),
                         ),
-                        const Spacer(),
-                        if (_attachmentFile != null)
-                          IconButton(
-                            onPressed: () =>
-                                setState(() => _attachmentFile = null),
-                            icon: const Icon(Icons.close),
+                      ),
+                      const SizedBox(width: 8),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: Theme.of(context).colorScheme.primaryContainer,
+                        ),
+                        child: IconButton(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onPrimaryContainer,
+                          onPressed: () => _pickImage(ImageSource.gallery),
+                          icon: Icon(LucideIcons.images),
+                          tooltip: Utils.getTranslatedLabel(galleryKey),
+                        ),
+                      ),
+                      const Spacer(),
+                      if (_attachmentFile != null)
+                        IconButton(
+                          onPressed: () =>
+                              setState(() => _attachmentFile = null),
+                          icon: Icon(
+                            LucideIcons.x,
+                            color: Theme.of(context).colorScheme.error,
                           ),
-                      ],
-                    ),
+                        ),
+                    ],
                   ),
                   if (_attachmentFile != null)
                     Padding(
-                      padding: const EdgeInsets.only(top: 8),
+                      padding: const EdgeInsets.only(top: 16),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(8),
                         child: Image.file(
                           _attachmentFile!,
                           width: 120,
-                          height: 80,
+                          height: 160,
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -362,7 +389,7 @@ class _SendFeedbackFormState extends State<SendFeedbackForm> {
                   maxLines: 6,
                   minLines: 4,
                   decoration: InputDecoration.collapsed(
-                    hintText: 'Write your message here',
+                    hintText: Utils.getTranslatedLabel(messageFeedbackDescKey),
                     hintStyle: TextStyle(color: Theme.of(context).hintColor),
                   ),
                   validator: (v) {
@@ -385,17 +412,31 @@ class _SendFeedbackFormState extends State<SendFeedbackForm> {
                 child: _submitting
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           SizedBox(
                             width: 14,
                             height: 14,
                             child: CircularProgressIndicator(strokeWidth: 2),
                           ),
                           SizedBox(width: 8),
-                          Text('Sending...'),
+                          Text(
+                            Utils.getTranslatedLabel(loadingKey),
+                            style: TextStyle(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onPrimaryContainer,
+                            ),
+                          ),
                         ],
                       )
-                    : const Text('Send Feedback'),
+                    : Text(
+                        Utils.getTranslatedLabel(sendKey),
+                        style: TextStyle(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onPrimaryContainer,
+                        ),
+                      ),
               ),
             ),
           ],
@@ -410,9 +451,10 @@ class _SendFeedbackFormState extends State<SendFeedbackForm> {
       children: [
         Text(
           label,
-          style: Theme.of(
-            context,
-          ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.w700,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
         ),
         const SizedBox(height: 8),
         child,

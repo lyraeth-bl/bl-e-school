@@ -88,11 +88,20 @@ class AuthRepository {
   /// It then clears all local authentication and session data, including login status,
   /// JWT token, student details, and any cached attendance data.
   Future<void> signOutUser() async {
-    try {
-      // Attempt to notify the backend of the logout.
-      ApiClient.post(body: {}, url: ApiEndpoints.logout, useAuthToken: true);
-    } catch (e) {
-      // Errors are ignored as the local data will be cleared regardless.
+    final String token = getJwtToken();
+
+    if (token.isNotEmpty) {
+      try {
+        // Attempt to notify the backend of the logout.
+        await ApiClient.post(
+          body: {},
+          url: ApiEndpoints.logout,
+          useAuthToken: true,
+          extra: {'skipAuthInterceptor': true},
+        );
+      } catch (e) {
+        // Errors are ignored as the local data will be cleared regardless.
+      }
     }
 
     // Clear local data
@@ -129,6 +138,7 @@ class AuthRepository {
         body: body,
         url: ApiEndpoints.login,
         useAuthToken: false,
+        extra: {'skipAuthInterceptor': true},
       );
 
       final Map<String, dynamic> studentData = response['siswa'];

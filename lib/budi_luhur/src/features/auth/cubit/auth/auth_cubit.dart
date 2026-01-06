@@ -23,6 +23,8 @@ class AuthCubit extends HydratedCubit<AuthState> {
     _init();
   }
 
+  bool _hasLoggedOut = false;
+
   /// Initializes the authentication state when the cubit is first created.
   ///
   /// It checks the persisted login status from the repository. If the user is
@@ -114,6 +116,7 @@ class AuthCubit extends HydratedCubit<AuthState> {
     required bool isStudent,
     required Student student,
   }) {
+    _hasLoggedOut = false;
     emit(
       _Authenticated(isStudent: isStudent, student: student, timeAuth: time),
     );
@@ -147,9 +150,12 @@ class AuthCubit extends HydratedCubit<AuthState> {
   String get getJwtToken => _authRepository.getJwtToken();
 
   /// Signs the user out and transitions to the unauthenticated state.
-  void signOut() async {
+  void signOut({LogoutReason reason = LogoutReason.manual}) async {
+    if (_hasLoggedOut) return;
+    _hasLoggedOut = true;
+
     await _authRepository.signOutUser();
-    emit(const AuthState.unauthenticated());
+    emit(AuthState.unauthenticated(reason: reason));
   }
 
   // -------------------------------

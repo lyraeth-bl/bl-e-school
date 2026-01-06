@@ -120,7 +120,7 @@ class _TimeTableContainerState extends State<TimeTableContainer>
   Widget _buildAppBar() {
     String getStudentClassDetails = "";
     getStudentClassDetails =
-        "${context.read<AuthCubit>().getStudentDetails.kelasSaatIni} ${context.read<AuthCubit>().getStudentDetails.noKelasSaatIni}";
+        "${context.read<AuthCubit>().getStudentDetails.kelasSaatIni}";
 
     return ScreenTopBackgroundContainer(
       heightPercentage: Utils.appBarMediumHeightPercentage,
@@ -229,105 +229,148 @@ class _TimeTableContainerState extends State<TimeTableContainer>
     final jamMulaiToDateTime = Utils.timeStringToToday(timeTable.jamMulai);
     final jamSelesaiToDateTime = Utils.timeStringToToday(timeTable.jamSelesai);
     final now = DateTime.now();
-    bool? isNow;
+    final isSameDay =
+        timeTable.hari.toLowerCase() ==
+        Utils.formatNumberDaysToStringDays(now.weekday);
 
-    isNow =
-        (now.isAfter(jamMulaiToDateTime!) &&
-        now.isBefore(jamSelesaiToDateTime!));
+    final isNow =
+        isSameDay &&
+        now.isAfter(jamMulaiToDateTime!) &&
+        now.isBefore(jamSelesaiToDateTime!);
+
+    final isWeekend =
+        ((DateTime.now().weekday != (DateTime.saturday)) &&
+        (DateTime.now().weekday != (DateTime.sunday)));
 
     return Card(
       margin: isNow ? const EdgeInsets.symmetric(vertical: 8) : null,
       color: Theme.of(context).colorScheme.surface,
       elevation: isNow ? 0 : 0,
-      child: Container(
+      child: Padding(
         padding: const EdgeInsets.all(16),
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Flexible(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Text(
-                              "${Utils.formatTime(jamMulaiToDateTime)} - ${Utils.formatTime(jamSelesaiToDateTime!)}",
-                              style: Theme.of(context).textTheme.titleMedium
-                                  ?.copyWith(
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.onSurface,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      if (isNow &&
-                          ((DateTime.now().weekday != (DateTime.saturday)) &&
-                              (DateTime.now().weekday !=
-                                  (DateTime.sunday)))) ...[
-                        SizedBox(width: 8),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 4,
-                            horizontal: 12,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.primaryContainer,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(Utils.getTranslatedLabel(nowKey)),
-                        ),
-                      ],
-                    ],
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    timeTable.namaMataPelajaran,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    maxLines: 2,
                   ),
-                  SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Text(
-                        "${Utils.getTranslatedLabel(subjectsKey)} : ",
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
+                ),
+
+                if (isNow && isWeekend) ...[
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      Utils.getTranslatedLabel(nowKey),
+                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
                       ),
-                      Text(
-                        timeTable.namaMataPelajaran,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 8),
-                  Row(
-                    children: [
-                      Text(
-                        "${Utils.getTranslatedLabel(teachersKey)} : ",
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                      ),
-                      Text(
-                        timeTable.namaGuru,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ],
+              ],
+            ),
+
+            SizedBox(height: 4),
+
+            Text(
+              timeTable.namaGuru,
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
+            ),
+
+            SizedBox(height: 16),
+
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      timeTable.jamMulai,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.surfaceContainerHigh,
+                      ),
+                    ),
+                  ],
+                ),
+
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 4,
+                      vertical: 6,
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(
+                        8,
+                        (index) => Container(
+                          width: 12,
+                          height: 4,
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.surfaceContainerHighest,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      timeTable.jamSelesai,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ],
         ),

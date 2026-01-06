@@ -404,6 +404,15 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
 
                       final next = upcoming.first;
 
+                      String takeOnlyTwoOnName = "-";
+
+                      if (next.namaGuru.trim().isNotEmpty) {
+                        takeOnlyTwoOnName = next.namaGuru
+                            .split(' ')
+                            .take(2)
+                            .join(' ');
+                      }
+
                       return Container(
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         margin: const EdgeInsets.fromLTRB(16, 8, 16, 16),
@@ -498,7 +507,7 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                                     ],
                                   ),
                                   Text(
-                                    next.namaGuru,
+                                    takeOnlyTwoOnName,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                     style: Theme.of(context)
