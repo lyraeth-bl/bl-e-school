@@ -2,7 +2,6 @@
 export 'cubit/academic_calendar_cubit.dart';
 // Data
 export 'data/model/academic_calendar.dart';
-export 'data/model/response/academic_calendar_response.dart';
 // Repository
 export 'repository/academic_calendar_repository.dart';
 // Screen

@@ -90,8 +90,8 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
         child: Stack(
           children: [
             _buildAppBar(),
-            _buildPreviousNextButtonContainer(context),
             _buildCalendarOnly(),
+            _buildPreviousNextButtonContainer(context),
           ],
         ),
       ),
