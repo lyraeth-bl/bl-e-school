@@ -4,6 +4,8 @@ const String homeKey = "home";
 const String attendanceKey = "attendance";
 const String checkInKey = "checkIn";
 const String checkOutKey = "checkOut";
+const String checkInClockKey = "checkInClock";
+const String checkOutClockKey = "checkOutClock";
 const String menuKey = "menu";
 const String assignmentsKey = "assignments";
 const String timeTableKey = "timeTable";
@@ -18,6 +20,7 @@ const String profileKey = "profile";
 const String personalDetailsKey = "personalDetails";
 const String detailsProfileKey = "detailsProfile";
 const String detailsEventsKey = "detailsEvents";
+const String detailsKey = "details";
 const String nameKey = "name";
 const String classKey = "class";
 const String rollNumberKey = "rollNumber";
@@ -248,6 +251,8 @@ const String resubmittedKey = "resubmitted";
 const String assignmentSubmissionDisclaimerKey =
     "assignmentSubmissionDisclaimer";
 const String holidaysKey = "holidays";
+
+const String noAbsentTodayKey = "noAbsentToday";
 
 const String academicCalendarKey = "academicCalendar";
 

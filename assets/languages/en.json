@@ -397,6 +397,8 @@
   "10thPeriod": "10th Period",
   "checkIn": "Check in",
   "checkOut": "Check out",
+  "checkInClock": "Check in time",
+  "checkOutClock": "Check out time",
   "detailsEvents": "Details events",
   "weekendScheduleText": "Enjoy your weekend.",
   "thatAllForToday": "That's all for today.",
@@ -428,5 +430,7 @@
   "loading": "Loading...",
   "send": "Send",
   "messageFeedbackDesc": "Write your message here",
-  "pleaseWait": "Please wait..."
+  "pleaseWait": "Please wait...",
+  "noAbsentToday": "There is no attendance today",
+  "details": "Details"
 }

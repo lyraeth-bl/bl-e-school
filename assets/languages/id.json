@@ -397,6 +397,8 @@
   "10thPeriod": "Jam Ke-10",
   "checkIn": "Check-in",
   "checkOut": "Check-out",
+  "checkInClock": "Jam check-in",
+  "checkOutClock": "Jam check-out",
   "detailsEvents": "Details events",
   "weekendScheduleTextKey": "Nikmati libur kamu.",
   "thatAllForToday": "Kelas sudah selesai.",
@@ -428,5 +430,7 @@
   "loading": "Loading...",
   "send": "Kirim",
   "messageFeedbackDesc": "Tulis pesanmu disini",
-  "pleaseWait": "Tunggu sebentar..."
+  "pleaseWait": "Tunggu sebentar...",
+  "noAbsentToday": "Tidak ada absensi hari ini.",
+  "details": "Detail"
 }

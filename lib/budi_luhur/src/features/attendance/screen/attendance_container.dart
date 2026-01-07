@@ -14,9 +14,6 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
   // Selected Day
   DateTime? _selectedDay;
 
-  // Temporary daily attendance data
-  DailyAttendance? _selectedDailyAttendance;
-
   // Time now
   late DateTime _now = DateTime.now();
 
@@ -403,23 +400,11 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
           setState(() {
             _selectedDay = selected;
             _now = focused;
-
-            _selectedDailyAttendance = dailyAttendanceList.firstWhere(
-              (date) => isSameDay(date.tanggal.toLocal(), selected),
-              orElse: () => DailyAttendance(
-                id: 0,
-                nis: context.read<AuthCubit>().getStudentDetails.nis,
-                tanggal: DateTime.now().toLocal(),
-                jamCheckIn: DateTime(_now.year, _now.month, 0, 0, 0, 0),
-                jamCheckOut: DateTime(_now.year, _now.month, 0, 0, 0, 0),
-                status: "Belum checkin",
-                unit:
-                    context.read<AuthCubit>().getStudentDetails.unit ?? "SMKKT",
-                createdAt: DateTime.now().toLocal(),
-                updatedAt: DateTime.now().toLocal(),
-              ),
-            );
           });
+
+          final isWeekend =
+              ((_selectedDay!.weekday != (DateTime.saturday)) &&
+              (_selectedDay!.weekday != (DateTime.sunday)));
 
           final selectedAttendance = dailyAttendanceList.firstWhere(
             (date) => isSameDay(date.tanggal.toLocal(), selected),
@@ -427,9 +412,11 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
               id: 0,
               nis: context.read<AuthCubit>().getStudentDetails.nis,
               tanggal: DateTime.now().toLocal(),
-              jamCheckIn: DateTime(_now.year, _now.month, 0, 0, 0, 0),
-              jamCheckOut: DateTime(_now.year, _now.month, 0, 0, 0, 0),
-              status: "Belum checkin",
+              jamCheckIn: null,
+              jamCheckOut: null,
+              status: isWeekend
+                  ? Utils.getTranslatedLabel(noAbsentTodayKey)
+                  : Utils.getTranslatedLabel(holidaysKey),
               unit: context.read<AuthCubit>().getStudentDetails.unit ?? "SMKKT",
               createdAt: DateTime.now().toLocal(),
               updatedAt: DateTime.now().toLocal(),
@@ -525,7 +512,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
       ),
       builder: (c) {
         return Padding(
-          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 32),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -533,10 +520,6 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Theme.of(context).colorScheme.surfaceContainer,
-                ),
                 child: Text(
                   Utils.formatDays(
                     _selectedDay ?? DateTime.now(),
@@ -546,6 +529,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
                     fontWeight: FontWeight.w700,
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ),
 
@@ -563,7 +547,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Keterangan",
+                        Utils.getTranslatedLabel(detailsKey),
                         style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(
                               fontWeight: FontWeight.w700,
@@ -598,7 +582,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Jam Check-in",
+                              Utils.getTranslatedLabel(checkInClockKey),
                               style: Theme.of(context).textTheme.titleMedium
                                   ?.copyWith(
                                     fontWeight: FontWeight.w700,
@@ -641,7 +625,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Jam Check-out',
+                              Utils.getTranslatedLabel(checkOutClockKey),
                               style: Theme.of(context).textTheme.titleMedium
                                   ?.copyWith(
                                     fontWeight: FontWeight.w700,

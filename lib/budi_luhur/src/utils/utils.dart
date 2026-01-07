@@ -578,4 +578,18 @@ class Utils {
     final min = dt.minute.toString().padLeft(2, '0');
     return '$yyyy-$mm-$dd $hh:$min';
   }
+
+  static double calculateLessonProgress({
+    required DateTime start,
+    required DateTime end,
+    required DateTime now,
+  }) {
+    if (now.isBefore(start)) return 0.0;
+    if (now.isAfter(end)) return 1.0;
+
+    final totalDuration = end.difference(start).inSeconds;
+    final elapsed = now.difference(start).inSeconds;
+
+    return elapsed / totalDuration;
+  }
 }
