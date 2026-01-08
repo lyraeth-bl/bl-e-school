@@ -39,7 +39,9 @@ const String dueDateLatestKey = "dueDateLatest";
 const String dueDateOldestKey = "dueDateOldest";
 const String dueKey = "due";
 const String assignmentKey = "assignment";
+
 const String biometricLoginKey = "biometricLogin";
+const String settingsBiometricSuccessKey = "settingsBiometricSuccess";
 
 const String feesKey = "fees";
 const String statusKey = "status";
@@ -500,3 +502,5 @@ const String updatedKey = "updated";
 const String sessionExpiredKey = "sessionExpired";
 const String sessionExpiredDescKey = "sessionExpiredDesc";
 const String reLoginKey = "reLogin";
+const String tryAgainKey = "tryAgain";
+const String greatKey = "great";

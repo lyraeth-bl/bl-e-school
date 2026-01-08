@@ -432,5 +432,7 @@
   "messageFeedbackDesc": "Write your message here",
   "pleaseWait": "Please wait...",
   "noAbsentToday": "There is no attendance today",
-  "details": "Details"
+  "details": "Details",
+  "tryAgain": "Try again",
+  "great": "Great"
 }
