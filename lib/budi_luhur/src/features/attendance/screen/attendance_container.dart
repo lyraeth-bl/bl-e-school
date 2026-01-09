@@ -1,6 +1,7 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class AttendanceContainer extends StatefulWidget {
@@ -143,7 +144,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
           children: [
             ChangeCalendarMonthButton(
               isDisable: false,
-              icon: Icons.keyboard_arrow_left,
+              icon: LucideIcons.chevronLeft,
               onTap: () {
                 final previousMonth = DateTime(_now.year, _now.month - 1);
 
@@ -184,8 +185,8 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
             ChangeCalendarMonthButton(
               isDisable: _disableChangeNextMonthButton(),
               icon: _disableChangeNextMonthButton()
-                  ? Icons.close
-                  : Icons.keyboard_arrow_right,
+                  ? LucideIcons.x
+                  : LucideIcons.chevronRight,
               onTap: () {
                 if (_disableChangeNextMonthButton()) return;
 

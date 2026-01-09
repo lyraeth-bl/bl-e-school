@@ -108,6 +108,13 @@ class BudiLuhurRoutes extends BudiLuhur {
       page: () => StudentDetailsStudentScreen.routeInstance(),
     ),
 
+    GetPage(name: studentFeedback, page: () => FeedbackScreen.routeInstance()),
+
+    GetPage(
+      name: studentAddFeedback,
+      page: () => AddFeedbackScreen.routeInstance(),
+    ),
+
     // -- Other Feature Routes --
     GetPage(
       name: notifications,
@@ -118,10 +125,5 @@ class BudiLuhurRoutes extends BudiLuhur {
       page: () => AcademicCalendarScreen.routeInstance(),
     ),
     GetPage(name: settings, page: () => SettingsScreen.routeInstance()),
-    GetPage(name: studentFeedback, page: () => FeedbackScreen.routeInstance()),
-    GetPage(
-      name: studentAddFeedback,
-      page: () => AddFeedbackScreen.routeInstance(),
-    ),
   ];
 }

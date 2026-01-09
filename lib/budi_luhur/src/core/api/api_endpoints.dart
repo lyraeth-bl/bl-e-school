@@ -1,3 +1,5 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 part 'api_constant.dart';
 
 /// A class that centralizes all the API endpoints used in the application.
