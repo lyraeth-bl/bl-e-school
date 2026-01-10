@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class StudentProfileScreen extends StatelessWidget {
   const StudentProfileScreen({super.key});
@@ -35,7 +36,7 @@ class StudentProfileScreen extends StatelessWidget {
 
               Get.offNamed(BudiLuhurRoutes.auth);
             },
-            icon: Icon(Icons.logout),
+            icon: Icon(LucideIcons.logOut),
           ),
         ],
       ),

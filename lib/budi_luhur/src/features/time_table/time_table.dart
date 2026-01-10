@@ -8,3 +8,4 @@ export 'repository/time_table_repository.dart';
 // Screen
 export 'screen/student_time_table_screen.dart';
 export 'screen/student_time_table_container.dart';
+export 'screen/widgets/realtime_progress_time.dart';

@@ -30,4 +30,15 @@ abstract class AcademicCalendar with _$AcademicCalendar {
   /// Creates an [AcademicCalendar] instance from a JSON object.
   factory AcademicCalendar.fromJson(Map<String, dynamic> json) =>
       _$AcademicCalendarFromJson(json);
+
+  factory AcademicCalendar.empty({required DateTime date}) {
+    return AcademicCalendar(
+      id: 0,
+      unit: "",
+      judul: "Tidak ada event",
+      tanggalMulai: date.toIso8601String(),
+      tanggalSelesai: date.toIso8601String(),
+      keterangan: "",
+    );
+  }
 }

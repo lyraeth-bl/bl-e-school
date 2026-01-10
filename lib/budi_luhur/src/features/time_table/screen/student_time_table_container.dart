@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,6 +23,23 @@ class _TimeTableContainerState extends State<TimeTableContainer>
       kelas: classStudent,
       forceRefresh: true,
     );
+  }
+
+  late Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _timer = Timer.periodic(const Duration(seconds: 30), (_) {
+      if (mounted) setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   @override
@@ -228,7 +247,9 @@ class _TimeTableContainerState extends State<TimeTableContainer>
   Widget _buildTimeTableSlotDetailsContainer({required TimeTable timeTable}) {
     final jamMulaiToDateTime = Utils.timeStringToToday(timeTable.jamMulai);
     final jamSelesaiToDateTime = Utils.timeStringToToday(timeTable.jamSelesai);
+
     final now = DateTime.now();
+
     final isSameDay =
         timeTable.hari.toLowerCase() ==
         Utils.formatNumberDaysToStringDays(now.weekday);
@@ -242,10 +263,53 @@ class _TimeTableContainerState extends State<TimeTableContainer>
         ((DateTime.now().weekday != (DateTime.saturday)) &&
         (DateTime.now().weekday != (DateTime.sunday)));
 
+    final lessonDay =
+        Utils.weekDaysFullFormTranslated
+            .map((e) => e.toLowerCase())
+            .toList()
+            .indexOf(timeTable.hari.toLowerCase()) +
+        1;
+
+    final isPastDay = lessonDay < now.weekday;
+    final isFutureDay = lessonDay > now.weekday;
+
+    final isBeforeLesson = isSameDay && now.isBefore(jamMulaiToDateTime!);
+    final isAfterLesson = isSameDay && now.isAfter(jamSelesaiToDateTime!);
+
+    final progress = Utils.calculateLessonProgress(
+      start: jamMulaiToDateTime!,
+      end: jamSelesaiToDateTime!,
+      now: now,
+    );
+
+    double progressValue;
+
+    if (lessonDay == 0) {
+      progressValue = 0;
+    }
+
+    if (isPastDay) {
+      // pelajaran hari kemarin
+      progressValue = 1;
+    } else if (isFutureDay) {
+      // pelajaran besok
+      progressValue = 0;
+    } else if (isSameDay && isBeforeLesson) {
+      // hari ini tapi belum mulai
+      progressValue = 0;
+    } else if (isSameDay && isAfterLesson) {
+      // hari ini tapi sudah selesai
+      progressValue = 1;
+    } else if (isNow) {
+      // sedang berlangsung
+      progressValue = progress;
+    } else {
+      progressValue = 0;
+    }
+
     return Card(
-      margin: isNow ? const EdgeInsets.symmetric(vertical: 8) : null,
+      margin: isNow ? const EdgeInsets.symmetric(vertical: 10) : null,
       color: Theme.of(context).colorScheme.surface,
-      elevation: isNow ? 0 : 0,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -329,23 +393,17 @@ class _TimeTableContainerState extends State<TimeTableContainer>
                       horizontal: 4,
                       vertical: 6,
                     ),
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                        8,
-                        (index) => Container(
-                          width: 12,
-                          height: 4,
-                          margin: const EdgeInsets.symmetric(horizontal: 8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.surfaceContainerHighest,
-                          ),
-                        ),
+                    padding: const EdgeInsets.symmetric(vertical: 1),
+                    child: LinearProgressIndicator(
+                      value: progressValue,
+                      minHeight: 6,
+                      backgroundColor: Theme.of(
+                        context,
+                      ).colorScheme.surfaceContainerHigh,
+                      valueColor: AlwaysStoppedAnimation(
+                        Theme.of(context).colorScheme.primaryFixedDim,
                       ),
+                      borderRadius: BorderRadius.circular(16),
                     ),
                   ),
                 ),

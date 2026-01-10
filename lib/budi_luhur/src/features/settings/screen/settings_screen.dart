@@ -1,6 +1,9 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -56,6 +59,7 @@ class SettingsScreen extends StatelessWidget {
               physics: const AlwaysScrollableScrollPhysics(),
               child: Column(
                 children: [
+                  SizedBox(height: 8),
                   BlocBuilder<SettingsCubit, SettingsState>(
                     builder: (context, state) {
                       final bool isLoading = state.maybeWhen(
@@ -63,123 +67,90 @@ class SettingsScreen extends StatelessWidget {
                         orElse: () => false,
                       );
                       final bool isEnabled = state.maybeWhen(
-                        success: (biometricLogin) => biometricLogin,
+                        success: (biometricLogin, _) => biometricLogin,
                         orElse: () => false,
                       );
 
-                      return GestureDetector(
-                        onTap: () async {
-                          final newValue = !isEnabled;
-                          context.read<SettingsCubit>().toggleBiometricLogin(
-                            enable: newValue,
+                      return BlocListener<SettingsCubit, SettingsState>(
+                        listener: (context, state) {
+                          state.whenOrNull(
+                            success: (biometricLogin, showFeedback) {
+                              if (!showFeedback) return;
+                              if (Get.isBottomSheetOpen!) return;
+
+                              Get.bottomSheet(
+                                CustomBottomSheet(
+                                  success: true,
+                                  successString: biometricLogin
+                                      ? "Biometric berhasil diaktifkan"
+                                      : "Biometric dinonaktifkan",
+                                  successDescString: biometricLogin
+                                      ? "Sekarang kamu bisa login pakai biometrik"
+                                      : "Kamu bisa aktifkan lagi kapan saja",
+                                ),
+                                backgroundColor: Theme.of(
+                                  context,
+                                ).colorScheme.surface,
+                              );
+                            },
+                            failure: (err) {
+                              if (Get.isBottomSheetOpen!) return;
+
+                              Get.bottomSheet(
+                                CustomBottomSheet(
+                                  success: false,
+                                  failedString: "Biometric gagal",
+                                  failedDescString: err,
+                                ),
+                              );
+                            },
                           );
                         },
                         child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 12.0),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 12,
+                            horizontal: 16,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.surfaceContainer,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
                           child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Container(
-                                padding: const EdgeInsets.all(12.5),
-                                width: 50,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Color(0x1a212121),
-                                      offset: Offset(0, 10),
-                                      blurRadius: 16,
-                                    ),
-                                  ],
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.primaryContainer,
-                                  borderRadius: BorderRadius.circular(15.0),
-                                ),
-                                child: Icon(
-                                  Icons.fingerprint,
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onSurfaceVariant,
-                                ),
+                              Row(
+                                children: [
+                                  Icon(LucideIcons.fingerprintPattern),
+                                  const SizedBox(width: 12),
+                                  Text(
+                                    Utils.getTranslatedLabel(biometricLoginKey),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleSmall
+                                        ?.copyWith(fontWeight: FontWeight.w600),
+                                  ),
+                                ],
                               ),
-                              SizedBox(
-                                width:
-                                    MediaQuery.of(context).size.width * (0.05),
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      Utils.getTranslatedLabel(
-                                        biometricLoginKey,
-                                      ),
-                                      style: TextStyle(
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.onSurface,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 14.0,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      "Login cepat menggunakan biometric",
-                                      style: TextStyle(
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.onSurfaceVariant,
-                                        fontSize: 12.0,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              if (isLoading) ...[
-                                SizedBox(
-                                  width: 24,
-                                  height: 24,
+
+                              if (isLoading)
+                                const SizedBox(
+                                  width: 18,
+                                  height: 18,
                                   child: CircularProgressIndicator(
                                     strokeWidth: 2,
                                   ),
-                                ),
-                              ] else ...[
-                                Switch(
+                                )
+                              else
+                                CupertinoSwitch(
                                   value: isEnabled,
-                                  onChanged: (val) async {
-                                    await context
+                                  onChanged: (val) {
+                                    context
                                         .read<SettingsCubit>()
                                         .toggleBiometricLogin(enable: val);
-                                    final currentState = context
-                                        .read<SettingsCubit>()
-                                        .state;
-                                    currentState.when(
-                                      initial: () {},
-                                      loading: () {},
-                                      success: (biometricLogin) {
-                                        final msg = biometricLogin
-                                            ? "Biometric diaktifkan"
-                                            : "Biometric dinonaktifkan";
-                                        ScaffoldMessenger.of(
-                                          context,
-                                        ).showSnackBar(
-                                          SnackBar(content: Text(msg)),
-                                        );
-                                      },
-                                      failure: (err) {
-                                        ScaffoldMessenger.of(
-                                          context,
-                                        ).showSnackBar(
-                                          SnackBar(
-                                            content: Text("Gagal: $err"),
-                                          ),
-                                        );
-                                      },
-                                    );
                                   },
                                 ),
-                              ],
                             ],
                           ),
                         ),

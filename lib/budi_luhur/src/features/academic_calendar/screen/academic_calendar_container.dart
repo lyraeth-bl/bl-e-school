@@ -17,13 +17,13 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
 
   DateTime? _selectedDay;
 
-  AcademicCalendar? _selectedAcademicCalendar;
+  // Time now
+  late DateTime _now = DateTime.now();
 
-  late DateTime focusedDay = DateTime.now();
-  late DateTime firstDay = DateTime(focusedDay.year, focusedDay.month, 1);
+  late DateTime firstDay = DateTime(_now.year, _now.month, 1);
   late DateTime lastDay = DateTime(
-    focusedDay.year,
-    focusedDay.month + 1,
+    _now.year,
+    _now.month + 1,
     1,
   ).subtract(const Duration(days: 1));
 
@@ -42,8 +42,8 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
   void _fetchAcademicCalendarThisMonth({bool forceRefresh = false}) {
     final studentDetails = context.read<AuthCubit>().getStudentDetails;
     context.read<AcademicCalendarCubit>().fetchCustomAcademicCalendar(
-      year: focusedDay.year,
-      month: focusedDay.month,
+      year: _now.year,
+      month: _now.month,
       unit: studentDetails.unit!,
       forceRefresh: forceRefresh,
     );
@@ -62,7 +62,7 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
   bool _disableChangeNextMonthButton() {
     final now = DateTime.now();
 
-    return focusedDay.year == now.year && focusedDay.month == now.month;
+    return _now.year == now.year && _now.month == now.month;
   }
 
   void updateMonthViceAcademicCalendar() {
@@ -79,9 +79,7 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
 
     for (final academicCalendar in dataAcademicCalendar) {
       final dt = DateTime.tryParse(academicCalendar.tanggalMulai);
-      if (dt != null &&
-          dt.month == focusedDay.month &&
-          dt.year == focusedDay.year) {
+      if (dt != null && dt.month == _now.month && dt.year == _now.year) {
         filtered.add(academicCalendar);
       }
     }
@@ -112,8 +110,8 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
         child: Stack(
           children: [
             _buildAppBar(),
-            _buildPreviousNextButtonContainer(context),
             _buildHolidaysCalendar(),
+            _buildPreviousNextButtonContainer(context),
           ],
         ),
       ),
@@ -203,7 +201,7 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
     required List<AcademicCalendar> listAcademicCalendar,
   }) {
     return Container(
-      padding: const EdgeInsets.all(5),
+      padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
         boxShadow: [
@@ -223,7 +221,7 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
         daysOfWeekHeight: 40,
         onPageChanged: (DateTime dateTime) {
           setState(() {
-            focusedDay = dateTime;
+            _now = dateTime;
             firstDay = DateTime(dateTime.year, dateTime.month, 1);
             lastDay = DateTime(
               dateTime.year,
@@ -276,16 +274,7 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
         onDaySelected: (selected, focused) {
           setState(() {
             _selectedDay = selected;
-            focusedDay = focused;
-
-            final eventsForSelectedDay = listAcademicCalendar.where((ev) {
-              final dt = DateTime.tryParse(ev.tanggalMulai);
-              return dt != null && isSameDay(dt, selected);
-            }).toList();
-
-            _selectedAcademicCalendar = eventsForSelectedDay.isNotEmpty
-                ? eventsForSelectedDay.first
-                : AcademicCalendar.fromJson({});
+            _now = focused;
           });
 
           final eventsForSelectedDay = listAcademicCalendar.where((ev) {
@@ -293,17 +282,19 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
             return dt != null && isSameDay(dt, selected);
           }).toList();
 
-          if (eventsForSelectedDay.isNotEmpty) {
+          setState(() {
+            isApplicationItemAnimationOn = !isApplicationItemAnimationOn;
+          });
+
+          _showAcademicBottomSheet(
+            eventsForSelectedDay.isNotEmpty
+                ? eventsForSelectedDay
+                : [AcademicCalendar.empty(date: selected)],
+          ).then((_) {
             setState(() {
               isApplicationItemAnimationOn = !isApplicationItemAnimationOn;
             });
-
-            _showAcademicBottomSheet(eventsForSelectedDay).then((_) {
-              setState(() {
-                isApplicationItemAnimationOn = !isApplicationItemAnimationOn;
-              });
-            });
-          } else {}
+          });
         },
 
         availableGestures: AvailableGestures.none,
@@ -336,72 +327,81 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
 
         lastDay: lastDay,
 
-        focusedDay: focusedDay,
+        focusedDay: _now,
       ),
     );
   }
 
   Widget _buildHolidaysCalendar() {
-    return Align(
-      alignment: Alignment.topCenter,
-      child: SingleChildScrollView(
-        padding: EdgeInsets.only(
-          left:
-              MediaQuery.of(context).size.width *
-              Utils.screenContentHorizontalPaddingInPercentage,
-          right:
-              MediaQuery.of(context).size.width *
-              Utils.screenContentHorizontalPaddingInPercentage,
-          bottom: Utils.getScrollViewBottomPadding(context),
-          top: Utils.getScrollViewTopPadding(
-            context: context,
-            appBarHeightPercentage: Utils.appBarMediumHeightPercentage,
-          ),
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: Utils.getScrollViewBottomPadding(context),
+        top: Utils.getScrollViewTopPadding(
+          context: context,
+          appBarHeightPercentage: 0.001,
         ),
-        child: BlocConsumer<AcademicCalendarCubit, AcademicCalendarState>(
-          listener: (context, state) {
-            state.maybeWhen(
-              success: (_, __, ___, ____) {
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  updateMonthViceAcademicCalendar();
-                });
-              },
-              orElse: () {},
-            );
-          },
-          builder: (context, state) {
-            return state.maybeWhen(
-              success: (listAcademicCalendar, year, month, lastUpdated) {
-                return Column(
-                  children: [
-                    _buildCalendarContainer(
-                      listAcademicCalendar: listAcademicCalendar,
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * (0.025),
-                    ),
-                    _buildHolidayDetailsList(),
-                  ],
-                );
-              },
-              failure: (errorMessage) => Center(
-                child: ErrorContainer(
-                  errorMessageCode: errorMessage,
-                  onTapRetry: () => updateMonthViceAcademicCalendar(),
-                ),
-              ),
-              orElse: () => Column(
-                children: [
-                  const SizedBox(height: 20),
-                  ShimmerLoadingContainer(
-                    child: CustomShimmerContainer(
-                      height: MediaQuery.of(context).size.height * (0.425),
-                    ),
+      ),
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: SingleChildScrollView(
+          padding: EdgeInsets.only(
+            left:
+                MediaQuery.of(context).size.width *
+                Utils.screenContentHorizontalPaddingInPercentage,
+            right:
+                MediaQuery.of(context).size.width *
+                Utils.screenContentHorizontalPaddingInPercentage,
+            bottom: Utils.getScrollViewBottomPadding(context),
+            top: Utils.getScrollViewTopPadding(
+              context: context,
+              appBarHeightPercentage: Utils.appBarMediumHeightPercentage,
+            ),
+          ),
+          child: BlocConsumer<AcademicCalendarCubit, AcademicCalendarState>(
+            listener: (context, state) {
+              state.maybeWhen(
+                success: (_, __, ___, ____) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    updateMonthViceAcademicCalendar();
+                  });
+                },
+                orElse: () {},
+              );
+            },
+            builder: (context, state) {
+              return state.maybeWhen(
+                success: (listAcademicCalendar, year, month, lastUpdated) {
+                  return Column(
+                    children: [
+                      _buildCalendarContainer(
+                        listAcademicCalendar: listAcademicCalendar,
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * (0.025),
+                      ),
+                      _buildHolidayDetailsList(),
+                    ],
+                  );
+                },
+                failure: (errorMessage) => Center(
+                  child: ErrorContainer(
+                    errorMessageCode: errorMessage,
+                    onTapRetry: () => updateMonthViceAcademicCalendar(),
                   ),
-                ],
-              ),
-            );
-          },
+                ),
+                orElse: () => Column(
+                  children: [
+                    const SizedBox(height: 20),
+                    ShimmerLoadingContainer(
+                      child: CustomShimmerContainer(
+                        height: MediaQuery.of(context).size.height * (0.425),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
@@ -462,6 +462,25 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
 
                 if (isLoading) return;
 
+                final previousMonth = DateTime(_now.year, _now.month - 1);
+
+                setState(() {
+                  _now = previousMonth;
+
+                  firstDay = DateTime(
+                    previousMonth.year,
+                    previousMonth.month,
+                    1,
+                  );
+                  lastDay = DateTime(
+                    previousMonth.year,
+                    previousMonth.month + 1,
+                    1,
+                  ).subtract(const Duration(days: 1));
+                });
+
+                _fetchAcademicCalendarThisMonth(forceRefresh: true);
+
                 _calendarPageController?.previousPage(
                   duration: const Duration(milliseconds: 400),
                   curve: Curves.easeInOut,
@@ -472,7 +491,7 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
             ),
 
             Text(
-              Utils.formatToMonthYear(focusedDay),
+              Utils.formatToMonthYear(_now),
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w600,
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -486,11 +505,28 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
                 final academicCalendarState = context
                     .read<AcademicCalendarCubit>()
                     .state;
+
                 final isLoading = academicCalendarState.maybeWhen(
                   loading: () => true,
                   orElse: () => false,
                 );
+
                 if (isLoading) return;
+
+                final nextMonth = DateTime(_now.year, _now.month + 1);
+
+                setState(() {
+                  _now = nextMonth;
+
+                  firstDay = DateTime(nextMonth.year, nextMonth.month, 1);
+                  lastDay = DateTime(
+                    nextMonth.year,
+                    nextMonth.month + 1,
+                    1,
+                  ).subtract(const Duration(days: 1));
+                });
+
+                _fetchAcademicCalendarThisMonth(forceRefresh: true);
 
                 _calendarPageController?.nextPage(
                   duration: const Duration(milliseconds: 400),

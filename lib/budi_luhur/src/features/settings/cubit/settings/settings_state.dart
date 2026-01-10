@@ -15,6 +15,8 @@ abstract class SettingsState with _$SettingsState {
   const factory SettingsState.success({
     /// Whether biometric login is enabled or not.
     @Default(false) bool biometricLogin,
+
+    @Default(false) bool showFeedback,
   }) = _Success;
 
   /// The failure state, indicating that an error has occurred.

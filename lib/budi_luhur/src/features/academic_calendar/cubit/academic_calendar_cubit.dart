@@ -38,25 +38,33 @@ class AcademicCalendarCubit extends HydratedCubit<AcademicCalendarState> {
 
     emit(_Loading());
 
-    try {
-      final result = await _academicCalendarRepository
-          .fetchCustomAcademicCalendar(unit: unit, month: month, year: year);
+    final result = await _academicCalendarRepository
+        .fetchCustomAcademicCalendar(unit: unit, month: month, year: year);
 
-      final listAcademicCalendar = result.listAcademicCalendar;
+    final List<AcademicCalendar> listAcademicCalendar =
+        result['listAcademicCalendar'];
 
-      final DateTime now = DateTime.now();
+    final DateTime now = DateTime.now();
 
+    if (listAcademicCalendar.isEmpty) {
       emit(
         _Success(
-          listAcademicCalendar: listAcademicCalendar,
+          listAcademicCalendar: [],
           year: year,
           month: month,
           lastUpdated: now,
         ),
       );
-    } catch (e) {
-      emit(_Failure(e.toString()));
     }
+
+    emit(
+      _Success(
+        listAcademicCalendar: listAcademicCalendar,
+        year: year,
+        month: month,
+        lastUpdated: now,
+      ),
+    );
   }
 
   @override

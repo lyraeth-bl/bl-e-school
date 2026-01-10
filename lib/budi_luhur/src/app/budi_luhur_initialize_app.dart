@@ -9,6 +9,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:path_provider/path_provider.dart';
@@ -18,6 +19,7 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 ///
 /// This function ensures that all necessary setup tasks are completed, including:
 /// - Initializing the Flutter binding.
+/// - Load .env file
 /// - Initializing the HydratedBloc Storage.
 /// - Setting up Firebase services.
 /// - Overriding default HTTP behavior for development.
@@ -30,6 +32,9 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 Future<void> budiLuhurInitializeApp() async {
   // Ensure that the Flutter binding is initialized before any Flutter-specific code.
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Load .env file
+  await dotenv.load(fileName: ".env");
 
   // Initialize HydratedBloc.
   HydratedBloc.storage = await HydratedStorage.build(
@@ -76,7 +81,7 @@ Future<void> budiLuhurInitializeApp() async {
   await initHiveOpenBox();
 
   // Initialize date formatting for the Indonesian locale ('id_ID').
-  await initializeDateFormatting("id_ID", null);
+  await initializeDateFormatting("id", null);
 
   final authCubit = AuthCubit(
     AuthRepository(),

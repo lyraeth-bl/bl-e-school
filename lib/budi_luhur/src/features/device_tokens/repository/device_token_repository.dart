@@ -34,7 +34,7 @@ class DeviceTokenRepository {
         'NIS': nis,
         'token': fcmToken,
         'platform': platform,
-        'app_version': appVersion ?? "0.0.2",
+        'app_version': appVersion ?? "0.0.3",
       };
 
       final response = await ApiClient.post(
