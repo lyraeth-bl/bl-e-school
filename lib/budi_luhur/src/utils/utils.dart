@@ -592,4 +592,23 @@ class Utils {
 
     return elapsed / totalDuration;
   }
+
+  static int compareVersion(String v1, String v2) {
+    final v1Parts = v1.split(".").map(int.parse).toList();
+    final v2Parts = v2.split(".").map(int.parse).toList();
+
+    final maxLength = v1Parts.length > v2Parts.length
+        ? v1Parts.length
+        : v2Parts.length;
+
+    for (int i = 0; i < maxLength; i++) {
+      final a = i < v1Parts.length ? v1Parts[i] : 0;
+      final b = i < v2Parts.length ? v2Parts[i] : 0;
+
+      if (a > b) return 1;
+      if (a < b) return -1;
+    }
+
+    return 0;
+  }
 }

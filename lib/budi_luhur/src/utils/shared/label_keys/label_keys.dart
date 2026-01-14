@@ -69,6 +69,8 @@ const String fileDownloadingKey = "downloadingFile";
 const String downloadKey = "download";
 const String failedToDownloadKey = "failedToDownload";
 
+const String releaseNoteKey = "releaseNote";
+
 const String cancelKey = "cancel";
 const String totalPresentKey = "totalPresent";
 const String totalAbsentKey = "totalAbsent";
@@ -263,6 +265,8 @@ const String appUnderMaintenanceKey = "appUnderMaintenance";
 const String updateKey = "update";
 
 const String newUpdateAvailableKey = "newUpdateAvailable";
+const String newUpdateAvailableTitleKey = "newUpdateAvailableTitle";
+const String newUpdateAvailableDescKey = "newUpdateAvailableDesc";
 
 const String featureDisableInDemoVersionKey = "featureDisableInDemoVersion";
 

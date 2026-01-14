@@ -8,6 +8,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 /// 2. Opening the necessary boxes for the application, including:
 ///    - [showCaseBoxKey]: For storing data related to the showcase feature.
 ///    - [authBoxKey]: For caching authentication-related data.
+///    - [notificationsBoxKey]: For storing notifications data.
 ///    - [attendanceBoxKey]: For storing daily attendance information.
 ///    - [feedbackBoxKey]: For storing feedback user.
 ///    - [settingsBoxKey]: For caching user-specific settings.

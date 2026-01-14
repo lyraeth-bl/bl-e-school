@@ -186,7 +186,9 @@
   "holidays": "Holidays",
   "appUnderMaintenance": "We're currently performing essential updates to enhance your app experience. Please check back shortly.",
   "update": "Update",
-  "newUpdateAvailable": "A new and improved version of the app is now available. Update now for the best experience",
+  "newUpdateAvailable": "A new and improved version of the app is now available.",
+  "newUpdateAvailableTitle": "Update now for the best experience",
+  "newUpdateAvailableDesc": "A brand new version of the MyBudiLuhur app is available in the Github. Please update your app to use all of our amazing features.",
   "featureDisableInDemoVersion": "This feature is disable in demo version",
   "onlineExam": "Online Exam",
   "online": "Online",
@@ -434,5 +436,6 @@
   "noAbsentToday": "There is no attendance today",
   "details": "Details",
   "tryAgain": "Try again",
-  "great": "Great"
+  "great": "Great",
+  "releaseNote": "Release note"
 }

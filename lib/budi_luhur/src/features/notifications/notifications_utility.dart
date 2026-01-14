@@ -202,8 +202,7 @@ class NotificationsUtility {
         try {
           HomeScreen.homeScreenKey.currentState
               ?.fetchDailyAttendanceFromNotification();
-        } catch (_) {
-        }
+        } catch (_) {}
       }
       return;
     }
@@ -339,8 +338,7 @@ class NotificationsUtility {
         content: NotificationContent(
           id: notificationId,
           channelKey: 'download_channel',
-          title:
-              '\${Utils.getTranslatedLabel(downloadingFileKey)} (\$progress%)',
+          title: "${Utils.getTranslatedLabel(downloadingFileKey)} \n$progress%",
           body: fileName,
           notificationLayout: NotificationLayout.ProgressBar,
           progress: progress.toDouble(),
@@ -382,9 +380,9 @@ class NotificationsUtility {
         content: NotificationContent(
           id: completionNotificationId,
           channelKey: 'download_complete_channel',
-          title: '\${Utils.getTranslatedLabel(downloadCompleteKey)} ✅',
+          title: '\n${Utils.getTranslatedLabel(downloadCompleteKey)} ✅',
           body:
-              '\$fileName \${Utils.getTranslatedLabel(fileDownloadedSuccessfullyKey)}',
+              '\n$fileName \n${Utils.getTranslatedLabel(fileDownloadedSuccessfullyKey)}',
           notificationLayout: NotificationLayout.Default,
           category: NotificationCategory.Status,
           autoDismissible: true,

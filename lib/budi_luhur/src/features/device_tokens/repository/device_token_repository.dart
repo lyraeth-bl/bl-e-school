@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 /// A repository for managing device tokens for push notifications.
 ///
@@ -27,14 +28,16 @@ class DeviceTokenRepository {
     String? appVersion,
   }) async {
     try {
+      final PackageInfo packageInfo = await PackageInfo.fromPlatform();
       final fcmToken = await FirebaseMessaging.instance.getToken();
       final platform = Platform.isIOS ? "ios" : "android";
+      final version = packageInfo.version;
 
       final Map<String, dynamic> data = {
         'NIS': nis,
         'token': fcmToken,
         'platform': platform,
-        'app_version': appVersion ?? "0.0.3",
+        'app_version': version,
       };
 
       final response = await ApiClient.post(
