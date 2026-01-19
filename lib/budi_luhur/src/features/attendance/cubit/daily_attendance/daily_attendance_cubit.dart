@@ -189,7 +189,12 @@ class DailyAttendanceCubit extends HydratedCubit<DailyAttendanceState> {
       DailyAttendance(
         id: 0,
         nis: '',
+        tajaran: "",
+        semester: "",
         tanggal: DateTime.now(),
+        alasan: null,
+        jamCheckIn: null,
+        jamCheckOut: null,
         status: '',
         unit: '',
         createdAt: DateTime.now(),

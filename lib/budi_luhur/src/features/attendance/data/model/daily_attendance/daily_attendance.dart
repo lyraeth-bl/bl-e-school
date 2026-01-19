@@ -19,6 +19,10 @@ abstract class DailyAttendance with _$DailyAttendance {
     /// The student's unique identification number (Nomor Induk Siswa).
     @JsonKey(name: "nis") required String nis,
 
+    @JsonKey(name: "tajaran") required String tajaran,
+
+    @JsonKey(name: "semester") required String semester,
+
     /// The date of the attendance record.
     @JsonKey(name: "tanggal") required DateTime tanggal,
 
@@ -61,6 +65,8 @@ abstract class DailyAttendance with _$DailyAttendance {
   static Map<String, dynamic> emptyJson() => {
     'id': 0,
     'nis': '',
+    'tajaran': "",
+    'semester': "",
     'tanggal': DateTime.now().toIso8601String(),
     'checkIn': null,
     'checkOut': null,

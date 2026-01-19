@@ -6,6 +6,7 @@ const String checkInKey = "checkIn";
 const String checkOutKey = "checkOut";
 const String checkInClockKey = "checkInClock";
 const String checkOutClockKey = "checkOutClock";
+const String schoolYearKey = "schoolYear";
 const String menuKey = "menu";
 const String assignmentsKey = "assignments";
 const String timeTableKey = "timeTable";

@@ -412,13 +412,16 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
             orElse: () => DailyAttendance(
               id: 0,
               nis: context.read<AuthCubit>().getStudentDetails.nis,
+              tajaran: "-",
+              semester: "-",
+              alasan: "-",
               tanggal: DateTime.now().toLocal(),
               jamCheckIn: null,
               jamCheckOut: null,
               status: isWeekend
                   ? Utils.getTranslatedLabel(noAbsentTodayKey)
                   : Utils.getTranslatedLabel(holidaysKey),
-              unit: context.read<AuthCubit>().getStudentDetails.unit ?? "SMKKT",
+              unit: context.read<AuthCubit>().getStudentDetails.unit ?? "-",
               createdAt: DateTime.now().toLocal(),
               updatedAt: DateTime.now().toLocal(),
             ),
@@ -427,7 +430,9 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
           final dataSelectedAttendance = DailyAttendance(
             id: selectedAttendance.id,
             nis: selectedAttendance.nis,
-            tanggal: selectedAttendance.tanggal.toLocal(),
+            tajaran: selectedAttendance.tajaran,
+            semester: selectedAttendance.semester,
+            tanggal: selectedAttendance.tanggal,
             alasan: selectedAttendance.alasan,
             jamCheckIn: selectedAttendance.jamCheckIn,
             jamCheckOut: selectedAttendance.jamCheckOut,
@@ -566,6 +571,86 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
                       ),
                     ],
                   ),
+                ),
+
+                SizedBox(height: 16),
+
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Theme.of(context).colorScheme.surfaceContainer,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              Utils.getTranslatedLabel(schoolYearKey),
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurface,
+                                  ),
+                            ),
+
+                            const SizedBox(height: 4),
+
+                            Text(
+                              dailyAttendance.tajaran,
+                              style: Theme.of(context).textTheme.bodyLarge
+                                  ?.copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(width: 16),
+
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Theme.of(context).colorScheme.surfaceContainer,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              Utils.getTranslatedLabel(semesterKey),
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurface,
+                                  ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              dailyAttendance.semester,
+                              style: Theme.of(context).textTheme.bodyLarge
+                                  ?.copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
 
                 SizedBox(height: 16),
