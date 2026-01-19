@@ -69,19 +69,19 @@ class _ErrorMessageOverlayContainerState
                 alignment: Alignment.center,
                 width: MediaQuery.of(context).size.width * (0.8),
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 8.0,
+                  horizontal: 12,
                   vertical: 8,
                 ),
                 decoration: BoxDecoration(
                   color: widget.backgroundColor,
-                  borderRadius: BorderRadius.circular(16.0),
+                  borderRadius: BorderRadius.circular(16),
                 ),
                 child: Text(
                   widget.errorMessage,
-                  style: TextStyle(
-                    fontSize: 13.5,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Theme.of(context).colorScheme.onError,
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ),
             ),

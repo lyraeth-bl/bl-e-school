@@ -118,8 +118,19 @@ class ApiClient {
       return Map.from(response.data);
     } on DioException catch (e) {
       if (kDebugMode) {
-        print(e.response?.data);
+        print("Error dari DioException : ${e.response?.data}");
+        print("Type : ${e.type}");
+        print("Error : ${e.error}");
+        print("Message : ${e.message}");
+        print("Extra : ${e.response?.extra}");
+        print("Status Code : ${e.response?.statusCode}");
+        print("Status Message : ${e.response?.statusMessage}");
       }
+
+      if (e.response?.data['error'].toString() == "NIS atau password salah") {
+        throw ApiException(e.response!.data['error'].toString());
+      }
+
       _handleDioError(e);
       rethrow;
     } on ApiException catch (e) {
@@ -186,6 +197,10 @@ class ApiClient {
 
     if (e.response?.statusCode == 503 || e.response?.statusCode == 500) {
       throw ApiException(ErrorMessageKeysAndCode.internetServerErrorCode);
+    }
+
+    if (e.response?.statusCode == 404) {
+      throw ApiException(ErrorMessageKeysAndCode.fileNotFoundErrorCode);
     }
 
     if (e.response?.statusCode == 401) {

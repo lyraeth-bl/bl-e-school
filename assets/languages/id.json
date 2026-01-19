@@ -186,7 +186,9 @@
   "holidays": "Libur",
   "appUnderMaintenance": "Aplikasi sedang dalam pemeliharaan. Silakan coba kembali nanti.",
   "update": "Perbarui",
-  "newUpdateAvailable": "Versi baru tersedia. Perbarui sekarang untuk pengalaman terbaik.",
+  "newUpdateAvailable": "Versi baru tersedia.",
+  "newUpdateAvailableTitle": "Perbarui sekarang untuk pengalaman terbaik.",
+  "newUpdateAvailableDesc": "Versi terbaru dari aplikasi MyBudiLuhur udah ada nih di Github. Jangan lupa update ya biar ngerasain fitur-fitur barunya.",
   "featureDisableInDemoVersion": "Fitur ini dinonaktifkan di versi demo",
   "onlineExam": "Ujian Online",
   "online": "Online",
@@ -434,5 +436,6 @@
   "noAbsentToday": "Tidak ada absensi hari ini.",
   "details": "Detail",
   "tryAgain": "Coba lagi yaa...",
-  "great": "Mantap!"
+  "great": "Mantap!",
+  "releaseNote": "Check fitur barunya"
 }
