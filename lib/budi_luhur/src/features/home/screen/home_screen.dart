@@ -95,6 +95,7 @@ class _HomeScreenState extends State<HomeScreen>
       if (fromNotifications) _fetchDailyAttendance();
       loadTemporarilyStoredNotifications();
       _fetchAppConfiguration();
+      _fetchDailyAttendance();
       NotificationsUtility.setUpNotificationService();
     });
   }

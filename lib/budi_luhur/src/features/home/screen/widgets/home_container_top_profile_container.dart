@@ -129,7 +129,6 @@ class HomeContainerTopProfileContainer extends StatelessWidget {
 
                       InkWell(
                         onTap: () {
-                          print("trigger");
                           Get.toNamed(BudiLuhurRoutes.notifications);
                         },
                         child: Container(

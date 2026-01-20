@@ -58,6 +58,9 @@ Future<void> budiLuhurInitializeApp() async {
   // Load translation files for multi-language support.
   await AppTranslation.loadJsons();
 
+  // Initialize Hive and open required box.
+  await initHiveOpenBox();
+
   // Initialize notifications.
   await NotificationsUtility.initializeAwesomeNotification();
 
@@ -76,9 +79,6 @@ Future<void> budiLuhurInitializeApp() async {
     onDismissActionReceivedMethod:
         NotificationsUtility.onDismissActionReceivedMethod,
   );
-
-  // Initialize Hive and open required box.
-  await initHiveOpenBox();
 
   // Initialize date formatting for the Indonesian locale ('id_ID').
   await initializeDateFormatting("id", null);
