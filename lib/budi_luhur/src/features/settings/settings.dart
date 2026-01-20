@@ -10,3 +10,4 @@ export 'repository/app_configuration_repository.dart';
 export 'repository/settings_repository.dart';
 // Screen
 export 'screen/settings_screen.dart';
+export 'widgets/change_language_bottom_sheet.dart';

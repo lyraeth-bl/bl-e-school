@@ -129,7 +129,7 @@ class SettingsScreen extends StatelessWidget {
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleSmall
-                                        ?.copyWith(fontWeight: FontWeight.w600),
+                                        ?.copyWith(fontWeight: FontWeight.w700),
                                   ),
                                 ],
                               ),
@@ -151,6 +151,68 @@ class SettingsScreen extends StatelessWidget {
                                         .toggleBiometricLogin(enable: val);
                                   },
                                 ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+
+                  SizedBox(height: 8),
+
+                  BlocBuilder<AppLocalizationCubit, AppLocalizationState>(
+                    builder: (context, state) {
+                      final String languageName = appLanguages
+                          .where(
+                            (element) =>
+                                element.languageCode ==
+                                state.language.languageCode,
+                          )
+                          .toList()
+                          .first
+                          .languageName;
+
+                      return InkWell(
+                        onTap: () async {
+                          if (!Get.isBottomSheetOpen!) {
+                            Get.bottomSheet(
+                              ChangeLanguageBottomSheet(),
+                              isDismissible: true,
+                              enableDrag: false,
+                              isScrollControlled: true,
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                            );
+                          }
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 20,
+                            horizontal: 16,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.surfaceContainer,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(LucideIcons.languages),
+                                  const SizedBox(width: 12),
+                                  Text(
+                                    languageName,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleSmall
+                                        ?.copyWith(fontWeight: FontWeight.w700),
+                                  ),
+                                ],
+                              ),
+
+                              Icon(LucideIcons.chevronRight),
                             ],
                           ),
                         ),
