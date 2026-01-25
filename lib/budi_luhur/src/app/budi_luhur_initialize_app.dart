@@ -47,7 +47,9 @@ Future<void> budiLuhurInitializeApp() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // Override the default HttpClient to bypass SSL certificate validation in development.
-  HttpOverrides.global = MyHttpOverrides();
+  if (!kIsWeb) {
+    HttpOverrides.global = MyHttpOverrides();
+  }
 
   // Register the license for the Google Fonts used in the application.
   await initRegisterGoogleFontsLicences();
@@ -62,23 +64,24 @@ Future<void> budiLuhurInitializeApp() async {
   await initHiveOpenBox();
 
   // Initialize notifications.
-  await NotificationsUtility.initializeAwesomeNotification();
+  if (!kIsWeb) {
+    await NotificationsUtility.initializeAwesomeNotification();
+    await NotificationsUtility.setUpNotificationService();
 
-  await NotificationsUtility.setUpNotificationService();
+    FirebaseMessaging.onMessage.listen(
+      NotificationsUtility.foregroundMessageListener,
+    );
 
-  FirebaseMessaging.onMessage.listen(
-    NotificationsUtility.foregroundMessageListener,
-  );
-
-  AwesomeNotifications().setListeners(
-    onActionReceivedMethod: NotificationsUtility.onActionReceivedMethod,
-    onNotificationCreatedMethod:
-        NotificationsUtility.onNotificationCreatedMethod,
-    onNotificationDisplayedMethod:
-        NotificationsUtility.onNotificationDisplayedMethod,
-    onDismissActionReceivedMethod:
-        NotificationsUtility.onDismissActionReceivedMethod,
-  );
+    AwesomeNotifications().setListeners(
+      onActionReceivedMethod: NotificationsUtility.onActionReceivedMethod,
+      onNotificationCreatedMethod:
+          NotificationsUtility.onNotificationCreatedMethod,
+      onNotificationDisplayedMethod:
+          NotificationsUtility.onNotificationDisplayedMethod,
+      onDismissActionReceivedMethod:
+          NotificationsUtility.onDismissActionReceivedMethod,
+    );
+  }
 
   // Initialize date formatting for the Indonesian locale ('id_ID').
   await initializeDateFormatting("id", null);
