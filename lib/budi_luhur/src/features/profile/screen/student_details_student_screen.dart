@@ -27,10 +27,19 @@ class StudentDetailsStudentScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 80,
         title: Text(
           Utils.getTranslatedLabel(detailsProfileKey),
           style: TextStyle(fontWeight: FontWeight.w700),
         ),
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadiusGeometry.only(
+            bottomLeft: Radius.circular(32),
+            bottomRight: Radius.circular(32),
+          ),
+        ),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),

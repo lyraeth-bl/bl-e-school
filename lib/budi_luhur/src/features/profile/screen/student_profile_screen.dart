@@ -172,11 +172,7 @@ class StudentProfileScreen extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 16.0),
-
-            Divider(color: Theme.of(context).colorScheme.outlineVariant),
-
-            const SizedBox(height: 16.0),
+            SizedBox(height: 56),
 
             Padding(
               padding: EdgeInsets.symmetric(
