@@ -146,8 +146,6 @@ class _TimeTableContainerState extends State<TimeTableContainer>
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          const CustomBackButton(),
-
           Align(
             alignment: Alignment.topCenter,
             child: Text(

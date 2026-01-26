@@ -117,7 +117,6 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
               ),
             ),
           ),
-          CustomBackButton(),
         ],
       ),
     );

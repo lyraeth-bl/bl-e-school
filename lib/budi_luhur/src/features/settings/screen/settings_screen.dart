@@ -18,9 +18,6 @@ class SettingsScreen extends StatelessWidget {
       heightPercentage: Utils.appBarSmallerHeightPercentage,
       child: Stack(
         children: [
-          const CustomBackButton(
-            alignmentDirectional: AlignmentDirectional.centerStart,
-          ),
           Center(
             child: Text(
               Utils.getTranslatedLabel(settingsKey),
