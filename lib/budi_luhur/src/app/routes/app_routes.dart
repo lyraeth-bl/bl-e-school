@@ -1,4 +1,5 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:bl_e_school/budi_luhur/src/features/settings/screen/contact_us_screen.dart';
 import 'package:get/get.dart';
 
 /// A class that holds the application's routes and their bindings.
@@ -69,6 +70,8 @@ class BudiLuhurRoutes extends BudiLuhur {
   /// Navigates to [SettingsScreen].
   static const String settings = "/settings";
 
+  static const String contactUsSettings = "/contactUsSettings";
+
   /// A list of [GetPage] objects that defines the application's route table.
   ///
   /// Each [GetPage] entry maps a route name to a page-building function (`page`),
@@ -125,5 +128,6 @@ class BudiLuhurRoutes extends BudiLuhur {
       page: () => AcademicCalendarScreen.routeInstance(),
     ),
     GetPage(name: settings, page: () => SettingsScreen.routeInstance()),
+    GetPage(name: contactUsSettings, page: ContactUsScreen.routeInstance),
   ];
 }

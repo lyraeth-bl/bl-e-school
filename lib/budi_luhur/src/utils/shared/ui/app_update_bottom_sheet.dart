@@ -1,19 +1,11 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class AppUpdateBottomSheet extends StatelessWidget {
   final String urlGithub;
 
   const AppUpdateBottomSheet({super.key, required this.urlGithub});
-
-  Future<void> _launchUrl(String urlString) async {
-    final Uri url = Uri.parse(urlString);
-    if (!await launchUrl(url)) {
-      throw Exception('Could not launch $url');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +81,8 @@ class AppUpdateBottomSheet extends StatelessWidget {
               children: [
                 Expanded(
                   child: FilledButton(
-                    onPressed: () => _launchUrl("https://bit.ly/blapk"),
+                    onPressed: () =>
+                        Utils.launchThisUrl("https://bit.ly/blapk"),
                     style: ButtonStyle(
                       padding: WidgetStatePropertyAll(
                         EdgeInsets.symmetric(vertical: 16),

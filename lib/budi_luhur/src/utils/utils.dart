@@ -611,4 +611,27 @@ class Utils {
 
     return 0;
   }
+
+  static Future<void> launchThisUrl(String urlString) async {
+    final Uri url = Uri.parse(urlString);
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
+    }
+  }
+
+  static Future<void> openDialPad(String phoneNumber) async {
+    final Uri uri = Uri.parse("tel:$phoneNumber");
+
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      throw Exception("Could not launch $uri");
+    }
+  }
+
+  static Future<void> createEmail(String email) async {
+    final Uri uri = Uri(scheme: 'mailto', path: email);
+
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      throw Exception("Could not launch $uri");
+    }
+  }
 }
