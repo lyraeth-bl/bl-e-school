@@ -91,7 +91,10 @@ const String termsAndConditionKey = "termsAndCondition";
 
 const String changePasswordKey = "changePassword";
 
+const String contactNumberKey = "contactNumber";
 const String contactUsKey = "contactUs";
+const String contactUsDescKey = "contactUsDesc";
+const String socialMediaKey = "socialMedia";
 const String privacyPolicyKey = "privacyPolicy";
 const String faqsKey = "faqs";
 const String rateUsKey = "rateUs";
@@ -509,3 +512,9 @@ const String sessionExpiredDescKey = "sessionExpiredDesc";
 const String reLoginKey = "reLogin";
 const String tryAgainKey = "tryAgain";
 const String greatKey = "great";
+const String costumerSupportKey = "costumerSupport";
+const String instagramKey = "instagram";
+const String facebookKey = "facebook";
+const String youtubeKey = "youtube";
+const String tiktokKey = "tiktok";
+const String websiteKey = "website";

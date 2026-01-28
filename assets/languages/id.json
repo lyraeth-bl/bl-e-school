@@ -160,6 +160,7 @@
   "height": "Tinggi",
   "weight": "Berat",
   "contactUs": "Hubungi Kami",
+  "contactUsDesc": "Anda dapat menghubungi kami melalui platform dibawah ini. Tim kami akan menghubungi Anda sesegera mungkin.",
   "sureToLogout": "Yakin ingin keluar?",
   "yes": "Ya",
   "no": "Tidak",
@@ -438,5 +439,13 @@
   "tryAgain": "Coba lagi yaa...",
   "great": "Mantap!",
   "releaseNote": "Check fitur barunya",
-  "schoolYear": "Tahun ajaran"
+  "schoolYear": "Tahun ajaran",
+  "costumerSupport": "Costumer Support",
+  "contactNumber": "Nomor Telepon",
+  "socialMedia": "Media Sosial",
+  "facebook": "Facebook",
+  "instagram": "Instagram",
+  "youtube": "Youtube",
+  "tiktok": "Tiktok",
+  "website": "Website"
 }

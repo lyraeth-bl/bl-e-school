@@ -47,7 +47,9 @@ Future<void> budiLuhurInitializeApp() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // Override the default HttpClient to bypass SSL certificate validation in development.
-  HttpOverrides.global = MyHttpOverrides();
+  if (!kIsWeb) {
+    HttpOverrides.global = MyHttpOverrides();
+  }
 
   // Register the license for the Google Fonts used in the application.
   await initRegisterGoogleFontsLicences();
@@ -58,27 +60,28 @@ Future<void> budiLuhurInitializeApp() async {
   // Load translation files for multi-language support.
   await AppTranslation.loadJsons();
 
-  // Initialize notifications.
-  await NotificationsUtility.initializeAwesomeNotification();
-
-  await NotificationsUtility.setUpNotificationService();
-
-  FirebaseMessaging.onMessage.listen(
-    NotificationsUtility.foregroundMessageListener,
-  );
-
-  AwesomeNotifications().setListeners(
-    onActionReceivedMethod: NotificationsUtility.onActionReceivedMethod,
-    onNotificationCreatedMethod:
-        NotificationsUtility.onNotificationCreatedMethod,
-    onNotificationDisplayedMethod:
-        NotificationsUtility.onNotificationDisplayedMethod,
-    onDismissActionReceivedMethod:
-        NotificationsUtility.onDismissActionReceivedMethod,
-  );
-
   // Initialize Hive and open required box.
   await initHiveOpenBox();
+
+  // Initialize notifications.
+  if (!kIsWeb) {
+    await NotificationsUtility.initializeAwesomeNotification();
+    await NotificationsUtility.setUpNotificationService();
+
+    FirebaseMessaging.onMessage.listen(
+      NotificationsUtility.foregroundMessageListener,
+    );
+
+    AwesomeNotifications().setListeners(
+      onActionReceivedMethod: NotificationsUtility.onActionReceivedMethod,
+      onNotificationCreatedMethod:
+          NotificationsUtility.onNotificationCreatedMethod,
+      onNotificationDisplayedMethod:
+          NotificationsUtility.onNotificationDisplayedMethod,
+      onDismissActionReceivedMethod:
+          NotificationsUtility.onDismissActionReceivedMethod,
+    );
+  }
 
   // Initialize date formatting for the Indonesian locale ('id_ID').
   await initializeDateFormatting("id", null);

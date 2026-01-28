@@ -26,26 +26,23 @@ Future<void> firebaseMessagingBackgroundHandler(
 
   final type = (remoteMessage.data['type'] ?? "").toString();
   if (kDebugMode) {
-    print("Background Notification Type: $type");
+    debugPrint("Background Notification Type: $type");
   }
 
-  // If it's a general notification, store it temporarily.
-  if (type.toLowerCase() ==
-      NotificationsUtility.notificationType.toLowerCase()) {
-    final studentDetails = AuthRepository.getStudentDetails();
-    NotificationsRepository.addNotificationTemporarily(
-      data: NotificationsDetails(
-        nis: studentDetails.nis,
-        title: remoteMessage.notification?.title ?? "",
-        body: remoteMessage.notification?.body ?? "",
-        type: remoteMessage.data['type'] ?? "",
-        attachmentUrl: remoteMessage.data['image_url'] ?? "",
-        createdAt: DateTime.timestamp(),
-      ).toJson(),
-    );
-    if (kDebugMode) {
-      print("Notifikasi background disimpan sementara.");
-    }
+  final studentDetails = AuthRepository.getStudentDetails();
+  NotificationsRepository.addNotificationTemporarily(
+    data: NotificationsDetails(
+      nis: studentDetails.nis,
+      title: remoteMessage.notification?.title ?? "",
+      body: remoteMessage.notification?.body ?? "",
+      type: remoteMessage.data['type'] ?? "",
+      attachmentUrl: remoteMessage.data['image_url'] ?? "",
+      createdAt: DateTime.timestamp(),
+    ).toJson(),
+  );
+
+  if (kDebugMode) {
+    debugPrint("Notifikasi background disimpan sementara.");
   }
 }
 
@@ -135,7 +132,7 @@ class NotificationsUtility {
     // Specific logic for payment notifications.
     if (type == paymentNotificationType.toLowerCase()) {
       // Example: could auto-refresh a payment screen.
-    } else if (type.toLowerCase() == notificationType.toLowerCase()) {
+    } else {
       // For general notifications, add to the repository for persistence.
       NotificationsRepository.addNotification(
         notificationDetails: NotificationsDetails(
@@ -148,7 +145,7 @@ class NotificationsUtility {
         ),
       );
       if (kDebugMode) {
-        print("Notifikasi foreground disimpan.");
+        debugPrint("Notifikasi foreground disimpan.");
       }
     }
 
@@ -176,6 +173,7 @@ class NotificationsUtility {
     String type,
     Map<String, dynamic> data,
   ) async {
+    debugPrint("type from _onTapNotificationScreenNavigateCallback : $type");
     if (type.isEmpty) return;
 
     if (type == generalNotificationType) {

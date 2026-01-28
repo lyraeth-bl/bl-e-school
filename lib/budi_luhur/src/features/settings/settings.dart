@@ -10,3 +10,8 @@ export 'repository/app_configuration_repository.dart';
 export 'repository/settings_repository.dart';
 // Screen
 export 'screen/settings_screen.dart';
+export 'widgets/change_biometric_settings_button.dart';
+export 'widgets/change_language_bottom_sheet.dart';
+export 'widgets/change_language_settings_button.dart';
+export 'widgets/contact_us_list_container.dart';
+export 'widgets/contact_us_setting_button.dart';

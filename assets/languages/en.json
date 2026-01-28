@@ -160,6 +160,7 @@
   "height": "Height",
   "weight": "Weight",
   "contactUs": "Contact Us",
+  "contactUsDesc": "You can get in touch with us through below platforms. Our Team will reach out to you as soon as it would be possible",
   "sureToLogout": "Are you sure to logout?",
   "yes": "Yes",
   "no": "No",
@@ -438,5 +439,13 @@
   "tryAgain": "Try again",
   "great": "Great",
   "releaseNote": "Release note",
-  "schoolYear": "School year"
+  "schoolYear": "School year",
+  "costumerSupport": "Costumer Support",
+  "contactNumber": "Contact Number",
+  "socialMedia": "Social Media",
+  "facebook": "Facebook",
+  "instagram": "Instagram",
+  "youtube": "Youtube",
+  "tiktok": "Tiktok",
+  "website": "Website"
 }

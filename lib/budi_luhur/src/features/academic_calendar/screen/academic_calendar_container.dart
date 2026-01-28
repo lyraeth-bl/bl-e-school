@@ -424,7 +424,6 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
               ),
             ),
           ),
-          CustomBackButton(),
         ],
       ),
     );
