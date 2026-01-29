@@ -13,6 +13,7 @@ const String timeTableKey = "timeTable";
 const String timeKey = "time";
 const String noticeBoardKey = "noticeBoard";
 const String guardianDetailsKey = "guardianDetails";
+const String parentsDetailsKey = "parentDetails";
 const String resultsKey = "results";
 const String settingsKey = "settings";
 const String reportsKey = "reports";
@@ -100,11 +101,18 @@ const String faqsKey = "faqs";
 const String rateUsKey = "rateUs";
 const String shareKey = "share";
 const String motherNameKey = "motherName";
+const String motherWorkKey = "motherWork";
+const String motherLastStudyKey = "motherLastStudy";
 const String admissionDateKey = "admissionDate";
 const String guardianKey = "guardian";
 const String guardianNameKey = "guardianName";
+const String guardianWorkKey = "guardianWork";
+const String guardianAddressKey = "guardianAddress";
+const String guardianNumberKey = "guardianNumber";
 
 const String fatherNameKey = "fatherName";
+const String fatherWorkKey = "fatherWork";
+const String fatherLastStudyKey = "fatherLastStudy";
 const String occupationKey = "occupation";
 
 const String phoneNumberKey = "phoneNumber";

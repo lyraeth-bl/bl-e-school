@@ -10,6 +10,8 @@ export 'auth/auth.dart';
 export 'device_tokens/device_token.dart';
 /// Feedback
 export 'feedback/feedback.dart';
+/// Guardian
+export 'guardian_details/guardian_details.dart';
 /// Home
 export 'home/home.dart';
 /// Languages

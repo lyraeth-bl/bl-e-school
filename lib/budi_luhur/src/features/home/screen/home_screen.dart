@@ -455,6 +455,10 @@ class _HomeScreenState extends State<HomeScreen>
         academicCalendarKey) {
       return AcademicCalendarContainer();
     }
+    if (homeBottomSheetMenu[_currentlyOpenMenuIndex].title ==
+        guardianDetailsKey) {
+      return const GuardianDetailsContainer();
+    }
     if (homeBottomSheetMenu[_currentlyOpenMenuIndex].title == settingsKey) {
       return SettingsScreen();
     }

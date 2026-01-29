@@ -63,7 +63,11 @@
   "rateUs": "Nilai Kami",
   "share": "Bagikan",
   "motherName": "Nama Ibu",
+  "motherWork": "Pekerjaan Ibu",
+  "motherLastStudy": "Pendidikan Ibu",
   "fatherName": "Nama Ayah",
+  "fatherWork": "Pekerjaan Ayah",
+  "fatherLastStudy": "Pendidikan Ayah",
   "occupation": "Pekerjaan",
   "phoneNumber": "Nomor Telepon",
   "result": "Hasil",
@@ -106,6 +110,9 @@
   "medium": "Jenjang",
   "guardian": "Wali",
   "guardianName": "Nama Wali",
+  "guardianAddress": "Alamat Wali",
+  "guardianWork": "Pekerjaan Wali",
+  "guardianNumber": "Telepon Wali",
   "myChildren": "Anak Saya",
   "importantNotice": "Pengumuman Penting",
   "currentAddress": "Alamat Saat Ini",
@@ -447,5 +454,6 @@
   "instagram": "Instagram",
   "youtube": "Youtube",
   "tiktok": "Tiktok",
-  "website": "Website"
+  "website": "Website",
+  "parentDetails": "Detail Orang Tua"
 }

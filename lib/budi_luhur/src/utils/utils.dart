@@ -407,8 +407,10 @@ class Utils {
   /// - [value]: The input string to format.
   /// - Returns: A hyphen ("-") if the input string is empty, otherwise the
   ///   original string.
-  static String formatEmptyValue(String value) {
-    return value.isEmpty ? "-" : value;
+  static String formatEmptyValue(String? value) {
+    if (value == null) return "-";
+    if (value.trim().isEmpty) return "-";
+    return value;
   }
 
   static String getMonthName(int monthNumber) {

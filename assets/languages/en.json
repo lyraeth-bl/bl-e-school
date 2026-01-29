@@ -63,7 +63,11 @@
   "rateUs": "Rate Us",
   "share": "Share",
   "motherName": "Mother Name",
+  "motherWork": "Mother Job",
+  "motherLastStudy": "Mother Highest Education",
   "fatherName": "Father Name",
+  "fatherWork": "Father Job",
+  "fatherLastStudy": "Father Highest Education",
   "occupation": "Occupation",
   "phoneNumber": "Phone Number",
   "result": "Result",
@@ -106,6 +110,9 @@
   "medium": "Medium",
   "guardian": "Guardian",
   "guardianName": "Guardian Name",
+  "guardianAddress": "Guardian Address",
+  "guardianWork": "Guardian Work",
+  "guardianNumber": "Guardian Number",
   "myChildren": "My Children",
   "importantNotice": "Important Notice",
   "currentAddress": "Current Address",
@@ -447,5 +454,6 @@
   "instagram": "Instagram",
   "youtube": "Youtube",
   "tiktok": "Tiktok",
-  "website": "Website"
+  "website": "Website",
+  "parentDetails": "Parent details"
 }
