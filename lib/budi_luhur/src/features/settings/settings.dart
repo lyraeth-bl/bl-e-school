@@ -9,7 +9,13 @@ export 'data/dto/app_configuration_dto.dart';
 export 'repository/app_configuration_repository.dart';
 export 'repository/settings_repository.dart';
 // Screen
+export 'screen/about_us_budi_luhur_screen.dart';
+export 'screen/about_us_screen.dart';
+export 'screen/contact_us_screen.dart';
 export 'screen/settings_screen.dart';
+// Widget
+export 'widgets/about_constant.dart';
+export 'widgets/about_us_settings_button.dart';
 export 'widgets/change_biometric_settings_button.dart';
 export 'widgets/change_language_bottom_sheet.dart';
 export 'widgets/change_language_settings_button.dart';

@@ -68,7 +68,7 @@ class GuardianDetailsContainer extends StatelessWidget {
 
               SizedBox(height: 24),
 
-              GuardiansDetailsContainer(
+              GuardiansDetailsListContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -96,7 +96,7 @@ class GuardianDetailsContainer extends StatelessWidget {
 
               SizedBox(height: 16),
 
-              GuardiansDetailsContainer(
+              GuardiansDetailsListContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -124,7 +124,7 @@ class GuardianDetailsContainer extends StatelessWidget {
 
               SizedBox(height: 16),
 
-              GuardiansDetailsContainer(
+              GuardiansDetailsListContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -155,7 +155,7 @@ class GuardianDetailsContainer extends StatelessWidget {
 
               SizedBox(height: 24),
 
-              GuardiansDetailsContainer(
+              GuardiansDetailsListContainer(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

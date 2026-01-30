@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class GuardiansDetailsContainer extends StatelessWidget {
+class GuardiansDetailsListContainer extends StatelessWidget {
   final Widget child;
 
-  const GuardiansDetailsContainer({super.key, required this.child});
+  const GuardiansDetailsListContainer({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
