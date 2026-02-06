@@ -455,5 +455,13 @@
   "youtube": "Youtube",
   "tiktok": "Tiktok",
   "website": "Website",
-  "parentDetails": "Parent details"
+  "parentDetails": "Parent details",
+  "discipline": "Discipline",
+  "meritAndDemerit": "Merit and Demerit",
+  "merit": "Merit",
+  "demerit": "Demerit",
+  "startingMeritPoints": "Starting Merit Points",
+  "currentMeritPoints": "Current Merit Points",
+  "startingDemeritPoints": "Starting Demerit Points",
+  "currentDemeritPoints": "Current Demerit Points"
 }

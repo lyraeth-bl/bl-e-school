@@ -22,6 +22,9 @@ class HomeScreen extends StatefulWidget {
         BlocProvider<AcademicCalendarCubit>(
           create: (_) => AcademicCalendarCubit(AcademicCalendarRepository()),
         ),
+        BlocProvider<DisciplineBloc>(
+          create: (_) => DisciplineBloc(DisciplineRepository()),
+        ),
       ],
       child: HomeScreen(key: HomeScreen.homeScreenKey),
     );
@@ -458,6 +461,10 @@ class _HomeScreenState extends State<HomeScreen>
     if (homeBottomSheetMenu[_currentlyOpenMenuIndex].title ==
         guardianDetailsKey) {
       return const GuardianDetailsContainer();
+    }
+    if (homeBottomSheetMenu[_currentlyOpenMenuIndex].title ==
+        meritAndDemeritKey) {
+      return const DisciplineContainer();
     }
     if (homeBottomSheetMenu[_currentlyOpenMenuIndex].title == settingsKey) {
       return SettingsScreen();

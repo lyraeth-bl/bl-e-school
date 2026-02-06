@@ -455,5 +455,13 @@
   "youtube": "Youtube",
   "tiktok": "Tiktok",
   "website": "Website",
-  "parentDetails": "Detail Orang Tua"
+  "parentDetails": "Detail Orang Tua",
+  "discipline": "Kedisiplinan",
+  "meritAndDemerit": "Merit and Demerit",
+  "merit": "Merit",
+  "demerit": "Demerit",
+  "startingMeritPoints": "Point Merit Awal",
+  "currentMeritPoints": "Point Merit Saat Ini",
+  "startingDemeritPoints": "Point Demerit Awal",
+  "currentDemeritPoints": "Point Demerit Saat Ini"
 }

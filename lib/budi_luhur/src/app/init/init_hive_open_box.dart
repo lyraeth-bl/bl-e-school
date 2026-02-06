@@ -22,5 +22,6 @@ Future<void> initHiveOpenBox() async {
   await Hive.openBox(notificationsBoxKey);
   await Hive.openBox(attendanceBoxKey);
   await Hive.openBox(feedbackBoxKey);
+  await Hive.openBox(disciplineBoxKey);
   await Hive.openBox(settingsBoxKey);
 }

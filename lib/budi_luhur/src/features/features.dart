@@ -8,6 +8,8 @@ export 'attendance/attendance.dart';
 export 'auth/auth.dart';
 /// Device Token
 export 'device_tokens/device_token.dart';
+/// Discipline
+export 'discipline/discipline.dart';
 /// Feedback
 export 'feedback/feedback.dart';
 /// Guardian

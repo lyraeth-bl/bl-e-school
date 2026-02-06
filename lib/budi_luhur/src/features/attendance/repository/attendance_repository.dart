@@ -31,9 +31,6 @@ class AttendanceRepository {
     ).put(studentDailyAttendanceKey, dailyAttendance.toJson());
   }
 
-  Future<void> clearStoredDailyAttendanceData() =>
-      Hive.box(attendanceBoxKey).clear();
-
   /// Checks if the daily attendance has been posted.
   ///
   /// Returns `true` if the attendance has been posted, otherwise `false`.

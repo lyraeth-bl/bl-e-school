@@ -9,7 +9,10 @@ class StudentProfileScreen extends StatelessWidget {
   const StudentProfileScreen({super.key});
 
   static Widget routeInstance() {
-    return StudentProfileScreen();
+    return BlocProvider<DisciplineBloc>.value(
+      value: DisciplineBloc(DisciplineRepository()),
+      child: const StudentProfileScreen(),
+    );
   }
 
   @override
@@ -127,181 +130,283 @@ class StudentProfileScreen extends StatelessWidget {
   }) {
     return Align(
       alignment: Alignment.topCenter,
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 24),
-            Container(
-              width: MediaQuery.of(context).size.width * (0.25),
-              height: MediaQuery.of(context).size.width * (0.25),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              child: BlocSelector<AuthCubit, AuthState, String?>(
-                selector: (state) => state.maybeWhen(
-                  authenticated: (isStudent, student, time) =>
-                      student.profileImageUrl,
-                  orElse: () => "",
+      child: RefreshIndicator(
+        onRefresh: () async {
+          final nis = context.read<AuthCubit>().getStudentDetails.nis;
+
+          context.read<DisciplineBloc>().add(DisciplineEvent.refresh(nis: nis));
+        },
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 24),
+              Container(
+                width: MediaQuery.of(context).size.width * (0.25),
+                height: MediaQuery.of(context).size.width * (0.25),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
-                builder: (context, profileImageUrl) =>
-                    BorderedProfilePictureContainer(
-                      imageUrl: profileImageUrl ?? "",
-                      heightAndWidth: 60,
-                    ),
+                child: BlocSelector<AuthCubit, AuthState, String?>(
+                  selector: (state) => state.maybeWhen(
+                    authenticated: (isStudent, student, time) =>
+                        student.profileImageUrl,
+                    orElse: () => "",
+                  ),
+                  builder: (context, profileImageUrl) =>
+                      BorderedProfilePictureContainer(
+                        imageUrl: profileImageUrl ?? "",
+                        heightAndWidth: 60,
+                      ),
+                ),
               ),
-            ),
 
-            const SizedBox(height: 24),
+              const SizedBox(height: 24),
 
-            Text(
-              studentDetails.nama ?? "-",
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface,
-                fontWeight: FontWeight.w700,
+              Text(
+                studentDetails.nama ?? "-",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
-            ),
 
-            const SizedBox(height: 16),
+              const SizedBox(height: 16),
 
-            Text(
-              studentDetails.email ?? "",
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              Text(
+                studentDetails.email ?? "",
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
               ),
-            ),
 
-            SizedBox(height: 56),
+              SizedBox(height: 40),
 
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width * (0.075),
-              ),
-              child: Column(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Align(
-                    alignment: AlignmentDirectional.centerStart,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          Utils.getTranslatedLabel(personalDetailsKey),
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(
-                                color: Theme.of(context).colorScheme.onSurface,
-                                fontWeight: FontWeight.w700,
-                              ),
+                  Column(
+                    children: [
+                      BlocSelector<DisciplineBloc, DisciplineState, int?>(
+                        selector: (state) => state.maybeWhen(
+                          loaded:
+                              (
+                                meritList,
+                                demeritList,
+                                totalMerit,
+                                totalDemerit,
+                              ) => totalMerit,
+                          orElse: () => 0,
                         ),
 
-                        InkWell(
-                          onTap: () => Get.toNamed(
-                            BudiLuhurRoutes.studentDetailsProfile,
-                          ),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.primaryContainer,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Row(
-                              children: [
-                                Text(
-                                  Utils.getTranslatedLabel(detailsProfileKey),
-                                  style: Theme.of(context).textTheme.bodySmall
-                                      ?.copyWith(
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.onPrimaryContainer,
-                                      ),
-                                ),
-                                Icon(
-                                  Icons.keyboard_arrow_right,
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onPrimaryContainer,
-                                  size: 16,
-                                ),
-                              ],
-                            ),
-                          ),
+                        builder: (context, totalMerit) => CircleNumberIndicator(
+                          value: totalMerit!,
+                          progress: (totalMerit / totalMerit).clamp(0.0, 1.0),
+                          backgroundColor: Theme.of(
+                            context,
+                          ).colorScheme.primaryContainer,
+                          valueColor: Theme.of(context).colorScheme.primary,
+                          enableAnimation: true,
                         ),
-                      ],
-                    ),
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      Text(Utils.getTranslatedLabel(meritKey)),
+                    ],
                   ),
 
-                  SizedBox(height: 8),
+                  Column(
+                    children: [
+                      BlocSelector<DisciplineBloc, DisciplineState, int?>(
+                        selector: (state) => state.maybeWhen(
+                          loaded:
+                              (
+                                meritList,
+                                demeritList,
+                                totalMerit,
+                                totalDemerit,
+                              ) => totalDemerit,
+                          orElse: () => 100,
+                        ),
 
-                  _buildProfileDetailsTile(
-                    context,
-                    label: Utils.getTranslatedLabel(schoolKey),
-                    value: Utils.formatEmptyValue(
-                      ("${studentDetails.unit?.substring(0, 3)} Budi Luhur"),
-                    ),
-                    iconUrl: "assets/images/school.svg",
-                    iconColor: Theme.of(context).colorScheme.onPrimaryContainer,
-                  ),
-                  _buildProfileDetailsTile(
-                    context,
-                    label: Utils.getTranslatedLabel(nisKey),
-                    value: Utils.formatEmptyValue(studentDetails.nis),
-                    iconUrl: "assets/images/user_pro_roll_no_icon.svg",
-                    iconColor: Theme.of(context).colorScheme.onPrimaryContainer,
-                  ),
-                  _buildProfileDetailsTile(
-                    context,
-                    label: Utils.getTranslatedLabel(nisnKey),
-                    value: Utils.formatEmptyValue(studentDetails.nisn ?? ""),
-                    iconUrl: "assets/images/user_pro_roll_no_icon.svg",
-                    iconColor: Theme.of(context).colorScheme.onPrimaryContainer,
-                  ),
-                  _buildProfileDetailsTile(
-                    context,
-                    label: Utils.getTranslatedLabel(classKey),
-                    value: Utils.formatEmptyValue(
-                      "${studentDetails.kelasSaatIni} ${studentDetails.noKelasSaatIni}",
-                    ),
-                    iconUrl: "assets/images/user_pro_class_icon.svg",
-                    iconColor: Theme.of(context).colorScheme.onPrimaryContainer,
-                  ),
-                  _buildProfileDetailsTile(
-                    context,
-                    label: Utils.getTranslatedLabel(dateOfBirthKey),
-                    value: Utils.formatEmptyValue(
-                      DateTime.tryParse(
-                                studentDetails.tanggalLahir
-                                        ?.toIso8601String() ??
-                                    "",
-                              ) ==
-                              null
-                          ? "-"
-                          : Utils.formatDays(
-                              DateTime.tryParse(
-                                studentDetails.tanggalLahir!.toIso8601String(),
-                              )!,
-                              locale: "id_ID",
+                        builder: (context, totalDemerit) {
+                          final maxDemerit = 100;
+
+                          return CircleNumberIndicator(
+                            value: totalDemerit!,
+                            progress: (totalDemerit / maxDemerit).clamp(
+                              0.0,
+                              1.0,
                             ),
-                    ),
-                    iconUrl: "assets/images/user_pro_dob_icon.svg",
-                    iconColor: Theme.of(context).colorScheme.onPrimaryContainer,
+                            backgroundColor: Theme.of(
+                              context,
+                            ).colorScheme.errorContainer,
+                            valueColor: Theme.of(context).colorScheme.error,
+                            enableAnimation: true,
+                          );
+                        },
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      Text(Utils.getTranslatedLabel(demeritKey)),
+                    ],
                   ),
-                  _buildProfileDetailsTile(
-                    context,
-                    label: Utils.getTranslatedLabel(currentAddressKey),
-                    value: Utils.formatEmptyValue(studentDetails.alamat ?? ""),
-                    iconUrl: "assets/images/user_pro_address_icon.svg",
-                    iconColor: Theme.of(context).colorScheme.onPrimaryContainer,
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * (0.05)),
                 ],
               ),
-            ),
-          ],
+
+              SizedBox(height: 40),
+
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * (0.075),
+                ),
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: AlignmentDirectional.centerStart,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            Utils.getTranslatedLabel(personalDetailsKey),
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                          ),
+
+                          InkWell(
+                            onTap: () => Get.toNamed(
+                              BudiLuhurRoutes.studentDetailsProfile,
+                            ),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.primaryContainer,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    Utils.getTranslatedLabel(detailsProfileKey),
+                                    style: Theme.of(context).textTheme.bodySmall
+                                        ?.copyWith(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.onPrimaryContainer,
+                                        ),
+                                  ),
+                                  Icon(
+                                    Icons.keyboard_arrow_right,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onPrimaryContainer,
+                                    size: 16,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    SizedBox(height: 8),
+
+                    _buildProfileDetailsTile(
+                      context,
+                      label: Utils.getTranslatedLabel(schoolKey),
+                      value: Utils.formatEmptyValue(
+                        ("${studentDetails.unit?.substring(0, 3)} Budi Luhur"),
+                      ),
+                      iconUrl: "assets/images/school.svg",
+                      iconColor: Theme.of(
+                        context,
+                      ).colorScheme.onPrimaryContainer,
+                    ),
+                    _buildProfileDetailsTile(
+                      context,
+                      label: Utils.getTranslatedLabel(nisKey),
+                      value: Utils.formatEmptyValue(studentDetails.nis),
+                      iconUrl: "assets/images/user_pro_roll_no_icon.svg",
+                      iconColor: Theme.of(
+                        context,
+                      ).colorScheme.onPrimaryContainer,
+                    ),
+                    _buildProfileDetailsTile(
+                      context,
+                      label: Utils.getTranslatedLabel(nisnKey),
+                      value: Utils.formatEmptyValue(studentDetails.nisn ?? ""),
+                      iconUrl: "assets/images/user_pro_roll_no_icon.svg",
+                      iconColor: Theme.of(
+                        context,
+                      ).colorScheme.onPrimaryContainer,
+                    ),
+                    _buildProfileDetailsTile(
+                      context,
+                      label: Utils.getTranslatedLabel(classKey),
+                      value: Utils.formatEmptyValue(
+                        "${studentDetails.kelasSaatIni} ${studentDetails.noKelasSaatIni}",
+                      ),
+                      iconUrl: "assets/images/user_pro_class_icon.svg",
+                      iconColor: Theme.of(
+                        context,
+                      ).colorScheme.onPrimaryContainer,
+                    ),
+                    _buildProfileDetailsTile(
+                      context,
+                      label: Utils.getTranslatedLabel(dateOfBirthKey),
+                      value: Utils.formatEmptyValue(
+                        DateTime.tryParse(
+                                  studentDetails.tanggalLahir
+                                          ?.toIso8601String() ??
+                                      "",
+                                ) ==
+                                null
+                            ? "-"
+                            : Utils.formatDays(
+                                DateTime.tryParse(
+                                  studentDetails.tanggalLahir!
+                                      .toIso8601String(),
+                                )!,
+                                locale: "id_ID",
+                              ),
+                      ),
+                      iconUrl: "assets/images/user_pro_dob_icon.svg",
+                      iconColor: Theme.of(
+                        context,
+                      ).colorScheme.onPrimaryContainer,
+                    ),
+                    _buildProfileDetailsTile(
+                      context,
+                      label: Utils.getTranslatedLabel(currentAddressKey),
+                      value: Utils.formatEmptyValue(
+                        studentDetails.alamat ?? "",
+                      ),
+                      iconUrl: "assets/images/user_pro_address_icon.svg",
+                      iconColor: Theme.of(
+                        context,
+                      ).colorScheme.onPrimaryContainer,
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * (0.05),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

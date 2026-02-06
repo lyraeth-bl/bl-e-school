@@ -29,6 +29,11 @@ final List<MenuModel> homeBottomSheetMenu = [
     title: guardianDetailsKey,
   ),
   MenuModel(
+    menuModuleId: defaultModuleId.toString(),
+    iconUrl: 'assets/images/discipline-icon.svg',
+    title: meritAndDemeritKey,
+  ),
+  MenuModel(
     menuModuleId: academicsManagementModuleId.toString(),
     iconUrl: "assets/images/holiday_icon.svg",
     title: academicCalendarKey,

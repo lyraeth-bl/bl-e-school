@@ -87,3 +87,8 @@ const String notificationsBoxKey = "notificationsBox";
 /// The key for temporarily storing notifications.
 const String temporarilyStoredNotificationsKey =
     "notificationsBox.temporarilyStoredNotifications";
+
+const String disciplineBoxKey = "disciplineBox";
+
+const String totalMeritKey = "disciplineBox.totalMerit";
+const String totalDemeritKey = "disciplineBox.totalDemerit";

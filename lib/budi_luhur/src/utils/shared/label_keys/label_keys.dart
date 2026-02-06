@@ -526,3 +526,12 @@ const String facebookKey = "facebook";
 const String youtubeKey = "youtube";
 const String tiktokKey = "tiktok";
 const String websiteKey = "website";
+
+const String disciplineKey = "discipline";
+const String meritAndDemeritKey = "meritAndDemerit";
+const String meritKey = "merit";
+const String demeritKey = "demerit";
+const String startingMeritPointsKey = "startingMeritPoints";
+const String currentMeritPointsKey = "currentMeritPoints";
+const String startingDemeritPointsKey = "startingDemeritPoints";
+const String currentDemeritPointsKey = "currentDemeritPoints";

@@ -25,11 +25,22 @@ class FeedbackScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
       appBar: AppBar(
+        centerTitle: true,
+        toolbarHeight: 80,
         title: Text(
           Utils.getTranslatedLabel(feedbackKey),
-          style: TextStyle(fontWeight: FontWeight.w700),
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            color: Theme.of(context).colorScheme.onPrimaryContainer,
+            fontWeight: FontWeight.w700,
+          ),
         ),
-        centerTitle: true,
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadiusGeometry.only(
+            bottomLeft: Radius.circular(32),
+            bottomRight: Radius.circular(32),
+          ),
+        ),
       ),
       body: FeedbackContainer(),
       floatingActionButton: BlocBuilder<FeedbackCubit, FeedbackState>(
