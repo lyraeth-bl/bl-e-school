@@ -463,5 +463,7 @@
   "startingMeritPoints": "Starting Merit Points",
   "currentMeritPoints": "Current Merit Points",
   "startingDemeritPoints": "Starting Demerit Points",
-  "currentDemeritPoints": "Current Demerit Points"
+  "currentDemeritPoints": "Current Demerit Points",
+  "extracurricular": "Extracurricular",
+  "year": "Year"
 }

@@ -40,6 +40,11 @@ final List<MenuModel> homeBottomSheetMenu = [
   ),
   MenuModel(
     menuModuleId: defaultModuleId.toString(),
+    iconUrl: "assets/images/extra-curricular.svg",
+    title: extracurricularKey,
+  ),
+  MenuModel(
+    menuModuleId: defaultModuleId.toString(),
     iconUrl: "assets/images/setting_icon.svg",
     title: settingsKey,
   ),

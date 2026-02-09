@@ -25,6 +25,7 @@ const String detailsEventsKey = "detailsEvents";
 const String detailsKey = "details";
 const String nameKey = "name";
 const String classKey = "class";
+const String yearKey = "year";
 const String rollNumberKey = "rollNumber";
 const String dateOfBirthKey = "dateOfBirth";
 const String genderKey = "gender";
@@ -535,3 +536,5 @@ const String startingMeritPointsKey = "startingMeritPoints";
 const String currentMeritPointsKey = "currentMeritPoints";
 const String startingDemeritPointsKey = "startingDemeritPoints";
 const String currentDemeritPointsKey = "currentDemeritPoints";
+
+const String extracurricularKey = "extracurricular";

@@ -174,87 +174,115 @@ class StudentProfileScreen extends StatelessWidget {
 
               const SizedBox(height: 16),
 
-              Text(
-                studentDetails.email ?? "",
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                ),
+              Column(
+                children: [
+                  Text(
+                    studentDetails.email ?? "",
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                ],
               ),
 
-              SizedBox(height: 40),
+              BlocBuilder<DisciplineBloc, DisciplineState>(
+                builder: (context, state) {
+                  return state.maybeWhen(
+                    loaded: (meritList, demeritList, totalMerit, totalDemerit) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            children: [
+                              BlocSelector<
+                                DisciplineBloc,
+                                DisciplineState,
+                                int?
+                              >(
+                                selector: (state) => state.maybeWhen(
+                                  loaded:
+                                      (
+                                        meritList,
+                                        demeritList,
+                                        totalMerit,
+                                        totalDemerit,
+                                      ) => totalMerit,
+                                  orElse: () => 0,
+                                ),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
-                    children: [
-                      BlocSelector<DisciplineBloc, DisciplineState, int?>(
-                        selector: (state) => state.maybeWhen(
-                          loaded:
-                              (
-                                meritList,
-                                demeritList,
-                                totalMerit,
-                                totalDemerit,
-                              ) => totalMerit,
-                          orElse: () => 0,
-                        ),
+                                builder: (context, totalMerit) =>
+                                    CircleNumberIndicator(
+                                      value: totalMerit!,
+                                      progress: (totalMerit / totalMerit).clamp(
+                                        0.0,
+                                        1.0,
+                                      ),
+                                      backgroundColor: Theme.of(
+                                        context,
+                                      ).colorScheme.primaryContainer,
+                                      valueColor: Theme.of(
+                                        context,
+                                      ).colorScheme.primary,
+                                      enableAnimation: true,
+                                    ),
+                              ),
 
-                        builder: (context, totalMerit) => CircleNumberIndicator(
-                          value: totalMerit!,
-                          progress: (totalMerit / totalMerit).clamp(0.0, 1.0),
-                          backgroundColor: Theme.of(
-                            context,
-                          ).colorScheme.primaryContainer,
-                          valueColor: Theme.of(context).colorScheme.primary,
-                          enableAnimation: true,
-                        ),
-                      ),
+                              const SizedBox(height: 16),
 
-                      const SizedBox(height: 16),
+                              Text(Utils.getTranslatedLabel(meritKey)),
+                            ],
+                          ),
 
-                      Text(Utils.getTranslatedLabel(meritKey)),
-                    ],
-                  ),
+                          Column(
+                            children: [
+                              BlocSelector<
+                                DisciplineBloc,
+                                DisciplineState,
+                                int?
+                              >(
+                                selector: (state) => state.maybeWhen(
+                                  loaded:
+                                      (
+                                        meritList,
+                                        demeritList,
+                                        totalMerit,
+                                        totalDemerit,
+                                      ) => totalDemerit,
+                                  orElse: () => 100,
+                                ),
 
-                  Column(
-                    children: [
-                      BlocSelector<DisciplineBloc, DisciplineState, int?>(
-                        selector: (state) => state.maybeWhen(
-                          loaded:
-                              (
-                                meritList,
-                                demeritList,
-                                totalMerit,
-                                totalDemerit,
-                              ) => totalDemerit,
-                          orElse: () => 100,
-                        ),
+                                builder: (context, totalDemerit) {
+                                  final maxDemerit = 100;
 
-                        builder: (context, totalDemerit) {
-                          final maxDemerit = 100;
+                                  return CircleNumberIndicator(
+                                    value: totalDemerit!,
+                                    progress: (totalDemerit / maxDemerit).clamp(
+                                      0.0,
+                                      1.0,
+                                    ),
+                                    backgroundColor: Theme.of(
+                                      context,
+                                    ).colorScheme.errorContainer,
+                                    valueColor: Theme.of(
+                                      context,
+                                    ).colorScheme.error,
+                                    enableAnimation: true,
+                                  );
+                                },
+                              ),
 
-                          return CircleNumberIndicator(
-                            value: totalDemerit!,
-                            progress: (totalDemerit / maxDemerit).clamp(
-                              0.0,
-                              1.0,
-                            ),
-                            backgroundColor: Theme.of(
-                              context,
-                            ).colorScheme.errorContainer,
-                            valueColor: Theme.of(context).colorScheme.error,
-                            enableAnimation: true,
-                          );
-                        },
-                      ),
+                              const SizedBox(height: 16),
 
-                      const SizedBox(height: 16),
-
-                      Text(Utils.getTranslatedLabel(demeritKey)),
-                    ],
-                  ),
-                ],
+                              Text(Utils.getTranslatedLabel(demeritKey)),
+                            ],
+                          ),
+                        ],
+                      );
+                    },
+                    orElse: () => const SizedBox.shrink(),
+                  );
+                },
               ),
 
               SizedBox(height: 40),

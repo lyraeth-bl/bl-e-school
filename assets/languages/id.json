@@ -463,5 +463,7 @@
   "startingMeritPoints": "Point Merit Awal",
   "currentMeritPoints": "Point Merit Saat Ini",
   "startingDemeritPoints": "Point Demerit Awal",
-  "currentDemeritPoints": "Point Demerit Saat Ini"
+  "currentDemeritPoints": "Point Demerit Saat Ini",
+  "extracurricular": "Ekstrakurikuler",
+  "year": "Tahun"
 }

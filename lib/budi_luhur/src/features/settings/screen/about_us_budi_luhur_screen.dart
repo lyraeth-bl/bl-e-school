@@ -85,15 +85,27 @@ class AboutUsBudiLuhurScreen extends StatelessWidget {
                   child: RichText(
                     textAlign: TextAlign.justify,
                     text: TextSpan(
-                      style: theme.textTheme.bodyMedium?.copyWith(
+                      style: theme.textTheme.bodySmall?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
                       ),
                       children: [
                         TextSpan(
                           text: "${point.title}: ",
-                          style: const TextStyle(fontWeight: FontWeight.w700),
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
-                        TextSpan(text: point.description),
+                        TextSpan(
+                          text: point.description,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
+                          ),
+                        ),
                       ],
                     ),
                   ),

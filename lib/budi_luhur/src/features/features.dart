@@ -10,6 +10,8 @@ export 'auth/auth.dart';
 export 'device_tokens/device_token.dart';
 /// Discipline
 export 'discipline/discipline.dart';
+/// Extracurricular
+export 'extracurricular/extracurricular.dart';
 /// Feedback
 export 'feedback/feedback.dart';
 /// Guardian

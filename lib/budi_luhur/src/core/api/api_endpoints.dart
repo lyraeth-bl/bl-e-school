@@ -51,4 +51,7 @@ class ApiEndpoints {
 
   /// Endpoint for fetching demerit.
   static String demerit = "$databaseUrl/demerit";
+
+  /// Endpoint for fetching extracurricular.
+  static String extracurricular = "$databaseUrl/ekskul";
 }

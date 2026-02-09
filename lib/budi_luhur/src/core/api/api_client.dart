@@ -46,6 +46,37 @@ class ApiClient {
     }
   }
 
+  static Future<List<dynamic>> getList({
+    required String url,
+    required bool useAuthToken,
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    try {
+      final response = await dio.get(
+        url,
+        queryParameters: queryParameters,
+        options: useAuthToken ? Options(headers: _headers()) : null,
+      );
+
+      if (response.data.runtimeType != List<dynamic>) {
+        debugPrint("Response is not List");
+        throw ApiException("Response is not List");
+      }
+
+      return response.data;
+    } on DioException catch (e) {
+      _handleDioError(e);
+      rethrow;
+    } on ApiException catch (e) {
+      throw ApiException(e.errorMessage);
+    } catch (e) {
+      if (kDebugMode) {
+        print(e.toString());
+      }
+      throw ApiException(ErrorMessageKeysAndCode.defaultErrorMessageKey);
+    }
+  }
+
   /// Sends a PUT request.
   static Future<Map<String, dynamic>> put({
     required Map<String, dynamic> body,

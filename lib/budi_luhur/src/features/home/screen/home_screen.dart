@@ -25,6 +25,9 @@ class HomeScreen extends StatefulWidget {
         BlocProvider<DisciplineBloc>(
           create: (_) => DisciplineBloc(DisciplineRepository()),
         ),
+        BlocProvider<ExtracurricularBloc>(
+          create: (_) => ExtracurricularBloc(ExtracurricularRepository()),
+        ),
       ],
       child: HomeScreen(key: HomeScreen.homeScreenKey),
     );
@@ -465,6 +468,10 @@ class _HomeScreenState extends State<HomeScreen>
     if (homeBottomSheetMenu[_currentlyOpenMenuIndex].title ==
         meritAndDemeritKey) {
       return const DisciplineContainer();
+    }
+    if (homeBottomSheetMenu[_currentlyOpenMenuIndex].title ==
+        extracurricularKey) {
+      return const ExtracurricularContainer();
     }
     if (homeBottomSheetMenu[_currentlyOpenMenuIndex].title == settingsKey) {
       return SettingsScreen();
