@@ -1,5 +1,7 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 /// A repository for managing user authentication, both locally and remotely.
 ///
@@ -86,7 +88,7 @@ class AuthRepository {
   ///
   /// This method sends a request to the logout endpoint to invalidate the session on the server.
   /// It then clears all local authentication and session data, including login status,
-  /// JWT token, student details, and any cached attendance data.
+  /// JWT token, student details, and other cached data like attendance, notifications, and feedback.
   Future<void> signOutUser() async {
     final String token = getJwtToken();
 
@@ -104,16 +106,8 @@ class AuthRepository {
       }
     }
 
-    // Clear local data
-    await Future.wait([
-      setIsLogIn(false),
-      setIsStudentLogIn(false),
-      setJwtToken(""),
-      clearStoredAuthData(),
-      clearStoredStudentData(),
-      AttendanceRepository().clearStoredDailyAttendanceData(),
-      FeedbackRepository().clearStoredFeedbackData(),
-    ]);
+    await HydratedBloc.storage.clear();
+    await closeAndDeleteBox();
   }
 
   /// Signs in a student with their credentials.
@@ -200,16 +194,30 @@ class AuthRepository {
     }
   }
 
-  Future<void> clearStoredAuthData() {
-    print("clearing Student Data");
-    return Hive.box(authBoxKey).clear().then((_) {
-      print("Student data cleared");
-    });
-  }
+  /// Closes and deletes Hive boxes to clear cached data.
+  ///
+  /// This function iterates through a predefined list of box names:
+  /// - [notificationsBoxKey]
+  /// - [attendanceBoxKey]
+  /// - [feedbackBoxKey]
+  ///
+  /// For each box, it checks if the box is open and closes it if necessary.
+  /// Then, it deletes the box from the disk. This is typically used during
+  /// sign-out to ensure that no stale data persists.
+  Future<void> closeAndDeleteBox() async {
+    final List<String> namesBox = [
+      notificationsBoxKey,
+      attendanceBoxKey,
+      feedbackBoxKey,
+    ];
 
-  Future<void> clearStoredStudentData() async {
-    var box = await Hive.openBox(studentBoxKey);
-    box.clear();
-    print("student data deleted");
+    for (var name in namesBox) {
+      if (Hive.isBoxOpen(name)) {
+        debugPrint("Closing $name box");
+        await Hive.box(name).close();
+      }
+      debugPrint("Deleting $name box");
+      await Hive.deleteBoxFromDisk(name);
+    }
   }
 }

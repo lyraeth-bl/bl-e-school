@@ -45,4 +45,13 @@ class ApiEndpoints {
 
   /// Endpoint for fetching timetables.
   static String timeTable = "$databaseInternalUrl/jadwal";
+
+  /// Endpoint for fetching merit.
+  static String merit = "$databaseUrl/merit";
+
+  /// Endpoint for fetching demerit.
+  static String demerit = "$databaseUrl/demerit";
+
+  /// Endpoint for fetching extracurricular.
+  static String extracurricular = "$databaseUrl/ekskul";
 }

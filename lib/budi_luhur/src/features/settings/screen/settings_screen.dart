@@ -20,7 +20,7 @@ class SettingsScreen extends StatelessWidget {
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onPrimaryContainer,
                 fontSize: Utils.screenTitleFontSize,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ),
@@ -59,6 +59,10 @@ class SettingsScreen extends StatelessWidget {
                   SizedBox(height: 8),
 
                   ChangeLanguageSettingsButton(),
+
+                  SizedBox(height: 8),
+
+                  AboutUsSettingsButton(),
 
                   SizedBox(height: 8),
 

@@ -185,9 +185,6 @@ class FeedbackRepository {
   Future<void> setStoredFeedbackUser(Feedback feedback) =>
       Hive.box(feedbackBoxKey).put(studentFeedbackKey, feedback.toJson());
 
-  /// Clears all stored feedback data from local storage.
-  Future<void> clearStoredFeedbackData() => Hive.box(feedbackBoxKey).clear();
-
   /// Retrieves the stored feedback for the current user.
   ///
   /// Returns a [Feedback] object from the Hive box.

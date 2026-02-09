@@ -24,9 +24,24 @@ final List<MenuModel> homeBottomSheetMenu = [
     title: timeTableKey,
   ),
   MenuModel(
+    menuModuleId: defaultModuleId.toString(),
+    iconUrl: 'assets/images/parent_icon.svg',
+    title: guardianDetailsKey,
+  ),
+  MenuModel(
+    menuModuleId: defaultModuleId.toString(),
+    iconUrl: 'assets/images/discipline-icon.svg',
+    title: meritAndDemeritKey,
+  ),
+  MenuModel(
     menuModuleId: academicsManagementModuleId.toString(),
     iconUrl: "assets/images/holiday_icon.svg",
     title: academicCalendarKey,
+  ),
+  MenuModel(
+    menuModuleId: defaultModuleId.toString(),
+    iconUrl: "assets/images/extra-curricular.svg",
+    title: extracurricularKey,
   ),
   MenuModel(
     menuModuleId: defaultModuleId.toString(),

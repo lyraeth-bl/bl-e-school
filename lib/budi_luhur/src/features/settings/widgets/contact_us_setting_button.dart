@@ -9,7 +9,7 @@ class ContactUsSettingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Get.toNamed(BudiLuhurRoutes.contactUsSettings),
+      onTap: () => Get.toNamed(BudiLuhurRoutes.contactUs),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
         decoration: BoxDecoration(

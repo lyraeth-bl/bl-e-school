@@ -8,8 +8,14 @@ export 'attendance/attendance.dart';
 export 'auth/auth.dart';
 /// Device Token
 export 'device_tokens/device_token.dart';
+/// Discipline
+export 'discipline/discipline.dart';
+/// Extracurricular
+export 'extracurricular/extracurricular.dart';
 /// Feedback
 export 'feedback/feedback.dart';
+/// Guardian
+export 'guardian_details/guardian_details.dart';
 /// Home
 export 'home/home.dart';
 /// Languages

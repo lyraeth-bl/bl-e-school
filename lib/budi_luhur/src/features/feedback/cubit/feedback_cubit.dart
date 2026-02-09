@@ -56,13 +56,6 @@ class FeedbackCubit extends Cubit<FeedbackState> {
     emit(_HasData(feedbackUser: feedback, lastFetched: feedback.updatedAt));
   }
 
-  /// Clears all feedback data and resets the state to initial.
-  Future<void> clearAllData() async {
-    // Assuming a method to clear stored feedback exists in the repository.
-    await _feedbackRepository.clearStoredFeedbackData();
-    emit(const _Initial());
-  }
-
   void setInitial() => emit(const _Initial());
 
   /// Returns the current [Feedback] data, or `null` if not available.

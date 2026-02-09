@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// Animations
@@ -407,8 +408,10 @@ class Utils {
   /// - [value]: The input string to format.
   /// - Returns: A hyphen ("-") if the input string is empty, otherwise the
   ///   original string.
-  static String formatEmptyValue(String value) {
-    return value.isEmpty ? "-" : value;
+  static String formatEmptyValue(String? value) {
+    if (value == null) return "-";
+    if (value.trim().isEmpty) return "-";
+    return value;
   }
 
   static String getMonthName(int monthNumber) {
@@ -632,6 +635,64 @@ class Utils {
 
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
       throw Exception("Could not launch $uri");
+    }
+  }
+
+  static IconData iconForExtracurricular(String name) {
+    final lowerCaseName = name.toLowerCase().trim().replaceAll(
+      RegExp(r'\s+'),
+      "",
+    );
+
+    switch (lowerCaseName) {
+      case "band":
+        return LucideIcons.drum;
+      case "basicphotographic":
+        return LucideIcons.camera;
+      case "basket":
+        return Icons.sports_basketball;
+      case "bimbinganqurandanhadis":
+        return LucideIcons.album;
+      case "bulutangkis":
+        return Icons.sports_tennis;
+      case "coding":
+        return LucideIcons.code;
+      case "creativepreneurship":
+        return LucideIcons.clapperboard;
+      case "editingvideo":
+        return LucideIcons.fileVideoCamera;
+      case "esport":
+        return LucideIcons.gamepad;
+      case "fineart":
+        return LucideIcons.brush;
+      case "firstaidrescuetraining":
+        return LucideIcons.briefcaseMedical;
+      case "futsal":
+        return Icons.sports_soccer;
+      case "japanclub":
+        return Icons.ramen_dining;
+      case "mathchampion":
+        return LucideIcons.sigma;
+      case "moderndance":
+        return LucideIcons.music;
+      case "paskibra":
+        return LucideIcons.users;
+      case "robotik":
+        return LucideIcons.bot;
+      case "scienceclub":
+        return LucideIcons.microscope;
+      case "taekwondo":
+        return Icons.sports_martial_arts;
+      case "tarisaman":
+        return LucideIcons.music;
+      case "teater":
+        return LucideIcons.film;
+      case "toeflpreparation":
+        return LucideIcons.languages;
+      case "traditionaldance":
+        return LucideIcons.music;
+      default:
+        return LucideIcons.activity;
     }
   }
 }
