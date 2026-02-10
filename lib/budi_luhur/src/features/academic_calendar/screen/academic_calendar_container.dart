@@ -299,24 +299,36 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
 
         availableGestures: AvailableGestures.none,
         calendarStyle: CalendarStyle(
-          isTodayHighlighted: false,
-          holidayDecoration: BoxDecoration(
+          weekendTextStyle: TextStyle(
+            color: Theme.of(context).colorScheme.error,
+          ),
+          defaultTextStyle: TextStyle(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
+          todayDecoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primaryContainer,
             shape: BoxShape.circle,
-            color: Theme.of(context).colorScheme.tertiaryContainer,
+          ),
+          todayTextStyle: TextStyle(
+            color: Theme.of(context).colorScheme.onPrimaryContainer,
+          ),
+          holidayDecoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.secondaryContainer,
+            shape: BoxShape.circle,
           ),
           holidayTextStyle: TextStyle(
-            color: Theme.of(context).colorScheme.onTertiaryContainer,
-            fontWeight: FontWeight.w700,
+            color: Theme.of(context).colorScheme.onSecondaryContainer,
           ),
         ),
+
         daysOfWeekStyle: DaysOfWeekStyle(
-          weekendStyle: TextStyle(
-            color: Theme.of(context).colorScheme.primary,
-            fontWeight: FontWeight.bold,
-          ),
           weekdayStyle: TextStyle(
             color: Theme.of(context).colorScheme.primary,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w700,
+          ),
+          weekendStyle: TextStyle(
+            color: Theme.of(context).colorScheme.error,
+            fontWeight: FontWeight.w700,
           ),
         ),
         headerStyle: const HeaderStyle(

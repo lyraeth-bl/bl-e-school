@@ -230,7 +230,15 @@ class StudentProfileScreen extends StatelessWidget {
 
                               const SizedBox(height: 16),
 
-                              Text(Utils.getTranslatedLabel(meritKey)),
+                              Text(
+                                Utils.getTranslatedLabel(meritKey),
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSurface,
+                                    ),
+                              ),
                             ],
                           ),
 
@@ -274,7 +282,15 @@ class StudentProfileScreen extends StatelessWidget {
 
                               const SizedBox(height: 16),
 
-                              Text(Utils.getTranslatedLabel(demeritKey)),
+                              Text(
+                                Utils.getTranslatedLabel(demeritKey),
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSurface,
+                                    ),
+                              ),
                             ],
                           ),
                         ],

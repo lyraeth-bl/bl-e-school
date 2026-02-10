@@ -305,7 +305,9 @@ class _DemeritHistoryItem extends StatelessWidget {
               children: [
                 Text(
                   data.description,
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
 
                 const SizedBox(height: 8),

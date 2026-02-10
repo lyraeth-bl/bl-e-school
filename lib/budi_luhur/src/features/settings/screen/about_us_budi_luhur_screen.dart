@@ -47,6 +47,10 @@ class AboutUsBudiLuhurScreen extends StatelessWidget {
                 content.unit,
                 style: theme.textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.w700,
+                    color: Theme
+                        .of(context)
+                        .colorScheme
+                        .onSurface
                 ),
                 textAlign: TextAlign.center,
               ),

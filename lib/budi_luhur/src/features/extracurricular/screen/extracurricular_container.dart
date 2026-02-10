@@ -171,6 +171,9 @@ class _ExtracurricularContainerState extends State<ExtracurricularContainer> {
                                                   .titleSmall
                                                   ?.copyWith(
                                                     fontWeight: FontWeight.w700,
+                                                    color: Theme.of(
+                                                      context,
+                                                    ).colorScheme.onSurface,
                                                   ),
                                             ),
                                             AnimatedRotation(

@@ -57,7 +57,7 @@ class ChangeBiometricSettingsButton extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceContainer,
+              color: Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.circular(16),
             ),
             child: Row(
@@ -71,6 +71,7 @@ class ChangeBiometricSettingsButton extends StatelessWidget {
                       Utils.getTranslatedLabel(biometricLoginKey),
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.w700,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                   ],

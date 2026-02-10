@@ -182,7 +182,11 @@ class _AttendanceChartsState extends State<AttendanceCharts> {
                             Expanded(
                               child: Text(
                                 label,
-                                style: theme.textTheme.bodyMedium,
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface,
+                                ),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -194,11 +198,18 @@ class _AttendanceChartsState extends State<AttendanceCharts> {
                                   '${value.toInt()}',
                                   style: theme.textTheme.bodyMedium?.copyWith(
                                     fontWeight: FontWeight.w700,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
                                   ),
                                 ),
                                 Text(
                                   '${percent.toStringAsFixed(0)}%',
-                                  style: theme.textTheme.bodySmall,
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
+                                  ),
                                 ),
                               ],
                             ),
@@ -214,12 +225,18 @@ class _AttendanceChartsState extends State<AttendanceCharts> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text('Total', style: theme.textTheme.bodySmall),
+                      Text(
+                        'Total',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
                       const SizedBox(height: 4),
                       Text(
                         '${total.toInt()} hari',
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w700,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                       ),
                       const SizedBox(height: 6),
@@ -227,7 +244,9 @@ class _AttendanceChartsState extends State<AttendanceCharts> {
                         total == 0
                             ? 'Belum ada data'
                             : 'Kehadiran: ${((widget.data['Hadir'] ?? 0) / (total == 0 ? 1 : total) * 100).toStringAsFixed(1)}%',
-                        style: theme.textTheme.bodySmall,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
                       ),
                     ],
                   ),

@@ -2,6 +2,7 @@ import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class HomeAttendanceCard extends StatelessWidget {
   const HomeAttendanceCard({super.key});
@@ -120,17 +121,17 @@ class HomeAttendanceCard extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surfaceContainer,
+                          color: Theme.of(context).colorScheme.primaryContainer,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         margin: const EdgeInsets.only(left: 16, right: 8),
                         child: Row(
                           children: [
                             Icon(
-                              Icons.login,
+                              LucideIcons.logIn,
                               color: Theme.of(
                                 context,
-                              ).colorScheme.onSecondaryContainer,
+                              ).colorScheme.onPrimaryContainer,
                             ),
                             const SizedBox(width: 16),
                             Column(
@@ -142,7 +143,7 @@ class HomeAttendanceCard extends StatelessWidget {
                                       ?.copyWith(
                                         color: Theme.of(
                                           context,
-                                        ).colorScheme.onSurface,
+                                        ).colorScheme.onPrimaryContainer,
                                         fontWeight: FontWeight.w700,
                                       ),
                                 ),
@@ -153,7 +154,7 @@ class HomeAttendanceCard extends StatelessWidget {
                                       ?.copyWith(
                                         color: Theme.of(
                                           context,
-                                        ).colorScheme.onSurfaceVariant,
+                                        ).colorScheme.onPrimaryContainer,
                                       ),
                                 ),
                               ],
@@ -167,17 +168,17 @@ class HomeAttendanceCard extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surfaceContainer,
+                          color: Theme.of(context).colorScheme.errorContainer,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         margin: const EdgeInsets.only(right: 16, left: 8),
                         child: Row(
                           children: [
                             Icon(
-                              Icons.logout,
+                              LucideIcons.logOut,
                               color: Theme.of(
                                 context,
-                              ).colorScheme.onSecondaryContainer,
+                              ).colorScheme.onErrorContainer,
                             ),
                             const SizedBox(width: 16),
                             Column(
@@ -189,7 +190,7 @@ class HomeAttendanceCard extends StatelessWidget {
                                       ?.copyWith(
                                         color: Theme.of(
                                           context,
-                                        ).colorScheme.onSurface,
+                                        ).colorScheme.onErrorContainer,
                                         fontWeight: FontWeight.w700,
                                       ),
                                 ),
@@ -200,7 +201,7 @@ class HomeAttendanceCard extends StatelessWidget {
                                       ?.copyWith(
                                         color: Theme.of(
                                           context,
-                                        ).colorScheme.onSurfaceVariant,
+                                        ).colorScheme.onErrorContainer,
                                       ),
                                 ),
                               ],

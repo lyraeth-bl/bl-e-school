@@ -1,12 +1,14 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class MenuModel {
   final String title;
-  final String iconUrl;
-  final String menuModuleId; //This is fixed
+  final IconData icon;
+  final String menuModuleId;
 
   MenuModel({
-    required this.iconUrl,
+    required this.icon,
     required this.title,
     required this.menuModuleId,
   });
@@ -15,37 +17,37 @@ class MenuModel {
 final List<MenuModel> homeBottomSheetMenu = [
   MenuModel(
     menuModuleId: attendanceManagementModuleId.toString(),
-    iconUrl: "assets/images/attendance_icon.svg",
+    icon: LucideIcons.calendar1,
     title: attendanceKey,
   ),
   MenuModel(
     menuModuleId: timetableManagementModuleId.toString(),
-    iconUrl: "assets/images/timetable_icon.svg",
+    icon: LucideIcons.clock,
     title: timeTableKey,
   ),
   MenuModel(
     menuModuleId: defaultModuleId.toString(),
-    iconUrl: 'assets/images/parent_icon.svg',
+    icon: LucideIcons.userStar,
     title: guardianDetailsKey,
   ),
   MenuModel(
     menuModuleId: defaultModuleId.toString(),
-    iconUrl: 'assets/images/discipline-icon.svg',
+    icon: LucideIcons.shieldUser,
     title: meritAndDemeritKey,
   ),
   MenuModel(
     menuModuleId: academicsManagementModuleId.toString(),
-    iconUrl: "assets/images/holiday_icon.svg",
+    icon: LucideIcons.calendars,
     title: academicCalendarKey,
   ),
   MenuModel(
     menuModuleId: defaultModuleId.toString(),
-    iconUrl: "assets/images/extra-curricular.svg",
+    icon: LucideIcons.music,
     title: extracurricularKey,
   ),
   MenuModel(
     menuModuleId: defaultModuleId.toString(),
-    iconUrl: "assets/images/setting_icon.svg",
+    icon: LucideIcons.settings,
     title: settingsKey,
   ),
 ];

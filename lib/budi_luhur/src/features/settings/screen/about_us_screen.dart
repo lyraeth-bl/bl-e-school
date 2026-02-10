@@ -13,6 +13,7 @@ class AboutUsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
       appBar: AppBar(
         toolbarHeight: 80,
         title: Text(
@@ -43,7 +44,7 @@ class AboutUsScreen extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * (0.9),
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surfaceContainer,
+                    color: Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Row(
@@ -69,7 +70,7 @@ class AboutUsScreen extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * (0.9),
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surfaceContainer,
+                    color: Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Row(
