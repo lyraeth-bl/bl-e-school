@@ -68,6 +68,30 @@ class SettingsScreen extends StatelessWidget {
                   SizedBox(height: 8),
 
                   ContactUsSettingButton(),
+
+                  SizedBox(height: 24),
+
+                  FutureBuilder(
+                    future: Utils.getAppVersion(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const SizedBox();
+                      }
+
+                      if (snapshot.hasError) {
+                        return const Text("Version error");
+                      }
+
+                      final version = snapshot.data ?? "-";
+
+                      return Text(
+                        "${Utils.getTranslatedLabel(appVersionKey)} : v$version",
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
