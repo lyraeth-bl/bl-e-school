@@ -6,12 +6,8 @@ class FeedbackTermsAndConditions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return CustomContainer(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -132,12 +132,8 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
         left: 24,
         right: 24,
       ),
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(16),
-        ),
+      child: CustomContainer(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -283,8 +279,9 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
                   )
                   .toList();
 
-              return Padding(
-                padding: const EdgeInsets.only(left: 24, right: 24),
+              return CustomContainer(
+                margin: const EdgeInsets.only(top: 16, left: 24, right: 24),
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
                     _buildCalendarContainer(
@@ -318,13 +315,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Container(
-          margin: const EdgeInsets.only(top: 16),
-          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.tertiaryContainer,
-            borderRadius: BorderRadius.circular(8),
-          ),
+        CustomChipContainer(
           child: Text(
             "Last updated: ${Utils.formatDaysAndTime(timeUpdate, locale: "id_ID")}",
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
@@ -341,168 +332,155 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
     required List<DailyAttendance> presentDays,
     required List<DailyAttendance> absentDays,
   }) {
-    return Container(
-      margin: const EdgeInsets.only(top: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: TableCalendar(
-        focusedDay: _now,
-        firstDay: firstDayOfMonth,
-        lastDay: lastDayOfMonth,
-        headerVisible: false,
-        daysOfWeekHeight: 24,
-        onPageChanged: (DateTime dateTime) {
-          setState(() {
-            _now = dateTime;
-            firstDayOfMonth = DateTime(dateTime.year, dateTime.month, 1);
-            lastDayOfMonth = DateTime(
-              dateTime.year,
-              dateTime.month + 1,
-              1,
-            ).subtract(const Duration(days: 1));
+    return TableCalendar(
+      focusedDay: _now,
+      firstDay: firstDayOfMonth,
+      lastDay: lastDayOfMonth,
+      headerVisible: false,
+      daysOfWeekHeight: 24,
+      onPageChanged: (DateTime dateTime) {
+        setState(() {
+          _now = dateTime;
+          firstDayOfMonth = DateTime(dateTime.year, dateTime.month, 1);
+          lastDayOfMonth = DateTime(
+            dateTime.year,
+            dateTime.month + 1,
+            1,
+          ).subtract(const Duration(days: 1));
 
-            context
-                .read<FetchDailyAttendanceCubit>()
-                .fetchCustomDailyAttendanceUser(
-                  nis: context.read<AuthCubit>().getStudentDetails.nis,
-                  year: dateTime.year,
-                  month: dateTime.month,
-                  unit:
-                      context.read<AuthCubit>().getStudentDetails.unit ??
-                      "SMAKT",
-                );
-          });
-        },
-        onCalendarCreated: (controller) {
-          _calendarController = controller;
-        },
-        selectedDayPredicate: (dateTime) {
-          return absentDays.indexWhere(
-                (date) =>
-                    Utils.formatDate(dateTime) ==
-                    Utils.formatDate(date.tanggal),
-              ) !=
-              -1;
-        },
-        holidayPredicate: (dateTime) {
-          return presentDays.indexWhere(
-                (date) =>
-                    Utils.formatDate(dateTime) ==
-                    Utils.formatDate(date.tanggal),
-              ) !=
-              -1;
-        },
-        availableGestures: AvailableGestures.none,
-        onDaySelected: (selected, focused) {
-          setState(() {
-            _selectedDay = selected;
-            _now = focused;
-          });
-
-          final isWeekend =
-              ((_selectedDay!.weekday != (DateTime.saturday)) &&
-              (_selectedDay!.weekday != (DateTime.sunday)));
-
-          final selectedAttendance = dailyAttendanceList.firstWhere(
-            (date) => isSameDay(date.tanggal.toLocal(), selected),
-            orElse: () => DailyAttendance(
-              id: 0,
-              nis: context.read<AuthCubit>().getStudentDetails.nis,
-              tajaran: "-",
-              semester: "-",
-              alasan: "-",
-              tanggal: DateTime.now().toLocal(),
-              jamCheckIn: null,
-              jamCheckOut: null,
-              status: isWeekend
-                  ? Utils.getTranslatedLabel(noAbsentTodayKey)
-                  : Utils.getTranslatedLabel(holidaysKey),
-              unit: context.read<AuthCubit>().getStudentDetails.unit ?? "-",
-              createdAt: DateTime.now().toLocal(),
-              updatedAt: DateTime.now().toLocal(),
-            ),
-          );
-
-          final dataSelectedAttendance = DailyAttendance(
-            id: selectedAttendance.id,
-            nis: selectedAttendance.nis,
-            tajaran: selectedAttendance.tajaran,
-            semester: selectedAttendance.semester,
-            tanggal: selectedAttendance.tanggal,
-            alasan: selectedAttendance.alasan,
-            jamCheckIn: selectedAttendance.jamCheckIn,
-            jamCheckOut: selectedAttendance.jamCheckOut,
-            status: selectedAttendance.status,
-            unit: selectedAttendance.unit,
-            createdAt: selectedAttendance.createdAt.toLocal(),
-            updatedAt: selectedAttendance.updatedAt.toLocal(),
-          );
-
-          _showAttendanceBottomSheet(dataSelectedAttendance);
-        },
-
-        calendarStyle: CalendarStyle(
-          weekendTextStyle: TextStyle(
-            color: Theme.of(context).colorScheme.error,
-          ),
-          defaultTextStyle: TextStyle(
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
-          ),
-          todayDecoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primaryContainer,
-            shape: BoxShape.circle,
-          ),
-          todayTextStyle: TextStyle(
-            color: Theme.of(context).colorScheme.onPrimaryContainer,
-          ),
-          holidayDecoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.secondaryContainer,
-            shape: BoxShape.circle,
-          ),
-          holidayTextStyle: TextStyle(
-            color: Theme.of(context).colorScheme.onSecondaryContainer,
-          ),
-        ),
-
-        daysOfWeekStyle: DaysOfWeekStyle(
-          weekdayStyle: TextStyle(
-            color: Theme.of(context).colorScheme.primary,
-            fontWeight: FontWeight.w700,
-          ),
-          weekendStyle: TextStyle(
-            color: Theme.of(context).colorScheme.error,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-
-        // custom markers: small dot with status color
-        calendarBuilders: CalendarBuilders(
-          markerBuilder: (context, date, events) {
-            // find attendance for this date
-            final a = (dailyAttendanceList.where(
-              (d) => Utils.formatDate(d.tanggal) == Utils.formatDate(date),
-            )).toList();
-            if (a.isEmpty) return null;
-
-            // if multiple records, show up to 2 small dots
-            final List<Widget> dots = a.take(2).map((d) {
-              return Container(
-                margin: const EdgeInsets.symmetric(horizontal: 1),
-                width: 6,
-                height: 6,
-                decoration: BoxDecoration(
-                  color: _colorForStatus(d.status, context),
-                  shape: BoxShape.circle,
-                ),
+          context
+              .read<FetchDailyAttendanceCubit>()
+              .fetchCustomDailyAttendanceUser(
+                nis: context.read<AuthCubit>().getStudentDetails.nis,
+                year: dateTime.year,
+                month: dateTime.month,
+                unit:
+                    context.read<AuthCubit>().getStudentDetails.unit ?? "SMAKT",
               );
-            }).toList();
+        });
+      },
+      onCalendarCreated: (controller) {
+        _calendarController = controller;
+      },
+      selectedDayPredicate: (dateTime) {
+        return absentDays.indexWhere(
+              (date) =>
+                  Utils.formatDate(dateTime) == Utils.formatDate(date.tanggal),
+            ) !=
+            -1;
+      },
+      holidayPredicate: (dateTime) {
+        return presentDays.indexWhere(
+              (date) =>
+                  Utils.formatDate(dateTime) == Utils.formatDate(date.tanggal),
+            ) !=
+            -1;
+      },
+      availableGestures: AvailableGestures.none,
+      onDaySelected: (selected, focused) {
+        setState(() {
+          _selectedDay = selected;
+          _now = focused;
+        });
 
-            return Positioned(bottom: 6, child: Row(children: dots));
-          },
+        final isWeekend =
+            ((_selectedDay!.weekday != (DateTime.saturday)) &&
+            (_selectedDay!.weekday != (DateTime.sunday)));
+
+        final selectedAttendance = dailyAttendanceList.firstWhere(
+          (date) => isSameDay(date.tanggal.toLocal(), selected),
+          orElse: () => DailyAttendance(
+            id: 0,
+            nis: context.read<AuthCubit>().getStudentDetails.nis,
+            tajaran: "-",
+            semester: "-",
+            alasan: "-",
+            tanggal: DateTime.now().toLocal(),
+            jamCheckIn: null,
+            jamCheckOut: null,
+            status: isWeekend
+                ? Utils.getTranslatedLabel(noAbsentTodayKey)
+                : Utils.getTranslatedLabel(holidaysKey),
+            unit: context.read<AuthCubit>().getStudentDetails.unit ?? "-",
+            createdAt: DateTime.now().toLocal(),
+            updatedAt: DateTime.now().toLocal(),
+          ),
+        );
+
+        final dataSelectedAttendance = DailyAttendance(
+          id: selectedAttendance.id,
+          nis: selectedAttendance.nis,
+          tajaran: selectedAttendance.tajaran,
+          semester: selectedAttendance.semester,
+          tanggal: selectedAttendance.tanggal,
+          alasan: selectedAttendance.alasan,
+          jamCheckIn: selectedAttendance.jamCheckIn,
+          jamCheckOut: selectedAttendance.jamCheckOut,
+          status: selectedAttendance.status,
+          unit: selectedAttendance.unit,
+          createdAt: selectedAttendance.createdAt.toLocal(),
+          updatedAt: selectedAttendance.updatedAt.toLocal(),
+        );
+
+        _showAttendanceBottomSheet(dataSelectedAttendance);
+      },
+
+      calendarStyle: CalendarStyle(
+        weekendTextStyle: TextStyle(color: Theme.of(context).colorScheme.error),
+        defaultTextStyle: TextStyle(
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
         ),
+        todayDecoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primaryContainer,
+          shape: BoxShape.circle,
+        ),
+        todayTextStyle: TextStyle(
+          color: Theme.of(context).colorScheme.onPrimaryContainer,
+        ),
+        holidayDecoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.secondaryContainer,
+          shape: BoxShape.circle,
+        ),
+        holidayTextStyle: TextStyle(
+          color: Theme.of(context).colorScheme.onSecondaryContainer,
+        ),
+      ),
+
+      daysOfWeekStyle: DaysOfWeekStyle(
+        weekdayStyle: TextStyle(
+          color: Theme.of(context).colorScheme.primary,
+          fontWeight: FontWeight.w700,
+        ),
+        weekendStyle: TextStyle(
+          color: Theme.of(context).colorScheme.error,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+
+      // custom markers: small dot with status color
+      calendarBuilders: CalendarBuilders(
+        markerBuilder: (context, date, events) {
+          // find attendance for this date
+          final a = (dailyAttendanceList.where(
+            (d) => Utils.formatDate(d.tanggal) == Utils.formatDate(date),
+          )).toList();
+          if (a.isEmpty) return null;
+
+          // if multiple records, show up to 2 small dots
+          final List<Widget> dots = a.take(2).map((d) {
+            return Container(
+              margin: const EdgeInsets.symmetric(horizontal: 1),
+              width: 6,
+              height: 6,
+              decoration: BoxDecoration(
+                color: _colorForStatus(d.status, context),
+                shape: BoxShape.circle,
+              ),
+            );
+          }).toList();
+
+          return Positioned(bottom: 6, child: Row(children: dots));
+        },
       ),
     );
   }

@@ -128,17 +128,10 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
             itemIndex: index,
             totalLoadedItems: listAcademicCalendar.length,
           ),
-          child: Container(
+          child: CustomContainer(
             margin: const EdgeInsets.only(bottom: 15),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
-              vertical: 8.0,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
             width: MediaQuery.of(context).size.width * (0.85),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.circular(16.0),
-            ),
             child: LayoutBuilder(
               builder: (context, boxConstraints) {
                 return Column(
@@ -200,22 +193,8 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
   Widget _buildCalendarContainer({
     required List<AcademicCalendar> listAcademicCalendar,
   }) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
-        boxShadow: [
-          BoxShadow(
-            color: Theme.of(
-              context,
-            ).colorScheme.secondary.withValues(alpha: 0.075),
-            offset: const Offset(5.0, 5),
-            blurRadius: 10,
-          ),
-        ],
-        borderRadius: BorderRadius.circular(15.0),
-      ),
-      margin: const EdgeInsets.only(top: 20),
+    return CustomContainer(
+      padding: const EdgeInsets.all(16),
       child: TableCalendar(
         headerVisible: false,
         daysOfWeekHeight: 40,
@@ -451,12 +430,8 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
         left: 24,
         right: 24,
       ),
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(16),
-        ),
+      child: CustomContainer(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -504,7 +479,7 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
             Text(
               Utils.formatToMonthYear(_now),
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w700,
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
@@ -602,24 +577,14 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
                       ),
                     ),
 
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.tertiaryContainer.withValues(alpha: 0.8),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
+                    CustomChipContainer(
                       child: Text(
                         dateHeader,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Theme.of(
                             context,
                           ).colorScheme.onTertiaryContainer,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                     ),
@@ -662,15 +627,8 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
                                       ? Utils.formatDateTwo(start)
                                       : "");
 
-                            return Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 12,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.surface,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
+                            return CustomContainer(
+                              padding: const EdgeInsets.all(16),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [

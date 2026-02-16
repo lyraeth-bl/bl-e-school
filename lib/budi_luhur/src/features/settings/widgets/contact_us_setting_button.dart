@@ -8,35 +8,10 @@ class ContactUsSettingButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return CustomButtonContainer(
       onTap: () => Get.toNamed(BudiLuhurRoutes.contactUs),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                Icon(LucideIcons.hotel),
-                const SizedBox(width: 12),
-                Text(
-                  Utils.getTranslatedLabel(contactUsKey),
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                ),
-              ],
-            ),
-
-            Icon(LucideIcons.chevronRight),
-          ],
-        ),
-      ),
+      textKey: contactUsKey,
+      leadingIcon: LucideIcons.hotel,
     );
   }
 }

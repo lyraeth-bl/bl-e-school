@@ -161,22 +161,10 @@ class _TimeTableContainerState extends State<TimeTableContainer>
           Positioned(
             bottom: -20,
             left: MediaQuery.of(context).size.width * (0.075),
-            child: Container(
+            child: CustomContainer(
               alignment: Alignment.center,
               height: 50,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.secondary.withValues(alpha: 0.075),
-                    offset: const Offset(2.5, 2.5),
-                    blurRadius: 5,
-                  ),
-                ],
-                color: Theme.of(context).scaffoldBackgroundColor,
-              ),
+              enableShadow: false,
               width: MediaQuery.of(context).size.width * (0.85),
               child: Text(
                 "${Utils.getTranslatedLabel(classKey)} - $getStudentClassDetails",
@@ -202,14 +190,12 @@ class _TimeTableContainerState extends State<TimeTableContainer>
         });
       },
       borderRadius: BorderRadius.circular(8.0),
-      child: Container(
+      child: CustomContainer(
         alignment: Alignment.center,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8.0),
-          color: index == _currentSelectedDayIndex
-              ? Theme.of(context).colorScheme.primary
-              : Colors.transparent,
-        ),
+        enableShadow: index == _currentSelectedDayIndex ? true : false,
+        backgroundColor: index == _currentSelectedDayIndex
+            ? Theme.of(context).colorScheme.primaryContainer
+            : Theme.of(context).colorScheme.surfaceContainer,
         margin: EdgeInsetsDirectional.only(end: 6.25, start: 6.25),
         padding: const EdgeInsets.all(7.5),
         child: Text(
@@ -218,8 +204,8 @@ class _TimeTableContainerState extends State<TimeTableContainer>
             fontSize: 13.0,
             fontWeight: FontWeight.w600,
             color: index == _currentSelectedDayIndex
-                ? Theme.of(context).scaffoldBackgroundColor
-                : Theme.of(context).colorScheme.primary,
+                ? Theme.of(context).colorScheme.onPrimaryContainer
+                : Theme.of(context).colorScheme.onSurfaceVariant,
           ),
         ),
       ),
@@ -287,149 +273,137 @@ class _TimeTableContainerState extends State<TimeTableContainer>
     }
 
     if (isPastDay) {
-      // pelajaran hari kemarin
       progressValue = 1;
     } else if (isFutureDay) {
-      // pelajaran besok
       progressValue = 0;
     } else if (isSameDay && isBeforeLesson) {
-      // hari ini tapi belum mulai
       progressValue = 0;
     } else if (isSameDay && isAfterLesson) {
-      // hari ini tapi sudah selesai
       progressValue = 1;
     } else if (isNow) {
-      // sedang berlangsung
       progressValue = progress;
     } else {
       progressValue = 0;
     }
 
-    return Card(
-      margin: isNow ? const EdgeInsets.symmetric(vertical: 10) : null,
-      color: Theme.of(context).colorScheme.surface,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
+    return CustomContainer(
+      margin: isNow
+          ? const EdgeInsets.symmetric(vertical: 12)
+          : const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  timeTable.namaMataPelajaran,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  maxLines: 2,
+                ),
+              ),
+
+              if (isNow && isWeekend) ...[
+                CustomChipContainer(
+                  backgroundColor: Theme.of(
+                    context,
+                  ).colorScheme.primaryContainer,
                   child: Text(
-                    timeTable.namaMataPelajaran,
+                    Utils.getTranslatedLabel(nowKey),
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onPrimaryContainer,
+                    ),
+                  ),
+                ),
+              ],
+            ],
+          ),
+
+          SizedBox(height: 4),
+
+          Text(
+            timeTable.namaGuru,
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+          ),
+
+          SizedBox(height: 16),
+
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    timeTable.jamMulai,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: Theme.of(context).colorScheme.onSurface,
                       fontWeight: FontWeight.w700,
                     ),
-                    maxLines: 2,
                   ),
-                ),
-
-                if (isNow && isWeekend) ...[
+                  SizedBox(height: 8),
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
-                    ),
+                    padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      Utils.getTranslatedLabel(nowKey),
-                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimaryContainer,
-                      ),
+                      shape: BoxShape.circle,
+                      color: Theme.of(context).colorScheme.surfaceContainerHigh,
                     ),
                   ),
                 ],
-              ],
-            ),
-
-            SizedBox(height: 4),
-
-            Text(
-              timeTable.namaGuru,
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
-            ),
 
-            SizedBox(height: 16),
-
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      timeTable.jamMulai,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontWeight: FontWeight.w700,
-                      ),
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 4,
+                    vertical: 6,
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 1),
+                  child: LinearProgressIndicator(
+                    value: progressValue,
+                    minHeight: 6,
+                    backgroundColor: Theme.of(
+                      context,
+                    ).colorScheme.surfaceContainerHigh,
+                    valueColor: AlwaysStoppedAnimation(
+                      Theme.of(context).colorScheme.primaryFixedDim,
                     ),
-                    SizedBox(height: 8),
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.surfaceContainerHigh,
-                      ),
-                    ),
-                  ],
-                ),
-
-                Expanded(
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 4,
-                      vertical: 6,
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 1),
-                    child: LinearProgressIndicator(
-                      value: progressValue,
-                      minHeight: 6,
-                      backgroundColor: Theme.of(
-                        context,
-                      ).colorScheme.surfaceContainerHigh,
-                      valueColor: AlwaysStoppedAnimation(
-                        Theme.of(context).colorScheme.primaryFixedDim,
-                      ),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
+                    borderRadius: BorderRadius.circular(16),
                   ),
                 ),
+              ),
 
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      timeTable.jamSelesai,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontWeight: FontWeight.w700,
-                      ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    timeTable.jamSelesai,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      fontWeight: FontWeight.w700,
                     ),
-                    SizedBox(height: 8),
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(),
-                      ),
+                  ),
+                  SizedBox(height: 8),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primaryFixedDim,
+                      shape: BoxShape.circle,
+                      border: Border.all(),
                     ),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -453,23 +427,21 @@ class _TimeTableContainerState extends State<TimeTableContainer>
               );
             }
 
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 26),
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.7,
-                width: MediaQuery.of(context).size.width,
-                child: ListView.builder(
-                  padding: EdgeInsets.only(
-                    bottom: Utils.getScrollViewBottomPadding(context),
-                  ),
-                  itemCount: timetableSlots.length,
-                  itemBuilder: (context, index) {
-                    final timeTable = timetableSlots[index];
-                    return _buildTimeTableSlotDetailsContainer(
-                      timeTable: timeTable,
-                    );
-                  },
+            return SizedBox(
+              height: MediaQuery.of(context).size.height * 0.7,
+              child: ListView.builder(
+                padding: EdgeInsets.only(
+                  left: 24,
+                  right: 24,
+                  bottom: Utils.getScrollViewBottomPadding(context),
                 ),
+                itemCount: timetableSlots.length,
+                itemBuilder: (context, index) {
+                  final timeTable = timetableSlots[index];
+                  return _buildTimeTableSlotDetailsContainer(
+                    timeTable: timeTable,
+                  );
+                },
               ),
             );
           },

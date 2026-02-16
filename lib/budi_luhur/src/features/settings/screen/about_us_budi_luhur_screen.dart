@@ -13,33 +13,12 @@ class AboutUsBudiLuhurScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surfaceContainer,
-      appBar: AppBar(
-        toolbarHeight: 80,
-        title: Text(
-          content.unit,
-          style: theme.textTheme.titleMedium?.copyWith(
-            color: theme.colorScheme.onPrimaryContainer,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        backgroundColor: theme.colorScheme.primaryContainer,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(32),
-            bottomRight: Radius.circular(32),
-          ),
-        ),
-      ),
+      appBar: CustomMaterialAppBar(titleKey: content.unit),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         physics: const AlwaysScrollableScrollPhysics(),
-        child: Container(
-          width: double.infinity,
+        child: CustomContainer(
           padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: theme.colorScheme.surface,
-            borderRadius: BorderRadius.circular(16),
-          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -47,10 +26,7 @@ class AboutUsBudiLuhurScreen extends StatelessWidget {
                 content.unit,
                 style: theme.textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.w700,
-                    color: Theme
-                        .of(context)
-                        .colorScheme
-                        .onSurface
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
                 textAlign: TextAlign.center,
               ),

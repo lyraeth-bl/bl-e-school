@@ -62,12 +62,8 @@ class _FeedbackContainerState extends State<FeedbackContainer> {
                   return ListView(
                     padding: const EdgeInsets.all(24),
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(24),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surface,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
+                      CustomContainer(
+                        padding: const EdgeInsets.all(16),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

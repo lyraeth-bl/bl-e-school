@@ -16,6 +16,7 @@ export 'screen/settings_screen.dart';
 // Widget
 export 'widgets/about_constant.dart';
 export 'widgets/about_us_settings_button.dart';
+export 'widgets/app_version_settings_text.dart';
 export 'widgets/change_biometric_settings_button.dart';
 export 'widgets/change_language_bottom_sheet.dart';
 export 'widgets/change_language_settings_button.dart';

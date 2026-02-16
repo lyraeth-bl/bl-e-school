@@ -71,23 +71,9 @@ class _ExtracurricularContainerState extends State<ExtracurricularContainer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: CustomMaterialAppBar(
+        titleKey: extracurricularKey,
         centerTitle: true,
-        toolbarHeight: 80,
-        title: Text(
-          Utils.getTranslatedLabel(extracurricularKey),
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            color: Theme.of(context).colorScheme.onPrimaryContainer,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadiusGeometry.only(
-            bottomLeft: Radius.circular(32),
-            bottomRight: Radius.circular(32),
-          ),
-        ),
       ),
       backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
       body: BlocListener<ExtracurricularBloc, ExtracurricularState>(
@@ -98,178 +84,164 @@ class _ExtracurricularContainerState extends State<ExtracurricularContainer> {
             orElse: () {},
           );
         },
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: RefreshIndicator(
-            onRefresh: () async => _refreshData(),
-            child: SingleChildScrollView(
-              padding: EdgeInsets.only(
-                left: 24,
-                top: 24,
-                right: 24,
-                bottom: Utils.getScrollViewBottomPadding(context),
-              ),
-              physics: const AlwaysScrollableScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  BlocBuilder<ExtracurricularBloc, ExtracurricularState>(
-                    builder: (context, state) {
-                      return state.maybeWhen(
-                        success: (extracurricularList) {
-                          final groupedData = groupBySession(
-                            extracurricularList,
+        child: RefreshIndicator(
+          onRefresh: () async => _refreshData(),
+          child: SingleChildScrollView(
+            padding: EdgeInsets.only(
+              left: 24,
+              top: 24,
+              right: 24,
+              bottom: Utils.getScrollViewBottomPadding(context),
+            ),
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                BlocBuilder<ExtracurricularBloc, ExtracurricularState>(
+                  builder: (context, state) {
+                    return state.maybeWhen(
+                      success: (extracurricularList) {
+                        final groupedData = groupBySession(extracurricularList);
+
+                        final sortedKeys = groupedData.keys.toList()
+                          ..sort((a, b) => b.compareTo(a));
+
+                        for (final key in sortedKeys) {
+                          _expandedSession.putIfAbsent(
+                            key,
+                            () => key == sortedKeys.first,
                           );
+                        }
 
-                          final sortedKeys = groupedData.keys.toList()
-                            ..sort((a, b) => b.compareTo(a));
+                        return CustomContainer(
+                          padding: const EdgeInsets.all(8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: groupedData.entries.map((entry) {
+                              final tajaran = entry.key;
+                              final items = entry.value;
 
-                          for (final key in sortedKeys) {
-                            _expandedSession.putIfAbsent(
-                              key,
-                              () => key == sortedKeys.first,
-                            );
-                          }
-
-                          return Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                              color: Theme.of(context).colorScheme.surface,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: groupedData.entries.map((entry) {
-                                final tajaran = entry.key;
-                                final items = entry.value;
-
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    InkWell(
-                                      borderRadius: BorderRadius.circular(12),
-                                      onTap: () {
-                                        setState(() {
-                                          _expandedSession[tajaran] =
-                                              !(_expandedSession[tajaran] ??
-                                                  true);
-                                        });
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 12,
-                                          horizontal: 8,
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "${Utils.getTranslatedLabel(yearKey)} $tajaran",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleSmall
-                                                  ?.copyWith(
-                                                    fontWeight: FontWeight.w700,
-                                                    color: Theme.of(
-                                                      context,
-                                                    ).colorScheme.onSurface,
-                                                  ),
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  InkWell(
+                                    borderRadius: BorderRadius.circular(12),
+                                    onTap: () {
+                                      setState(() {
+                                        _expandedSession[tajaran] =
+                                            !(_expandedSession[tajaran] ??
+                                                true);
+                                      });
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 12,
+                                        horizontal: 8,
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "${Utils.getTranslatedLabel(yearKey)} $tajaran",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleSmall
+                                                ?.copyWith(
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Theme.of(
+                                                    context,
+                                                  ).colorScheme.onSurface,
+                                                ),
+                                          ),
+                                          AnimatedRotation(
+                                            turns:
+                                                (_expandedSession[tajaran] ??
+                                                    true)
+                                                ? 0.5
+                                                : 0,
+                                            duration: const Duration(
+                                              milliseconds: 200,
                                             ),
-                                            AnimatedRotation(
-                                              turns:
-                                                  (_expandedSession[tajaran] ??
-                                                      true)
-                                                  ? 0.5
-                                                  : 0,
-                                              duration: const Duration(
-                                                milliseconds: 200,
-                                              ),
-                                              child: const Icon(
-                                                Icons.expand_more,
-                                              ),
+                                            child: const Icon(
+                                              Icons.expand_more,
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
                                     ),
+                                  ),
 
-                                    AnimatedCrossFade(
-                                      duration: const Duration(
-                                        milliseconds: 200,
-                                      ),
-                                      crossFadeState:
-                                          (_expandedSession[tajaran] ?? true)
-                                          ? CrossFadeState.showFirst
-                                          : CrossFadeState.showSecond,
-                                      firstChild: Column(
-                                        children: items
-                                            .map(
-                                              (extra) => ListTile(
-                                                leading: CircleAvatar(
-                                                  backgroundColor:
-                                                      Theme.of(context)
-                                                          .colorScheme
-                                                          .tertiaryContainer,
-                                                  child: Icon(
-                                                    Utils.iconForExtracurricular(
-                                                      extra.namaKegiatan,
-                                                    ),
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .onTertiaryContainer,
+                                  AnimatedCrossFade(
+                                    duration: const Duration(milliseconds: 200),
+                                    crossFadeState:
+                                        (_expandedSession[tajaran] ?? true)
+                                        ? CrossFadeState.showFirst
+                                        : CrossFadeState.showSecond,
+                                    firstChild: Column(
+                                      children: items
+                                          .map(
+                                            (extra) => ListTile(
+                                              leading: CircleAvatar(
+                                                backgroundColor: Theme.of(
+                                                  context,
+                                                ).colorScheme.tertiaryContainer,
+                                                child: Icon(
+                                                  Utils.iconForExtracurricular(
+                                                    extra.namaKegiatan,
                                                   ),
-                                                ),
-                                                title: Text(
-                                                  extra.namaKegiatan,
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w700,
-                                                    color: Theme.of(
-                                                      context,
-                                                    ).colorScheme.onSurface,
-                                                  ),
-                                                ),
-                                                subtitle: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      "${Utils.getTranslatedLabel(classKey)}: ${extra.kelas} ${extra.nomorKelas}",
-                                                    ),
-                                                    const SizedBox(height: 2),
-                                                    Text(
-                                                      "${Utils.getTranslatedLabel(yearKey)}: ${extra.tajaran} (${extra.semester})",
-                                                    ),
-                                                  ],
-                                                ),
-                                                trailing: CircleAvatar(
-                                                  backgroundColor:
-                                                      colorForGrades(
-                                                        context,
-                                                        extra.nilai,
-                                                      ),
-                                                  child: Text(extra.nilai),
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onTertiaryContainer,
                                                 ),
                                               ),
-                                            )
-                                            .toList(),
-                                      ),
-                                      secondChild: const SizedBox.shrink(),
+                                              title: Text(
+                                                extra.namaKegiatan,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Theme.of(
+                                                    context,
+                                                  ).colorScheme.onSurface,
+                                                ),
+                                              ),
+                                              subtitle: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "${Utils.getTranslatedLabel(classKey)}: ${extra.kelas} ${extra.nomorKelas}",
+                                                  ),
+                                                  const SizedBox(height: 2),
+                                                  Text(
+                                                    "${Utils.getTranslatedLabel(yearKey)}: ${extra.tajaran} (${extra.semester})",
+                                                  ),
+                                                ],
+                                              ),
+                                              trailing: CircleAvatar(
+                                                backgroundColor: colorForGrades(
+                                                  context,
+                                                  extra.nilai,
+                                                ),
+                                                child: Text(extra.nilai),
+                                              ),
+                                            ),
+                                          )
+                                          .toList(),
                                     ),
-                                  ],
-                                );
-                              }).toList(),
-                            ),
-                          );
-                        },
-                        loading: () =>
-                            Center(child: CircularProgressIndicator()),
-                        orElse: () => const SizedBox.shrink(),
-                      );
-                    },
-                  ),
-                ],
-              ),
+                                    secondChild: const SizedBox.shrink(),
+                                  ),
+                                ],
+                              );
+                            }).toList(),
+                          ),
+                        );
+                      },
+                      loading: () => Center(child: CircularProgressIndicator()),
+                      orElse: () => const SizedBox.shrink(),
+                    );
+                  },
+                ),
+              ],
             ),
           ),
         ),

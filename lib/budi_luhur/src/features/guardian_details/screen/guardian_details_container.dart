@@ -27,170 +27,153 @@ class GuardianDetailsContainer extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
-      appBar: AppBar(
+      appBar: CustomMaterialAppBar(
+        titleKey: guardianDetailsKey,
         centerTitle: true,
-        toolbarHeight: 80,
-        title: Text(
-          Utils.getTranslatedLabel(guardianDetailsKey),
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            color: Theme.of(context).colorScheme.onPrimaryContainer,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadiusGeometry.only(
-            bottomLeft: Radius.circular(32),
-            bottomRight: Radius.circular(32),
-          ),
-        ),
       ),
-      body: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: SingleChildScrollView(
-          padding: EdgeInsets.only(
-            left: 24,
-            top: 24,
-            right: 24,
-            bottom: Utils.getScrollViewBottomPadding(context),
-          ),
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                Utils.getTranslatedLabel(parentsDetailsKey),
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  fontWeight: FontWeight.w700,
-                ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.only(
+          left: 24,
+          top: 24,
+          right: 24,
+          bottom: Utils.getScrollViewBottomPadding(context),
+        ),
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              Utils.getTranslatedLabel(parentsDetailsKey),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                fontWeight: FontWeight.w700,
               ),
+            ),
 
-              SizedBox(height: 24),
+            SizedBox(height: 24),
 
-              GuardiansDetailsListContainer(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    GuardiansDetailsRowList(
-                      titleKey: motherNameKey,
-                      value: motherName,
-                    ),
+            GuardiansDetailsListContainer(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  GuardiansDetailsRowList(
+                    titleKey: motherNameKey,
+                    value: motherName,
+                  ),
 
-                    SizedBox(height: 24),
+                  SizedBox(height: 24),
 
-                    GuardiansDetailsRowList(
-                      titleKey: motherWorkKey,
-                      value: motherWork,
-                    ),
+                  GuardiansDetailsRowList(
+                    titleKey: motherWorkKey,
+                    value: motherWork,
+                  ),
 
-                    SizedBox(height: 24),
+                  SizedBox(height: 24),
 
-                    GuardiansDetailsRowList(
-                      titleKey: motherLastStudyKey,
-                      value: motherLastStudy,
-                    ),
-                  ],
-                ),
+                  GuardiansDetailsRowList(
+                    titleKey: motherLastStudyKey,
+                    value: motherLastStudy,
+                  ),
+                ],
               ),
+            ),
 
-              SizedBox(height: 16),
+            SizedBox(height: 16),
 
-              GuardiansDetailsListContainer(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    GuardiansDetailsRowList(
-                      titleKey: fatherNameKey,
-                      value: fatherName,
-                    ),
+            GuardiansDetailsListContainer(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  GuardiansDetailsRowList(
+                    titleKey: fatherNameKey,
+                    value: fatherName,
+                  ),
 
-                    SizedBox(height: 24),
+                  SizedBox(height: 24),
 
-                    GuardiansDetailsRowList(
-                      titleKey: fatherWorkKey,
-                      value: fatherWork,
-                    ),
+                  GuardiansDetailsRowList(
+                    titleKey: fatherWorkKey,
+                    value: fatherWork,
+                  ),
 
-                    SizedBox(height: 24),
+                  SizedBox(height: 24),
 
-                    GuardiansDetailsRowList(
-                      titleKey: fatherLastStudyKey,
-                      value: fatherLastStudy,
-                    ),
-                  ],
-                ),
+                  GuardiansDetailsRowList(
+                    titleKey: fatherLastStudyKey,
+                    value: fatherLastStudy,
+                  ),
+                ],
               ),
+            ),
 
-              SizedBox(height: 16),
+            SizedBox(height: 16),
 
-              GuardiansDetailsListContainer(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    GuardiansDetailsRowList(
-                      titleKey: phoneNumberKey,
-                      value: parentNumber,
-                    ),
+            GuardiansDetailsListContainer(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  GuardiansDetailsRowList(
+                    titleKey: phoneNumberKey,
+                    value: parentNumber,
+                  ),
 
-                    const SizedBox(height: 24),
+                  const SizedBox(height: 24),
 
-                    GuardiansDetailsColumnList(
-                      titleKey: addressKey,
-                      value: parentAddress,
-                    ),
-                  ],
-                ),
+                  GuardiansDetailsColumnList(
+                    titleKey: addressKey,
+                    value: parentAddress,
+                  ),
+                ],
               ),
+            ),
 
-              SizedBox(height: 24),
+            SizedBox(height: 24),
 
-              Text(
-                Utils.getTranslatedLabel(guardianDetailsKey),
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  fontWeight: FontWeight.w700,
-                ),
+            Text(
+              Utils.getTranslatedLabel(guardianDetailsKey),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                fontWeight: FontWeight.w700,
               ),
+            ),
 
-              SizedBox(height: 24),
+            SizedBox(height: 24),
 
-              GuardiansDetailsListContainer(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    GuardiansDetailsRowList(
-                      titleKey: guardianNameKey,
-                      value: guardianName,
-                    ),
+            GuardiansDetailsListContainer(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  GuardiansDetailsRowList(
+                    titleKey: guardianNameKey,
+                    value: guardianName,
+                  ),
 
-                    const SizedBox(height: 24),
+                  const SizedBox(height: 24),
 
-                    GuardiansDetailsRowList(
-                      titleKey: guardianNumberKey,
-                      value: guardianNumber,
-                    ),
+                  GuardiansDetailsRowList(
+                    titleKey: guardianNumberKey,
+                    value: guardianNumber,
+                  ),
 
-                    const SizedBox(height: 24),
+                  const SizedBox(height: 24),
 
-                    GuardiansDetailsRowList(
-                      titleKey: guardianWorkKey,
-                      value: guardianWork,
-                    ),
+                  GuardiansDetailsRowList(
+                    titleKey: guardianWorkKey,
+                    value: guardianWork,
+                  ),
 
-                    const SizedBox(height: 24),
+                  const SizedBox(height: 24),
 
-                    GuardiansDetailsColumnList(
-                      titleKey: guardianAddressKey,
-                      value: guardianAddress,
-                    ),
-                  ],
-                ),
+                  GuardiansDetailsColumnList(
+                    titleKey: guardianAddressKey,
+                    value: guardianAddress,
+                  ),
+                ],
               ),
+            ),
 
-              const SizedBox(height: 24),
-            ],
-          ),
+            const SizedBox(height: 24),
+          ],
         ),
       ),
     );
