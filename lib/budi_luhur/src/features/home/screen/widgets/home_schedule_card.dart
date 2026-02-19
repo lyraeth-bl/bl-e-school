@@ -68,6 +68,8 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
     return InkWell(
       onTap: () => Get.toNamed(BudiLuhurRoutes.studentTimeTable),
       child: CustomContainer(
+        enableShadow: false,
+        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -90,12 +92,15 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                     ),
                   ),
                   CustomChipContainer(
+                    backgroundColor: Theme.of(
+                      context,
+                    ).colorScheme.secondaryContainer,
                     child: RealTimeClock(
                       onTick: _handleTick,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         color: Theme.of(
                           context,
-                        ).colorScheme.onTertiaryContainer,
+                        ).colorScheme.onSecondaryContainer,
                       ),
                     ),
                   ),
@@ -595,6 +600,7 @@ class ScheduleContainer extends StatelessWidget {
         topLeft: Radius.circular(32),
       ),
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+      enableShadow: false,
       child: child,
     );
   }

@@ -68,6 +68,7 @@ class HomeAttendanceCard extends StatelessWidget {
             Get.toNamed(BudiLuhurRoutes.studentAttendance);
           },
           child: CustomContainer(
+            shadowsOffset: Offset(5, 5),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -86,16 +87,19 @@ class HomeAttendanceCard extends StatelessWidget {
                             ),
                       ),
                       CustomChipContainer(
+                        backgroundColor: Theme.of(
+                          context,
+                        ).colorScheme.secondaryContainer,
                         child: Text(
                           Utils.formatToDayMonthYear(
                             DateTime.now(),
                             locale: "id_ID",
                           ),
-                          style: Theme.of(context).textTheme.bodySmall
+                          style: Theme.of(context).textTheme.labelSmall
                               ?.copyWith(
                                 color: Theme.of(
                                   context,
-                                ).colorScheme.onTertiaryContainer,
+                                ).colorScheme.onSecondaryContainer,
                               ),
                         ),
                       ),

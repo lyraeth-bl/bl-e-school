@@ -55,15 +55,15 @@ class SettingsScreen extends StatelessWidget {
                 children: [
                   ChangeBiometricSettingsButton(),
 
-                  SizedBox(height: 12),
+                  SizedBox(height: 16),
 
                   ChangeLanguageSettingsButton(),
 
-                  SizedBox(height: 12),
+                  SizedBox(height: 16),
 
                   AboutUsSettingsButton(),
 
-                  SizedBox(height: 12),
+                  SizedBox(height: 16),
 
                   ContactUsSettingButton(),
 
