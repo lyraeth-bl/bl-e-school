@@ -24,7 +24,11 @@ class TimeTableRepository {
       newKelas = newKelas.substring(0, newKelas.length - 1);
     }
 
-    if (newKelas.startsWith("XANIMASI")) {
+    if (newKelas.startsWith("XIIANIMASI")) {
+      newKelas = "XIIANI";
+    } else if (newKelas.startsWith("XIANIMASI")) {
+      newKelas = "XIANI";
+    } else if (newKelas.startsWith("XANIMASI")) {
       newKelas = "XANI";
     }
 
