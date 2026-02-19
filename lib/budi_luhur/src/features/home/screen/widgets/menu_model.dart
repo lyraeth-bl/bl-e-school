@@ -41,6 +41,11 @@ final List<MenuModel> homeBottomSheetMenu = [
     title: academicCalendarKey,
   ),
   MenuModel(
+    menuModuleId: examManagementModuleId.toString(),
+    icon: LucideIcons.fileCheck,
+    title: academicResultKey,
+  ),
+  MenuModel(
     menuModuleId: defaultModuleId.toString(),
     icon: LucideIcons.music,
     title: extracurricularKey,

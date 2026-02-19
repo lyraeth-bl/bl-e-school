@@ -30,6 +30,7 @@ class CustomButtonContainer extends StatelessWidget {
         topRight: Radius.circular(16),
       ),
       child: CustomContainer(
+        shadowsOffset: Offset(5, 5),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -37,8 +38,8 @@ class CustomButtonContainer extends StatelessWidget {
             Row(
               children: [
                 if (leadingIcon != null) ...[
-                  Icon(leadingIcon),
-                  const SizedBox(width: 12),
+                  Icon(leadingIcon, size: 16),
+                  const SizedBox(width: 8),
                 ],
                 Text(
                   Utils.getTranslatedLabel(textKey),
@@ -50,7 +51,7 @@ class CustomButtonContainer extends StatelessWidget {
               ],
             ),
 
-            Icon(trailingIcon ?? LucideIcons.chevronRight),
+            Icon(trailingIcon ?? LucideIcons.chevronRight, size: 16),
           ],
         ),
       ),

@@ -43,9 +43,13 @@ class BudiLuhurRoutes extends BudiLuhur {
   /// Navigates to [FeedbackScreen].
   static const String studentFeedback = "/studentFeedback";
 
-  /// The route to the student's class timetable or schedule.
-  /// Navigates to [StudentTimeTableScreen].
+  /// The route to the student's class feedback.
+  /// Navigates to [FeedbackScreen].
   static const String studentAddFeedback = "/studentAddFeedback";
+
+  /// The route to the student's result.
+  /// Navigates to [AcademicResultScreen].
+  static const String studentResult = "/studentResult";
 
   // --- Core Application Routes ---
 
@@ -119,6 +123,8 @@ class BudiLuhurRoutes extends BudiLuhur {
       page: () => AddFeedbackScreen.routeInstance(),
     ),
 
+    GetPage(name: studentResult, page: AcademicResultScreen.routeInstance),
+
     // -- Other Feature Routes --
     GetPage(
       name: notifications,
@@ -129,7 +135,7 @@ class BudiLuhurRoutes extends BudiLuhur {
       page: () => AcademicCalendarScreen.routeInstance(),
     ),
     GetPage(name: settings, page: () => SettingsScreen.routeInstance()),
-    GetPage(name: contactUs, page: ContactUsScreen.routeInstance),
-    GetPage(name: aboutUs, page: AboutUsScreen.routeInstance),
+    GetPage(name: contactUs, page: () => ContactUsScreen.routeInstance()),
+    GetPage(name: aboutUs, page: () => AboutUsScreen.routeInstance()),
   ];
 }

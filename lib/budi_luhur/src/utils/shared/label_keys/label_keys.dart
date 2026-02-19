@@ -24,6 +24,7 @@ const String detailsProfileKey = "detailsProfile";
 const String detailsEventsKey = "detailsEvents";
 const String detailsKey = "details";
 const String nameKey = "name";
+const String valueAspectKey = "valueAspect";
 const String classKey = "class";
 const String yearKey = "year";
 const String rollNumberKey = "rollNumber";
@@ -83,6 +84,7 @@ const String announcementKey = "announcement";
 
 const String chapterNameKey = "chapterName";
 const String chapterDescriptionKey = "chapterDescription";
+const String taskDescriptionKey = "taskDescription";
 const String videosKey = "videos";
 const String filesKey = "files";
 const String topicsKey = "topics";
@@ -121,6 +123,21 @@ const String resultKey = "result";
 const String subKey = "sub";
 const String marksKey = "marks";
 const String totalKey = "total";
+const String totalDataKey = "totalData";
+
+const String averageKey = "average";
+const String taskKey = "task";
+const String taskDetailsKey = "taskDetails";
+const String remedialKey = "remedial";
+const String overallSummaryKey = "overallSummary";
+const String overallSummaryDescKey = "overallSummaryDesc";
+const String overallSummaryScoreKey = "overallSummaryScore";
+const String summativeAssessmentScoreKey = "summativeAssessmentScore";
+const String midtermExamScoreKey = "midtermExamScore";
+const String finalExamScoreKey = "finalExamScore";
+const String finalSummativeScoreKey = "finalSummativeScore";
+const String finalGradeScoreKey = "finalGradeScore";
+const String semesterGradeScoreKey = "semesterGradeScore";
 
 const String totalFeeKey = "totalFee";
 const String totalMarksKey = "totalMarks";
@@ -225,6 +242,8 @@ const String selectedLanguageKey = "selectedLanguage";
 const String allowNotificationsKey = "allowNotifications";
 
 const String subjectsKey = "subjects";
+const String noSubjectFoundOnListKey = "noSubjectFoundOnListKey";
+const String choiceSubjectsDescKey = "choiceSubjectsDesc";
 const String noSubjectsFoundKey = "noSubjectsFound";
 const String teachersKey = "teachers";
 const String noTeachersFoundKey = "noTeachersFound";
@@ -272,6 +291,8 @@ const String holidaysKey = "holidays";
 const String noAbsentTodayKey = "noAbsentToday";
 
 const String academicCalendarKey = "academicCalendar";
+
+const String academicResultKey = "academicResult";
 
 const String appUnderMaintenanceKey = "appUnderMaintenance";
 
@@ -538,3 +559,4 @@ const String startingDemeritPointsKey = "startingDemeritPoints";
 const String currentDemeritPointsKey = "currentDemeritPoints";
 
 const String extracurricularKey = "extracurricular";
+const String summaryKey = "summary";

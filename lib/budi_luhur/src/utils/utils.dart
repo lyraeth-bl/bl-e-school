@@ -704,4 +704,94 @@ class Utils {
 
     return version;
   }
+
+  static IconData iconForSubject(String name) {
+    final lowerCaseName = name.toLowerCase().trim().replaceAll(
+      RegExp(r'\s+'),
+      "",
+    );
+
+    switch (lowerCaseName) {
+      case "bahasaindonesia":
+      case "bahasainggris":
+      case "bahasajepang":
+        return LucideIcons.languages;
+      case "matematika":
+      case "matematikapeminatan":
+        return LucideIcons.sigma;
+      case "pendidikanpancasiladankewarganegaraan":
+      case "pendidikankewarganegaraan":
+        return LucideIcons.mapPin;
+      case "geografi":
+        return LucideIcons.map;
+      case "kimia":
+        return Icons.biotech;
+      case "biologi":
+        return LucideIcons.bone;
+      case "prakarya":
+      case "senibudaya":
+        return LucideIcons.images;
+      case "fisika":
+        return LucideIcons.atom;
+      case "bimbingankonseling":
+        return LucideIcons.personStanding;
+      case "pendidikanjasmani":
+      case "pendidikanjasmani,olahragadankesehatan":
+        return Icons.self_improvement;
+      case "ekonomi":
+        return Icons.analytics;
+      case "sejarah":
+        return Icons.history_edu;
+      case "sosiologi":
+        return LucideIcons.ribbon;
+      case "animasi3d":
+      case "pemodelan3d":
+        return LucideIcons.rotate3d;
+      case "spesialefek":
+        return LucideIcons.sparkles;
+      case "projekkreatifdankewirausahaan":
+        return LucideIcons.packagePlus;
+      case "basisdata":
+        return LucideIcons.database;
+      case "publicspeaking":
+        return Icons.record_voice_over;
+      case "visualdesaindancompositing":
+      case "pemrogramanframework":
+        return LucideIcons.component;
+      case "pemrogramanberorientasiobjek":
+      case "pemodelanperangkatlunak":
+      case "pemrogramandasar":
+        return Icons.data_object;
+      case "bisnisretail":
+        return LucideIcons.handshake;
+      case "android":
+        return Icons.android;
+      case "softwaremodeling":
+        return Icons.app_settings_alt;
+      case "pemrogramanwebdanperangkatbergerak":
+        return Icons.web;
+      case "informatika":
+        return LucideIcons.computer;
+      case "etikaai":
+        return LucideIcons.brainCircuit;
+      case "ui/ux":
+      case "uiux":
+        return LucideIcons.blocks;
+      case "dasarpengembangangame":
+        return LucideIcons.gamepad;
+      default:
+        return LucideIcons.bookMarked;
+    }
+  }
+
+  static String? formatRemedialAcademicResult(String remedial) {
+    String? result;
+
+    if (remedial == "-") return result = getTranslatedLabel(noKey);
+    if (remedial == "1" || remedial == "2") {
+      return result = getTranslatedLabel(remedialKey);
+    }
+
+    return result;
+  }
 }
