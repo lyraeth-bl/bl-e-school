@@ -83,7 +83,7 @@ class MoreMenuBottomSheetContainer extends StatelessWidget {
       padding: const EdgeInsets.only(top: 25.0, right: 25.0, left: 25.0),
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
+        color: Theme.of(context).colorScheme.surfaceContainer,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(25),
           topRight: Radius.circular(25),

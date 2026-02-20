@@ -163,19 +163,19 @@ class ResultGradesContainer extends StatelessWidget {
                                 ),
                               ),
 
-                              if (data.remedial == "1" ||
-                                  data.remedial == "2") ...[
-                                const SizedBox(width: 8),
-                                CustomChipContainer(
-                                  backgroundColor: colorScheme.errorContainer,
-                                  child: Text(
-                                    Utils.getTranslatedLabel(remedialKey),
-                                    style: textTheme.labelSmall?.copyWith(
-                                      color: colorScheme.onErrorContainer,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                              // if (data.remedial == "1" ||
+                              //     data.remedial == "2") ...[
+                              //   const SizedBox(width: 8),
+                              //   CustomChipContainer(
+                              //     backgroundColor: colorScheme.errorContainer,
+                              //     child: Text(
+                              //       Utils.getTranslatedLabel(remedialKey),
+                              //       style: textTheme.labelSmall?.copyWith(
+                              //         color: colorScheme.onErrorContainer,
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ],
                             ],
                           ),
 
@@ -301,9 +301,7 @@ class ResultGradesContainer extends StatelessWidget {
                     const SizedBox(height: 8),
 
                     Text(
-                      Utils.formatRemedialAcademicResult(
-                        academicResult.remedial,
-                      )!,
+                      "${academicResult.remedial}x",
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: Theme.of(context).colorScheme.onSurfaceVariant,
                         fontWeight: FontWeight.w700,

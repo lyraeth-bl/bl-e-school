@@ -390,6 +390,7 @@ class _HomeScreenState extends State<HomeScreen>
           Tween<Offset>(begin: const Offset(0.0, 1.0), end: Offset.zero),
         ),
         child: CustomContainer(
+          enableShadow: false,
           alignment: Alignment.center,
           margin: EdgeInsets.only(bottom: Utils.bottomNavigationBottomMargin),
           width: MediaQuery.of(context).size.width * (0.85),

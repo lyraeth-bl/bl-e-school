@@ -65,83 +65,86 @@ class HomeContainerTopProfileContainer extends StatelessWidget {
               // Content
               Align(
                 alignment: Alignment.bottomCenter,
-                child: Container(
-                  margin: EdgeInsetsDirectional.only(
-                    end: boxConstraints.maxWidth * (0.065),
-                    start: boxConstraints.maxWidth * (0.056),
-                    bottom: boxConstraints.maxHeight * (0.2),
-                  ),
-                  child: Row(
-                    children: [
-                      BlocSelector<AuthCubit, AuthState, String?>(
-                        selector: (state) => state.maybeWhen(
-                          authenticated: (isStudent, student, time) =>
-                              student.profileImageUrl,
-                          orElse: () => "",
+                child: InkWell(
+                  onTap: () => Get.toNamed(BudiLuhurRoutes.studentProfile),
+                  child: Container(
+                    margin: EdgeInsetsDirectional.only(
+                      end: boxConstraints.maxWidth * (0.065),
+                      start: boxConstraints.maxWidth * (0.056),
+                      bottom: boxConstraints.maxHeight * (0.2),
+                    ),
+                    child: Row(
+                      children: [
+                        BlocSelector<AuthCubit, AuthState, String?>(
+                          selector: (state) => state.maybeWhen(
+                            authenticated: (isStudent, student, time) =>
+                                student.profileImageUrl,
+                            orElse: () => "",
+                          ),
+                          builder: (context, profileImageUrl) =>
+                              BorderedProfilePictureContainer(
+                                imageUrl: profileImageUrl ?? "",
+                                heightAndWidth: 60,
+                              ),
                         ),
-                        builder: (context, profileImageUrl) =>
-                            BorderedProfilePictureContainer(
-                              imageUrl: profileImageUrl ?? "",
-                              heightAndWidth: 60,
-                            ),
-                      ),
 
-                      SizedBox(width: boxConstraints.maxWidth * (0.03)),
+                        SizedBox(width: boxConstraints.maxWidth * (0.03)),
 
-                      Expanded(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              context
-                                      .read<AuthCubit>()
-                                      .getStudentDetails
-                                      .nama ??
-                                  "",
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.titleMedium
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.onPrimaryContainer,
-                                  ),
-                            ),
-                            SizedBox(height: 4),
-                            Flexible(
-                              child: Text(
-                                "${Utils.getTranslatedLabel(classKey)} : ${context.read<AuthCubit>().getStudentDetails.kelasSaatIni} - ${context.read<AuthCubit>().getStudentDetails.noKelasSaatIni}",
-                                maxLines: 1,
+                        Expanded(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                context
+                                        .read<AuthCubit>()
+                                        .getStudentDetails
+                                        .nama ??
+                                    "",
+                                maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context).textTheme.bodySmall
+                                style: Theme.of(context).textTheme.titleMedium
                                     ?.copyWith(
+                                      fontWeight: FontWeight.w600,
                                       color: Theme.of(
                                         context,
-                                      ).colorScheme.onSurface,
+                                      ).colorScheme.onPrimaryContainer,
                                     ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      InkWell(
-                        onTap: () {
-                          Get.toNamed(BudiLuhurRoutes.notifications);
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.only(left: 8),
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            shape: BoxShape.circle,
+                              SizedBox(height: 4),
+                              Flexible(
+                                child: Text(
+                                  "${Utils.getTranslatedLabel(classKey)} : ${context.read<AuthCubit>().getStudentDetails.kelasSaatIni} - ${context.read<AuthCubit>().getStudentDetails.noKelasSaatIni}",
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context).textTheme.bodySmall
+                                      ?.copyWith(
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onSurface,
+                                      ),
+                                ),
+                              ),
+                            ],
                           ),
-                          child: Icon(Icons.notifications_outlined),
                         ),
-                      ),
-                    ],
+
+                        InkWell(
+                          onTap: () {
+                            Get.toNamed(BudiLuhurRoutes.notifications);
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.only(left: 8),
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(Icons.notifications_outlined),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
