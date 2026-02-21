@@ -20,6 +20,7 @@ export 'no_data_container.dart';
 export 'password_hide_show_button.dart';
 export 'real_time_clock.dart';
 export 'screen_top_background_container.dart';
+export 'send_feedback_to_us_text.dart';
 export 'session_expired_bottom_sheet.dart';
 export 'shimmer_loading_container.dart';
 export 'svg_button.dart';

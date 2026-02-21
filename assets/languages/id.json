@@ -500,5 +500,7 @@
   "sendTheFeedbackToUs": "Kirimkan masukan kepada Kami.",
   "sendFeedbackToUs": "Kirimkan masukan kepada Kami.",
   "diagnosisPushNotificationFailed": "Diagnosis Push Notification Gagal",
-  "yourFcmToken": "FCM Token Kamu :"
+  "yourFcmToken": "FCM Token Kamu :",
+  "noEvent": "Tidak ada acara",
+  "event": "Acara"
 }

@@ -139,7 +139,7 @@ class _TimeTableContainerState extends State<TimeTableContainer>
   Widget _buildAppBar() {
     String getStudentClassDetails = "";
     getStudentClassDetails =
-        "${context.read<AuthCubit>().getStudentDetails.kelasSaatIni}";
+        "${context.read<AuthCubit>().getStudentDetails.kelasSaatIni} - ${context.read<AuthCubit>().getStudentDetails.noKelasSaatIni}";
 
     return ScreenTopBackgroundContainer(
       heightPercentage: Utils.appBarMediumHeightPercentage,
@@ -167,7 +167,7 @@ class _TimeTableContainerState extends State<TimeTableContainer>
               enableShadow: false,
               width: MediaQuery.of(context).size.width * (0.85),
               child: Text(
-                "${Utils.getTranslatedLabel(classKey)} - $getStudentClassDetails",
+                "${Utils.getTranslatedLabel(classKey)} $getStudentClassDetails",
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.secondary,
                   fontWeight: FontWeight.w700,

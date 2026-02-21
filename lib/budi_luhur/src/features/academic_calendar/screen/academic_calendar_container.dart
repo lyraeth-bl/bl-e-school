@@ -572,18 +572,21 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
                     Text(
                       Utils.getTranslatedLabel(detailsEventsKey),
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w700,
                         color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
 
                     CustomChipContainer(
+                      backgroundColor: Theme.of(
+                        context,
+                      ).colorScheme.primaryContainer,
                       child: Text(
                         dateHeader,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Theme.of(
                             context,
-                          ).colorScheme.onTertiaryContainer,
+                          ).colorScheme.onPrimaryContainer,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -594,7 +597,7 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
                 const SizedBox(height: 16),
 
                 Text(
-                  "${academicCalendarList.length} event",
+                  "${academicCalendarList.length} ${Utils.getTranslatedLabel(eventKey)}",
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
@@ -606,7 +609,7 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
                   child: academicCalendarList.isEmpty
                       ? Center(
                           child: Text(
-                            "Tidak ada data event",
+                            Utils.getTranslatedLabel(noEventKey),
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                         )

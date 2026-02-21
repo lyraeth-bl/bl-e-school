@@ -226,32 +226,6 @@ class DiagnosisPushNotificationScreen extends StatelessWidget {
             stepIndex: 2,
             currentStep: state.currentStep,
           ),
-
-          const SizedBox(height: 48),
-
-          Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  Utils.getTranslatedLabel(havingAnyTroubleKey),
-                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                ),
-                const SizedBox(width: 4),
-                GestureDetector(
-                  onTap: () => Get.toNamed(BudiLuhurRoutes.studentFeedback),
-                  child: Text(
-                    Utils.getTranslatedLabel(sendTheFeedbackToUsKey),
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );

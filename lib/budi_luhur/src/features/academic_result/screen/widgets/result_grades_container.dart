@@ -301,7 +301,9 @@ class ResultGradesContainer extends StatelessWidget {
                     const SizedBox(height: 8),
 
                     Text(
-                      "${academicResult.remedial}x",
+                      (academicResult.remedial == "-")
+                          ? academicResult.remedial
+                          : "${academicResult.remedial}x",
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: Theme.of(context).colorScheme.onSurfaceVariant,
                         fontWeight: FontWeight.w700,
