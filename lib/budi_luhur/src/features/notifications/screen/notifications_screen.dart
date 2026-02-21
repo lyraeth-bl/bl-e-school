@@ -81,24 +81,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                           final hasAttachment =
                               notifications.attachmentUrl.isNotEmpty;
 
-                          return Container(
+                          return CustomContainer(
                             margin: const EdgeInsets.only(bottom: 20),
                             padding: const EdgeInsets.symmetric(
                               horizontal: 16.0,
                               vertical: 12.0,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.surface,
-                              borderRadius: BorderRadius.circular(16.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Theme.of(
-                                    context,
-                                  ).shadowColor.withValues(alpha: 0.05),
-                                  blurRadius: 4,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
                             ),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,18 +153,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                       const SizedBox(height: 16),
                                       Row(
                                         children: [
-                                          Container(
-                                            padding: EdgeInsets.symmetric(
-                                              vertical: 4,
-                                              horizontal: 12,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(16),
-                                              color: Theme.of(
-                                                context,
-                                              ).colorScheme.tertiaryContainer,
-                                            ),
+                                          CustomChipContainer(
+                                            backgroundColor: Theme.of(
+                                              context,
+                                            ).colorScheme.primaryContainer,
                                             child: Text(
                                               notifications.type,
                                               style: Theme.of(context)
@@ -186,7 +165,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                                   ?.copyWith(
                                                     color: Theme.of(context)
                                                         .colorScheme
-                                                        .onTertiaryContainer,
+                                                        .onPrimaryContainer,
                                                   ),
                                             ),
                                           ),
@@ -195,13 +174,14 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                             timeago.format(
                                               notifications.createdAt,
                                             ),
-                                            style: TextStyle(
-                                              fontSize: 10,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .onSurfaceVariant
-                                                  .withValues(alpha: 0.7),
-                                            ),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .labelSmall
+                                                ?.copyWith(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onSurfaceVariant,
+                                                ),
                                           ),
                                         ],
                                       ),
