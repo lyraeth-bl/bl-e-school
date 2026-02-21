@@ -18,7 +18,8 @@ class PostDailyAttendanceCubit extends Cubit<PostDailyAttendanceState> {
   final AttendanceRepository _attendanceRepository;
 
   /// {@macro post_daily_attendance_cubit}
-  PostDailyAttendanceCubit(this._attendanceRepository) : super(const _Initial());
+  PostDailyAttendanceCubit(this._attendanceRepository)
+    : super(const _Initial());
 
   /// Submits a new daily attendance record for a student.
   ///

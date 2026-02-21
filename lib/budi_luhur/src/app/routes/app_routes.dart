@@ -77,6 +77,10 @@ class BudiLuhurRoutes extends BudiLuhur {
 
   static const String aboutUs = "/aboutUs";
 
+  static const String diagnosis = "/diagnosis";
+
+  static const String diagnosisPushNotification = "/diagnosisPushNotification";
+
   /// A list of [GetPage] objects that defines the application's route table.
   ///
   /// Each [GetPage] entry maps a route name to a page-building function (`page`),
@@ -137,5 +141,10 @@ class BudiLuhurRoutes extends BudiLuhur {
     GetPage(name: settings, page: () => SettingsScreen.routeInstance()),
     GetPage(name: contactUs, page: () => ContactUsScreen.routeInstance()),
     GetPage(name: aboutUs, page: () => AboutUsScreen.routeInstance()),
+    GetPage(name: diagnosis, page: () => DiagnosisScreen.routeInstance()),
+    GetPage(
+      name: diagnosisPushNotification,
+      page: () => DiagnosisPushNotificationScreen.routeInstance(),
+    ),
   ];
 }

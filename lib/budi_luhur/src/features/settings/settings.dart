@@ -1,4 +1,5 @@
 // Cubit
+export 'bloc/diagnosis_push_notification_bloc.dart';
 export 'cubit/app_configuration/app_configuration_cubit.dart';
 export 'cubit/app_localization/app_localization_cubit.dart';
 export 'cubit/settings/settings_cubit.dart';
@@ -12,6 +13,8 @@ export 'repository/settings_repository.dart';
 export 'screen/about_us_budi_luhur_screen.dart';
 export 'screen/about_us_screen.dart';
 export 'screen/contact_us_screen.dart';
+export 'screen/diagnosis_push_notification_screen.dart';
+export 'screen/diagnosis_screen.dart';
 export 'screen/settings_screen.dart';
 // Widget
 export 'widgets/about_constant.dart';
@@ -22,3 +25,4 @@ export 'widgets/change_language_bottom_sheet.dart';
 export 'widgets/change_language_settings_button.dart';
 export 'widgets/contact_us_list_container.dart';
 export 'widgets/contact_us_setting_button.dart';
+export 'widgets/diagnosis_setting_button.dart';

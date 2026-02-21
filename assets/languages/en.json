@@ -485,5 +485,19 @@
   "overallSummaryScore": "Overall Summary Score",
   "noSubjectFoundOnListKey": "The subject list above only displays subjects that already have recorded grades. If the subject you are looking for is not available, please contact the respective teacher to ensure that the grade data has been entered.",
   "valueAspect": "Value aspect",
-  "taskDescription": "Task Description"
+  "taskDescription": "Task Description",
+  "diagnosis": "Diagnosis",
+  "diagnosisPushNotification": "Push Notification Diagnosis",
+  "checkingRequiremetsNotification": "Checking your notification settings",
+  "checkNotificationPermission": "Checking notification permission...",
+  "checkNotificationPermissionSuccess": "Notification permission success",
+  "checkNotificationToken": "Checking notification token (fcm token)...",
+  "checkNotificationTokenSuccess": "FCM Token active",
+  "sendPushNotification": "Sending test notification...",
+  "sendPushNotificationSuccess": "Sending test notification success",
+  "pushNotificationActive": "Push Notification Active",
+  "havingAnyTrouble": "Having any trouble,",
+  "sendTheFeedbackToUs": "Send the feedback to Us",
+  "sendFeedbackToUs": "Send feedback to Us",
+  "diagnosisPushNotificationFailed": "Diagnosis Push Notification Failed"
 }

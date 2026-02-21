@@ -485,5 +485,19 @@
   "overallSummaryScore": "Rangkuman Keseluruhan Nilai",
   "noSubjectFoundOnListKey": "List mata pelajaran di atas hanya menampilkan mata pelajaran yang sudah memiliki nilai. Jika mata pelajaran yang kamu cari tidak tersedia, silakan menghubungi guru mata pelajaran terkait untuk memastikan data nilai telah diinput.",
   "valueAspect": "Aspek Nilai",
-  "taskDescription": "Keterangan Tugas"
+  "taskDescription": "Keterangan Tugas",
+  "diagnosis": "Diagnosis",
+  "diagnosisPushNotification": "Diagnosis Push Notification",
+  "checkingRequiremetsNotification": "Memeriksa pengaturan notifikasi mu",
+  "checkNotificationPermission": "Memverifikasi perizinan notifikasi...",
+  "checkNotificationPermissionSuccess": "Perizinan notifikasi diizinkan",
+  "checkNotificationToken": "Memverifikasi token notifikasi (fcm token)...",
+  "checkNotificationTokenSuccess": "FCM Token aktif",
+  "sendPushNotification": "Mengirim notifikasi untuk test...",
+  "sendPushNotificationSuccess": "Berhasil mengirim test notifikasi",
+  "pushNotificationActive": "Push Notification Aktif",
+  "havingAnyTrouble": "Jika terdapat kendala,",
+  "sendTheFeedbackToUs": "Kirimkan masukan kepada Kami.",
+  "sendFeedbackToUs": "Kirimkan masukan kepada Kami.",
+  "diagnosisPushNotificationFailed": "Diagnosis Push Notification Gagal"
 }

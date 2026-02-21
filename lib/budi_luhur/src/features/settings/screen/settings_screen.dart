@@ -67,6 +67,10 @@ class SettingsScreen extends StatelessWidget {
 
                   ContactUsSettingButton(),
 
+                  SizedBox(height: 16),
+
+                  DiagnosisSettingButton(),
+
                   SizedBox(height: 24),
 
                   AppVersionSettingsText(),

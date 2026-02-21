@@ -560,3 +560,21 @@ const String currentDemeritPointsKey = "currentDemeritPoints";
 
 const String extracurricularKey = "extracurricular";
 const String summaryKey = "summary";
+const String havingAnyTroubleKey = "havingAnyTrouble";
+const String sendTheFeedbackToUsKey = "sendTheFeedbackToUs";
+const String sendFeedbackToUsKey = "sendFeedbackToUs";
+
+const String diagnosisKey = "diagnosis";
+const String diagnosisPushNotificationKey = "diagnosisPushNotification";
+const String checkingRequiremetsNotificationKey =
+    "checkingRequiremetsNotification";
+const String pushNotificationActiveKey = "pushNotificationActive";
+const String checkNotificationPermissionKey = "checkNotificationPermission";
+const String checkNotificationPermissionSuccessKey =
+    "checkNotificationPermissionSuccess";
+const String checkNotificationTokenKey = "checkNotificationToken";
+const String checkNotificationTokenSuccessKey = "checkNotificationTokenSuccess";
+const String sendPushNotificationKey = "sendPushNotification";
+const String sendPushNotificationSuccessKey = "sendPushNotificationSuccess";
+const String diagnosisPushNotificationFailedKey =
+    "diagnosisPushNotificationFailed";
