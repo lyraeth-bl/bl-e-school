@@ -93,6 +93,8 @@ class DiagnosisPushNotificationScreen extends StatelessWidget {
                           context,
                           checkNotificationTokenSuccessKey,
                           fcmToken != null && fcmToken.isNotEmpty,
+                          forToken: true,
+                          token: fcmToken,
                         ),
 
                         const SizedBox(height: 24),
@@ -255,7 +257,13 @@ class DiagnosisPushNotificationScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildChecklistRow(BuildContext context, String text, bool isSuccess) {
+  Widget _buildChecklistRow(
+    BuildContext context,
+    String text,
+    bool isSuccess, {
+    bool forToken = false,
+    String? token,
+  }) {
     return Row(
       children: [
         Icon(
@@ -264,15 +272,49 @@ class DiagnosisPushNotificationScreen extends StatelessWidget {
           color: isSuccess ? Colors.green : Colors.red,
         ),
         const SizedBox(width: 16),
-        Expanded(
-          child: Text(
-            Utils.getTranslatedLabel(text),
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-              fontWeight: FontWeight.w700,
+        if (forToken) ...[
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  Utils.getTranslatedLabel(text),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  Utils.getTranslatedLabel(yourFcmTokenKey),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  token!,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                  maxLines: 3,
+                ),
+              ],
             ),
           ),
-        ),
+        ],
+
+        if (!forToken) ...[
+          Expanded(
+            child: Text(
+              Utils.getTranslatedLabel(text),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onSurface,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ],
       ],
     );
   }
@@ -305,7 +347,7 @@ class DiagnosisPushNotificationScreen extends StatelessWidget {
             child: Text(
               Utils.getTranslatedLabel(text),
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                color: Theme.of(context).colorScheme.onSurface,
                 fontWeight: FontWeight.w700,
               ),
             ),

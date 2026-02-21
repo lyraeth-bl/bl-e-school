@@ -578,3 +578,4 @@ const String sendPushNotificationKey = "sendPushNotification";
 const String sendPushNotificationSuccessKey = "sendPushNotificationSuccess";
 const String diagnosisPushNotificationFailedKey =
     "diagnosisPushNotificationFailed";
+const String yourFcmTokenKey = "yourFcmToken";

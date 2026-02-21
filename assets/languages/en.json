@@ -499,5 +499,6 @@
   "havingAnyTrouble": "Having any trouble,",
   "sendTheFeedbackToUs": "Send the feedback to Us",
   "sendFeedbackToUs": "Send feedback to Us",
-  "diagnosisPushNotificationFailed": "Diagnosis Push Notification Failed"
+  "diagnosisPushNotificationFailed": "Diagnosis Push Notification Failed",
+  "yourFcmToken": "Your FCM Token :"
 }

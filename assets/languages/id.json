@@ -499,5 +499,6 @@
   "havingAnyTrouble": "Jika terdapat kendala,",
   "sendTheFeedbackToUs": "Kirimkan masukan kepada Kami.",
   "sendFeedbackToUs": "Kirimkan masukan kepada Kami.",
-  "diagnosisPushNotificationFailed": "Diagnosis Push Notification Gagal"
+  "diagnosisPushNotificationFailed": "Diagnosis Push Notification Gagal",
+  "yourFcmToken": "FCM Token Kamu :"
 }
