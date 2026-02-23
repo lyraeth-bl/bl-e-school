@@ -19,7 +19,7 @@ class ChangeLanguageSettingsButton extends StatelessWidget {
             .first
             .languageName;
 
-        return InkWell(
+        return CustomButtonContainer(
           onTap: () async {
             if (!Get.isBottomSheetOpen!) {
               Get.bottomSheet(
@@ -31,32 +31,8 @@ class ChangeLanguageSettingsButton extends StatelessWidget {
               );
             }
           },
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceContainer,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Icon(LucideIcons.languages),
-                    const SizedBox(width: 12),
-                    Text(
-                      languageName,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
-                ),
-
-                Icon(LucideIcons.chevronRight),
-              ],
-            ),
-          ),
+          textKey: languageName,
+          leadingIcon: LucideIcons.languages,
         );
       },
     );

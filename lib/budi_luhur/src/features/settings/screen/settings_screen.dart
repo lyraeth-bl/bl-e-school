@@ -32,6 +32,7 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
       body: Stack(
         children: [
           Align(
@@ -52,21 +53,27 @@ class SettingsScreen extends StatelessWidget {
               physics: const AlwaysScrollableScrollPhysics(),
               child: Column(
                 children: [
-                  SizedBox(height: 8),
-
                   ChangeBiometricSettingsButton(),
 
-                  SizedBox(height: 8),
+                  SizedBox(height: 16),
 
                   ChangeLanguageSettingsButton(),
 
-                  SizedBox(height: 8),
+                  SizedBox(height: 16),
 
                   AboutUsSettingsButton(),
 
-                  SizedBox(height: 8),
+                  SizedBox(height: 16),
 
                   ContactUsSettingButton(),
+
+                  SizedBox(height: 16),
+
+                  DiagnosisSettingButton(),
+
+                  SizedBox(height: 24),
+
+                  AppVersionSettingsText(),
                 ],
               ),
             ),

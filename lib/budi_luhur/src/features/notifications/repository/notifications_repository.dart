@@ -137,4 +137,34 @@ class NotificationsRepository {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setStringList(temporarilyStoredNotificationsKey, []);
   }
+
+  Future<bool> sendTestNotification() async {
+    final nis = AuthRepository.getStudentDetails().nis;
+
+    final bodyNotification = {
+      "targetNis": [nis],
+      "title": "Push Notification Aktif",
+      "body":
+          "Ini adalah tampilan notifikasi MyBudiLuhur yang akan muncul di device kamu",
+      "data": {
+        "type": "general",
+        "createdAt": DateTime.now().toIso8601String(),
+      },
+    };
+    try {
+      final response = await ApiClient.post(
+        body: bodyNotification,
+        url: ApiEndpoints.sendNotification,
+        useAuthToken: true,
+      );
+
+      if (response["error"] == true) {
+        return false;
+      } else {
+        return true;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

@@ -25,7 +25,12 @@ class ContactUsListContainer extends StatelessWidget {
           backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
           child: Icon(leadingIcon),
         ),
-        title: Text(title, style: Theme.of(context).textTheme.bodySmall),
+        title: Text(
+          title,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
+        ),
         subtitle: Text(
           subtitle,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -70,7 +75,9 @@ class ContactUsClickableListContainer extends StatelessWidget {
         ),
         title: Text(
           Utils.getTranslatedLabel(title),
-          style: Theme.of(context).textTheme.bodySmall,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
         ),
         subtitle: subtitle != null
             ? Text(

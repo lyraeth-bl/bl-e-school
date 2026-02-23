@@ -128,17 +128,10 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
             itemIndex: index,
             totalLoadedItems: listAcademicCalendar.length,
           ),
-          child: Container(
+          child: CustomContainer(
             margin: const EdgeInsets.only(bottom: 15),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
-              vertical: 8.0,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
             width: MediaQuery.of(context).size.width * (0.85),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.circular(16.0),
-            ),
             child: LayoutBuilder(
               builder: (context, boxConstraints) {
                 return Column(
@@ -200,25 +193,12 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
   Widget _buildCalendarContainer({
     required List<AcademicCalendar> listAcademicCalendar,
   }) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
-        boxShadow: [
-          BoxShadow(
-            color: Theme.of(
-              context,
-            ).colorScheme.secondary.withValues(alpha: 0.075),
-            offset: const Offset(5.0, 5),
-            blurRadius: 10,
-          ),
-        ],
-        borderRadius: BorderRadius.circular(15.0),
-      ),
-      margin: const EdgeInsets.only(top: 20),
+    return CustomContainer(
+      padding: const EdgeInsets.all(16),
       child: TableCalendar(
         headerVisible: false,
-        daysOfWeekHeight: 40,
+        rowHeight: 48,
+        daysOfWeekHeight: 48,
         onPageChanged: (DateTime dateTime) {
           setState(() {
             _now = dateTime;
@@ -299,26 +279,88 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
 
         availableGestures: AvailableGestures.none,
         calendarStyle: CalendarStyle(
-          isTodayHighlighted: false,
-          holidayDecoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Theme.of(context).colorScheme.tertiaryContainer,
+          // TextStyle untuk hari weekend (sabtu - minggu).
+          weekendTextStyle: TextStyle(
+            color: Theme.of(context).colorScheme.onErrorContainer,
           ),
+
+          // BoxDecoration untuk hari ini.
+          weekendDecoration: BoxDecoration(
+            color: Theme.of(
+              context,
+            ).colorScheme.errorContainer.withValues(alpha: 0.4),
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(16),
+              bottomRight: Radius.circular(32),
+              topLeft: Radius.circular(32),
+              topRight: Radius.circular(16),
+            ),
+          ),
+
+          // TextStyle untuk hari weekday (senin - jumat).
+          defaultTextStyle: TextStyle(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
+
+          // BoxDecoration untuk weekday (senin - jumat).
+          defaultDecoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surfaceContainerLow,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(16),
+              bottomRight: Radius.circular(32),
+              topLeft: Radius.circular(32),
+              topRight: Radius.circular(16),
+            ),
+          ),
+
+          // TextStyle untuk hari ini.
+          todayTextStyle: TextStyle(
+            color: Theme.of(context).colorScheme.onPrimaryContainer,
+          ),
+
+          // BoxDecoration untuk hari ini.
+          todayDecoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primaryContainer,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(16),
+              bottomRight: Radius.circular(32),
+              topLeft: Radius.circular(32),
+              topRight: Radius.circular(16),
+            ),
+          ),
+
+          // BoxDecoration untuk hari dimana mempunyai data absensi.
+          holidayDecoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.secondaryContainer,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(16),
+              bottomRight: Radius.circular(32),
+              topLeft: Radius.circular(32),
+              topRight: Radius.circular(16),
+            ),
+          ),
+
+          // TextStyle untuk hari dimana mempunyai data absensi.
           holidayTextStyle: TextStyle(
-            color: Theme.of(context).colorScheme.onTertiaryContainer,
+            color: Theme.of(context).colorScheme.onSecondaryContainer,
+          ),
+        ),
+
+        daysOfWeekStyle: DaysOfWeekStyle(
+          weekdayStyle: TextStyle(
+            color: Theme.of(context).colorScheme.onSurface,
+            fontWeight: FontWeight.w700,
+          ),
+          weekendStyle: TextStyle(
+            color: Theme.of(context).colorScheme.error,
             fontWeight: FontWeight.w700,
           ),
         ),
-        daysOfWeekStyle: DaysOfWeekStyle(
-          weekendStyle: TextStyle(
-            color: Theme.of(context).colorScheme.primary,
-            fontWeight: FontWeight.bold,
-          ),
-          weekdayStyle: TextStyle(
-            color: Theme.of(context).colorScheme.primary,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+
         headerStyle: const HeaderStyle(
           titleCentered: true,
           formatButtonVisible: false,
@@ -439,12 +481,8 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
         left: 24,
         right: 24,
       ),
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(16),
-        ),
+      child: CustomContainer(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -492,7 +530,7 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
             Text(
               Utils.formatToMonthYear(_now),
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w700,
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
@@ -585,29 +623,22 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
                     Text(
                       Utils.getTranslatedLabel(detailsEventsKey),
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w700,
                         color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
 
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.tertiaryContainer.withValues(alpha: 0.8),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
+                    CustomChipContainer(
+                      backgroundColor: Theme.of(
+                        context,
+                      ).colorScheme.primaryContainer,
                       child: Text(
                         dateHeader,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Theme.of(
                             context,
-                          ).colorScheme.onTertiaryContainer,
-                          fontWeight: FontWeight.w600,
+                          ).colorScheme.onPrimaryContainer,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                     ),
@@ -617,7 +648,7 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
                 const SizedBox(height: 16),
 
                 Text(
-                  "${academicCalendarList.length} event",
+                  "${academicCalendarList.length} ${Utils.getTranslatedLabel(eventKey)}",
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
@@ -629,7 +660,7 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
                   child: academicCalendarList.isEmpty
                       ? Center(
                           child: Text(
-                            "Tidak ada data event",
+                            Utils.getTranslatedLabel(noEventKey),
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                         )
@@ -650,15 +681,8 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
                                       ? Utils.formatDateTwo(start)
                                       : "");
 
-                            return Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 12,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.surface,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
+                            return CustomContainer(
+                              padding: const EdgeInsets.all(16),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [

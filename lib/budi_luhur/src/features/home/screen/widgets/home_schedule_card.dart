@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class HomeScheduleCard extends StatefulWidget {
   const HomeScheduleCard({super.key});
@@ -66,9 +67,9 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => Get.toNamed(BudiLuhurRoutes.studentTimeTable),
-      child: Card(
-        elevation: 3,
-        color: Theme.of(context).colorScheme.surface,
+      child: CustomContainer(
+        enableShadow: false,
+        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -90,21 +91,16 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.tertiaryContainer,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+                  CustomChipContainer(
+                    backgroundColor: Theme.of(
+                      context,
+                    ).colorScheme.secondaryContainer,
                     child: RealTimeClock(
                       onTick: _handleTick,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         color: Theme.of(
                           context,
-                        ).colorScheme.onTertiaryContainer,
+                        ).colorScheme.onSecondaryContainer,
                       ),
                     ),
                   ),
@@ -123,13 +119,7 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
 
                     // ======== WEEKEND ========
                     if (_isWeekend) {
-                      return Container(
-                        padding: const EdgeInsets.symmetric(vertical: 32),
-                        margin: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surfaceContainer,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                      return ScheduleContainer(
                         child: Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -149,7 +139,7 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                                     ?.copyWith(
                                       color: Theme.of(
                                         context,
-                                      ).colorScheme.onSurface,
+                                      ).colorScheme.onPrimaryContainer,
                                       fontWeight: FontWeight.w700,
                                     ),
                               ),
@@ -161,13 +151,7 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
 
                     // ======== AFTER SCHOOL ========
                     if (_isAfterSchool) {
-                      return Container(
-                        padding: const EdgeInsets.symmetric(vertical: 32),
-                        margin: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surfaceContainer,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                      return ScheduleContainer(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -179,7 +163,7 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                                   ?.copyWith(
                                     color: Theme.of(
                                       context,
-                                    ).colorScheme.onSurface,
+                                    ).colorScheme.onPrimaryContainer,
                                     fontWeight: FontWeight.w700,
                                   ),
                             ),
@@ -188,7 +172,7 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                       );
                     }
 
-                    // ======== BREAK (no next class) ========
+                    // ======== BREAK ========
                     if (_isBreakMorning || _isBreakAfternoon) {
                       final start = _isBreakMorning
                           ? DateTime(now.year, now.month, now.day, 10, 0)
@@ -197,20 +181,14 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                           ? DateTime(now.year, now.month, now.day, 10, 30)
                           : DateTime(now.year, now.month, now.day, 13, 30);
 
-                      return Container(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        margin: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surfaceContainer,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                      return ScheduleContainer(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Lottie.asset(
                               'assets/animations/break.json',
-                              width: 100,
-                              height: 100,
+                              width: 75,
+                              height: 75,
                               fit: BoxFit.cover,
                             ),
                             SizedBox(height: 16),
@@ -223,20 +201,19 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                                       ?.copyWith(
                                         color: Theme.of(
                                           context,
-                                        ).colorScheme.onSurface,
+                                        ).colorScheme.onPrimaryContainer,
                                         fontWeight: FontWeight.w700,
                                       ),
                                 ),
                                 SizedBox(height: 16),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.timer, size: 16),
-                                    SizedBox(width: 6),
-                                    Text(
-                                      "${Utils.formatTime(start)} - ${Utils.formatTime(end)}",
-                                    ),
-                                  ],
+                                Text(
+                                  "${Utils.formatTime(start)} - ${Utils.formatTime(end)}",
+                                  style: Theme.of(context).textTheme.bodyMedium
+                                      ?.copyWith(
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onPrimaryContainer,
+                                      ),
                                 ),
                               ],
                             ),
@@ -273,26 +250,30 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                             .join(' ');
                       }
 
-                      return Container(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        margin: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surfaceContainer,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                      return ScheduleContainer(
                         child: ListTile(
                           title: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Row(
                                 children: [
-                                  Icon(Icons.timer),
+                                  Icon(
+                                    LucideIcons.clock,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onPrimaryContainer,
+                                  ),
                                   SizedBox(width: 8),
                                   Text(
                                     Utils.getTranslatedLabel(timeKey),
-                                    style: Theme.of(
-                                      context,
-                                    ).textTheme.bodyMedium,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.onPrimaryContainer,
+                                        ),
                                   ),
                                 ],
                               ),
@@ -302,7 +283,7 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                                     ?.copyWith(
                                       color: Theme.of(
                                         context,
-                                      ).colorScheme.onSurface,
+                                      ).colorScheme.onPrimaryContainer,
                                       fontWeight: FontWeight.w700,
                                     ),
                               ),
@@ -318,13 +299,23 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                                 children: [
                                   Row(
                                     children: [
-                                      Icon(Icons.book),
+                                      Icon(
+                                        LucideIcons.bookMarked,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onPrimaryContainer,
+                                      ),
                                       SizedBox(width: 8),
                                       Text(
                                         Utils.getTranslatedLabel(subjectsKey),
-                                        style: Theme.of(
-                                          context,
-                                        ).textTheme.bodyMedium,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                              color: Theme.of(
+                                                context,
+                                              ).colorScheme.onPrimaryContainer,
+                                            ),
                                       ),
                                     ],
                                   ),
@@ -338,7 +329,7 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                                         ?.copyWith(
                                           color: Theme.of(
                                             context,
-                                          ).colorScheme.onSurface,
+                                          ).colorScheme.onPrimaryContainer,
                                           fontWeight: FontWeight.w700,
                                         ),
                                   ),
@@ -352,17 +343,22 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                                   Row(
                                     children: [
                                       Icon(
-                                        Icons.person,
+                                        LucideIcons.userStar,
                                         color: Theme.of(
                                           context,
-                                        ).colorScheme.onSurfaceVariant,
+                                        ).colorScheme.onPrimaryContainer,
                                       ),
                                       SizedBox(width: 8),
                                       Text(
                                         Utils.getTranslatedLabel(teachersKey),
-                                        style: Theme.of(
-                                          context,
-                                        ).textTheme.bodyMedium,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                              color: Theme.of(
+                                                context,
+                                              ).colorScheme.onPrimaryContainer,
+                                            ),
                                       ),
                                     ],
                                   ),
@@ -376,7 +372,7 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                                         ?.copyWith(
                                           color: Theme.of(
                                             context,
-                                          ).colorScheme.onSurface,
+                                          ).colorScheme.onPrimaryContainer,
                                           fontWeight: FontWeight.w700,
                                         ),
                                   ),
@@ -413,26 +409,25 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                             .join(' ');
                       }
 
-                      return Container(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        margin: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surfaceContainer,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                      return ScheduleContainer(
                         child: ListTile(
                           title: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Row(
                                 children: [
-                                  Icon(Icons.timer),
+                                  Icon(LucideIcons.clock),
                                   SizedBox(width: 8),
                                   Text(
                                     Utils.getTranslatedLabel(timeKey),
-                                    style: Theme.of(
-                                      context,
-                                    ).textTheme.bodyMedium,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.onPrimaryContainer,
+                                        ),
                                   ),
                                 ],
                               ),
@@ -442,7 +437,7 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                                     ?.copyWith(
                                       color: Theme.of(
                                         context,
-                                      ).colorScheme.onSurface,
+                                      ).colorScheme.onPrimaryContainer,
                                       fontWeight: FontWeight.w700,
                                     ),
                               ),
@@ -458,13 +453,18 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                                 children: [
                                   Row(
                                     children: [
-                                      Icon(Icons.book),
+                                      Icon(LucideIcons.bookMarked),
                                       SizedBox(width: 8),
                                       Text(
                                         Utils.getTranslatedLabel(nextClassKey),
-                                        style: Theme.of(
-                                          context,
-                                        ).textTheme.bodyMedium,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                              color: Theme.of(
+                                                context,
+                                              ).colorScheme.onPrimaryContainer,
+                                            ),
                                       ),
                                     ],
                                   ),
@@ -478,7 +478,7 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                                         ?.copyWith(
                                           color: Theme.of(
                                             context,
-                                          ).colorScheme.onSurface,
+                                          ).colorScheme.onPrimaryContainer,
                                           fontWeight: FontWeight.w700,
                                         ),
                                   ),
@@ -492,17 +492,22 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                                   Row(
                                     children: [
                                       Icon(
-                                        Icons.person,
+                                        LucideIcons.userStar,
                                         color: Theme.of(
                                           context,
-                                        ).colorScheme.onSurfaceVariant,
+                                        ).colorScheme.onPrimaryContainer,
                                       ),
                                       SizedBox(width: 8),
                                       Text(
                                         Utils.getTranslatedLabel(teachersKey),
-                                        style: Theme.of(
-                                          context,
-                                        ).textTheme.bodyMedium,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                              color: Theme.of(
+                                                context,
+                                              ).colorScheme.onPrimaryContainer,
+                                            ),
                                       ),
                                     ],
                                   ),
@@ -516,7 +521,7 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                                         ?.copyWith(
                                           color: Theme.of(
                                             context,
-                                          ).colorScheme.onSurface,
+                                          ).colorScheme.onPrimaryContainer,
                                           fontWeight: FontWeight.w700,
                                         ),
                                   ),
@@ -529,17 +534,11 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                     }
 
                     // ======== NO MORE SCHEDULE TODAY ========
-                    return Container(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      margin: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surfaceContainer,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
+                    return ScheduleContainer(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.free_breakfast),
+                          Icon(LucideIcons.coffee),
                           SizedBox(width: 16),
                           Text(
                             Utils.getTranslatedLabel(noMoreScheduleTodayKey),
@@ -547,7 +546,7 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                                 ?.copyWith(
                                   color: Theme.of(
                                     context,
-                                  ).colorScheme.onSurface,
+                                  ).colorScheme.onPrimaryContainer,
                                   fontWeight: FontWeight.w700,
                                 ),
                           ),
@@ -555,23 +554,19 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
                       ),
                     );
                   },
-                  orElse: () => Container(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    margin: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surfaceContainer,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+                  orElse: () => ScheduleContainer(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.free_breakfast),
+                        Icon(LucideIcons.coffee),
                         SizedBox(width: 16),
                         Text(
                           Utils.getTranslatedLabel(noMoreScheduleTodayKey),
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
-                                color: Theme.of(context).colorScheme.onSurface,
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onPrimaryContainer,
                                 fontWeight: FontWeight.w700,
                               ),
                         ),
@@ -584,6 +579,29 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class ScheduleContainer extends StatelessWidget {
+  final Widget child;
+
+  const ScheduleContainer({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomContainer(
+      width: MediaQuery.of(context).size.width,
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      margin: const EdgeInsets.only(top: 8),
+      borderRadius: BorderRadius.only(
+        bottomLeft: Radius.circular(16),
+        bottomRight: Radius.circular(32),
+        topLeft: Radius.circular(32),
+      ),
+      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+      enableShadow: false,
+      child: child,
     );
   }
 }

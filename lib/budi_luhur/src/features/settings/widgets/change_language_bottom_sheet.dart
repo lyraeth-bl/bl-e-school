@@ -47,20 +47,17 @@ class ChangeLanguageBottomSheet extends StatelessWidget {
                     onTap: () => context
                         .read<AppLocalizationCubit>()
                         .changeLanguage(appLanguage.languageCode),
-                    child: Container(
+                    child: CustomContainer(
                       margin: const EdgeInsets.symmetric(vertical: 8),
                       padding: const EdgeInsets.symmetric(
                         vertical: 8,
                         horizontal: 12,
                       ),
-                      decoration: BoxDecoration(
-                        color:
-                            appLanguage.languageCode ==
-                                state.language.languageCode
-                            ? Theme.of(context).colorScheme.primaryContainer
-                            : Theme.of(context).colorScheme.surfaceContainer,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
+                      backgroundColor:
+                          appLanguage.languageCode ==
+                              state.language.languageCode
+                          ? Theme.of(context).colorScheme.primaryContainer
+                          : Theme.of(context).colorScheme.surfaceContainer,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

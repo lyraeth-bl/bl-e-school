@@ -8,34 +8,10 @@ class AboutUsSettingsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return CustomButtonContainer(
       onTap: () => Get.toNamed(BudiLuhurRoutes.aboutUs),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surfaceContainer,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                Icon(LucideIcons.circleQuestionMark),
-                const SizedBox(width: 12),
-                Text(
-                  Utils.getTranslatedLabel(aboutUsKey),
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
-                ),
-              ],
-            ),
-
-            Icon(LucideIcons.chevronRight),
-          ],
-        ),
-      ),
+      textKey: aboutUsKey,
+      leadingIcon: LucideIcons.circleQuestionMark,
     );
   }
 }

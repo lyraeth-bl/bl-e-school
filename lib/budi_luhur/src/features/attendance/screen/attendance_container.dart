@@ -132,12 +132,8 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
         left: 24,
         right: 24,
       ),
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(16),
-        ),
+      child: CustomContainer(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -283,28 +279,36 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
                   )
                   .toList();
 
-              return Padding(
-                padding: const EdgeInsets.only(left: 24, right: 24),
-                child: Column(
-                  children: [
-                    _buildCalendarContainer(
-                      dailyAttendanceList: dailyAttendanceList,
-                      presentDays: presentDays,
-                      absentDays: absentDays,
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildCalendarContainer(
+                    dailyAttendanceList: dailyAttendanceList,
+                    presentDays: presentDays,
+                    absentDays: absentDays,
+                  ),
+
+                  if (hadirCount != 0 ||
+                      terlambatCount != 0 ||
+                      alphaCount != 0 ||
+                      sakitCount != 0 ||
+                      izinCount != 0 && pieData.isNotEmpty) ...[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 32),
+                      child: Text(
+                        "${Utils.getTranslatedLabel(summaryKey)} ${Utils.getTranslatedLabel(attendanceKey)}",
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(
+                              color: Theme.of(context).colorScheme.onSurface,
+                              fontWeight: FontWeight.w700,
+                            ),
+                      ),
                     ),
-
-                    if (hadirCount != 0 ||
-                        terlambatCount != 0 ||
-                        alphaCount != 0 ||
-                        sakitCount != 0 ||
-                        izinCount != 0 && pieData.isNotEmpty) ...[
-                      SizedBox(height: 16),
-                      AttendanceCharts(data: pieData, order: order),
-                    ],
-
-                    _buildLastFetchData(timeUpdate: lastUpdated),
+                    AttendanceCharts(data: pieData, order: order),
                   ],
-                ),
+
+                  _buildLastFetchData(timeUpdate: lastUpdated),
+                ],
               );
             },
             orElse: () => AttendanceShimmer(),
@@ -315,24 +319,22 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
   }
 
   Widget _buildLastFetchData({required DateTime timeUpdate}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Container(
-          margin: const EdgeInsets.only(top: 16),
-          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.tertiaryContainer,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Text(
-            "Last updated: ${Utils.formatDaysAndTime(timeUpdate, locale: "id_ID")}",
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: Theme.of(context).colorScheme.onTertiaryContainer,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          CustomChipContainer(
+            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+            child: Text(
+              "${Utils.getTranslatedLabel(lastUpdatedKey)} ${Utils.formatDaysAndTime(timeUpdate, locale: "id_ID")}",
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -341,19 +343,16 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
     required List<DailyAttendance> presentDays,
     required List<DailyAttendance> absentDays,
   }) {
-    return Container(
-      margin: const EdgeInsets.only(top: 12),
+    return CustomContainer(
+      margin: const EdgeInsets.all(24),
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
-      ),
       child: TableCalendar(
         focusedDay: _now,
         firstDay: firstDayOfMonth,
         lastDay: lastDayOfMonth,
         headerVisible: false,
-        daysOfWeekHeight: 24,
+        rowHeight: 48,
+        daysOfWeekHeight: 48,
         onPageChanged: (DateTime dateTime) {
           setState(() {
             _now = dateTime;
@@ -445,23 +444,72 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
         },
 
         calendarStyle: CalendarStyle(
+          // TextStyle untuk hari weekend (sabtu - minggu).
           weekendTextStyle: TextStyle(
-            color: Theme.of(context).colorScheme.error,
+            color: Theme.of(context).colorScheme.onErrorContainer,
           ),
+
+          // BoxDecoration untuk hari ini.
+          weekendDecoration: BoxDecoration(
+            color: Theme.of(
+              context,
+            ).colorScheme.errorContainer.withValues(alpha: 0.4),
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(16),
+              bottomRight: Radius.circular(32),
+              topLeft: Radius.circular(32),
+              topRight: Radius.circular(16),
+            ),
+          ),
+
+          // TextStyle untuk hari weekday (senin - jumat).
           defaultTextStyle: TextStyle(
             color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
-          todayDecoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primaryContainer,
-            shape: BoxShape.circle,
+
+          // BoxDecoration untuk weekday (senin - jumat).
+          defaultDecoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surfaceContainerLow,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(16),
+              bottomRight: Radius.circular(32),
+              topLeft: Radius.circular(32),
+              topRight: Radius.circular(16),
+            ),
           ),
+
+          // TextStyle untuk hari ini.
           todayTextStyle: TextStyle(
             color: Theme.of(context).colorScheme.onPrimaryContainer,
           ),
+
+          // BoxDecoration untuk hari ini.
+          todayDecoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primaryContainer,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(16),
+              bottomRight: Radius.circular(32),
+              topLeft: Radius.circular(32),
+              topRight: Radius.circular(16),
+            ),
+          ),
+
+          // BoxDecoration untuk hari dimana mempunyai data absensi.
           holidayDecoration: BoxDecoration(
             color: Theme.of(context).colorScheme.secondaryContainer,
-            shape: BoxShape.circle,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(16),
+              bottomRight: Radius.circular(32),
+              topLeft: Radius.circular(32),
+              topRight: Radius.circular(16),
+            ),
           ),
+
+          // TextStyle untuk hari dimana mempunyai data absensi.
           holidayTextStyle: TextStyle(
             color: Theme.of(context).colorScheme.onSecondaryContainer,
           ),
@@ -469,7 +517,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
 
         daysOfWeekStyle: DaysOfWeekStyle(
           weekdayStyle: TextStyle(
-            color: Theme.of(context).colorScheme.primary,
+            color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.w700,
           ),
           weekendStyle: TextStyle(

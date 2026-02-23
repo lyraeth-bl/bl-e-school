@@ -1,6 +1,7 @@
 // AttendanceCharts.dart
 import 'dart:async';
 
+import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -102,17 +103,13 @@ class _AttendanceChartsState extends State<AttendanceCharts> {
           fontWeight: FontWeight.w700,
           color: theme.colorScheme.onPrimaryContainer,
         ),
-        titlePositionPercentageOffset: 0.6,
+        titlePositionPercentageOffset: 0.5,
         showTitle: true,
-        borderSide: BorderSide.none,
       );
     });
 
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
-      ),
+    return CustomContainer(
+      margin: const EdgeInsets.all(24),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -138,7 +135,7 @@ class _AttendanceChartsState extends State<AttendanceCharts> {
             ),
           ),
 
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
 
           // Legend + summary row
           Padding(
@@ -162,8 +159,8 @@ class _AttendanceChartsState extends State<AttendanceCharts> {
                           children: [
                             AnimatedContainer(
                               duration: const Duration(milliseconds: 220),
-                              width: isHighlighted ? 18 : 14,
-                              height: isHighlighted ? 18 : 14,
+                              width: isHighlighted ? 16 : 12,
+                              height: isHighlighted ? 16 : 12,
                               decoration: BoxDecoration(
                                 color: color,
                                 borderRadius: BorderRadius.circular(4),
@@ -178,11 +175,15 @@ class _AttendanceChartsState extends State<AttendanceCharts> {
                                     : null,
                               ),
                             ),
-                            const SizedBox(width: 10),
+                            const SizedBox(width: 8),
                             Expanded(
                               child: Text(
-                                label,
-                                style: theme.textTheme.bodyMedium,
+                                Utils.getTranslatedLabel(label),
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface,
+                                ),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -194,11 +195,18 @@ class _AttendanceChartsState extends State<AttendanceCharts> {
                                   '${value.toInt()}',
                                   style: theme.textTheme.bodyMedium?.copyWith(
                                     fontWeight: FontWeight.w700,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
                                   ),
                                 ),
                                 Text(
                                   '${percent.toStringAsFixed(0)}%',
-                                  style: theme.textTheme.bodySmall,
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
+                                  ),
                                 ),
                               ],
                             ),
@@ -214,20 +222,28 @@ class _AttendanceChartsState extends State<AttendanceCharts> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text('Total', style: theme.textTheme.bodySmall),
+                      Text(
+                        Utils.getTranslatedLabel(totalKey),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
                       const SizedBox(height: 4),
                       Text(
-                        '${total.toInt()} hari',
+                        '${total.toInt()} ${Utils.getTranslatedLabel(dayKey)}',
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w700,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                       ),
                       const SizedBox(height: 6),
                       Text(
                         total == 0
-                            ? 'Belum ada data'
+                            ? Utils.getTranslatedLabel(noDataFoundKey)
                             : 'Kehadiran: ${((widget.data['Hadir'] ?? 0) / (total == 0 ? 1 : total) * 100).toStringAsFixed(1)}%',
-                        style: theme.textTheme.bodySmall,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
                       ),
                     ],
                   ),

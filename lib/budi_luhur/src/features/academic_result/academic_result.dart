@@ -1,0 +1,15 @@
+export 'bloc/academic_result_bloc.dart';
+export 'data/academic_result/academic_result.dart';
+export 'data/academic_result_categories/academic_result_categories.dart';
+export 'data/academic_result_data/academic_result_data.dart';
+export 'data/academic_result_meta/academic_result_meta.dart';
+export 'data/academic_result_overall_summary/academic_result_overall_summary.dart';
+export 'data/academic_result_response/academic_result_response.dart';
+export 'data/academic_result_summary/academic_result_summary.dart';
+export 'repository/academic_result_repository.dart';
+export 'screen/academic_result_screen.dart';
+export 'screen/result_screen.dart';
+export 'screen/widgets/academic_result_container.dart';
+export 'screen/widgets/academic_result_shimmer.dart';
+export 'screen/widgets/result_grades_container.dart';
+export 'screen/widgets/result_overall_summary_container.dart';

@@ -40,13 +40,8 @@ class _DemeritScreenState extends State<DemeritScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: MediaQuery.of(context).size.width,
+              CustomContainer(
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(12),
-                ),
                 child: IntrinsicHeight(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -177,23 +172,21 @@ class _DemeritScreenState extends State<DemeritScreen> {
                           onTap: () {
                             setState(() => _selectedSession = session);
                           },
-                          child: Container(
+                          child: CustomContainer(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 12,
                               vertical: 6,
                             ),
-                            decoration: BoxDecoration(
+                            enableShadow: false,
+                            backgroundColor: isSelected
+                                ? Theme.of(context).colorScheme.primary
+                                : null,
+                            border: Border.all(
                               color: isSelected
                                   ? Theme.of(context).colorScheme.primary
-                                  : Colors.transparent,
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(
-                                color: isSelected
-                                    ? Theme.of(context).colorScheme.primary
-                                    : Theme.of(
-                                        context,
-                                      ).colorScheme.outlineVariant,
-                              ),
+                                  : Theme.of(
+                                      context,
+                                    ).colorScheme.outlineVariant,
                             ),
                             child: Text(
                               session.toString(),
@@ -233,12 +226,8 @@ class _DemeritScreenState extends State<DemeritScreen> {
                         return NoDataContainer(titleKey: noDataFoundKey);
                       }
 
-                      return Container(
+                      return CustomContainer(
                         padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surface,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
                         child: ListView.separated(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
@@ -305,7 +294,9 @@ class _DemeritHistoryItem extends StatelessWidget {
               children: [
                 Text(
                   data.description,
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
 
                 const SizedBox(height: 8),

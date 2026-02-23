@@ -54,12 +54,8 @@ class ChangeBiometricSettingsButton extends StatelessWidget {
               },
             );
           },
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceContainer,
-              borderRadius: BorderRadius.circular(16),
-            ),
+          child: CustomContainer(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -71,6 +67,7 @@ class ChangeBiometricSettingsButton extends StatelessWidget {
                       Utils.getTranslatedLabel(biometricLoginKey),
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.w700,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                   ],

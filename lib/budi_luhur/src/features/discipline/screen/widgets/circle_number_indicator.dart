@@ -76,9 +76,10 @@ class _CircleNumberIndicatorState extends State<CircleNumberIndicator> {
             ),
             Text(
               value.toString(),
-              style: Theme.of(
-                context,
-              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
             ),
           ],
         ),

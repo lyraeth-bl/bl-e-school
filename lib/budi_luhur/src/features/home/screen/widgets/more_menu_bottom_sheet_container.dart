@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class MoreMenuBottomSheetContainer extends StatelessWidget {
@@ -37,8 +36,11 @@ class MoreMenuBottomSheetContainer extends StatelessWidget {
               decoration: BoxDecoration(
                 border: Border.all(
                   color: Theme.of(context).colorScheme.outlineVariant,
+                  width: 0.2,
                 ),
-                color: Theme.of(context).colorScheme.surfaceContainer,
+                color: Theme.of(
+                  context,
+                ).colorScheme.primaryContainer.withValues(alpha: 0.8),
                 borderRadius: BorderRadius.circular(16.0),
               ),
               margin: EdgeInsets.symmetric(
@@ -46,8 +48,11 @@ class MoreMenuBottomSheetContainer extends StatelessWidget {
               ),
               width: boxConstraints.maxWidth * (0.2),
               height: boxConstraints.maxWidth * (0.2),
-              padding: const EdgeInsets.all(12.5),
-              child: SvgPicture.asset(menu.iconUrl),
+              child: Icon(
+                menu.icon,
+                size: 32,
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
+              ),
             ),
             const SizedBox(height: 10),
             SizedBox(
@@ -78,7 +83,7 @@ class MoreMenuBottomSheetContainer extends StatelessWidget {
       padding: const EdgeInsets.only(top: 25.0, right: 25.0, left: 25.0),
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
+        color: Theme.of(context).colorScheme.surfaceContainer,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(25),
           topRight: Radius.circular(25),

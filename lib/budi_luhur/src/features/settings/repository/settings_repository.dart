@@ -1,4 +1,5 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:hive/hive.dart';
 
 /// A repository for managing user settings, stored locally using Hive.
@@ -34,5 +35,19 @@ class SettingsRepository {
   /// Defaults to `false` if the value is not found.
   bool getBiometricStatus() {
     return Hive.box(authBoxKey).get(biometricStatusKey) ?? false;
+  }
+
+  Future<bool> getNotificationSettings() async {
+    NotificationSettings notificationSettings = await FirebaseMessaging.instance
+        .getNotificationSettings();
+
+    if (notificationSettings.authorizationStatus ==
+            AuthorizationStatus.notDetermined ||
+        notificationSettings.authorizationStatus ==
+            AuthorizationStatus.denied) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

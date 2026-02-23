@@ -2,6 +2,7 @@ import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class HomeAttendanceCard extends StatelessWidget {
   const HomeAttendanceCard({super.key});
@@ -66,9 +67,8 @@ class HomeAttendanceCard extends StatelessWidget {
           onTap: () {
             Get.toNamed(BudiLuhurRoutes.studentAttendance);
           },
-          child: Card(
-            elevation: 3,
-            color: Theme.of(context).colorScheme.surface,
+          child: CustomContainer(
+            shadowsOffset: Offset(5, 5),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -86,27 +86,20 @@ class HomeAttendanceCard extends StatelessWidget {
                               fontWeight: FontWeight.w700,
                             ),
                       ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.tertiaryContainer,
-                        ),
+                      CustomChipContainer(
+                        backgroundColor: Theme.of(
+                          context,
+                        ).colorScheme.secondaryContainer,
                         child: Text(
                           Utils.formatToDayMonthYear(
                             DateTime.now(),
                             locale: "id_ID",
                           ),
-                          style: Theme.of(context).textTheme.bodySmall
+                          style: Theme.of(context).textTheme.labelSmall
                               ?.copyWith(
                                 color: Theme.of(
                                   context,
-                                ).colorScheme.onTertiaryContainer,
+                                ).colorScheme.onSecondaryContainer,
                               ),
                         ),
                       ),
@@ -116,98 +109,29 @@ class HomeAttendanceCard extends StatelessWidget {
 
                 Row(
                   children: [
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surfaceContainer,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        margin: const EdgeInsets.only(left: 16, right: 8),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.login,
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.onSecondaryContainer,
-                            ),
-                            const SizedBox(width: 16),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  checkInText,
-                                  style: Theme.of(context).textTheme.bodyMedium
-                                      ?.copyWith(
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.onSurface,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  Utils.getTranslatedLabel(checkInKey),
-                                  style: Theme.of(context).textTheme.labelMedium
-                                      ?.copyWith(
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.onSurfaceVariant,
-                                      ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
+                    CustomAttendanceContainer(
+                      icon: LucideIcons.logIn,
+                      textKey: checkInKey,
+                      value: checkInText,
+                      backgroundColor: Theme.of(
+                        context,
+                      ).colorScheme.primaryContainer,
+                      foregroundColor: Theme.of(
+                        context,
+                      ).colorScheme.onPrimaryContainer,
                     ),
 
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surfaceContainer,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        margin: const EdgeInsets.only(right: 16, left: 8),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.logout,
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.onSecondaryContainer,
-                            ),
-                            const SizedBox(width: 16),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  checkOutText,
-                                  style: Theme.of(context).textTheme.bodyMedium
-                                      ?.copyWith(
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.onSurface,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  Utils.getTranslatedLabel(checkOutKey),
-                                  style: Theme.of(context).textTheme.labelMedium
-                                      ?.copyWith(
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.onSurfaceVariant,
-                                      ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
+                    CustomAttendanceContainer(
+                      isCheckOut: true,
+                      icon: LucideIcons.logOut,
+                      textKey: checkOutKey,
+                      value: checkOutText,
+                      backgroundColor: Theme.of(
+                        context,
+                      ).colorScheme.errorContainer,
+                      foregroundColor: Theme.of(
+                        context,
+                      ).colorScheme.onErrorContainer,
                     ),
                   ],
                 ),
@@ -217,6 +141,76 @@ class HomeAttendanceCard extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class CustomAttendanceContainer extends StatelessWidget {
+  const CustomAttendanceContainer({
+    super.key,
+    this.backgroundColor,
+    required this.icon,
+    this.foregroundColor,
+    required this.textKey,
+    required this.value,
+    this.isCheckOut = false,
+  }) : assert(
+         !(backgroundColor != null &&
+             foregroundColor != null &&
+             backgroundColor == foregroundColor),
+         "You cannot use same color on backgroundColor and foregroundColor, use onBackgroundColor on foregroundColor",
+       );
+
+  final Color? backgroundColor;
+
+  final IconData icon;
+
+  final Color? foregroundColor;
+
+  final String textKey;
+
+  final String value;
+
+  final bool isCheckOut;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        margin: isCheckOut
+            ? const EdgeInsets.only(right: 16, left: 8)
+            : const EdgeInsets.only(left: 16, right: 8),
+        child: Row(
+          children: [
+            Icon(icon, color: foregroundColor),
+            const SizedBox(width: 16),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  value,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: foregroundColor,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  Utils.getTranslatedLabel(textKey),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.labelMedium?.copyWith(color: foregroundColor),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

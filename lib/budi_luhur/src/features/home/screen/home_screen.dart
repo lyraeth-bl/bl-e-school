@@ -28,6 +28,9 @@ class HomeScreen extends StatefulWidget {
         BlocProvider<ExtracurricularBloc>(
           create: (_) => ExtracurricularBloc(ExtracurricularRepository()),
         ),
+        BlocProvider<AcademicResultBloc>(
+          create: (_) => AcademicResultBloc(AcademicResultRepository()),
+        ),
       ],
       child: HomeScreen(key: HomeScreen.homeScreenKey),
     );
@@ -386,22 +389,10 @@ class _HomeScreenState extends State<HomeScreen>
         position: _bottomNavAndTopProfileAnimation.drive(
           Tween<Offset>(begin: const Offset(0.0, 1.0), end: Offset.zero),
         ),
-        child: Container(
+        child: CustomContainer(
+          enableShadow: false,
           alignment: Alignment.center,
           margin: EdgeInsets.only(bottom: Utils.bottomNavigationBottomMargin),
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Utils.getColorScheme(
-                  context,
-                ).shadow.withValues(alpha: 0.15),
-                offset: const Offset(2.5, 2.5),
-                blurRadius: 20,
-              ),
-            ],
-            color: Theme.of(context).colorScheme.surface,
-            borderRadius: BorderRadius.circular(10.0),
-          ),
           width: MediaQuery.of(context).size.width * (0.85),
           height:
               MediaQuery.of(context).size.height *
@@ -464,6 +455,10 @@ class _HomeScreenState extends State<HomeScreen>
     if (homeBottomSheetMenu[_currentlyOpenMenuIndex].title ==
         guardianDetailsKey) {
       return const GuardianDetailsContainer();
+    }
+    if (homeBottomSheetMenu[_currentlyOpenMenuIndex].title ==
+        academicResultKey) {
+      return const AcademicResultContainer();
     }
     if (homeBottomSheetMenu[_currentlyOpenMenuIndex].title ==
         meritAndDemeritKey) {

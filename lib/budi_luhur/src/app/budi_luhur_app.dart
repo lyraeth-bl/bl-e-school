@@ -19,11 +19,10 @@ class BudiLuhurApp extends StatelessWidget {
           create: (_) => AppConfigurationCubit(AppConfigurationRepository()),
         ),
         BlocProvider<SettingsCubit>(
-          create: (_) =>
-              SettingsCubit(
-                SettingsRepository(),
-                BiometricAuth("Please authenticate first"),
-              ),
+          create: (_) => SettingsCubit(
+            SettingsRepository(),
+            BiometricAuth("Please authenticate first"),
+          ),
         ),
         BlocProvider<AppLocalizationCubit>(
           create: (_) => AppLocalizationCubit(SettingsRepository()),
@@ -44,12 +43,11 @@ class BudiLuhurApp extends StatelessWidget {
           return GetMaterialApp(
             debugShowCheckedModeBanner: false,
             theme: BudiLuhurTheme.lightMode(),
+            darkTheme: BudiLuhurTheme.darkMode(),
+            themeMode: ThemeMode.system,
             getPages: BudiLuhurRoutes.getPages,
             initialRoute: BudiLuhurRoutes.splash,
-            locale: context
-                .read<AppLocalizationCubit>()
-                .state
-                .language,
+            locale: context.read<AppLocalizationCubit>().state.language,
             fallbackLocale: const Locale("en"),
             translationsKeys: AppTranslation.translationsKeys,
             builder: (context, child) {
@@ -57,13 +55,13 @@ class BudiLuhurApp extends StatelessWidget {
                 listeners: [
                   BlocListener<AuthCubit, AuthState>(
                     listenWhen: (previous, current) =>
-                    previous.maybeWhen(
-                      authenticated: (isStudent, student, timeAuth) => true,
-                      orElse: () => false,
-                    ) &&
+                        previous.maybeWhen(
+                          authenticated: (isStudent, student, timeAuth) => true,
+                          orElse: () => false,
+                        ) &&
                         current.maybeWhen(
                           unauthenticated: (reason) =>
-                          reason == LogoutReason.sessionExpired,
+                              reason == LogoutReason.sessionExpired,
                           orElse: () => false,
                         ),
                     listener: (context, state) {
@@ -72,12 +70,9 @@ class BudiLuhurApp extends StatelessWidget {
                           const SessionExpiredBottomSheet(),
                           enableDrag: false,
                           isDismissible: false,
-                          backgroundColor: Theme
-                              .of(
+                          backgroundColor: Theme.of(
                             context,
-                          )
-                              .colorScheme
-                              .surface,
+                          ).colorScheme.surface,
                         );
                       }
                     },
@@ -85,7 +80,7 @@ class BudiLuhurApp extends StatelessWidget {
 
                   BlocListener<AppConfigurationCubit, AppConfigurationState>(
                     listenWhen: (previous, current) =>
-                    previous != current &&
+                        previous != current &&
                         current.maybeWhen(
                           success: (_) => true,
                           orElse: () => false,
@@ -95,7 +90,7 @@ class BudiLuhurApp extends StatelessWidget {
                         success: (config) async {
                           // Inisialisasi packages
                           PackageInfo packageInfo =
-                          await PackageInfo.fromPlatform();
+                              await PackageInfo.fromPlatform();
 
                           // ambil versi dari DB
                           final remoteVersion = Platform.isIOS
@@ -132,10 +127,10 @@ class BudiLuhurApp extends StatelessWidget {
 
                           // compare versi dan hasil appUpdate dari db
                           if ((Utils.compareVersion(
-                            localVersion,
-                            remoteVersion,
-                          ) <
-                              0) &&
+                                    localVersion,
+                                    remoteVersion,
+                                  ) <
+                                  0) &&
                               config.forceAppUpdate) {
                             if (!Get.isBottomSheetOpen!) {
                               // tampilkan bottomSheet

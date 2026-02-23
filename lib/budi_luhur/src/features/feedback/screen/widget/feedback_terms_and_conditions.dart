@@ -1,17 +1,14 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class FeedbackTermsAndConditions extends StatelessWidget {
   const FeedbackTermsAndConditions({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return CustomContainer(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -75,11 +72,25 @@ class FeedbackTermsAndConditionsFriendly extends StatelessWidget {
 
             const SizedBox(height: 16),
 
-            Text(
-              "Butuh bantuan? Hubungi pihak sekolah.",
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
+            Row(
+              children: [
+                Text(
+                  Utils.getTranslatedLabel(havingAnyTroubleKey),
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(width: 4),
+                GestureDetector(
+                  onTap: () => Get.toNamed(BudiLuhurRoutes.contactUs),
+                  child: Text(
+                    Utils.getTranslatedLabel(contactUsKey),
+                    style: theme.textTheme.labelMedium?.copyWith(
+                      color: theme.colorScheme.primary,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
