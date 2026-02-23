@@ -141,32 +141,41 @@ class DiagnosisPushNotificationScreen extends StatelessWidget {
 
                 /// Failed
                 if (status == DiagnosisStatus.failed) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: Icon(
-                          LucideIcons.circleX,
-                          size: 72,
-                          color: colorScheme.error,
-                        ),
-                      ),
-
-                      const SizedBox(height: 24),
-
-                      Center(
-                        child: Text(
-                          Utils.getTranslatedLabel(
-                            diagnosisPushNotificationFailedKey,
+                  return Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: Icon(
+                            LucideIcons.circleX,
+                            size: 72,
+                            color: colorScheme.error,
                           ),
-                          style: Theme.of(context).textTheme.titleLarge
-                              ?.copyWith(
-                                color: Theme.of(context).colorScheme.onSurface,
-                                fontWeight: FontWeight.w700,
-                              ),
                         ),
-                      ),
-                    ],
+
+                        const SizedBox(height: 24),
+
+                        Center(
+                          child: Text(
+                            Utils.getTranslatedLabel(
+                              diagnosisPushNotificationFailedKey,
+                            ),
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(
+                              color: Theme
+                                  .of(context)
+                                  .colorScheme
+                                  .onSurface,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   );
                 }
 
