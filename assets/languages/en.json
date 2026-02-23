@@ -1,4 +1,5 @@
 {
+  "day": "Day",
   "home": "Home",
   "biometricLogin": "Biometric login",
   "noDataFound": "No data found...",
@@ -502,5 +503,6 @@
   "diagnosisPushNotificationFailed": "Diagnosis Push Notification Failed",
   "yourFcmToken": "Your FCM Token :",
   "noEvent": "No event",
-  "event": "Event"
+  "event": "Event",
+  "lastUpdated": "Last updated :"
 }

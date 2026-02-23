@@ -126,6 +126,7 @@ const String subKey = "sub";
 const String marksKey = "marks";
 const String totalKey = "total";
 const String totalDataKey = "totalData";
+const String dayKey = "day";
 
 const String averageKey = "average";
 const String taskKey = "task";
@@ -581,3 +582,5 @@ const String sendPushNotificationSuccessKey = "sendPushNotificationSuccess";
 const String diagnosisPushNotificationFailedKey =
     "diagnosisPushNotificationFailed";
 const String yourFcmTokenKey = "yourFcmToken";
+
+const String lastUpdatedKey = "lastUpdated";

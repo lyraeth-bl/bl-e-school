@@ -9,6 +9,9 @@ class CustomButtonContainer extends StatelessWidget {
     required this.textKey,
     this.leadingIcon,
     this.trailingIcon,
+    this.margin,
+    this.backgroundColor,
+    this.enableShadow,
   });
 
   final GestureTapCallback? onTap;
@@ -18,6 +21,12 @@ class CustomButtonContainer extends StatelessWidget {
   final String textKey;
 
   final IconData? trailingIcon;
+
+  final EdgeInsetsGeometry? margin;
+
+  final Color? backgroundColor;
+
+  final bool? enableShadow;
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +39,11 @@ class CustomButtonContainer extends StatelessWidget {
         topRight: Radius.circular(16),
       ),
       child: CustomContainer(
+        enableShadow: enableShadow,
         shadowsOffset: Offset(5, 5),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        margin: margin,
+        padding: const EdgeInsets.all(16),
+        backgroundColor: backgroundColor,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

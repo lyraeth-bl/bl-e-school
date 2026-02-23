@@ -197,7 +197,8 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
       padding: const EdgeInsets.all(16),
       child: TableCalendar(
         headerVisible: false,
-        daysOfWeekHeight: 40,
+        rowHeight: 48,
+        daysOfWeekHeight: 48,
         onPageChanged: (DateTime dateTime) {
           setState(() {
             _now = dateTime;
@@ -278,23 +279,72 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
 
         availableGestures: AvailableGestures.none,
         calendarStyle: CalendarStyle(
+          // TextStyle untuk hari weekend (sabtu - minggu).
           weekendTextStyle: TextStyle(
-            color: Theme.of(context).colorScheme.error,
+            color: Theme.of(context).colorScheme.onErrorContainer,
           ),
+
+          // BoxDecoration untuk hari ini.
+          weekendDecoration: BoxDecoration(
+            color: Theme.of(
+              context,
+            ).colorScheme.errorContainer.withValues(alpha: 0.4),
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(16),
+              bottomRight: Radius.circular(32),
+              topLeft: Radius.circular(32),
+              topRight: Radius.circular(16),
+            ),
+          ),
+
+          // TextStyle untuk hari weekday (senin - jumat).
           defaultTextStyle: TextStyle(
             color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
-          todayDecoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primaryContainer,
-            shape: BoxShape.circle,
+
+          // BoxDecoration untuk weekday (senin - jumat).
+          defaultDecoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surfaceContainerLow,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(16),
+              bottomRight: Radius.circular(32),
+              topLeft: Radius.circular(32),
+              topRight: Radius.circular(16),
+            ),
           ),
+
+          // TextStyle untuk hari ini.
           todayTextStyle: TextStyle(
             color: Theme.of(context).colorScheme.onPrimaryContainer,
           ),
+
+          // BoxDecoration untuk hari ini.
+          todayDecoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primaryContainer,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(16),
+              bottomRight: Radius.circular(32),
+              topLeft: Radius.circular(32),
+              topRight: Radius.circular(16),
+            ),
+          ),
+
+          // BoxDecoration untuk hari dimana mempunyai data absensi.
           holidayDecoration: BoxDecoration(
             color: Theme.of(context).colorScheme.secondaryContainer,
-            shape: BoxShape.circle,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(16),
+              bottomRight: Radius.circular(32),
+              topLeft: Radius.circular(32),
+              topRight: Radius.circular(16),
+            ),
           ),
+
+          // TextStyle untuk hari dimana mempunyai data absensi.
           holidayTextStyle: TextStyle(
             color: Theme.of(context).colorScheme.onSecondaryContainer,
           ),
@@ -302,7 +352,7 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
 
         daysOfWeekStyle: DaysOfWeekStyle(
           weekdayStyle: TextStyle(
-            color: Theme.of(context).colorScheme.primary,
+            color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.w700,
           ),
           weekendStyle: TextStyle(
@@ -310,6 +360,7 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
             fontWeight: FontWeight.w700,
           ),
         ),
+
         headerStyle: const HeaderStyle(
           titleCentered: true,
           formatButtonVisible: false,
