@@ -53,24 +53,29 @@ class SessionsBloc extends Bloc<SessionsEvent, SessionsState> {
 
     await _sessionsRepository.setAccessToken(event.token);
 
-    final result = await _sessionsRepository.fetchMe();
-
     await _sessionsRepository.setIsStudentLoggedIn(true);
 
-    result.fold(
-      (failure) async {
-        emit(const SessionsState.unauthenticated());
-      },
-      (MeResponse me) async {
-        await _sessionsRepository.setLoggedStudentDetails(me.me);
+    emit(SessionsState.tokenReady(accessToken: event.token));
 
-        if (emit.isDone) return;
+    final result = await _sessionsRepository.fetchMe();
 
-        emit(
-          SessionsState.authenticated(student: me.me, accessToken: event.token),
-        );
-      },
-    );
+    final failure = result.fold((f) => f, (_) => null);
+    final me = result.fold((_) => null, (m) => m);
+
+    if (failure != null) {
+      debugPrint("Me FAILURE: $failure");
+      await _sessionsRepository.clearSession();
+      emit(const SessionsState.unauthenticated());
+      return;
+    }
+
+    if (me != null) {
+      debugPrint("Me SUCCESS: ${me.me}");
+      await _sessionsRepository.setLoggedStudentDetails(me.me);
+      emit(
+        SessionsState.authenticated(student: me.me, accessToken: event.token),
+      );
+    }
   }
 
   Future<void> _onLoggedOut(

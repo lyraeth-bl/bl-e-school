@@ -34,6 +34,8 @@ class ApiEndpoints {
   /// Endpoint for registering and managing device tokens for push notifications.
   static String deviceTokens = "$databaseUrl/device-tokens";
 
+  static String deviceTokensSanctum = "$sanctumUrl/device-tokens";
+
   /// Endpoint for fetching user notifications.
   static String notifications = "$databaseUrl/notifications";
 

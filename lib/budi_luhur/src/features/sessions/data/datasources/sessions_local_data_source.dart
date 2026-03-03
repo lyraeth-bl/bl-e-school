@@ -1,5 +1,4 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/core/storage/prefs_storage/prefs_storage_label.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fpdart/fpdart.dart';
@@ -20,6 +19,8 @@ abstract class SessionsLocalDataSource {
   Student getLoggedStudentDetails();
 
   Future<Unit> setLoggedStudentDetails(Student studentDetails);
+
+  Future<bool> isFirstTimeUserOpenApp();
 }
 
 class SessionsLocalDataSourceImpl implements SessionsLocalDataSource {
@@ -72,5 +73,10 @@ class SessionsLocalDataSourceImpl implements SessionsLocalDataSource {
     Hive.box(authBoxKey).put(studentDetailsKey, studentDetails.toJson());
 
     return unit;
+  }
+
+  @override
+  Future<bool> isFirstTimeUserOpenApp() async {
+    return prefs.getBool(kSessionIsFirstTimeUserOpenAppKey) ?? true;
   }
 }

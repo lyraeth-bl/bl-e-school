@@ -20,4 +20,6 @@ abstract class SessionsRepository {
   Student getLoggedStudentDetails();
 
   Future<Unit> setLoggedStudentDetails(Student studentDetails);
+
+  Future<bool> isFirstTimeUserOpenApp();
 }

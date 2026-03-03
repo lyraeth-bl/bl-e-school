@@ -25,8 +25,6 @@ export 'shared/hive_box_keys/hive_box_keys.dart';
 export 'shared/label_keys/label_keys.dart';
 /// Languages
 export 'shared/languages/app_languages.dart';
-/// Secure Storage Label
-export 'shared/secure_storage_label/secure_storage_label.dart';
 /// Theme
 export 'shared/theme/theme.dart';
 /// Types

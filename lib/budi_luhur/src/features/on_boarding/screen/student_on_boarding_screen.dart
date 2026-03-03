@@ -23,7 +23,7 @@ class _StudentOnBoardingScreenState extends State<StudentOnBoardingScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _postDeviceToken();
+      // _postDeviceToken();
       _fetchTimeTable();
       _fetchDailyAttendance();
     });
@@ -31,11 +31,11 @@ class _StudentOnBoardingScreenState extends State<StudentOnBoardingScreen> {
     _checkFirstTimeUser();
   }
 
-  void _postDeviceToken() {
-    context.read<DeviceTokenCubit>().postDeviceToken(
-      nis: context.read<SessionsBloc>().studentDetails?.nis ?? "",
-    );
-  }
+  // void _postDeviceToken() {
+  //   context.read<DeviceTokenCubit>().postDeviceToken(
+  //     nis: context.read<SessionsBloc>().studentDetails?.nis ?? "",
+  //   );
+  // }
 
   void _fetchDailyAttendance() {
     final detailsUser = context.read<SessionsBloc>().studentDetails;

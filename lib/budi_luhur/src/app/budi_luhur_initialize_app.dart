@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:bl_e_school/budi_luhur/src/app/init/init_hive_open_box.dart';
-import 'package:bl_e_school/budi_luhur/src/core/storage/prefs_storage/prefs_di.dart';
 import 'package:bl_e_school/budi_luhur/src/features/auth/auth_di.dart';
+import 'package:bl_e_school/budi_luhur/src/features/device_tokens/device_token_di.dart';
 import 'package:bl_e_school/budi_luhur/src/features/sessions/presentation/bloc/sessions_bloc.dart';
 import 'package:bl_e_school/budi_luhur/src/features/sessions/repository/sessions_repository.dart';
 import 'package:bl_e_school/budi_luhur/src/features/sessions/sessions_di.dart';
@@ -96,6 +96,7 @@ Future<void> budiLuhurInitializeApp() async {
   await initPrefsDI();
   await initSessionsDI();
   await initAuthDI();
+  await initDeviceTokenDI();
 
   final dio = Dio(
     BaseOptions(

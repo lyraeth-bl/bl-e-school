@@ -1,5 +1,4 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/sessions/presentation/bloc/sessions_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -102,10 +101,10 @@ class _HomeScreenState extends State<HomeScreen>
     _animationController.forward();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (fromNotifications) _fetchDailyAttendance();
+      // if (fromNotifications) _fetchDailyAttendance();
       loadTemporarilyStoredNotifications();
       // _fetchAppConfiguration();
-      _fetchDailyAttendance();
+      // _fetchDailyAttendance();
       NotificationsUtility.setUpNotificationService();
     });
   }
@@ -114,15 +113,15 @@ class _HomeScreenState extends State<HomeScreen>
       context.read<AppConfigurationCubit>().fetchAppConfiguration();
 
   void fetchDailyAttendanceFromNotification() {
-    _fetchDailyAttendance();
+    // _fetchDailyAttendance();
   }
 
-  void _fetchDailyAttendance() {
-    final detailsUser = context.read<SessionsBloc>().studentDetails;
-    context.read<DailyAttendanceCubit>().fetchTodayDailyAttendance(
-      nis: detailsUser?.nis ?? "",
-    );
-  }
+  // void _fetchDailyAttendance() {
+  //   final detailsUser = context.read<SessionsBloc>().studentDetails;
+  //   context.read<DailyAttendanceCubit>().fetchTodayDailyAttendance(
+  //     nis: detailsUser?.nis ?? "",
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {

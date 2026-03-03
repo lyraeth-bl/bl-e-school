@@ -32,9 +32,7 @@ class BudiLuhurApp extends StatelessWidget {
         BlocProvider<AppLocalizationCubit>(
           create: (_) => AppLocalizationCubit(SettingsRepository()),
         ),
-        BlocProvider<DeviceTokenCubit>(
-          create: (_) => DeviceTokenCubit(DeviceTokenRepository()),
-        ),
+        BlocProvider<DeviceTokenBloc>.value(value: sI<DeviceTokenBloc>()),
         BlocProvider<TimeTableCubit>(
           create: (_) => TimeTableCubit(TimeTableRepository()),
         ),
@@ -50,8 +48,13 @@ class BudiLuhurApp extends StatelessWidget {
                 listener: (context, state) {
                   state.whenOrNull(
                     unauthenticated: () => Get.offNamed(BudiLuhurRoutes.auth),
-                    authenticated: (student, accessToken) =>
-                        Get.offNamed(BudiLuhurRoutes.home),
+                    authenticated: (student, accessToken) {
+                      context.read<DeviceTokenBloc>().add(
+                        DeviceTokenEvent.postRequested(),
+                      );
+
+                      Get.offNamed(BudiLuhurRoutes.home);
+                    },
                   );
                 },
               ),

@@ -20,8 +20,14 @@ class SessionsRepositoryImpl implements SessionsRepository {
       await _sessionsLocalDataSource.clearSession();
 
   @override
-  Future<Result<MeResponse>> fetchMe() async =>
-      await _sessionsRemoteDataSource.fetchMe();
+  Future<Result<MeResponse>> fetchMe() async {
+    final response = await _sessionsRemoteDataSource.fetchMe();
+
+    return response.fold(
+      (failure) => Left(failure),
+      (meResponse) => Right(meResponse),
+    );
+  }
 
   @override
   Future<String?> getAccessToken() async =>
@@ -53,4 +59,8 @@ class SessionsRepositoryImpl implements SessionsRepository {
   @override
   Future<Unit> setLoggedStudentDetails(Student studentDetails) async =>
       _sessionsLocalDataSource.setLoggedStudentDetails(studentDetails);
+
+  @override
+  Future<bool> isFirstTimeUserOpenApp() async =>
+      _sessionsLocalDataSource.isFirstTimeUserOpenApp();
 }

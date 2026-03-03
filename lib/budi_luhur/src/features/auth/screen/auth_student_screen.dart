@@ -20,8 +20,6 @@ class AuthStudentScreen extends StatefulWidget {
 
 class _AuthStudentScreenState extends State<AuthStudentScreen>
     with TickerProviderStateMixin {
-  final DateTime _now = DateTime.now();
-
   /// Animations
   late final AnimationController _animationController = AnimationController(
     vsync: this,

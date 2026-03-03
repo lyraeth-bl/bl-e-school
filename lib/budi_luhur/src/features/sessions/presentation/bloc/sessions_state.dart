@@ -8,6 +8,9 @@ abstract class SessionsState with _$SessionsState {
 
   const factory SessionsState.loading() = _Loading;
 
+  const factory SessionsState.tokenReady({required String accessToken}) =
+      _TokenReady;
+
   const factory SessionsState.authenticated({
     Student? student,
     required String accessToken,
