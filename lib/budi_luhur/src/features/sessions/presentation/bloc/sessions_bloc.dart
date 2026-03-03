@@ -55,11 +55,17 @@ class SessionsBloc extends Bloc<SessionsEvent, SessionsState> {
 
     final result = await _sessionsRepository.fetchMe();
 
+    await _sessionsRepository.setIsStudentLoggedIn(true);
+
     result.fold(
       (failure) async {
         emit(const SessionsState.unauthenticated());
       },
-      (MeResponse me) {
+      (MeResponse me) async {
+        await _sessionsRepository.setLoggedStudentDetails(me.me);
+
+        if (emit.isDone) return;
+
         emit(
           SessionsState.authenticated(student: me.me, accessToken: event.token),
         );
@@ -73,6 +79,11 @@ class SessionsBloc extends Bloc<SessionsEvent, SessionsState> {
   ) async {
     await _sessionsRepository.clearSession();
 
+    await _sessionsRepository.setIsStudentLoggedIn(true);
+
     emit(const SessionsState.unauthenticated());
   }
+
+  Student? get studentDetails =>
+      state.whenOrNull(authenticated: (student, accessToken) => student);
 }

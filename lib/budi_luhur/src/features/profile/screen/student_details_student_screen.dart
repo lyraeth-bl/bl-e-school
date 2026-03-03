@@ -1,5 +1,5 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/auth/cubit/auth/auth_cubit.dart';
+import 'package:bl_e_school/budi_luhur/src/features/sessions/presentation/bloc/sessions_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,7 +22,7 @@ class StudentDetailsStudentScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final detailsProfile = context.read<AuthCubit>().getStudentDetails;
+    final detailsProfile = context.read<SessionsBloc>().studentDetails;
 
     String safeNullable(String? v) => v == null || v.isEmpty ? "-" : v;
 
@@ -51,19 +51,12 @@ class StudentDetailsStudentScreen extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 38,
-                  backgroundImage:
-                      (detailsProfile.profileImageUrl != null &&
-                          detailsProfile.profileImageUrl!.isNotEmpty)
-                      ? NetworkImage(detailsProfile.profileImageUrl!)
+                  backgroundImage: (detailsProfile?.profileImageUrl != null)
+                      ? NetworkImage(detailsProfile!.profileImageUrl!)
                       : null,
-                  child:
-                      (detailsProfile.profileImageUrl == null ||
-                          detailsProfile.profileImageUrl!.isEmpty)
+                  child: (detailsProfile?.profileImageUrl == null)
                       ? Text(
-                          (detailsProfile.nama != null &&
-                                  detailsProfile.nama!.isNotEmpty)
-                              ? detailsProfile.nama![0].toUpperCase()
-                              : "?",
+                          detailsProfile!.nama!,
                           style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w700,
@@ -77,7 +70,7 @@ class StudentDetailsStudentScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        safeNullable(detailsProfile.nama),
+                        safeNullable(detailsProfile?.nama),
                         maxLines: 2,
                         style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(
@@ -87,7 +80,7 @@ class StudentDetailsStudentScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        "NIS: ${safeNullable(detailsProfile.nis)}",
+                        "NIS: ${safeNullable(detailsProfile?.nis)}",
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
@@ -104,105 +97,105 @@ class StudentDetailsStudentScreen extends StatelessWidget {
               context,
               label: Utils.getTranslatedLabel(unitKey),
               value: safeNullable(
-                "${detailsProfile.unit?.substring(0, 3)} Budi Luhur",
+                "${detailsProfile?.unit?.substring(0, 3)} Budi Luhur",
               ),
               icon: Icons.school,
             ),
             _buildProfileDetailsTile(
               context,
               label: Utils.getTranslatedLabel(nisKey),
-              value: safeNullable(detailsProfile.nis),
+              value: safeNullable(detailsProfile?.nis),
               icon: Icons.confirmation_number,
             ),
             _buildProfileDetailsTile(
               context,
               label: Utils.getTranslatedLabel(nisnKey),
-              value: safeNullable(detailsProfile.nisn),
+              value: safeNullable(detailsProfile?.nisn),
               icon: Icons.badge,
             ),
             _buildProfileDetailsTile(
               context,
               label: Utils.getTranslatedLabel(dateOfBirthKey),
-              value: _safeFormatDate(detailsProfile.tanggalLahir),
+              value: _safeFormatDate(detailsProfile?.tanggalLahir),
               icon: Icons.date_range,
             ),
             _buildProfileDetailsTile(
               context,
               label: Utils.getTranslatedLabel(genderKey),
-              value: safeNullable(detailsProfile.jenisKelamin),
-              icon: (detailsProfile.jenisKelamin?.toLowerCase() == "perempuan")
+              value: safeNullable(detailsProfile?.jenisKelamin),
+              icon: (detailsProfile?.jenisKelamin?.toLowerCase() == "perempuan")
                   ? Icons.female
                   : Icons.male,
             ),
             _buildProfileDetailsTile(
               context,
               label: Utils.getTranslatedLabel(religionKey),
-              value: safeNullable(detailsProfile.agama),
+              value: safeNullable(detailsProfile?.agama),
               icon: Utils.iconForReligion(
-                (detailsProfile.agama ?? "").toLowerCase(),
+                (detailsProfile?.agama ?? "").toLowerCase(),
               ),
             ),
             _buildProfileDetailsTile(
               context,
               label: Utils.getTranslatedLabel(classKey),
-              value: safeNullable(detailsProfile.kelasSaatIni),
+              value: safeNullable(detailsProfile?.kelasSaatIni),
               icon: Icons.school,
             ),
             _buildProfileDetailsTile(
               context,
               label: Utils.getTranslatedLabel(semesterKey),
-              value: safeNullable(detailsProfile.semester),
+              value: safeNullable(detailsProfile?.semester),
               icon: Icons.menu_book,
             ),
             _buildProfileDetailsTile(
               context,
               label: Utils.getTranslatedLabel(classNumberKey),
-              value: safeNullable(detailsProfile.noKelasSaatIni),
+              value: safeNullable(detailsProfile?.noKelasSaatIni),
               icon: Icons.meeting_room,
             ),
             _buildProfileDetailsTile(
               context,
               label: Utils.getTranslatedLabel(addressKey),
-              value: safeNullable(detailsProfile.alamat),
+              value: safeNullable(detailsProfile?.alamat),
               icon: Icons.home,
             ),
             _buildProfileDetailsTile(
               context,
               label: Utils.getTranslatedLabel(phoneNumberKey),
               value: safeNullable(
-                detailsProfile.noTelepon ?? detailsProfile.noTeleponOrangTua,
+                detailsProfile?.noTelepon ?? detailsProfile?.noTeleponOrangTua,
               ),
               icon: Icons.phone,
             ),
             _buildProfileDetailsTile(
               context,
               label: Utils.getTranslatedLabel(emailKey),
-              value: safeNullable(detailsProfile.email),
+              value: safeNullable(detailsProfile?.email),
               icon: Icons.email,
             ),
             _buildProfileDetailsTile(
               context,
               label: Utils.getTranslatedLabel(fatherNameKey),
-              value: safeNullable(detailsProfile.namaAyah),
+              value: safeNullable(detailsProfile?.namaAyah),
               icon: Icons.person,
             ),
             _buildProfileDetailsTile(
               context,
               label: Utils.getTranslatedLabel(motherNameKey),
-              value: safeNullable(detailsProfile.namaIbu),
+              value: safeNullable(detailsProfile?.namaIbu),
               icon: Icons.person,
             ),
             _buildProfileDetailsTile(
               context,
               label: Utils.getTranslatedLabel(admissionDateKey),
-              value: _safeFormatDate(detailsProfile.tanggalDiTerima),
+              value: _safeFormatDate(detailsProfile?.tanggalDiTerima),
               icon: Icons.calendar_today,
             ),
             _buildProfileDetailsTile(
               context,
               label: Utils.getTranslatedLabel(statusKey),
               value: safeNullable(
-                detailsProfile.aktif ?? detailsProfile.statusKeluarga,
+                detailsProfile?.aktif ?? detailsProfile?.statusKeluarga,
               ),
               icon: Icons.info,
             ),

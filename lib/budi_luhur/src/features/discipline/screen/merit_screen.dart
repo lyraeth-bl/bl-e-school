@@ -1,5 +1,5 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/auth/cubit/auth/auth_cubit.dart';
+import 'package:bl_e_school/budi_luhur/src/features/sessions/presentation/bloc/sessions_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -26,9 +26,12 @@ class _MeritScreenState extends State<MeritScreen> {
       },
       child: RefreshIndicator(
         onRefresh: () async {
-          final nis = context.read<AuthCubit>().getStudentDetails.nis;
+          final studentDetails = context.read<SessionsBloc>().studentDetails;
+          final nis = studentDetails?.nis;
 
-          context.read<DisciplineBloc>().add(DisciplineEvent.refresh(nis: nis));
+          context.read<DisciplineBloc>().add(
+            DisciplineEvent.refresh(nis: nis ?? ""),
+          );
         },
         child: SingleChildScrollView(
           padding: EdgeInsets.only(

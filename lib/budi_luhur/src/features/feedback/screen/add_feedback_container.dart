@@ -1,5 +1,5 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/auth/cubit/auth/auth_cubit.dart';
+import 'package:bl_e_school/budi_luhur/src/features/sessions/presentation/bloc/sessions_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,7 +16,7 @@ class _AddFeedbackContainerState extends State<AddFeedbackContainer> {
     return Padding(
       padding: const EdgeInsets.all(24),
       child: SendFeedbackForm(
-        nis: context.read<AuthCubit>().getStudentDetails.nis,
+        nis: context.read<SessionsBloc>().studentDetails?.nis ?? "",
       ),
     );
   }

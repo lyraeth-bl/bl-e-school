@@ -1,3 +1,4 @@
+import 'package:bl_e_school/budi_luhur/src/features/auth/data/model/student/student.dart';
 import 'package:bl_e_school/budi_luhur/src/features/sessions/data/datasources/sessions_local_data_source.dart';
 import 'package:bl_e_school/budi_luhur/src/features/sessions/data/datasources/sessions_remote_data_source.dart';
 import 'package:bl_e_school/budi_luhur/src/features/sessions/data/model/me_response/me_response.dart';
@@ -29,4 +30,27 @@ class SessionsRepositoryImpl implements SessionsRepository {
   @override
   Future<Unit> setAccessToken(String value) async =>
       await _sessionsLocalDataSource.setAccessToken(value);
+
+  @override
+  Future<bool> isLoggedIn() async {
+    final token = await _sessionsLocalDataSource.getAccessToken();
+
+    return token != null && token.isNotEmpty;
+  }
+
+  @override
+  Future<bool> getIsStudentLoggedIn() async =>
+      _sessionsLocalDataSource.getIsStudentLoggedIn();
+
+  @override
+  Student getLoggedStudentDetails() =>
+      _sessionsLocalDataSource.getLoggedStudentDetails();
+
+  @override
+  Future<Unit> setIsStudentLoggedIn(bool value) async =>
+      _sessionsLocalDataSource.setIsStudentLoggedIn(value);
+
+  @override
+  Future<Unit> setLoggedStudentDetails(Student studentDetails) async =>
+      _sessionsLocalDataSource.setLoggedStudentDetails(studentDetails);
 }

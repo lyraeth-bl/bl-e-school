@@ -1,8 +1,5 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:bl_e_school/budi_luhur/src/features/auth/bloc/auth_bloc.dart';
-import 'package:bl_e_school/budi_luhur/src/features/auth/cubit/auth/auth_cubit.dart'
-    hide AuthState;
-import 'package:bl_e_school/budi_luhur/src/features/auth/cubit/sign_in/sign_in_cubit.dart';
 import 'package:bl_e_school/budi_luhur/src/features/auth/data/model/login_request/login_request.dart';
 import 'package:bl_e_school/budi_luhur/src/features/sessions/presentation/bloc/sessions_bloc.dart';
 import 'package:flutter/material.dart';
@@ -17,10 +14,7 @@ class AuthStudentScreen extends StatefulWidget {
   State<AuthStudentScreen> createState() => _AuthStudentScreenState();
 
   static Widget routeInstance() {
-    return BlocProvider<SignInCubit>(
-      create: (_) => SignInCubit(AuthRepository()),
-      child: const AuthStudentScreen(),
-    );
+    return AuthStudentScreen();
   }
 }
 
@@ -67,25 +61,25 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
 
     if (wantBiometric && fromSessionBottomSheet) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
-        biometricLogin();
+        // biometricLogin();
       });
     }
   }
 
-  void biometricLogin() async {
-    final ok = await context.read<AuthCubit>().biometricRefreshToken();
-
-    if (ok && mounted) {
-      final dailyAttendanceCubit = context.read<DailyAttendanceCubit>();
-      final dailyAttendanceData = dailyAttendanceCubit.getDailyAttendance;
-
-      if (dailyAttendanceData?.tanggal.day != _now.day) {
-        dailyAttendanceCubit.clearAllData();
-      }
-
-      Get.offNamed(BudiLuhurRoutes.home);
-    } else {}
-  }
+  // void biometricLogin() async {
+  //   final ok = await context.read<AuthCubit>().biometricRefreshToken();
+  //
+  //   if (ok && mounted) {
+  //     final dailyAttendanceCubit = context.read<DailyAttendanceCubit>();
+  //     final dailyAttendanceData = dailyAttendanceCubit.getDailyAttendance;
+  //
+  //     if (dailyAttendanceData?.tanggal.day != _now.day) {
+  //       dailyAttendanceCubit.clearAllData();
+  //     }
+  //
+  //     Get.offNamed(BudiLuhurRoutes.home);
+  //   } else {}
+  // }
 
   @override
   void dispose() {
@@ -125,17 +119,6 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
     );
   }
 
-  void _login() {
-    final loginParams = LoginRequest(
-      nis: _nisController.text.trim(),
-      password: _passwordController.text.trim(),
-    );
-
-    context.read<AuthBloc>().add(
-      AuthEvent.loginRequested(loginRequest: loginParams),
-    );
-  }
-
   /// Methods
   void _signInStudent() {
     if (_nisController.text.trim().isEmpty) {
@@ -156,10 +139,13 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
       return;
     }
 
-    context.read<SignInCubit>().signInUser(
+    final loginParams = LoginRequest(
       nis: _nisController.text.trim(),
       password: _passwordController.text.trim(),
-      isStudentLogIn: true,
+    );
+
+    context.read<AuthBloc>().add(
+      AuthEvent.loginRequested(loginRequest: loginParams),
     );
   }
 
@@ -326,7 +312,7 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
 
                               FocusScope.of(context).unfocus();
 
-                              _login();
+                              _signInStudent();
                             },
                             child: isLoading
                                 ? SizedBox(

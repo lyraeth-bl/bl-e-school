@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:bl_e_school/budi_luhur/src/features/sessions/repository/sessions_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -53,10 +54,12 @@ class NotificationsRepository {
         );
       }
 
-      final currentUserNis = AuthRepository.getStudentDetails().nis;
+      final currentUserNIS = sI<SessionsRepository>()
+          .getLoggedStudentDetails()
+          ?.nis;
 
       notifications = notifications
-          .where((element) => element.nis == currentUserNis)
+          .where((element) => element.nis == currentUserNIS)
           .toList();
 
       notifications.sort(
@@ -139,7 +142,7 @@ class NotificationsRepository {
   }
 
   Future<bool> sendTestNotification() async {
-    final nis = AuthRepository.getStudentDetails().nis;
+    final nis = sI<SessionsRepository>().getLoggedStudentDetails()?.nis;
 
     final bodyNotification = {
       "targetNis": [nis],

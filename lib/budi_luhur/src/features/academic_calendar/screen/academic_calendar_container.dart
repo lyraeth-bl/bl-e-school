@@ -1,5 +1,5 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/auth/cubit/auth/auth_cubit.dart';
+import 'package:bl_e_school/budi_luhur/src/features/sessions/presentation/bloc/sessions_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,11 +41,11 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
   }
 
   void _fetchAcademicCalendarThisMonth({bool forceRefresh = false}) {
-    final studentDetails = context.read<AuthCubit>().getStudentDetails;
+    final studentDetails = context.read<SessionsBloc>().studentDetails;
     context.read<AcademicCalendarCubit>().fetchCustomAcademicCalendar(
       year: _now.year,
       month: _now.month,
-      unit: studentDetails.unit!,
+      unit: studentDetails?.unit ?? "",
       forceRefresh: forceRefresh,
     );
 

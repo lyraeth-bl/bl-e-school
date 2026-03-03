@@ -1,5 +1,5 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/auth/cubit/auth/auth_cubit.dart';
+import 'package:bl_e_school/budi_luhur/src/features/sessions/presentation/bloc/sessions_bloc.dart';
 import 'package:flutter/material.dart' hide Feedback;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
@@ -19,10 +19,9 @@ class _FeedbackContainerState extends State<FeedbackContainer> {
   }
 
   Future<void> _fetchUserFeedback() async {
-    final authDetails = context.read<AuthCubit>().getStudentDetails;
-    await context.read<GetFeedbackCubit>().fetchUserFeedback(
-      nis: authDetails.nis,
-    );
+    final studentDetails = context.read<SessionsBloc>().studentDetails;
+    final nis = studentDetails?.nis;
+    await context.read<GetFeedbackCubit>().fetchUserFeedback(nis: nis ?? "");
   }
 
   String _formatDate(DateTime? d) {

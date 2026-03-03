@@ -1,5 +1,5 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/auth/cubit/auth/auth_cubit.dart';
+import 'package:bl_e_school/budi_luhur/src/features/sessions/presentation/bloc/sessions_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -59,13 +59,13 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
   }
 
   void _fetchCurrentMonthDailyAttendanceData({bool forceRefresh = false}) {
-    final authDetails = context.read<AuthCubit>().getStudentDetails;
+    final authDetails = context.read<SessionsBloc>().studentDetails;
 
     context.read<FetchDailyAttendanceCubit>().fetchCustomDailyAttendanceUser(
-      nis: authDetails.nis,
+      nis: authDetails?.nis ?? "",
       year: _now.year,
       month: _now.month,
-      unit: authDetails.unit ?? "SMAKT",
+      unit: authDetails?.unit ?? "SMAKT",
       forceRefresh: forceRefresh,
     );
   }
@@ -367,11 +367,11 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
             context
                 .read<FetchDailyAttendanceCubit>()
                 .fetchCustomDailyAttendanceUser(
-                  nis: context.read<AuthCubit>().getStudentDetails.nis,
+                  nis: context.read<SessionsBloc>().studentDetails?.nis ?? "",
                   year: dateTime.year,
                   month: dateTime.month,
                   unit:
-                      context.read<AuthCubit>().getStudentDetails.unit ??
+                      context.read<SessionsBloc>().studentDetails?.unit ??
                       "SMAKT",
                 );
           });
@@ -410,7 +410,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
             (date) => isSameDay(date.tanggal.toLocal(), selected),
             orElse: () => DailyAttendance(
               id: 0,
-              nis: context.read<AuthCubit>().getStudentDetails.nis,
+              nis: context.read<SessionsBloc>().studentDetails?.nis ?? "",
               tajaran: "-",
               semester: "-",
               alasan: "-",
@@ -420,7 +420,7 @@ class _AttendanceContainerState extends State<AttendanceContainer> {
               status: isWeekend
                   ? Utils.getTranslatedLabel(noAbsentTodayKey)
                   : Utils.getTranslatedLabel(holidaysKey),
-              unit: context.read<AuthCubit>().getStudentDetails.unit ?? "-",
+              unit: context.read<SessionsBloc>().studentDetails?.unit ?? "-",
               createdAt: DateTime.now().toLocal(),
               updatedAt: DateTime.now().toLocal(),
             ),

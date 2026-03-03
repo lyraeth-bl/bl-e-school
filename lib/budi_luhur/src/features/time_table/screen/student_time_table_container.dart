@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/auth/cubit/auth/auth_cubit.dart';
+import 'package:bl_e_school/budi_luhur/src/features/sessions/presentation/bloc/sessions_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,9 +17,9 @@ class _TimeTableContainerState extends State<TimeTableContainer>
   late int _currentSelectedDayIndex = DateTime.now().weekday - 1;
 
   void _fetchTimeTable() {
-    final detailsStudent = context.read<AuthCubit>().getStudentDetails;
+    final detailsStudent = context.read<SessionsBloc>().studentDetails;
     final classStudent =
-        "${detailsStudent.kelasSaatIni}${detailsStudent.noKelasSaatIni}";
+        "${detailsStudent?.kelasSaatIni}${detailsStudent?.noKelasSaatIni}";
     context.read<TimeTableCubit>().fetchTimeTable(
       kelas: classStudent,
       forceRefresh: true,
@@ -140,7 +140,7 @@ class _TimeTableContainerState extends State<TimeTableContainer>
   Widget _buildAppBar() {
     String getStudentClassDetails = "";
     getStudentClassDetails =
-        "${context.read<AuthCubit>().getStudentDetails.kelasSaatIni} - ${context.read<AuthCubit>().getStudentDetails.noKelasSaatIni}";
+        "${context.read<SessionsBloc>().studentDetails?.kelasSaatIni} - ${context.read<SessionsBloc>().studentDetails?.noKelasSaatIni}";
 
     return ScreenTopBackgroundContainer(
       heightPercentage: Utils.appBarMediumHeightPercentage,

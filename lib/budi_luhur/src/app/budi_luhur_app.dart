@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:bl_e_school/budi_luhur/src/features/auth/bloc/auth_bloc.dart';
-import 'package:bl_e_school/budi_luhur/src/features/auth/cubit/auth/auth_cubit.dart';
 import 'package:bl_e_school/budi_luhur/src/features/sessions/presentation/bloc/sessions_bloc.dart';
 import 'package:bl_e_school/budi_luhur/src/features/settings/cubit/settings/settings_cubit.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +10,7 @@ import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class BudiLuhurApp extends StatelessWidget {
-  final AuthCubit authCubit;
-
-  const BudiLuhurApp({super.key, required this.authCubit});
+  const BudiLuhurApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +25,13 @@ class BudiLuhurApp extends StatelessWidget {
             BiometricAuth("Please authenticate first"),
           ),
         ),
+
         BlocProvider<SessionsBloc>.value(value: sI<SessionsBloc>()),
-        BlocProvider<AuthBloc>(create: (_) => AuthBloc(AuthRepository())),
+        BlocProvider<AuthBloc>.value(value: sI<AuthBloc>()),
+
         BlocProvider<AppLocalizationCubit>(
           create: (_) => AppLocalizationCubit(SettingsRepository()),
         ),
-        BlocProvider.value(value: authCubit),
         BlocProvider<DeviceTokenCubit>(
           create: (_) => DeviceTokenCubit(DeviceTokenRepository()),
         ),

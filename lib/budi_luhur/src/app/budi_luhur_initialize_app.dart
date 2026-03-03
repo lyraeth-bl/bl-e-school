@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:bl_e_school/budi_luhur/src/app/init/init_hive_open_box.dart';
-import 'package:bl_e_school/budi_luhur/src/features/auth/cubit/auth/auth_cubit.dart';
+import 'package:bl_e_school/budi_luhur/src/core/storage/prefs_storage/prefs_di.dart';
+import 'package:bl_e_school/budi_luhur/src/features/auth/auth_di.dart';
 import 'package:bl_e_school/budi_luhur/src/features/sessions/presentation/bloc/sessions_bloc.dart';
 import 'package:bl_e_school/budi_luhur/src/features/sessions/repository/sessions_repository.dart';
 import 'package:bl_e_school/budi_luhur/src/features/sessions/sessions_di.dart';
@@ -92,10 +93,9 @@ Future<void> budiLuhurInitializeApp() async {
   // Initialize date formatting for the Indonesian locale ('id_ID').
   await initializeDateFormatting("id", null);
 
-  final authCubit = AuthCubit(
-    AuthRepository(),
-    BiometricAuth("Please authenticate"),
-  );
+  await initPrefsDI();
+  await initSessionsDI();
+  await initAuthDI();
 
   final dio = Dio(
     BaseOptions(
@@ -103,8 +103,6 @@ Future<void> budiLuhurInitializeApp() async {
       receiveTimeout: const Duration(seconds: 20),
     ),
   );
-
-  await initSessionsDI();
 
   final sessionsBloc = sI<SessionsBloc>();
 
@@ -131,5 +129,5 @@ Future<void> budiLuhurInitializeApp() async {
   Bloc.observer = const AppBlocObserver();
 
   // Run the main application widget.
-  runApp(BudiLuhurApp(authCubit: authCubit));
+  runApp(BudiLuhurApp());
 }

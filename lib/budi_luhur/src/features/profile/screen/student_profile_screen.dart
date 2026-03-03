@@ -1,5 +1,6 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/auth/cubit/auth/auth_cubit.dart';
+import 'package:bl_e_school/budi_luhur/src/features/auth/bloc/auth_bloc.dart';
+import 'package:bl_e_school/budi_luhur/src/features/sessions/presentation/bloc/sessions_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -36,7 +37,7 @@ class StudentProfileScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              context.read<AuthCubit>().signOut(reason: LogoutReason.manual);
+              context.read<AuthBloc>().add(AuthEvent.logoutRequested());
 
               Get.offNamedUntil(BudiLuhurRoutes.auth, (route) => false);
             },
@@ -48,7 +49,7 @@ class StudentProfileScreen extends StatelessWidget {
         children: [
           _buildProfileDetailsContainer(
             context,
-            studentDetails: context.read<AuthCubit>().getStudentDetails,
+            studentDetails: context.read<SessionsBloc>().studentDetails!,
           ),
         ],
       ),
@@ -133,9 +134,11 @@ class StudentProfileScreen extends StatelessWidget {
       alignment: Alignment.topCenter,
       child: RefreshIndicator(
         onRefresh: () async {
-          final nis = context.read<AuthCubit>().getStudentDetails.nis;
+          final nis = context.read<SessionsBloc>().studentDetails?.nis;
 
-          context.read<DisciplineBloc>().add(DisciplineEvent.refresh(nis: nis));
+          context.read<DisciplineBloc>().add(
+            DisciplineEvent.refresh(nis: nis ?? ""),
+          );
         },
         child: SingleChildScrollView(
           child: Column(
@@ -148,10 +151,10 @@ class StudentProfileScreen extends StatelessWidget {
                   shape: BoxShape.circle,
                   color: Theme.of(context).colorScheme.primary,
                 ),
-                child: BlocSelector<AuthCubit, AuthState, String?>(
+                child: BlocSelector<SessionsBloc, SessionsState, String?>(
                   selector: (state) => state.maybeWhen(
-                    authenticated: (isStudent, student, time) =>
-                        student.profileImageUrl,
+                    authenticated: (student, accessToken) =>
+                        student?.profileImageUrl,
                     orElse: () => "",
                   ),
                   builder: (context, profileImageUrl) =>

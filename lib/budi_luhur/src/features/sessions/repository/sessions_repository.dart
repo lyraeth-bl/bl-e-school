@@ -10,4 +10,14 @@ abstract class SessionsRepository {
   Future<Unit> setAccessToken(String value);
 
   Future<Unit> clearSession();
+
+  Future<bool> isLoggedIn();
+
+  Future<bool> getIsStudentLoggedIn();
+
+  Future<Unit> setIsStudentLoggedIn(bool value);
+
+  Student getLoggedStudentDetails();
+
+  Future<Unit> setLoggedStudentDetails(Student studentDetails);
 }
