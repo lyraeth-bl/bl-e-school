@@ -28,6 +28,8 @@ export 'notifications/notifications.dart';
 export 'on_boarding/on_boarding.dart';
 /// Profile
 export 'profile/profile.dart';
+/// Sessions
+export 'sessions/sessions.dart';
 /// Settings
 export 'settings/settings.dart';
 /// Shared

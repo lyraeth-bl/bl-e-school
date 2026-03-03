@@ -1,6 +1,4 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/sessions/data/model/me_response/me_response.dart';
-import 'package:bl_e_school/budi_luhur/src/features/sessions/repository/sessions_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -63,14 +61,12 @@ class SessionsBloc extends Bloc<SessionsEvent, SessionsState> {
     final me = result.fold((_) => null, (m) => m);
 
     if (failure != null) {
-      debugPrint("Me FAILURE: $failure");
       await _sessionsRepository.clearSession();
       emit(const SessionsState.unauthenticated());
       return;
     }
 
     if (me != null) {
-      debugPrint("Me SUCCESS: ${me.me}");
       await _sessionsRepository.setLoggedStudentDetails(me.me);
       emit(
         SessionsState.authenticated(student: me.me, accessToken: event.token),
@@ -84,7 +80,7 @@ class SessionsBloc extends Bloc<SessionsEvent, SessionsState> {
   ) async {
     await _sessionsRepository.clearSession();
 
-    await _sessionsRepository.setIsStudentLoggedIn(true);
+    await _sessionsRepository.setIsStudentLoggedIn(false);
 
     emit(const SessionsState.unauthenticated());
   }

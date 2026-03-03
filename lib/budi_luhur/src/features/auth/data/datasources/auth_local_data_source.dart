@@ -1,4 +1,4 @@
-import 'package:bl_e_school/budi_luhur/src/utils/shared/hive_box_keys/hive_box_keys.dart';
+import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:hive/hive.dart';

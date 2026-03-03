@@ -1,6 +1,4 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/auth/data/model/login_request/login_request.dart';
-import 'package:bl_e_school/budi_luhur/src/features/auth/data/model/login_response/login_response.dart';
 import 'package:fpdart/fpdart.dart';
 
 abstract class AuthRemoteDataSource {
