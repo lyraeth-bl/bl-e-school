@@ -6,6 +6,7 @@ import 'package:bl_e_school/budi_luhur/src/app/init/init_hive_open_box.dart';
 import 'package:bl_e_school/budi_luhur/src/features/auth/cubit/auth/auth_cubit.dart';
 import 'package:bl_e_school/budi_luhur/src/features/sessions/presentation/bloc/sessions_bloc.dart';
 import 'package:bl_e_school/budi_luhur/src/features/sessions/repository/sessions_repository.dart';
+import 'package:bl_e_school/budi_luhur/src/features/sessions/sessions_di.dart';
 import 'package:bl_e_school/firebase_options.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -103,14 +104,14 @@ Future<void> budiLuhurInitializeApp() async {
     ),
   );
 
-  final sessionsRepository = SessionsRepository();
+  await initSessionsDI();
 
-  final sessionsBloc = SessionsBloc(sessionsRepository);
+  final sessionsBloc = sI<SessionsBloc>();
 
   dio.interceptors.add(
     AuthInterceptor(
       sessionsBloc: sessionsBloc,
-      sessionsRepository: sessionsRepository,
+      sessionsRepository: sI<SessionsRepository>(),
     ),
   );
 

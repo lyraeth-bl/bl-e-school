@@ -4,7 +4,6 @@ import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:bl_e_school/budi_luhur/src/features/auth/bloc/auth_bloc.dart';
 import 'package:bl_e_school/budi_luhur/src/features/auth/cubit/auth/auth_cubit.dart';
 import 'package:bl_e_school/budi_luhur/src/features/sessions/presentation/bloc/sessions_bloc.dart';
-import 'package:bl_e_school/budi_luhur/src/features/sessions/repository/sessions_repository.dart';
 import 'package:bl_e_school/budi_luhur/src/features/settings/cubit/settings/settings_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,9 +28,7 @@ class BudiLuhurApp extends StatelessWidget {
             BiometricAuth("Please authenticate first"),
           ),
         ),
-        BlocProvider<SessionsBloc>(
-          create: (_) => SessionsBloc(SessionsRepository()),
-        ),
+        BlocProvider<SessionsBloc>.value(value: sI<SessionsBloc>()),
         BlocProvider<AuthBloc>(create: (_) => AuthBloc(AuthRepository())),
         BlocProvider<AppLocalizationCubit>(
           create: (_) => AppLocalizationCubit(SettingsRepository()),

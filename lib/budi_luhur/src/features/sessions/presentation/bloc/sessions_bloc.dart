@@ -32,7 +32,7 @@ class SessionsBloc extends Bloc<SessionsEvent, SessionsState> {
       return;
     }
 
-    final result = await _sessionsRepository.me();
+    final result = await _sessionsRepository.fetchMe();
 
     result.fold(
       (failure) async {
@@ -53,7 +53,7 @@ class SessionsBloc extends Bloc<SessionsEvent, SessionsState> {
 
     await _sessionsRepository.setAccessToken(event.token);
 
-    final result = await _sessionsRepository.me();
+    final result = await _sessionsRepository.fetchMe();
 
     result.fold(
       (failure) async {
