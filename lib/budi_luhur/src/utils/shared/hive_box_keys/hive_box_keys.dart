@@ -92,3 +92,7 @@ const String disciplineBoxKey = "disciplineBox";
 
 const String totalMeritKey = "disciplineBox.totalMerit";
 const String totalDemeritKey = "disciplineBox.totalDemerit";
+
+const String sessionsBoxKey = "sessionsBox";
+
+const String sessionAccessTokenKey = "sessionsBox.sessionAccessToken";

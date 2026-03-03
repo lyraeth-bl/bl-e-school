@@ -74,7 +74,6 @@ class FeedbackRepository {
       final response = await ApiClient.post(
         body: data,
         url: ApiEndpoints.feedback,
-        useAuthToken: true,
       );
 
       final Map<String, dynamic> feedbackMap = response['data'];
@@ -105,7 +104,6 @@ class FeedbackRepository {
     try {
       final response = await ApiClient.get(
         url: "${ApiEndpoints.feedback}/$nis",
-        useAuthToken: true,
       );
 
       final List<Feedback> userFeedbackList = (response['data'] as List)
@@ -152,7 +150,6 @@ class FeedbackRepository {
       final response = await ApiClient.put(
         body: data,
         url: "${ApiEndpoints.feedback}/$id",
-        useAuthToken: true,
       );
 
       final Feedback editedFeedback = Feedback.fromJson(response['data']);
@@ -170,10 +167,7 @@ class FeedbackRepository {
   /// Throws an [ApiException] if the request fails.
   Future<void> deleteFeedback({required int id}) async {
     try {
-      await ApiClient.delete(
-        url: "${ApiEndpoints.feedback}/$id",
-        useAuthToken: true,
-      );
+      await ApiClient.delete(url: "${ApiEndpoints.feedback}/$id");
     } catch (e) {
       throw ApiException(e.toString());
     }

@@ -155,7 +155,6 @@ class NotificationsRepository {
       final response = await ApiClient.post(
         body: bodyNotification,
         url: ApiEndpoints.sendNotification,
-        useAuthToken: true,
       );
 
       if (response["error"] == true) {

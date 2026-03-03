@@ -37,7 +37,6 @@ class TimeTableRepository {
     try {
       final response = await ApiClient.get(
         url: ApiEndpoints.timeTable,
-        useAuthToken: false,
         queryParameters: queryParameters,
       );
 

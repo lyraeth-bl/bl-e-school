@@ -14,49 +14,27 @@ class ApiClient {
     dio = dioInstance;
   }
 
-  /// Returns the authorization headers.
-  static Map<String, dynamic> _headers() {
-    final String jwtToken = AuthRepository().getJwtToken();
-    return {"Authorization": "Bearer $jwtToken", "Accept": "application/json"};
-  }
-
   /// Sends a GET request.
   static Future<Map<String, dynamic>> get({
     required String url,
-    required bool useAuthToken,
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      final response = await dio.get(
-        url,
-        queryParameters: queryParameters,
-        options: useAuthToken ? Options(headers: _headers()) : null,
-      );
+      final response = await dio.get(url, queryParameters: queryParameters);
+
       return Map.from(response.data);
     } on DioException catch (e) {
       _handleDioError(e);
       rethrow;
-    } on ApiException catch (e) {
-      throw ApiException(e.errorMessage);
-    } catch (e) {
-      if (kDebugMode) {
-        print(e.toString());
-      }
-      throw ApiException(ErrorMessageKeysAndCode.defaultErrorMessageKey);
     }
   }
 
   static Future<List<dynamic>> getList({
     required String url,
-    required bool useAuthToken,
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      final response = await dio.get(
-        url,
-        queryParameters: queryParameters,
-        options: useAuthToken ? Options(headers: _headers()) : null,
-      );
+      final response = await dio.get(url, queryParameters: queryParameters);
 
       if (response.data.runtimeType != List<dynamic>) {
         debugPrint("Response is not List");
@@ -81,7 +59,6 @@ class ApiClient {
   static Future<Map<String, dynamic>> put({
     required Map<String, dynamic> body,
     required String url,
-    required bool useAuthToken,
     Map<String, dynamic>? queryParameters,
     CancelToken? cancelToken,
     Function(int, int)? onSendProgress,
@@ -100,7 +77,6 @@ class ApiClient {
         cancelToken: cancelToken,
         onReceiveProgress: onReceiveProgress,
         onSendProgress: onSendProgress,
-        options: useAuthToken ? Options(headers: _headers()) : null,
       );
 
       return Map.from(response.data);
@@ -121,54 +97,15 @@ class ApiClient {
   static Future<Map<String, dynamic>> post({
     required Map<String, dynamic> body,
     required String url,
-    required bool useAuthToken,
-    Map<String, dynamic>? queryParameters,
-    CancelToken? cancelToken,
-    Function(int, int)? onSendProgress,
-    Function(int, int)? onReceiveProgress,
     Map<String, dynamic>? extra,
   }) async {
-    try {
-      final FormData formData = FormData.fromMap(
-        body,
-        ListFormat.multiCompatible,
-      );
+    final response = await dio.post(
+      url,
+      data: FormData.fromMap(body),
+      options: Options(extra: extra),
+    );
 
-      final response = await dio.post(
-        url,
-        data: formData,
-        queryParameters: queryParameters,
-        cancelToken: cancelToken,
-        onReceiveProgress: onReceiveProgress,
-        onSendProgress: onSendProgress,
-        options: useAuthToken
-            ? Options(headers: _headers(), extra: extra)
-            : null,
-      );
-
-      return Map.from(response.data);
-    } on DioException catch (e) {
-      if (kDebugMode) {
-        print("Error dari DioException : ${e.response?.data}");
-        print("Type : ${e.type}");
-        print("Error : ${e.error}");
-        print("Message : ${e.message}");
-        print("Extra : ${e.response?.extra}");
-        print("Status Code : ${e.response?.statusCode}");
-        print("Status Message : ${e.response?.statusMessage}");
-      }
-
-      if (e.response?.data['error'].toString() == "NIS atau password salah") {
-        throw ApiException(e.response!.data['error'].toString());
-      }
-
-      _handleDioError(e);
-      rethrow;
-    } on ApiException catch (e) {
-      throw ApiException(e.errorMessage);
-    } catch (e) {
-      throw ApiException(ErrorMessageKeysAndCode.defaultErrorMessageKey);
-    }
+    return Map.from(response.data);
   }
 
   /// Downloads a file.
@@ -201,22 +138,12 @@ class ApiClient {
   }
 
   /// Sends a DELETE request.
-  static Future<void> delete({
-    required String url,
-    required bool useAuthToken,
-  }) async {
+  static Future<void> delete({required String url}) async {
     try {
-      await dio.delete(
-        url,
-        options: useAuthToken ? Options(headers: _headers()) : null,
-      );
+      await dio.delete(url);
     } on DioException catch (e) {
       _handleDioError(e);
       rethrow;
-    } on ApiException catch (e) {
-      throw ApiException(e.errorMessage);
-    } catch (e) {
-      throw ApiException(ErrorMessageKeysAndCode.defaultErrorMessageKey);
     }
   }
 

@@ -1,4 +1,5 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:bl_e_school/budi_luhur/src/features/sessions/presentation/bloc/sessions_bloc.dart';
+import 'package:bl_e_school/budi_luhur/src/features/sessions/repository/sessions_repository.dart';
 import 'package:dio/dio.dart';
 
 /// A Dio interceptor for handling authentication and token refreshing.
@@ -6,18 +7,36 @@ import 'package:dio/dio.dart';
 /// This interceptor automatically adds the JWT token to outgoing requests
 /// and handles 401 Unauthorized errors by attempting to refresh the token.
 class AuthInterceptor extends Interceptor {
-  /// The Dio instance used for making requests.
-  final Dio dio;
-
-  /// The authentication cubit for managing authentication state.
-  final AuthCubit authCubit;
-
-  bool _isRefreshing = false;
+  final SessionsRepository sessionsRepository;
+  final SessionsBloc sessionsBloc;
 
   /// Creates an [AuthInterceptor].
   ///
   /// Requires a [Dio] instance and an [AuthCubit].
-  AuthInterceptor({required this.dio, required this.authCubit});
+  AuthInterceptor({
+    required this.sessionsRepository,
+    required this.sessionsBloc,
+  });
+
+  @override
+  void onRequest(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
+    final skip = options.extra['skipAuthInterceptor'] == true;
+
+    if (!skip) {
+      final token = await sessionsRepository.getAccessToken();
+
+      if (token != null && token.isNotEmpty) {
+        options.headers["Authorization"] = "Bearer $token";
+      }
+    }
+
+    options.headers["Accept"] = "application/json";
+
+    handler.next(options);
+  }
 
   /// Intercepts Dio errors.
   ///
@@ -25,56 +44,12 @@ class AuthInterceptor extends Interceptor {
   /// If token refresh is successful, the original request is retried with the new token.
   /// If token refresh fails, the user is signed out.
   @override
-  void onError(DioException err, ErrorInterceptorHandler handler) async {
-    final skip = err.requestOptions.extra['skipAuthInterceptor'] == true;
-    if (skip) return handler.next(err);
+  void onError(DioException error, ErrorInterceptorHandler handler) async {
+    if (error.response?.statusCode == 401) {
+      await sessionsRepository.clearSession();
 
-    final isAuth = authCubit.state.maybeWhen(
-      authenticated: (_, __, ___) => true,
-      orElse: () => false,
-    );
-
-    if (!isAuth || err.response?.statusCode != 401) {
-      return handler.next(err);
+      sessionsBloc.add(SessionsEvent.loggedOut());
     }
-
-    if (_isRefreshing) {
-      return handler.next(err);
-    }
-
-    _isRefreshing = true;
-
-    bool refreshed = false;
-    try {
-      refreshed = await authCubit.biometricRefreshToken();
-    } catch (_) {
-      refreshed = false;
-    }
-
-    if (!refreshed) {
-      authCubit.signOut(reason: LogoutReason.sessionExpired);
-      _isRefreshing = false;
-      return;
-    }
-
-    _isRefreshing = false;
-
-    final opts = err.requestOptions;
-    final newHeaders = Map<String, dynamic>.from(opts.headers);
-    newHeaders['Authorization'] = 'Bearer ${authCubit.getJwtToken}';
-
-    try {
-      final response = await dio.request(
-        opts.path,
-        data: opts.data,
-        queryParameters: opts.queryParameters,
-        options: Options(method: opts.method, headers: newHeaders),
-      );
-
-      return handler.resolve(response);
-    } catch (_) {
-      authCubit.signOut(reason: LogoutReason.sessionExpired);
-      return;
-    }
+    handler.next(error);
   }
 }

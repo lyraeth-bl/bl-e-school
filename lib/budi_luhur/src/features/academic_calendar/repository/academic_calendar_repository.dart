@@ -22,7 +22,6 @@ class AcademicCalendarRepository {
   }) async {
     final response = await ApiClient.get(
       url: "${ApiEndpoints.academicCalendar}/$year/$month/$unit",
-      useAuthToken: true,
     );
 
     final listAcademicCalendar = (response['data'] as List)

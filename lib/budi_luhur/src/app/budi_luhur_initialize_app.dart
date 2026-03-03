@@ -3,6 +3,9 @@ import 'dart:io';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:bl_e_school/budi_luhur/src/app/init/init_hive_open_box.dart';
+import 'package:bl_e_school/budi_luhur/src/features/auth/cubit/auth/auth_cubit.dart';
+import 'package:bl_e_school/budi_luhur/src/features/sessions/presentation/bloc/sessions_bloc.dart';
+import 'package:bl_e_school/budi_luhur/src/features/sessions/repository/sessions_repository.dart';
 import 'package:bl_e_school/firebase_options.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -14,6 +17,8 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+
+import 'app_bloc_observer.dart';
 
 /// Initializes essential application services and configurations before running the app.
 ///
@@ -98,7 +103,16 @@ Future<void> budiLuhurInitializeApp() async {
     ),
   );
 
-  dio.interceptors.add(AuthInterceptor(dio: dio, authCubit: authCubit));
+  final sessionsRepository = SessionsRepository();
+
+  final sessionsBloc = SessionsBloc(sessionsRepository);
+
+  dio.interceptors.add(
+    AuthInterceptor(
+      sessionsBloc: sessionsBloc,
+      sessionsRepository: sessionsRepository,
+    ),
+  );
 
   if (kDebugMode) {
     dio.interceptors.add(
@@ -111,6 +125,9 @@ Future<void> budiLuhurInitializeApp() async {
   }
 
   ApiClient.init(dioInstance: dio);
+
+  // App Bloc Observer
+  Bloc.observer = const AppBlocObserver();
 
   // Run the main application widget.
   runApp(BudiLuhurApp(authCubit: authCubit));

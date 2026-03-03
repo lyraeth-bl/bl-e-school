@@ -7,7 +7,6 @@ class ExtracurricularRepository {
     try {
       final response = await ApiClient.getList(
         url: "${ApiEndpoints.extracurricular}/$nis",
-        useAuthToken: true,
       );
 
       final data = response

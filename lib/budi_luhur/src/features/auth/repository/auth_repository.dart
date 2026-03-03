@@ -1,106 +1,87 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:bl_e_school/budi_luhur/src/features/auth/data/model/login_request/login_request.dart';
+import 'package:bl_e_school/budi_luhur/src/features/auth/data/model/login_response/login_response.dart';
 import 'package:flutter/foundation.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:hive/hive.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
-/// A repository for managing user authentication, both locally and remotely.
-///
-/// This class handles storing and retrieving authentication-related data from
-/// local storage (Hive) and interacting with the backend for authentication processes
-/// like sign-in and sign-out.
 class AuthRepository {
   // --- Local Data Source ---
 
-  /// Checks if the user is currently logged in.
-  ///
-  /// Retrieves the login status from local storage.
-  /// Returns `true` if logged in, otherwise `false`.
+  Future<Result<LoginResponse>> loginSanctum(LoginRequest loginRequest) async {
+    final data = loginRequest.toJson();
+
+    try {
+      final response = await ApiClient.post(
+        body: data,
+        url: ApiEndpoints.loginSanctum,
+        extra: {"skipAuthInterceptor": true},
+      );
+
+      return Right(LoginResponse.fromJson(response));
+    } catch (e, st) {
+      return Left(Failure.fromDio(e, st));
+    }
+  }
+
+  Future<void> logoutSanctum() async {
+    try {
+      await ApiClient.post(body: {}, url: ApiEndpoints.logoutSanctum);
+    } catch (e) {
+      //
+    }
+  }
+
   bool getIsLogIn() {
     return Hive.box(authBoxKey).get(isLogInKey) ?? false;
   }
 
-  /// Sets the user's login status.
-  ///
-  /// [value]: The new login status (`true` for logged in, `false` for logged out).
   Future<void> setIsLogIn(bool value) async {
     return Hive.box(authBoxKey).put(isLogInKey, value);
   }
 
-  /// Checks if the logged-in user is a student.
-  ///
-  /// Retrieves the student login status from local storage.
-  /// Returns `true` if the user is a student, otherwise `false`.
   static bool getIsStudentLogIn() {
     return Hive.box(authBoxKey).get(isStudentLogInKey) ?? false;
   }
 
-  /// Sets the student login status.
-  ///
-  /// [value]: The new student login status.
   Future<void> setIsStudentLogIn(bool value) async {
     return Hive.box(authBoxKey).put(isStudentLogInKey, value);
   }
 
-  /// Retrieves the details of the currently logged-in student.
-  ///
-  /// Fetches the student data from local storage and deserializes it
-  /// into a [Student] object.
-  /// Returns a [Student] object, which may be empty if no details are found.
   static Student getStudentDetails() {
     return Student.fromJson(
       Map.from(Hive.box(authBoxKey).get(studentDetailsKey) ?? {}),
     );
   }
 
-  /// Saves the student's details to local storage.
-  ///
-  /// [student]: The [Student] object to be saved.
   Future<void> setStudentDetails(Student student) async {
     return Hive.box(authBoxKey).put(studentDetailsKey, student.toJson());
   }
 
-  /// Retrieves the JWT authentication token.
-  ///
-  /// Fetches the token from local storage.
-  /// Returns the token string, or an empty string if not found.
   String getJwtToken() {
     return Hive.box(authBoxKey).get(jwtTokenKey) ?? "";
   }
 
-  /// Saves the JWT authentication token.
-  ///
-  /// [value]: The JWT token string to save.
   Future<void> setJwtToken(String value) async {
     return Hive.box(authBoxKey).put(jwtTokenKey, value);
   }
 
-  /// Gets the school code from local storage.
   String get schoolCode =>
       Hive.box(authBoxKey).get(schoolCodeKey, defaultValue: "") as String;
 
-  /// Sets the school code in local storage.
   set schoolCode(String value) =>
       Hive.box(authBoxKey).put(schoolCodeKey, value);
 
   // --- Remote Data Source ---
 
-  /// Signs out the current user.
-  ///
-  /// This method sends a request to the logout endpoint to invalidate the session on the server.
-  /// It then clears all local authentication and session data, including login status,
-  /// JWT token, student details, and other cached data like attendance, notifications, and feedback.
   Future<void> signOutUser() async {
     final String token = getJwtToken();
 
     if (token.isNotEmpty) {
       try {
         // Attempt to notify the backend of the logout.
-        await ApiClient.post(
-          body: {},
-          url: ApiEndpoints.logout,
-          useAuthToken: true,
-          extra: {'skipAuthInterceptor': true},
-        );
+        await ApiClient.post(body: {}, url: ApiEndpoints.logout);
       } catch (e) {
         // Errors are ignored as the local data will be cleared regardless.
       }
@@ -110,17 +91,6 @@ class AuthRepository {
     await closeAndDeleteBox();
   }
 
-  /// Signs in a student with their credentials.
-  ///
-  /// - [nis]: The student's NIS (Nomor Induk Siswa).
-  /// - [password]: The student's password.
-  ///
-  /// Throws an [ApiException] if the sign-in process fails.
-  ///
-  /// Returns a `Map<String, dynamic>` upon successful authentication, containing:
-  /// - `jwtToken`: The new JWT token.
-  /// - `student`: The authenticated [Student] object.
-  /// - `expiresIn`: The timestamp of when the authentication occurred.
   Future<Map<String, dynamic>> signInStudent({
     required String nis,
     required String password,
@@ -131,7 +101,6 @@ class AuthRepository {
       final response = await ApiClient.post(
         body: body,
         url: ApiEndpoints.login,
-        useAuthToken: false,
         extra: {'skipAuthInterceptor': true},
       );
 
@@ -157,19 +126,11 @@ class AuthRepository {
     }
   }
 
-  /// Refreshes the authentication token.
-  ///
-  /// Sends a request to the refresh token endpoint to get a new JWT token.
-  /// The new token is then saved to local storage.
-  ///
-  /// Throws an [ApiException] if the token refresh fails.
-  /// Returns a [RefreshTokenResponse] containing the new token and its expiration time.
   Future<RefreshTokenResponse> refreshToken() async {
     try {
       final response = await ApiClient.post(
         body: {},
         url: ApiEndpoints.refreshToken,
-        useAuthToken: true,
       );
 
       final jwtToken = response['access_token'];
@@ -194,16 +155,6 @@ class AuthRepository {
     }
   }
 
-  /// Closes and deletes Hive boxes to clear cached data.
-  ///
-  /// This function iterates through a predefined list of box names:
-  /// - [notificationsBoxKey]
-  /// - [attendanceBoxKey]
-  /// - [feedbackBoxKey]
-  ///
-  /// For each box, it checks if the box is open and closes it if necessary.
-  /// Then, it deletes the box from the disk. This is typically used during
-  /// sign-out to ensure that no stale data persists.
   Future<void> closeAndDeleteBox() async {
     final List<String> namesBox = [
       notificationsBoxKey,

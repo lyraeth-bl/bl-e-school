@@ -94,7 +94,6 @@ class AttendanceRepository {
     try {
       final response = await ApiClient.get(
         url: "${ApiEndpoints.absensiHarian}/$nis",
-        useAuthToken: true,
       );
 
       final dailyAttendanceData = response['data'];
@@ -124,7 +123,6 @@ class AttendanceRepository {
     try {
       final response = await ApiClient.get(
         url: "${ApiEndpoints.absensiHarian}/$nis/$year/$month/$unit",
-        useAuthToken: true,
       );
 
       final customDailyAttendanceList = response['data'];
@@ -175,7 +173,6 @@ class AttendanceRepository {
       final response = await ApiClient.post(
         body: data,
         url: ApiEndpoints.absensiHarian,
-        useAuthToken: true,
       );
 
       final dailyAttendanceData = response['data'];
@@ -208,7 +205,6 @@ class AttendanceRepository {
       final response = await ApiClient.put(
         body: data,
         url: "${ApiEndpoints.absensiHarian}/$id",
-        useAuthToken: true,
       );
 
       final dailyAttendanceData = response['data'];
@@ -241,7 +237,6 @@ class AttendanceRepository {
       final response = await ApiClient.put(
         body: data,
         url: "${ApiEndpoints.absensiHarian}/$id",
-        useAuthToken: true,
       );
 
       final dailyAttendanceData = response['data'];
@@ -265,10 +260,7 @@ class AttendanceRepository {
   /// Throws an [ApiException] if the API call fails.
   Future<AttendanceHistoryResponse> getAllAttendanceUser() async {
     try {
-      final response = await ApiClient.get(
-        url: ApiEndpoints.absensi,
-        useAuthToken: true,
-      );
+      final response = await ApiClient.get(url: ApiEndpoints.absensi);
 
       final allAttendanceList = (response['data'] as List)
           .map((e) => AttendanceHistory.fromJson(Map.from(e)))
@@ -324,7 +316,7 @@ class AttendanceRepository {
     try {
       final response = await ApiClient.get(
         url: ApiEndpoints.absensi,
-        useAuthToken: true,
+
         queryParameters: queryParameters,
       );
 

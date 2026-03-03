@@ -10,11 +10,17 @@ class ApiEndpoints {
   /// Endpoint for user authentication (login).
   static String login = "$databaseUrl/login";
 
+  static String loginSanctum = "$sanctumUrl/login";
+
   /// Endpoint for refreshing an expired authentication token.
   static String refreshToken = "$databaseUrl/refresh-token";
 
   /// Endpoint for user logout.
   static String logout = "$databaseUrl/logout";
+
+  static String logoutSanctum = "$sanctumUrl/logout";
+
+  static String meSanctum = "$sanctumUrl/me";
 
   /// Endpoint for accessing student-related data.
   static String siswa = "$databaseUrl/siswa";

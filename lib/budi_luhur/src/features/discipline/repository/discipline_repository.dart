@@ -10,7 +10,6 @@ class DisciplineRepository {
           "Tajaran": params.schoolSession,
         if ((params.semester ?? '').isNotEmpty) "Semester": params.semester,
       },
-      useAuthToken: true,
     );
 
     final list = (response['data'] as List)
@@ -34,7 +33,6 @@ class DisciplineRepository {
           "Tajaran": params.schoolSession,
         if ((params.semester ?? '').isNotEmpty) "Semester": params.semester,
       },
-      useAuthToken: true,
     );
 
     final list = (response['data'] as List)

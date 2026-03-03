@@ -3,10 +3,7 @@ import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 class AppConfigurationRepository {
   Future<AppConfigurationDTO> fetchAppConfiguration() async {
     try {
-      final response = await ApiClient.get(
-        url: ApiEndpoints.appConfiguration,
-        useAuthToken: true,
-      );
+      final response = await ApiClient.get(url: ApiEndpoints.appConfiguration);
 
       final data = response['data'];
 

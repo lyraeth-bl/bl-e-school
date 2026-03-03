@@ -1,4 +1,10 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:bl_e_school/budi_luhur/src/features/auth/bloc/auth_bloc.dart';
+import 'package:bl_e_school/budi_luhur/src/features/auth/cubit/auth/auth_cubit.dart'
+    hide AuthState;
+import 'package:bl_e_school/budi_luhur/src/features/auth/cubit/sign_in/sign_in_cubit.dart';
+import 'package:bl_e_school/budi_luhur/src/features/auth/data/model/login_request/login_request.dart';
+import 'package:bl_e_school/budi_luhur/src/features/sessions/presentation/bloc/sessions_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -91,15 +97,42 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Stack(
-        children: [
-          _buildLowerPattern(),
-          _buildUpperPattern(),
-          _buildLoginForm(),
-        ],
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        state.whenOrNull(
+          successLogin: (accessToken, expiresAt) {
+            context.read<SessionsBloc>().add(
+              SessionsEvent.loggedIn(token: accessToken),
+            );
+          },
+          failure: (failure) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(failure.errorMessage!)));
+          },
+        );
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Stack(
+          children: [
+            _buildLowerPattern(),
+            _buildUpperPattern(),
+            _buildLoginForm(),
+          ],
+        ),
       ),
+    );
+  }
+
+  void _login() {
+    final loginParams = LoginRequest(
+      nis: _nisController.text.trim(),
+      password: _passwordController.text.trim(),
+    );
+
+    context.read<AuthBloc>().add(
+      AuthEvent.loginRequested(loginRequest: loginParams),
     );
   }
 
@@ -272,31 +305,7 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
                     // _buildRequestResetPasswordContainer(),
                     48.h,
 
-                    BlocConsumer<SignInCubit, SignInState>(
-                      listener: (context, state) {
-                        state.maybeWhen(
-                          success: (isStudentLogIn, student, time) {
-                            context.read<AuthCubit>().authenticateUser(
-                              isStudent: isStudentLogIn,
-                              student: student,
-                              time: DateTime.now(),
-                            );
-
-                            Get.offNamedUntil(
-                              BudiLuhurRoutes.studentOnboarding,
-                              (Route<dynamic> route) => false,
-                            );
-                          },
-                          failure: (errorMessage) {
-                            Utils.showCustomSnackBar(
-                              context: context,
-                              errorMessage: errorMessage,
-                              backgroundColor: context.colors.errorContainer,
-                            );
-                          },
-                          orElse: () {},
-                        );
-                      },
+                    BlocBuilder<AuthBloc, AuthState>(
                       builder: (context, state) {
                         final isLoading = state.maybeWhen(
                           loading: () => true,
@@ -317,7 +326,7 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
 
                               FocusScope.of(context).unfocus();
 
-                              _signInStudent();
+                              _login();
                             },
                             child: isLoading
                                 ? SizedBox(

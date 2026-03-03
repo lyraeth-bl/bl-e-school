@@ -43,7 +43,6 @@ class DeviceTokenRepository {
       final response = await ApiClient.post(
         body: data,
         url: ApiEndpoints.deviceTokens,
-        useAuthToken: true,
       );
 
       if (kDebugMode) {
