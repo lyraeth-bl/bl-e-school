@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/sessions/presentation/bloc/sessions_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,16 +15,6 @@ class _TimeTableContainerState extends State<TimeTableContainer>
     with SingleTickerProviderStateMixin {
   late int _currentSelectedDayIndex = DateTime.now().weekday - 1;
 
-  void _fetchTimeTable() {
-    final detailsStudent = context.read<SessionsBloc>().studentDetails;
-    final classStudent =
-        "${detailsStudent?.kelasSaatIni}${detailsStudent?.noKelasSaatIni}";
-    context.read<TimeTableCubit>().fetchTimeTable(
-      kelas: classStudent,
-      forceRefresh: true,
-    );
-  }
-
   late Timer _timer;
 
   @override
@@ -35,6 +24,18 @@ class _TimeTableContainerState extends State<TimeTableContainer>
     _timer = Timer.periodic(const Duration(seconds: 30), (_) {
       if (mounted) setState(() {});
     });
+  }
+
+  void _refreshTimeTable() {
+    final studentDetails = sI<SessionsBloc>().studentDetails;
+
+    context.read<TimeTableBloc>().add(
+      TimeTableEvent.timeTableRequested(
+        kelas:
+            "${studentDetails!.kelasSaatIni!}${studentDetails.noKelasSaatIni}",
+        forceRefresh: true,
+      ),
+    );
   }
 
   @override
@@ -410,13 +411,13 @@ class _TimeTableContainerState extends State<TimeTableContainer>
   }
 
   Widget _buildTimeTable() {
-    return BlocBuilder<TimeTableCubit, TimeTableState>(
+    return BlocBuilder<TimeTableBloc, TimeTableState>(
       builder: (context, state) {
         return state.maybeWhen(
-          failure: (errorMessage) => ErrorContainer(
+          failure: (failure) => ErrorContainer(
             key: isApplicationItemAnimationOn ? UniqueKey() : null,
-            errorMessageCode: errorMessage,
-            onTapRetry: _fetchTimeTable,
+            errorMessageCode: failure.messageKey.translate(),
+            onTapRetry: _refreshTimeTable,
           ),
           success: (timeTableList) {
             final timetableSlots = _buildTimeTableSlots(timeTableList);

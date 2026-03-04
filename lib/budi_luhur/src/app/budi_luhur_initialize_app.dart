@@ -90,6 +90,7 @@ Future<void> budiLuhurInitializeApp() async {
   await initAuthDI();
   await initDeviceTokenDI();
   await initAppConfigDI();
+  await initTimeTableDI();
 
   final dio = Dio(
     BaseOptions(

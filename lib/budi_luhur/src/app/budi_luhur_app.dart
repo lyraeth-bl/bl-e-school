@@ -22,12 +22,10 @@ class BudiLuhurApp extends StatelessWidget {
         BlocProvider<AuthBloc>.value(value: sI<AuthBloc>()),
         BlocProvider<DeviceTokenBloc>.value(value: sI<DeviceTokenBloc>()),
         BlocProvider<AppConfigBloc>.value(value: sI<AppConfigBloc>()),
+        BlocProvider<TimeTableBloc>.value(value: sI<TimeTableBloc>()),
 
         BlocProvider<AppLocalizationCubit>(
           create: (_) => AppLocalizationCubit(SettingsRepository()),
-        ),
-        BlocProvider<TimeTableCubit>(
-          create: (_) => TimeTableCubit(TimeTableRepository()),
         ),
         BlocProvider<DailyAttendanceCubit>(
           create: (_) => DailyAttendanceCubit(AttendanceRepository()),
@@ -48,6 +46,13 @@ class BudiLuhurApp extends StatelessWidget {
 
                       context.read<AppConfigBloc>().add(
                         AppConfigEvent.appConfigRequested(),
+                      );
+
+                      context.read<TimeTableBloc>().add(
+                        TimeTableEvent.timeTableRequested(
+                          kelas:
+                              "${student!.kelasSaatIni!}${student.noKelasSaatIni}",
+                        ),
                       );
 
                       Get.offNamed(BudiLuhurRoutes.home);

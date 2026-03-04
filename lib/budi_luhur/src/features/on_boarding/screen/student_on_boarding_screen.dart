@@ -1,5 +1,4 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/sessions/presentation/bloc/sessions_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -23,34 +22,16 @@ class _StudentOnBoardingScreenState extends State<StudentOnBoardingScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // _postDeviceToken();
-      _fetchTimeTable();
       _fetchDailyAttendance();
     });
 
     _checkFirstTimeUser();
   }
 
-  // void _postDeviceToken() {
-  //   context.read<DeviceTokenCubit>().postDeviceToken(
-  //     nis: context.read<SessionsBloc>().studentDetails?.nis ?? "",
-  //   );
-  // }
-
   void _fetchDailyAttendance() {
     final detailsUser = context.read<SessionsBloc>().studentDetails;
     context.read<DailyAttendanceCubit>().fetchTodayDailyAttendance(
       nis: detailsUser?.nis ?? "",
-    );
-  }
-
-  void _fetchTimeTable() {
-    final detailsStudent = context.read<SessionsBloc>().studentDetails;
-    final classStudent =
-        "${detailsStudent?.kelasSaatIni}${detailsStudent?.noKelasSaatIni}";
-    context.read<TimeTableCubit>().fetchTimeTable(
-      kelas: classStudent,
-      forceRefresh: true,
     );
   }
 

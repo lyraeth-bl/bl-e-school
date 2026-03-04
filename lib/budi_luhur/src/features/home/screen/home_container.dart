@@ -29,15 +29,19 @@ class HomeContainer extends StatelessWidget {
         appBarHeightPercentage: Utils.appBarBiggerHeightPercentage - 0.025,
       ),
       onRefresh: () async {
-        // final detailsStudent = context.read<SessionsBloc>().studentDetails;
-        // final classStudent =
-        //     "${detailsStudent?.kelasSaatIni}${detailsStudent?.noKelasSaatIni}";
-        //
+        final studentDetails = sI<SessionsBloc>().studentDetails;
+
+        context.read<TimeTableBloc>().add(
+          TimeTableEvent.timeTableRequested(
+            kelas:
+                "${studentDetails!.kelasSaatIni!}${studentDetails.noKelasSaatIni}",
+            forceRefresh: true,
+          ),
+        );
+
         // context.read<DailyAttendanceCubit>().fetchTodayDailyAttendance(
         //   nis: detailsStudent?.nis ?? "",
         // );
-        //
-        // context.read<TimeTableCubit>().fetchTimeTable(kelas: classStudent);
 
         context.read<AppConfigBloc>().add(
           AppConfigEvent.appConfigRequested(forceRefresh: true),
