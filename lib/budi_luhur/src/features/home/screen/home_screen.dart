@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -100,17 +102,15 @@ class _HomeScreenState extends State<HomeScreen>
     WidgetsBinding.instance.addObserver(this);
     _animationController.forward();
 
+    updateBottomNavItems();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // if (fromNotifications) _fetchDailyAttendance();
       loadTemporarilyStoredNotifications();
-      // _fetchAppConfiguration();
       // _fetchDailyAttendance();
       NotificationsUtility.setUpNotificationService();
     });
   }
-
-  void _fetchAppConfiguration() =>
-      context.read<AppConfigurationCubit>().fetchAppConfiguration();
 
   void fetchDailyAttendanceFromNotification() {
     // _fetchDailyAttendance();
@@ -122,6 +122,10 @@ class _HomeScreenState extends State<HomeScreen>
   //     nis: detailsUser?.nis ?? "",
   //   );
   // }
+
+  Future<bool> _checkVersion(AppConfig appConfig) async {
+    return await Utils.compareAppVersion(appConfig);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -143,13 +147,30 @@ class _HomeScreenState extends State<HomeScreen>
       },
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
-        body: context.read<AppConfigurationCubit>().getAppMaintenance
+        body: context.read<AppConfigBloc>().isAppMaintenance
             ? const AppUnderMaintenanceContainer()
-            : BlocConsumer<AppConfigurationCubit, AppConfigurationState>(
+            : BlocConsumer<AppConfigBloc, AppConfigState>(
                 listener: (context, state) {
                   state.maybeWhen(
-                    failure: (errorMessage) => updateBottomNavItems(),
-                    success: (appConfiguration) => updateBottomNavItems(),
+                    success: (appConfiguration) async {
+                      final isVersionOutdated = await _checkVersion(
+                        appConfiguration,
+                      );
+                      final appLink = Platform.isIOS
+                          ? appConfiguration.iosAppLink
+                          : appConfiguration.androidAppLink;
+
+                      if (isVersionOutdated) {
+                        if (Get.isBottomSheetOpen != true) {
+                          Get.bottomSheet(
+                            AppUpdateBottomSheet(urlGithub: appLink ?? ""),
+                            enableDrag: true,
+                            isDismissible: true,
+                            backgroundColor: Colors.white,
+                          );
+                        }
+                      }
+                    },
                     orElse: () {},
                   );
                 },
@@ -237,6 +258,7 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void updateBottomNavItems() {
+    debugPrint("updateBottomNavItems() success");
     _bottomNavItems = [
       BottomNavIconModel(
         activeImageUrl: LucideIcons.house,

@@ -1,11 +1,11 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'app_configuration.freezed.dart';
-part 'app_configuration.g.dart';
+part 'app_config.freezed.dart';
+part 'app_config.g.dart';
 
 @freezed
-abstract class AppConfiguration with _$AppConfiguration {
-  const factory AppConfiguration({
+abstract class AppConfig with _$AppConfig {
+  const factory AppConfig({
     @JsonKey(name: 'id') required int id,
     @JsonKey(name: 'android_app_link') String? androidAppLink,
     @JsonKey(name: 'ios_app_link') String? iosAppLink,
@@ -14,8 +14,8 @@ abstract class AppConfiguration with _$AppConfiguration {
     @JsonKey(name: 'force_app_update') @Default(false) bool forceAppUpdate,
     @JsonKey(name: 'app_maintenance') @Default(false) bool appMaintenance,
     @JsonKey(name: 'file_upload_size_limit') String? fileUploadSizeLimit,
-  }) = _AppConfiguration;
+  }) = _AppConfig;
 
-  factory AppConfiguration.fromJson(Map<String, dynamic> json) =>
-      _$AppConfigurationFromJson(json);
+  factory AppConfig.fromJson(Map<String, dynamic> json) =>
+      _$AppConfigFromJson(json);
 }

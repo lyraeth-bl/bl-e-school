@@ -51,6 +51,8 @@ class ApiEndpoints {
   /// Endpoint for appConfig.
   static String appConfiguration = "$databaseUrl/app-config";
 
+  static String appConfig = "$sanctumUrl/app-config";
+
   /// Endpoint for fetching timetables.
   static String timeTable = "$databaseInternalUrl/jadwal";
 

@@ -4,6 +4,8 @@ library;
 export 'academic_calendar/academic_calendar.dart';
 /// Academic Result
 export 'academic_result/academic_result.dart';
+/// AppConfig
+export 'app_config/app_config.dart';
 /// Attendance
 export 'attendance/attendance.dart';
 /// Auth

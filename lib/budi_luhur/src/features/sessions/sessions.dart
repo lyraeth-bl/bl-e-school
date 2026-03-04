@@ -7,3 +7,4 @@ export 'data/model/sessions_token/sessions_token.dart';
 export 'presentation/bloc/sessions_bloc.dart';
 export 'repository/sessions_repository.dart';
 export 'repository/sessions_repository_impl.dart';
+export 'sessions_di.dart';

@@ -1,5 +1,4 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/sessions/presentation/bloc/sessions_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,17 +29,19 @@ class HomeContainer extends StatelessWidget {
         appBarHeightPercentage: Utils.appBarBiggerHeightPercentage - 0.025,
       ),
       onRefresh: () async {
-        final detailsStudent = context.read<SessionsBloc>().studentDetails;
-        final classStudent =
-            "${detailsStudent?.kelasSaatIni}${detailsStudent?.noKelasSaatIni}";
+        // final detailsStudent = context.read<SessionsBloc>().studentDetails;
+        // final classStudent =
+        //     "${detailsStudent?.kelasSaatIni}${detailsStudent?.noKelasSaatIni}";
+        //
+        // context.read<DailyAttendanceCubit>().fetchTodayDailyAttendance(
+        //   nis: detailsStudent?.nis ?? "",
+        // );
+        //
+        // context.read<TimeTableCubit>().fetchTimeTable(kelas: classStudent);
 
-        context.read<DailyAttendanceCubit>().fetchTodayDailyAttendance(
-          nis: detailsStudent?.nis ?? "",
+        context.read<AppConfigBloc>().add(
+          AppConfigEvent.appConfigRequested(forceRefresh: true),
         );
-
-        context.read<TimeTableCubit>().fetchTimeTable(kelas: classStudent);
-
-        context.read<AppConfigurationCubit>().fetchAppConfiguration();
       },
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),

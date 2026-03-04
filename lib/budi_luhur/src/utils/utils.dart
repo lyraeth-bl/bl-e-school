@@ -1,6 +1,7 @@
 library;
 
 import 'dart:convert' as convert;
+import 'dart:io';
 
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/foundation.dart';
@@ -703,6 +704,44 @@ class Utils {
     final version = packageInfo.version;
 
     return version;
+  }
+
+  static Future<bool> compareAppVersion(AppConfig appConfig) async {
+    // Inisialisasi packages
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+    // ambil versi dari DB
+    final remoteVersion = Platform.isIOS
+        ? appConfig.iosAppVersion?.trim()
+        : appConfig.androidAppVersion?.trim();
+
+    // ambil versi dari app
+    final localVersion = packageInfo.version;
+
+    // null check
+    if (remoteVersion == null ||
+        remoteVersion.isEmpty ||
+        remoteVersion == "-") {
+      return false;
+    }
+
+    return (Utils.compareVersion(localVersion, remoteVersion) < 0) &&
+        appConfig.forceAppUpdate;
+
+    // ==== Testing ==== //
+    // debugPrint("localVersion : $localVersion");
+    // debugPrint("remoteVersion : $remoteVersion");
+    // debugPrint(
+    //   "Hasil compare version : ${(Utils.compareVersion(localVersion, remoteVersion) < 0)}",
+    // );
+    // debugPrint(
+    //   "Hasil config.forceAppUpdate : ${config.forceAppUpdate}",
+    // );
+    // debugPrint(
+    //   "Hasil compare keduanya : ${((Utils.compareVersion(localVersion, remoteVersion) < 0) && config.forceAppUpdate)}",
+    // );
+
+    // compare versi dan hasil appUpdate dari db
   }
 
   static IconData iconForSubject(String name) {

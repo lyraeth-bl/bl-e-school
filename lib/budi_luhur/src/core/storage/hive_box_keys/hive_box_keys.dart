@@ -69,6 +69,8 @@ const String studentHasCheckOutKey = "attendanceBox.hasCheckOut";
 /// Contains keys for various application settings.
 const String settingsBoxKey = "settingsBox";
 
+const String settingsAppConfigKey = "settingsBox.settingsAppConfig";
+
 /// The key for storing the current language code of the app.
 const String currentLanguageCodeKey = "settingsBoxCurrentLanguageCode";
 
