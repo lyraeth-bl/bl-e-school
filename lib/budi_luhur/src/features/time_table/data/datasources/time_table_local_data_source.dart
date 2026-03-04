@@ -15,7 +15,9 @@ class TimeTableLocalDataSourceImpl implements TimeTableLocalDataSource {
 
     if (raw == null) return null;
 
-    final list = List<Map<String, dynamic>>.from(raw);
+    final list = (raw as List)
+        .map((e) => Map<String, dynamic>.from(e))
+        .toList();
 
     return list.map((e) => TimeTable.fromJson(e)).toList();
   }
