@@ -1,49 +1,16 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:fpdart/fpdart.dart';
 
-class DisciplineRepository {
-  Future<MeritResponse> fetchMerit(DisciplineParams params) async {
-    final response = await ApiClient.get(
-      url: ApiEndpoints.merit,
-      queryParameters: {
-        "NIS": params.nis,
-        if ((params.schoolSession ?? '').isNotEmpty)
-          "Tajaran": params.schoolSession,
-        if ((params.semester ?? '').isNotEmpty) "Semester": params.semester,
-      },
-    );
+abstract class DisciplineRepository {
+  Future<Result<MeritResponse>> fetchMerit(DisciplineParams params);
 
-    final list = (response['data'] as List)
-        .map((e) => Merit.fromJson(e))
-        .toList();
+  Future<Result<DemeritResponse>> fetchDemerit(DisciplineParams params);
 
-    return MeritResponse(
-      status: response['status'],
-      type: DisciplineType.merit,
-      total: response['total'] ?? list.length,
-      disciplineList: list,
-    );
-  }
+  List<Merit>? getStoredMerit();
 
-  Future<DemeritResponse> fetchDemerit(DisciplineParams params) async {
-    final response = await ApiClient.get(
-      url: ApiEndpoints.demerit,
-      queryParameters: {
-        "NIS": params.nis,
-        if ((params.schoolSession ?? '').isNotEmpty)
-          "Tajaran": params.schoolSession,
-        if ((params.semester ?? '').isNotEmpty) "Semester": params.semester,
-      },
-    );
+  Future<Unit> storeMerit(List<Merit> listMerit);
 
-    final list = (response['data'] as List)
-        .map((e) => Demerit.fromJson(e))
-        .toList();
+  List<Demerit>? getStoredDemerit();
 
-    return DemeritResponse(
-      status: response['status'],
-      type: DisciplineType.demerit,
-      total: response['total'] ?? list.length,
-      disciplineList: list,
-    );
-  }
+  Future<Unit> storeDemerit(List<Demerit> listDemerit);
 }

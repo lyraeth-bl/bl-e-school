@@ -1,5 +1,4 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/sessions/presentation/bloc/sessions_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -19,18 +18,17 @@ class _MeritScreenState extends State<MeritScreen> {
     return BlocListener<DisciplineBloc, DisciplineState>(
       listener: (context, state) {
         state.whenOrNull(
-          error: (message) {
-            return ErrorContainer(errorMessageCode: message);
+          failure: (failure) {
+            return ErrorContainer(
+              errorMessageCode: failure.messageKey.translate(),
+            );
           },
         );
       },
       child: RefreshIndicator(
         onRefresh: () async {
-          final studentDetails = context.read<SessionsBloc>().studentDetails;
-          final nis = studentDetails?.nis;
-
           context.read<DisciplineBloc>().add(
-            DisciplineEvent.refresh(nis: nis ?? ""),
+            DisciplineEvent.fetchMeritAndDemerit(forceRefresh: true),
           );
         },
         child: SingleChildScrollView(
@@ -103,7 +101,7 @@ class _MeritScreenState extends State<MeritScreen> {
 
                             BlocSelector<DisciplineBloc, DisciplineState, int?>(
                               selector: (state) => state.maybeWhen(
-                                loaded:
+                                success:
                                     (
                                       meritList,
                                       demeritList,
@@ -144,7 +142,7 @@ class _MeritScreenState extends State<MeritScreen> {
               BlocBuilder<DisciplineBloc, DisciplineState>(
                 builder: (context, state) {
                   final schoolSessionList = state.maybeWhen(
-                    loaded: (meritList, _, _, _) => meritList
+                    success: (meritList, _, _, _) => meritList
                         .map((merit) => merit.schoolSession)
                         .toSet()
                         .toList(),
@@ -216,7 +214,7 @@ class _MeritScreenState extends State<MeritScreen> {
               BlocBuilder<DisciplineBloc, DisciplineState>(
                 builder: (context, state) {
                   return state.maybeWhen(
-                    loaded: (meritList, _, _, _) {
+                    success: (meritList, _, _, _) {
                       final filteredList = meritList.where((e) {
                         return e.schoolSession == _selectedSession;
                       }).toList();

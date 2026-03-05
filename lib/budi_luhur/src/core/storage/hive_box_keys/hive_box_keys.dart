@@ -102,3 +102,7 @@ const String sessionAccessTokenKey = "sessionsBox.sessionAccessToken";
 const String sessionsDeviceTokenKey = "sessionsBox.sessionsDeviceToken";
 
 const String sessionsListTimeTableKey = "sessionsBox.sessionsListTimeTable";
+
+const String sessionsListMeritKey = "sessionsBox.sessionsListMerit";
+
+const String sessionsListDemeritKey = "sessionsBox.sessionsListDemerit";

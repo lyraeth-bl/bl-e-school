@@ -6,15 +6,12 @@ abstract class DisciplineState with _$DisciplineState {
 
   const factory DisciplineState.loading() = _Loading;
 
-  const factory DisciplineState.loaded({
+  const factory DisciplineState.success({
     required List<Merit> meritList,
     required List<Demerit> demeritList,
-    required int totalMerit,
-    required int totalDemerit,
-  }) = _Loaded;
+    int? totalMerit,
+    int? totalDemerit,
+  }) = _Success;
 
-  const factory DisciplineState.error(String message) = _Error;
-
-  factory DisciplineState.fromJson(Map<String, dynamic> json) =>
-      _$DisciplineStateFromJson(json);
+  const factory DisciplineState.failure(Failure failure) = _Failure;
 }

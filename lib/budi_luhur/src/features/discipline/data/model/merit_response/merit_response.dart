@@ -10,7 +10,7 @@ abstract class MeritResponse with _$MeritResponse {
     required bool status,
     required DisciplineType type,
     required int total,
-    required List<Merit> disciplineList,
+    @JsonKey(name: "data") List<Merit>? disciplineList,
   }) = _MeritResponse;
 
   factory MeritResponse.fromJson(Map<String, dynamic> json) =>

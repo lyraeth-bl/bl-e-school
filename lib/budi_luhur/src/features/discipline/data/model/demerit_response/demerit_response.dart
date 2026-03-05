@@ -10,7 +10,7 @@ abstract class DemeritResponse with _$DemeritResponse {
     required bool status,
     required DisciplineType type,
     required int total,
-    required List<Demerit> disciplineList,
+    @JsonKey(name: "data") List<Demerit>? disciplineList,
   }) = _DemeritResponse;
 
   factory DemeritResponse.fromJson(Map<String, dynamic> json) =>

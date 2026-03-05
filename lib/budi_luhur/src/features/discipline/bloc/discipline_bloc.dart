@@ -1,93 +1,123 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 part 'discipline_bloc.freezed.dart';
-part 'discipline_bloc.g.dart';
 part 'discipline_event.dart';
 part 'discipline_state.dart';
 
-class DisciplineBloc extends HydratedBloc<DisciplineEvent, DisciplineState> {
-  final DisciplineRepository repository;
+class DisciplineBloc extends Bloc<DisciplineEvent, DisciplineState> {
+  final DisciplineRepository _disciplineRepository;
 
-  DisciplineBloc(this.repository) : super(const DisciplineState.initial()) {
-    on<_Load>(_onLoad);
-    on<_Refresh>(_onRefresh);
+  DisciplineBloc(this._disciplineRepository)
+    : super(const DisciplineState.initial()) {
+    on<_FetchMeritAndDemerit>(_onFetchMeritAndDemerit);
   }
 
-  Future<void> _onLoad(_Load event, Emitter<DisciplineState> emit) async {
-    final currentState = state;
+  Future<void> _onFetchMeritAndDemerit(
+    _FetchMeritAndDemerit event,
+    Emitter<DisciplineState> emit,
+  ) async {
+    if (!event.forceRefresh && state is _Success) return;
 
-    if (!event.forceRefresh && currentState is _Loaded) return;
+    final storedListMeritData = _disciplineRepository.getStoredMerit();
+    debugPrint(
+      "_disciplineRepository.getStoredMerit() : ${_disciplineRepository.getStoredMerit()}",
+    );
+
+    final storedListDemeritData = _disciplineRepository.getStoredDemerit();
+    debugPrint(
+      "_disciplineRepository.getStoredDemerit() : ${_disciplineRepository.getStoredDemerit()}",
+    );
+    final totalStoredMerit = storedListMeritData?.fold(
+      0,
+      (sum, e) => sum + e.point,
+    );
+
+    final totalStoredDemerit = storedListDemeritData?.fold(
+      100,
+      (sum, e) => sum - e.point,
+    );
+
+    if (!event.forceRefresh &&
+        (storedListMeritData != null && storedListMeritData.isNotEmpty) &&
+        (storedListDemeritData != null && storedListDemeritData.isNotEmpty)) {
+      emit(
+        DisciplineState.success(
+          meritList: storedListMeritData,
+          demeritList: storedListDemeritData,
+          totalMerit: totalStoredMerit,
+          totalDemerit: totalStoredDemerit,
+        ),
+      );
+      debugPrint("DisciplineState.success with local data");
+      return;
+    }
 
     emit(const DisciplineState.loading());
 
-    try {
-      final meritResponse = await repository.fetchMerit(
-        DisciplineParams(
-          nis: event.nis,
-          schoolSession: event.schoolSession,
-          semester: event.semester,
-        ),
-      );
+    final meritResult = await _disciplineRepository.fetchMerit(
+      DisciplineParams(
+        schoolSession: event.schoolSession,
+        semester: event.semester,
+      ),
+    );
 
-      final demeritResponse = await repository.fetchDemerit(
-        DisciplineParams(
-          nis: event.nis,
-          schoolSession: event.schoolSession,
-          semester: event.semester,
-        ),
-      );
+    final demeritResult = await _disciplineRepository.fetchDemerit(
+      DisciplineParams(
+        schoolSession: event.schoolSession,
+        semester: event.semester,
+      ),
+    );
 
-      final totalMerit = meritResponse.disciplineList.fold<int>(
-        0,
-        (sum, e) => sum + e.point,
-      );
+    final meritFailure = meritResult.match((f) => f, (_) => null);
+    final demeritFailure = demeritResult.match((f) => f, (_) => null);
+    final meritResponse = meritResult.match((_) => null, (r) => r);
+    final demeritResponse = demeritResult.match((_) => null, (r) => r);
 
-      final totalDemerit = demeritResponse.disciplineList.fold<int>(
-        100,
-        (sum, e) => sum - e.point,
-      );
+    if (meritFailure != null) {
+      emit(DisciplineState.failure(meritFailure));
+      return;
+    }
 
+    if (demeritFailure != null) {
+      emit(DisciplineState.failure(demeritFailure));
+      return;
+    }
+
+    if (meritResponse != null) {
+      await _disciplineRepository.storeMerit(
+        meritResponse.disciplineList ?? [],
+      );
+      debugPrint("_disciplineRepository.storeMerit() success");
+    }
+
+    if (demeritResponse != null) {
+      await _disciplineRepository.storeDemerit(
+        demeritResponse.disciplineList ?? [],
+      );
+      debugPrint("_disciplineRepository.storeDemerit() success");
+    }
+
+    final totalMerit = meritResponse?.disciplineList?.fold(
+      0,
+      (sum, e) => sum + e.point,
+    );
+    final totalDemerit = demeritResponse?.disciplineList?.fold(
+      100,
+      (sum, e) => sum - e.point,
+    );
+
+    if (meritResponse != null && demeritResponse != null) {
       emit(
-        DisciplineState.loaded(
-          meritList: meritResponse.disciplineList,
-          demeritList: demeritResponse.disciplineList,
+        DisciplineState.success(
+          meritList: meritResponse.disciplineList ?? [],
+          demeritList: demeritResponse.disciplineList ?? [],
           totalMerit: totalMerit,
           totalDemerit: totalDemerit,
         ),
       );
-    } catch (e) {
-      emit(DisciplineState.error(e.toString()));
     }
-  }
-
-  Future<void> _onRefresh(_Refresh event, Emitter<DisciplineState> emit) async {
-    add(
-      DisciplineEvent.load(
-        nis: event.nis,
-        schoolSession: event.schoolSession,
-        semester: event.semester,
-        forceRefresh: true,
-      ),
-    );
-  }
-
-  @override
-  DisciplineState? fromJson(Map<String, dynamic> json) {
-    try {
-      return DisciplineState.fromJson(json);
-    } catch (_) {
-      return null;
-    }
-  }
-
-  @override
-  Map<String, dynamic>? toJson(DisciplineState state) {
-    return state.maybeWhen(
-      loaded: (meritList, demeritList, totalMerit, totalDemerit) =>
-          state.toJson(),
-      orElse: () => null,
-    );
   }
 }

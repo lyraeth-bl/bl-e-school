@@ -1,5 +1,4 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/sessions/presentation/bloc/sessions_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,10 +22,7 @@ class _DisciplineContainerState extends State<DisciplineContainer> {
   }
 
   Future<void> _fetchMeritAndDemerit() async {
-    final studentDetails = context.read<SessionsBloc>().studentDetails;
-    final nis = studentDetails?.nis;
-
-    context.read<DisciplineBloc>().add(DisciplineEvent.load(nis: nis ?? ""));
+    context.read<DisciplineBloc>().add(DisciplineEvent.fetchMeritAndDemerit());
   }
 
   @override
