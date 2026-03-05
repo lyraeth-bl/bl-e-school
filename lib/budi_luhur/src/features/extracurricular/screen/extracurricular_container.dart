@@ -1,5 +1,4 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/sessions/presentation/bloc/sessions_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,20 +22,8 @@ class _ExtracurricularContainerState extends State<ExtracurricularContainer> {
   }
 
   void _fetchExtracurricular() async {
-    final studentDetails = context.read<SessionsBloc>().studentDetails;
-    final nis = studentDetails?.nis;
-
     context.read<ExtracurricularBloc>().add(
-      ExtracurricularEvent.fetchExtracurricular(nis: nis ?? ""),
-    );
-  }
-
-  void _refreshData() async {
-    final studentDetails = context.read<SessionsBloc>().studentDetails;
-    final nis = studentDetails?.nis;
-
-    context.read<ExtracurricularBloc>().add(
-      ExtracurricularEvent.refresh(nis: nis ?? ""),
+      ExtracurricularEvent.fetchExtracurricular(),
     );
   }
 
@@ -82,13 +69,16 @@ class _ExtracurricularContainerState extends State<ExtracurricularContainer> {
       body: BlocListener<ExtracurricularBloc, ExtracurricularState>(
         listener: (context, state) {
           state.maybeWhen(
-            failure: (errorMessage) =>
-                ErrorContainer(errorMessageCode: errorMessage),
+            failure: (failure) => ErrorContainer(
+              errorMessageCode: failure.messageKey.translate(),
+            ),
             orElse: () {},
           );
         },
         child: RefreshIndicator(
-          onRefresh: () async => _refreshData(),
+          onRefresh: () async => context.read<ExtracurricularBloc>().add(
+            ExtracurricularEvent.fetchExtracurricular(forceRefresh: true),
+          ),
           child: SingleChildScrollView(
             padding: EdgeInsets.only(
               left: 24,

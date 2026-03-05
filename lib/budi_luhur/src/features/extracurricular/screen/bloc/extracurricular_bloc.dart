@@ -1,67 +1,62 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 part 'extracurricular_bloc.freezed.dart';
-part 'extracurricular_bloc.g.dart';
 part 'extracurricular_event.dart';
 part 'extracurricular_state.dart';
 
 class ExtracurricularBloc
-    extends HydratedBloc<ExtracurricularEvent, ExtracurricularState> {
-  final ExtracurricularRepository _repository;
+    extends Bloc<ExtracurricularEvent, ExtracurricularState> {
+  final ExtracurricularRepository _extracurricularRepository;
 
-  ExtracurricularBloc(this._repository)
+  ExtracurricularBloc(this._extracurricularRepository)
     : super(const ExtracurricularState.initial()) {
-    on<_FetchExtracurriculer>(_onFetch);
-    on<_Refresh>(_onRefresh);
+    on<_FetchExtracurriculer>(_onFetchExtracurriculer);
   }
 
-  Future<void> _onFetch(
+  Future<void> _onFetchExtracurriculer(
     _FetchExtracurriculer event,
     Emitter<ExtracurricularState> emit,
   ) async {
-    final currentState = state;
+    if (!event.forceRefresh && state is _Success) return;
 
-    if (!event.forceRefresh && currentState is _Success) return;
+    final storedExtracurricularData = _extracurricularRepository
+        .getStoredExtracurricular();
+
+    if (storedExtracurricularData != null) {
+      emit(
+        ExtracurricularState.success(
+          extracurricularList: storedExtracurricularData,
+        ),
+      );
+      debugPrint("ExtracurricularState.success() with local data");
+      return;
+    }
 
     emit(ExtracurricularState.loading());
 
-    try {
-      final result = await _repository.fetchExtracurricular(nis: event.nis);
+    final result = await _extracurricularRepository.fetchExtracurricular();
 
-      emit(ExtracurricularState.success(extracurricularList: result));
-    } catch (e) {
-      emit(ExtracurricularState.failure(e.toString()));
+    final failure = result.match((l) => l, (r) => null);
+    final extracurricularResponse = result.match((l) => null, (r) => r);
+
+    if (failure != null) {
+      emit(ExtracurricularState.failure(failure));
+      return;
     }
-  }
 
-  Future<void> _onRefresh(
-    _Refresh event,
-    Emitter<ExtracurricularState> emit,
-  ) async {
-    add(
-      ExtracurricularEvent.fetchExtracurricular(
-        nis: event.nis,
-        forceRefresh: event.forceRefresh,
-      ),
-    );
-  }
-
-  @override
-  ExtracurricularState? fromJson(Map<String, dynamic> json) {
-    try {
-      return ExtracurricularState.fromJson(json);
-    } catch (_) {
-      return null;
+    if (extracurricularResponse != null) {
+      await _extracurricularRepository.saveExtracurricular(
+        extracurricularResponse.listExtracurricular,
+      );
+      debugPrint("_extracurricularRepository.saveExtracurricular() success");
+      emit(
+        ExtracurricularState.success(
+          extracurricularList: extracurricularResponse.listExtracurricular,
+        ),
+      );
     }
-  }
-
-  @override
-  Map<String, dynamic>? toJson(ExtracurricularState state) {
-    return state.maybeWhen(
-      success: (extracurricularList) => state.toJson(),
-      orElse: () => null,
-    );
   }
 }

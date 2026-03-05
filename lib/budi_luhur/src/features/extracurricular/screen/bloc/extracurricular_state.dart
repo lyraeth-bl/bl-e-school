@@ -10,8 +10,5 @@ abstract class ExtracurricularState with _$ExtracurricularState {
     required List<Extracurricular> extracurricularList,
   }) = _Success;
 
-  const factory ExtracurricularState.failure(String errorMessage) = _Failure;
-
-  factory ExtracurricularState.fromJson(Map<String, dynamic> json) =>
-      _$ExtracurricularStateFromJson(json);
+  const factory ExtracurricularState.failure(Failure failure) = _Failure;
 }

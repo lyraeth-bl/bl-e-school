@@ -69,6 +69,8 @@ class ApiEndpoints {
   /// Endpoint for fetching extracurricular.
   static String extracurricular = "$databaseUrl/ekskul";
 
+  static String extracurricularSanctum = "$sanctumUrl/ekskul";
+
   /// Endpoint for fetching result.
   static String result = "$databaseUrl/nilai";
 }

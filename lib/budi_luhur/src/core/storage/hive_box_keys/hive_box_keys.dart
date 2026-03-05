@@ -106,3 +106,6 @@ const String sessionsListTimeTableKey = "sessionsBox.sessionsListTimeTable";
 const String sessionsListMeritKey = "sessionsBox.sessionsListMerit";
 
 const String sessionsListDemeritKey = "sessionsBox.sessionsListDemerit";
+
+const String sessionsListExtracurricularKey =
+    "sessionsBox.sessionsListExtracurricular";

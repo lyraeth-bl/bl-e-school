@@ -25,8 +25,8 @@ class HomeScreen extends StatefulWidget {
           create: (_) => AcademicCalendarCubit(AcademicCalendarRepository()),
         ),
         BlocProvider<DisciplineBloc>.value(value: sI<DisciplineBloc>()),
-        BlocProvider<ExtracurricularBloc>(
-          create: (_) => ExtracurricularBloc(ExtracurricularRepository()),
+        BlocProvider<ExtracurricularBloc>.value(
+          value: sI<ExtracurricularBloc>(),
         ),
         BlocProvider<AcademicResultBloc>(
           create: (_) => AcademicResultBloc(AcademicResultRepository()),
