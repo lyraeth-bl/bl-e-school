@@ -132,17 +132,18 @@ class _SendFeedbackFormState extends State<SendFeedbackForm> {
     final valid = _formKey.currentState?.validate() ?? false;
     if (!valid) return;
 
-    final postCubit = context.read<PostFeedbackCubit>();
-
     setState(() => _submitting = true);
 
     try {
-      await postCubit.sendFeedback(
-        nis: _nisController.text.trim(),
+      final FeedbackRequest data = FeedbackRequest(
         message: _messageController.text.trim(),
         category: _selectedCategory,
         type: _selectedType,
         attachment: _attachmentFile?.path,
+      );
+
+      context.read<FeedbackBloc>().add(
+        FeedbackEvent.sendFeedback(feedbackRequest: data),
       );
     } catch (e) {
       ScaffoldMessenger.of(
@@ -155,12 +156,12 @@ class _SendFeedbackFormState extends State<SendFeedbackForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<PostFeedbackCubit, PostFeedbackState>(
+    return BlocListener<FeedbackBloc, FeedbackState>(
       listener: (context, state) {
-        state.map(
-          initial: (_) {},
-          loading: (_) => CircularProgressIndicator(),
-          success: (value) async {
+        state.maybeWhen(
+          loading: () => CircularProgressIndicator(),
+          actionLoading: () => CircularProgressIndicator(),
+          actionSuccess: () async {
             _messageController.clear();
             setState(() => _attachmentFile = null);
 
@@ -222,11 +223,12 @@ class _SendFeedbackFormState extends State<SendFeedbackForm> {
               },
             );
           },
-          failure: (errorMessage) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text('Failed: $errorMessage')));
+          failure: (failure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(failure.messageKey.translate())),
+            );
           },
+          orElse: () => SizedBox.shrink(),
         );
       },
       child: Form(

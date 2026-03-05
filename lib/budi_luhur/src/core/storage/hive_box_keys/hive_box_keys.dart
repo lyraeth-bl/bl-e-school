@@ -109,3 +109,5 @@ const String sessionsListDemeritKey = "sessionsBox.sessionsListDemerit";
 
 const String sessionsListExtracurricularKey =
     "sessionsBox.sessionsListExtracurricular";
+
+const String sessionsListFeedbackKey = "sessionsBox.sessionsListFeedback";

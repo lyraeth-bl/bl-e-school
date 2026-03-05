@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:bl_e_school/budi_luhur/src/features/feedback/feedback_di.dart';
 import 'package:bl_e_school/firebase_options.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -93,6 +94,7 @@ Future<void> budiLuhurInitializeApp() async {
   await initTimeTableDI();
   await initDisciplineDI();
   await initExtracurricularDI();
+  await initFeedbackDI();
 
   final dio = Dio(
     BaseOptions(

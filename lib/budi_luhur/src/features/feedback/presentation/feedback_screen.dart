@@ -1,5 +1,4 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/sessions/presentation/bloc/sessions_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -8,16 +7,9 @@ class FeedbackScreen extends StatelessWidget {
   const FeedbackScreen({super.key});
 
   static Widget routeInstance() {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<FeedbackCubit>(
-          create: (_) => FeedbackCubit(FeedbackRepository()),
-        ),
-        BlocProvider<GetFeedbackCubit>(
-          create: (_) => GetFeedbackCubit(FeedbackRepository()),
-        ),
-      ],
-      child: const FeedbackScreen(),
+    return BlocProvider<FeedbackBloc>.value(
+      value: sI<FeedbackBloc>(),
+      child: FeedbackScreen(),
     );
   }
 
@@ -44,10 +36,10 @@ class FeedbackScreen extends StatelessWidget {
         ),
       ),
       body: FeedbackContainer(),
-      floatingActionButton: BlocBuilder<FeedbackCubit, FeedbackState>(
+      floatingActionButton: BlocBuilder<FeedbackBloc, FeedbackState>(
         builder: (context, state) {
           return state.maybeWhen(
-            hasData: (feedbackUser, lastFetched) {
+            hasData: (listFeedback) {
               return SizedBox.shrink();
             },
             orElse: () => FloatingActionButton(
@@ -57,13 +49,8 @@ class FeedbackScreen extends StatelessWidget {
                 );
 
                 if (result == true) {
-                  final studentDetails = context
-                      .read<SessionsBloc>()
-                      .studentDetails;
-                  final nis = studentDetails?.nis;
-
-                  await context.read<GetFeedbackCubit>().fetchUserFeedback(
-                    nis: nis ?? "",
+                  context.read<FeedbackBloc>().add(
+                    FeedbackEvent.started(forceRefresh: true),
                   );
                 }
               },

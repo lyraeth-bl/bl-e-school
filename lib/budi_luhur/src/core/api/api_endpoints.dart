@@ -48,6 +48,8 @@ class ApiEndpoints {
   /// Endpoint for feedback.
   static String feedback = "$databaseUrl/feedback";
 
+  static String feedbackSanctum = "$sanctumUrl/feedback";
+
   /// Endpoint for appConfig.
   static String appConfiguration = "$databaseUrl/app-config";
 
