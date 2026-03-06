@@ -23,6 +23,7 @@ class BudiLuhurApp extends StatelessWidget {
         BlocProvider<DeviceTokenBloc>.value(value: sI<DeviceTokenBloc>()),
         BlocProvider<AppConfigBloc>.value(value: sI<AppConfigBloc>()),
         BlocProvider<TimeTableBloc>.value(value: sI<TimeTableBloc>()),
+        BlocProvider<DisciplineBloc>.value(value: sI<DisciplineBloc>()),
 
         BlocProvider<AppLocalizationCubit>(
           create: (_) => AppLocalizationCubit(SettingsRepository()),

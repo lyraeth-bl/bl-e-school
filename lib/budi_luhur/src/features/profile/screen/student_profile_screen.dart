@@ -14,39 +14,44 @@ class StudentProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 80,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadiusGeometry.only(
-            bottomLeft: Radius.circular(32),
-            bottomRight: Radius.circular(32),
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        state.whenOrNull(
+          successLogout: () =>
+              context.read<SessionsBloc>().add(SessionsEvent.loggedOut()),
+        );
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 80,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadiusGeometry.only(
+              bottomLeft: Radius.circular(32),
+              bottomRight: Radius.circular(32),
+            ),
           ),
+          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+          title: Text(
+            Utils.getTranslatedLabel(profileKey),
+            style: TextStyle(fontWeight: FontWeight.w700),
+          ),
+          centerTitle: true,
+          actions: [
+            IconButton(
+              onPressed: () =>
+                  context.read<AuthBloc>().add(AuthEvent.logoutRequested()),
+              icon: Icon(LucideIcons.logOut),
+            ),
+          ],
         ),
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-        title: Text(
-          Utils.getTranslatedLabel(profileKey),
-          style: TextStyle(fontWeight: FontWeight.w700),
+        body: Stack(
+          children: [
+            _buildProfileDetailsContainer(
+              context,
+              studentDetails: context.read<SessionsBloc>().studentDetails!,
+            ),
+          ],
         ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {
-              context.read<AuthBloc>().add(AuthEvent.logoutRequested());
-
-              Get.offNamedUntil(BudiLuhurRoutes.auth, (route) => false);
-            },
-            icon: Icon(LucideIcons.logOut),
-          ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          _buildProfileDetailsContainer(
-            context,
-            studentDetails: context.read<SessionsBloc>().studentDetails!,
-          ),
-        ],
       ),
     );
   }
@@ -210,45 +215,35 @@ class StudentProfileScreen extends StatelessWidget {
                                     ),
 
                                     builder: (context, totalMerit) =>
-                                    CircleNumberIndicator(
-                                      value: totalMerit!,
-                                      progress: (totalMerit / totalMerit)
-                                          .clamp(0.0, 1.0),
-                                      backgroundColor: Theme
-                                          .of(
-                                        context,
-                                      )
-                                          .colorScheme
-                                          .primaryContainer,
-                                      valueColor: Theme
-                                          .of(
-                                        context,
-                                      )
-                                          .colorScheme
-                                          .primary,
-                                      enableAnimation: true,
-                                    ),
-                              ),
+                                        CircleNumberIndicator(
+                                          value: totalMerit!,
+                                          progress: (totalMerit / totalMerit)
+                                              .clamp(0.0, 1.0),
+                                          backgroundColor: Theme.of(
+                                            context,
+                                          ).colorScheme.primaryContainer,
+                                          valueColor: Theme.of(
+                                            context,
+                                          ).colorScheme.primary,
+                                          enableAnimation: true,
+                                        ),
+                                  ),
 
                                   const SizedBox(height: 16),
 
                                   Text(
-                                Utils.getTranslatedLabel(meritKey),
-                                style: Theme
-                                    .of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                  color: Theme
-                                      .of(
-                                    context,
-                                  )
-                                      .colorScheme
-                                      .onSurface,
-                                ),
+                                    Utils.getTranslatedLabel(meritKey),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.onSurface,
+                                        ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
 
                               Column(
                                 children: [
@@ -269,7 +264,7 @@ class StudentProfileScreen extends StatelessWidget {
                                     ),
 
                                     builder: (context, totalDemerit) {
-                                  final maxDemerit = 100;
+                                      final maxDemerit = 100;
 
                                       return CircleNumberIndicator(
                                         value: totalDemerit!,
