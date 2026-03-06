@@ -6,10 +6,10 @@ export 'academic_calendar/academic_calendar.dart';
 export 'academic_result/academic_result.dart';
 /// AppConfig
 export 'app_config/app_config.dart';
-/// Attendance
-export 'attendance/attendance.dart';
 /// Auth
 export 'auth/auth.dart';
+/// Daily Attendance
+export 'daily_attendance/daily_attendance.dart';
 /// Device Token
 export 'device_tokens/device_token.dart';
 /// Discipline

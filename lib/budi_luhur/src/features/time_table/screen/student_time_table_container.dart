@@ -411,45 +411,50 @@ class _TimeTableContainerState extends State<TimeTableContainer>
   }
 
   Widget _buildTimeTable() {
-    return BlocBuilder<TimeTableBloc, TimeTableState>(
-      builder: (context, state) {
-        return state.maybeWhen(
-          failure: (failure) => ErrorContainer(
-            key: isApplicationItemAnimationOn ? UniqueKey() : null,
-            errorMessageCode: failure.messageKey.translate(),
-            onTapRetry: _refreshTimeTable,
-          ),
-          success: (timeTableList) {
-            final timetableSlots = _buildTimeTableSlots(timeTableList);
-
-            if (timetableSlots.isEmpty) {
-              return NoDataContainer(
-                key: isApplicationItemAnimationOn ? UniqueKey() : null,
-                titleKey: noLecturesKey,
-              );
-            }
-
-            return SizedBox(
-              height: MediaQuery.of(context).size.height * 0.7,
-              child: ListView.builder(
-                padding: EdgeInsets.only(
-                  left: 24,
-                  right: 24,
-                  bottom: Utils.getScrollViewBottomPadding(context),
-                ),
-                itemCount: timetableSlots.length,
-                itemBuilder: (context, index) {
-                  final timeTable = timetableSlots[index];
-                  return _buildTimeTableSlotDetailsContainer(
-                    timeTable: timeTable,
-                  );
-                },
-              ),
-            );
-          },
-          orElse: () => _buildTimeTableLoading(),
-        );
+    return RefreshIndicator(
+      onRefresh: () async {
+        _refreshTimeTable();
       },
+      child: BlocBuilder<TimeTableBloc, TimeTableState>(
+        builder: (context, state) {
+          return state.maybeWhen(
+            failure: (failure) => ErrorContainer(
+              key: isApplicationItemAnimationOn ? UniqueKey() : null,
+              errorMessageCode: failure.messageKey.translate(),
+              onTapRetry: _refreshTimeTable,
+            ),
+            success: (timeTableList) {
+              final timetableSlots = _buildTimeTableSlots(timeTableList);
+
+              if (timetableSlots.isEmpty) {
+                return NoDataContainer(
+                  key: isApplicationItemAnimationOn ? UniqueKey() : null,
+                  titleKey: noLecturesKey,
+                );
+              }
+
+              return SizedBox(
+                height: MediaQuery.of(context).size.height * 0.7,
+                child: ListView.builder(
+                  padding: EdgeInsets.only(
+                    left: 24,
+                    right: 24,
+                    bottom: Utils.getScrollViewBottomPadding(context),
+                  ),
+                  itemCount: timetableSlots.length,
+                  itemBuilder: (context, index) {
+                    final timeTable = timetableSlots[index];
+                    return _buildTimeTableSlotDetailsContainer(
+                      timeTable: timeTable,
+                    );
+                  },
+                ),
+              );
+            },
+            orElse: () => _buildTimeTableLoading(),
+          );
+        },
+      ),
     );
   }
 }

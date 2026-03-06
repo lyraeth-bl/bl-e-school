@@ -18,9 +18,14 @@ class ApiClient {
   static Future<Map<String, dynamic>> get({
     required String url,
     Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? data,
   }) async {
     try {
-      final response = await dio.get(url, queryParameters: queryParameters);
+      final response = await dio.get(
+        url,
+        queryParameters: queryParameters,
+        data: data,
+      );
 
       return Map.from(response.data);
     } on DioException catch (e) {

@@ -18,9 +18,6 @@ class HomeScreen extends StatefulWidget {
   static Widget routeInstance() {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<FetchDailyAttendanceCubit>(
-          create: (_) => FetchDailyAttendanceCubit(AttendanceRepository()),
-        ),
         BlocProvider<AcademicCalendarCubit>(
           create: (_) => AcademicCalendarCubit(AcademicCalendarRepository()),
         ),

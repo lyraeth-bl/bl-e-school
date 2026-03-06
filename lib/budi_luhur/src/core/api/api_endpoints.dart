@@ -31,6 +31,8 @@ class ApiEndpoints {
   /// Endpoint for managing daily attendance records.
   static String absensiHarian = "$databaseUrl/absensi-harian";
 
+  static String attendanceSanctum = "$sanctumUrl/absensi-harian";
+
   /// Endpoint for registering and managing device tokens for push notifications.
   static String deviceTokens = "$databaseUrl/device-tokens";
 

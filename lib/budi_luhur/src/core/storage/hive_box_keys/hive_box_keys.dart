@@ -111,3 +111,15 @@ const String sessionsListExtracurricularKey =
     "sessionsBox.sessionsListExtracurricular";
 
 const String sessionsListFeedbackKey = "sessionsBox.sessionsListFeedback";
+
+const String sessionsTodayAttendanceKey = "sessionsBox.sessionsTodayAttendance";
+
+const String sessionsListMonthlyAttendanceKey =
+    "sessionsBox.sessionsListMonthlyAttendance";
+
+const String sessionsMonthlyLastUpdatedKey =
+    "sessionsBox.sessionsMonthlyLastUpdated";
+
+const String sessionsMonthlyYearKey = "sessionsBox.sessionsMonthlyYear";
+
+const String sessionsMonthlyMonthKey = "sessionsBox.sessionsMonthlyMonth";

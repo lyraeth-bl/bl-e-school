@@ -95,6 +95,7 @@ Future<void> budiLuhurInitializeApp() async {
   await initDisciplineDI();
   await initExtracurricularDI();
   await initFeedbackDI();
+  await initDailyAttendanceDI();
 
   final dio = Dio(
     BaseOptions(

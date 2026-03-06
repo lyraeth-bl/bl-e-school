@@ -31,6 +31,10 @@ class HomeContainer extends StatelessWidget {
       onRefresh: () async {
         final studentDetails = sI<SessionsBloc>().studentDetails;
 
+        context.read<AppConfigBloc>().add(
+          AppConfigEvent.appConfigRequested(forceRefresh: true),
+        );
+
         context.read<TimeTableBloc>().add(
           TimeTableEvent.timeTableRequested(
             kelas:
@@ -39,12 +43,8 @@ class HomeContainer extends StatelessWidget {
           ),
         );
 
-        // context.read<DailyAttendanceCubit>().fetchTodayDailyAttendance(
-        //   nis: detailsStudent?.nis ?? "",
-        // );
-
-        context.read<AppConfigBloc>().add(
-          AppConfigEvent.appConfigRequested(forceRefresh: true),
+        context.read<TodayAttendanceBloc>().add(
+          TodayAttendanceEvent.started(forceRefresh: true),
         );
       },
       child: SingleChildScrollView(
