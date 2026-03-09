@@ -9,7 +9,7 @@ class AppConfigRemoteDataSourceImpl implements AppConfigRemoteDataSource {
   @override
   Future<Result<AppConfigResponse>> fetchAppConfig() async {
     try {
-      final response = await ApiClient.get(url: ApiEndpoints.appConfig);
+      final response = await ApiClient.get(url: ApiEndpoints.appConfigSanctum);
 
       return Right(AppConfigResponse.fromJson(response));
     } catch (e) {

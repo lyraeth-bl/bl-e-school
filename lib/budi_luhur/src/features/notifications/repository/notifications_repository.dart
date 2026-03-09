@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/sessions/repository/sessions_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -56,7 +55,7 @@ class NotificationsRepository {
 
       final currentUserNIS = sI<SessionsRepository>()
           .getLoggedStudentDetails()
-          ?.nis;
+          .nis;
 
       notifications = notifications
           .where((element) => element.nis == currentUserNIS)
@@ -142,7 +141,7 @@ class NotificationsRepository {
   }
 
   Future<bool> sendTestNotification() async {
-    final nis = sI<SessionsRepository>().getLoggedStudentDetails()?.nis;
+    final nis = sI<SessionsRepository>().getLoggedStudentDetails().nis;
 
     final bodyNotification = {
       "targetNis": [nis],
@@ -157,7 +156,7 @@ class NotificationsRepository {
     try {
       final response = await ApiClient.post(
         body: bodyNotification,
-        url: ApiEndpoints.sendNotification,
+        url: ApiEndpoints.sendNotificationSanctum,
       );
 
       if (response["error"] == true) {
