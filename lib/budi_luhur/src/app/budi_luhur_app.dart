@@ -23,6 +23,9 @@ class BudiLuhurApp extends StatelessWidget {
         BlocProvider<DeviceTokenBloc>.value(value: sI<DeviceTokenBloc>()),
         BlocProvider<AppConfigBloc>.value(value: sI<AppConfigBloc>()),
         BlocProvider<TimeTableBloc>.value(value: sI<TimeTableBloc>()),
+        BlocProvider<ExtracurricularBloc>.value(
+          value: sI<ExtracurricularBloc>(),
+        ),
         BlocProvider<DisciplineBloc>.value(value: sI<DisciplineBloc>()),
         BlocProvider<TodayAttendanceBloc>.value(
           value: sI<TodayAttendanceBloc>(),
@@ -33,6 +36,7 @@ class BudiLuhurApp extends StatelessWidget {
         BlocProvider<AcademicCalendarBloc>.value(
           value: sI<AcademicCalendarBloc>(),
         ),
+        BlocProvider<AcademicResultBloc>.value(value: sI<AcademicResultBloc>()),
 
         BlocProvider<AppLocalizationCubit>(
           create: (_) => AppLocalizationCubit(SettingsRepository()),

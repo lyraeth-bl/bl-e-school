@@ -79,4 +79,6 @@ class ApiEndpoints {
 
   /// Endpoint for fetching result.
   static String result = "$databaseUrl/nilai";
+
+  static String resultSanctum = "$sanctumUrl/nilai";
 }

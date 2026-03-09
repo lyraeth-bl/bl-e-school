@@ -13,41 +13,37 @@ class AcademicResultBloc
   AcademicResultBloc(this._repository)
     : super(const AcademicResultState.initial()) {
     on<_FetchResult>(_onFetchResult);
-    on<_RefreshResult>(_onRefreshResult);
   }
 
   Future<void> _onFetchResult(
     _FetchResult event,
     Emitter<AcademicResultState> emit,
   ) async {
-    final currentState = state;
-
-    if (currentState is _Success && !event.forceRefresh) return;
+    if (state is _Success && !event.forceRefresh) return;
 
     emit(AcademicResultState.loading());
 
-    try {
-      final result = await _repository.getResult();
+    final result = await _repository.getResult();
 
-      final subjectNames = result.data.categories
+    final failure = result.match((l) => l, (r) => null);
+    final academicResultResponse = result.match((l) => null, (r) => r);
+
+    if (failure != null) {
+      emit(AcademicResultState.failure(failure));
+      return;
+    }
+
+    if (academicResultResponse != null) {
+      final subjectNames = academicResultResponse.data.categories
           .map((e) => e.subjectName)
           .toList();
 
       emit(
         AcademicResultState.success(
-          response: result,
+          response: academicResultResponse,
           subjectNames: subjectNames,
         ),
       );
-    } catch (e) {
-      emit(AcademicResultState.failure(e.toString()));
     }
-  }
-
-  Future<void> _onRefreshResult(
-    _RefreshResult event,
-    Emitter<AcademicResultState> emit,
-  ) async {
-    add(AcademicResultEvent.fetchResult(forceRefresh: true));
   }
 }

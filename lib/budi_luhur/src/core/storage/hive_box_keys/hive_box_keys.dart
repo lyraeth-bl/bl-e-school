@@ -97,8 +97,6 @@ const String totalDemeritKey = "disciplineBox.totalDemerit";
 
 const String sessionsBoxKey = "sessionsBox";
 
-const String sessionAccessTokenKey = "sessionsBox.sessionAccessToken";
-
 const String sessionsDeviceTokenKey = "sessionsBox.sessionsDeviceToken";
 
 const String sessionsListTimeTableKey = "sessionsBox.sessionsListTimeTable";

@@ -32,7 +32,7 @@ class _AcademicResultContainerState extends State<AcademicResultContainer> {
       body: RefreshIndicator(
         onRefresh: () async {
           context.read<AcademicResultBloc>().add(
-            AcademicResultEvent.refreshResult(),
+            AcademicResultEvent.fetchResult(forceRefresh: true),
           );
         },
         child: SingleChildScrollView(

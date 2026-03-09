@@ -16,17 +16,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 
   static Widget routeInstance() {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<ExtracurricularBloc>.value(
-          value: sI<ExtracurricularBloc>(),
-        ),
-        BlocProvider<AcademicResultBloc>(
-          create: (_) => AcademicResultBloc(AcademicResultRepository()),
-        ),
-      ],
-      child: HomeScreen(key: HomeScreen.homeScreenKey),
-    );
+    return HomeScreen(key: HomeScreen.homeScreenKey);
   }
 }
 

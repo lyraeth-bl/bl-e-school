@@ -11,5 +11,5 @@ abstract class AcademicResultState with _$AcademicResultState {
     required List<String> subjectNames,
   }) = _Success;
 
-  const factory AcademicResultState.failure(String errorMessage) = _Failure;
+  const factory AcademicResultState.failure(Failure failure) = _Failure;
 }
