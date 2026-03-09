@@ -53,10 +53,12 @@ class NotificationsRepository {
         );
       }
 
-      final currentUserNis = AuthRepository.getStudentDetails().nis;
+      final currentUserNIS = sI<SessionsRepository>()
+          .getLoggedStudentDetails()
+          .nis;
 
       notifications = notifications
-          .where((element) => element.nis == currentUserNis)
+          .where((element) => element.nis == currentUserNIS)
           .toList();
 
       notifications.sort(
@@ -139,7 +141,7 @@ class NotificationsRepository {
   }
 
   Future<bool> sendTestNotification() async {
-    final nis = AuthRepository.getStudentDetails().nis;
+    final nis = sI<SessionsRepository>().getLoggedStudentDetails().nis;
 
     final bodyNotification = {
       "targetNis": [nis],
@@ -154,8 +156,7 @@ class NotificationsRepository {
     try {
       final response = await ApiClient.post(
         body: bodyNotification,
-        url: ApiEndpoints.sendNotification,
-        useAuthToken: true,
+        url: ApiEndpoints.sendNotificationSanctum,
       );
 
       if (response["error"] == true) {

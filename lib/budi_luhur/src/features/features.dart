@@ -4,10 +4,12 @@ library;
 export 'academic_calendar/academic_calendar.dart';
 /// Academic Result
 export 'academic_result/academic_result.dart';
-/// Attendance
-export 'attendance/attendance.dart';
+/// AppConfig
+export 'app_config/app_config.dart';
 /// Auth
 export 'auth/auth.dart';
+/// Daily Attendance
+export 'daily_attendance/daily_attendance.dart';
 /// Device Token
 export 'device_tokens/device_token.dart';
 /// Discipline
@@ -28,6 +30,8 @@ export 'notifications/notifications.dart';
 export 'on_boarding/on_boarding.dart';
 /// Profile
 export 'profile/profile.dart';
+/// Sessions
+export 'sessions/sessions.dart';
 /// Settings
 export 'settings/settings.dart';
 /// Shared

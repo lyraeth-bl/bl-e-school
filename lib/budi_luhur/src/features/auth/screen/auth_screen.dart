@@ -1,6 +1,7 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -14,7 +15,6 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
-  /// Animations
   late final AnimationController _bottomMenuHeightAnimationController =
       AnimationController(
         vsync: this,
@@ -36,10 +36,8 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
         ),
       );
 
-  /// Variables
   var canPop = false;
 
-  /// Methods
   Future<void> startAnimation() async {
     await Future.delayed(const Duration(milliseconds: 300));
 
@@ -52,9 +50,9 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
     });
     Utils.showCustomSnackBar(
       context: context,
-      errorMessage: Utils.getTranslatedLabel(pressBackAgainToExitKey),
-      backgroundColor: Theme.of(context).colorScheme.error,
-    ); // Do not exit the app
+      errorMessage: pressBackAgainToExitKey.translate(),
+      backgroundColor: context.colors.error,
+    );
     Future.delayed(Duration(seconds: 2), () {
       setState(() {
         canPop = false;
@@ -84,24 +82,21 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
         _onWillPop();
       },
       child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        backgroundColor: context.colors.primaryContainer,
         body: Stack(children: [_buildLogo(), _buildBottomMenu()]),
       ),
     );
   }
 
-  /// UI
   Widget _buildLogo() {
     return Align(
       alignment: Alignment.topCenter,
       child: Container(
-        width: MediaQuery.of(context).size.width,
+        width: context.screenWidth,
         margin: EdgeInsets.only(
-          top:
-              MediaQuery.of(context).padding.top +
-              MediaQuery.of(context).size.height * (0.1),
+          top: context.padding.top + context.screenHeight * (0.1),
         ),
-        height: MediaQuery.of(context).size.height * (0.25),
+        height: context.screenHeight * (0.25),
         child: Image.asset('assets/images/bl_logo.png'),
       ),
     );
@@ -113,23 +108,17 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
       child: AnimatedBuilder(
         animation: _bottomMenuHeightAnimationController,
         builder: (context, child) {
-          final height =
-              MediaQuery.of(context).size.height *
-                  (0.525) *
-                  _bottomMenuHeightUpAnimation.value -
-              MediaQuery.of(context).size.height *
-                  (0.05) *
-                  _bottomMenuHeightDownAnimation.value;
-          return Container(
-            width: MediaQuery.of(context).size.width,
-            height: height,
-            decoration: BoxDecoration(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(30.0),
-                topRight: Radius.circular(30.0),
-              ),
-            ),
+          return CustomContainer(
+            borderRadius: 32.topRadiusCircular,
+            width: context.screenWidth,
+            height:
+                context.screenHeight *
+                    (0.525) *
+                    _bottomMenuHeightUpAnimation.value -
+                context.screenHeight *
+                    (0.05) *
+                    _bottomMenuHeightDownAnimation.value,
+            enableShadow: false,
             child: AnimatedSwitcher(
               switchInCurve: Curves.easeInOut,
               duration: const Duration(milliseconds: 400),
@@ -140,53 +129,26 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            //
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal:
-                                    MediaQuery.of(context).size.width * (0.1),
-                              ),
-                              child: Text(
-                                "Cerdas Berbudi Luhur",
-                                textAlign: TextAlign.center,
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context).textTheme.titleMedium
-                                    ?.copyWith(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.onSurface,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                            Text(
+                              "Cerdas Berbudi Luhur",
+                              textAlign: TextAlign.center,
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                              style: context.text.titleMedium?.copyWith(
+                                color: context.colors.onPrimaryContainer,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
-                            SizedBox(height: boxConstraints.maxHeight * (0.05)),
-                            Container(
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: 24,
-                              ),
-                              width: double.infinity,
-                              child: FilledButton(
-                                style: FilledButton.styleFrom(
-                                  minimumSize: const Size.fromHeight(48),
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 14,
-                                    horizontal: 16,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Get.toNamed(BudiLuhurRoutes.authStudent);
-                                },
-                                child: Text(
-                                  "${Utils.getTranslatedLabel(loginAsKey)} ${Utils.getTranslatedLabel(studentKey)}",
-                                  style: TextStyle(fontWeight: FontWeight.w600),
-                                ),
-                              ),
+                            CustomButtonContainer(
+                              leadingIcon: LucideIcons.user,
+                              backgroundColor: context.colors.primaryContainer,
+                              onTap: () =>
+                                  Get.toNamed(BudiLuhurRoutes.authStudent),
+                              margin: 24.horizontal,
+                              textKey:
+                                  "${loginAsKey.translate()} ${studentKey.translate()}",
                             ),
-                          ],
+                          ].separatedBy(24.h),
                         );
                       },
                     ),

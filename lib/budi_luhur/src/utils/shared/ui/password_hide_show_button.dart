@@ -1,6 +1,6 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class PasswordHideShowButton extends StatelessWidget {
   final bool hidePassword;
@@ -17,19 +17,14 @@ class PasswordHideShowButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(allSidePadding ?? 12.0),
+      padding: allSidePadding?.all ?? 12.all,
       child: GestureDetector(
         onTap: () {
           onTap();
         },
-        child: SvgPicture.asset(
-          hidePassword
-              ? "assets/images/hide_password.svg"
-              : "assets/images/show_password.svg",
-          colorFilter: ColorFilter.mode(
-            Utils.getColorScheme(context).secondary,
-            BlendMode.srcIn,
-          ),
+        child: Icon(
+          hidePassword ? LucideIcons.eyeClosed : LucideIcons.eye,
+          color: context.colors.onSurfaceVariant,
         ),
       ),
     );

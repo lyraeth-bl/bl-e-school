@@ -12,6 +12,7 @@ class CustomButtonContainer extends StatelessWidget {
     this.margin,
     this.backgroundColor,
     this.enableShadow,
+    this.padding,
   });
 
   final GestureTapCallback? onTap;
@@ -28,6 +29,8 @@ class CustomButtonContainer extends StatelessWidget {
 
   final bool? enableShadow;
 
+  final EdgeInsetsGeometry? padding;
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -42,22 +45,19 @@ class CustomButtonContainer extends StatelessWidget {
         enableShadow: enableShadow,
         shadowsOffset: Offset(5, 5),
         margin: margin,
-        padding: const EdgeInsets.all(16),
+        padding: padding ?? 16.all,
         backgroundColor: backgroundColor,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               children: [
-                if (leadingIcon != null) ...[
-                  Icon(leadingIcon, size: 16),
-                  const SizedBox(width: 8),
-                ],
+                if (leadingIcon != null) ...[Icon(leadingIcon, size: 16), 8.w],
                 Text(
-                  Utils.getTranslatedLabel(textKey),
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  textKey.translate(),
+                  style: context.text.titleSmall?.copyWith(
+                    color: context.colors.onSurface,
                     fontWeight: FontWeight.w700,
-                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
               ],

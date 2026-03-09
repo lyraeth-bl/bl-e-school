@@ -1,6 +1,7 @@
 library;
 
 import 'dart:convert' as convert;
+import 'dart:io';
 
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/foundation.dart';
@@ -13,18 +14,18 @@ import 'package:url_launcher/url_launcher.dart';
 
 /// Animations
 export 'shared/animations/animation_configurations.dart';
-/// Constant
-export 'shared/constant/constant.dart';
 /// Error Handling
 export 'shared/error_handling/error_message_and_code.dart';
-/// Hive Box Keys
-export 'shared/hive_box_keys/hive_box_keys.dart';
+/// Extension
+export 'shared/extensions/extension.dart';
 /// Label Keys
 export 'shared/label_keys/label_keys.dart';
 /// Languages
 export 'shared/languages/app_languages.dart';
 /// Theme
 export 'shared/theme/theme.dart';
+/// Types
+export 'shared/types/types.dart';
 /// UI
 export 'shared/ui/ui.dart';
 
@@ -703,6 +704,44 @@ class Utils {
     final version = packageInfo.version;
 
     return version;
+  }
+
+  static Future<bool> compareAppVersion(AppConfig appConfig) async {
+    // Inisialisasi packages
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+    // ambil versi dari DB
+    final remoteVersion = Platform.isIOS
+        ? appConfig.iosAppVersion?.trim()
+        : appConfig.androidAppVersion?.trim();
+
+    // ambil versi dari app
+    final localVersion = packageInfo.version;
+
+    // null check
+    if (remoteVersion == null ||
+        remoteVersion.isEmpty ||
+        remoteVersion == "-") {
+      return false;
+    }
+
+    return (Utils.compareVersion(localVersion, remoteVersion) < 0) &&
+        appConfig.forceAppUpdate;
+
+    // ==== Testing ==== //
+    // debugPrint("localVersion : $localVersion");
+    // debugPrint("remoteVersion : $remoteVersion");
+    // debugPrint(
+    //   "Hasil compare version : ${(Utils.compareVersion(localVersion, remoteVersion) < 0)}",
+    // );
+    // debugPrint(
+    //   "Hasil config.forceAppUpdate : ${config.forceAppUpdate}",
+    // );
+    // debugPrint(
+    //   "Hasil compare keduanya : ${((Utils.compareVersion(localVersion, remoteVersion) < 0) && config.forceAppUpdate)}",
+    // );
+
+    // compare versi dan hasil appUpdate dari db
   }
 
   static IconData iconForSubject(String name) {

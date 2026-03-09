@@ -9,47 +9,49 @@ class StudentProfileScreen extends StatelessWidget {
   const StudentProfileScreen({super.key});
 
   static Widget routeInstance() {
-    return BlocProvider<DisciplineBloc>.value(
-      value: DisciplineBloc(DisciplineRepository()),
-      child: const StudentProfileScreen(),
-    );
+    return StudentProfileScreen();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 80,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadiusGeometry.only(
-            bottomLeft: Radius.circular(32),
-            bottomRight: Radius.circular(32),
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        state.whenOrNull(
+          successLogout: () =>
+              context.read<SessionsBloc>().add(SessionsEvent.loggedOut()),
+        );
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 80,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadiusGeometry.only(
+              bottomLeft: Radius.circular(32),
+              bottomRight: Radius.circular(32),
+            ),
           ),
+          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+          title: Text(
+            Utils.getTranslatedLabel(profileKey),
+            style: TextStyle(fontWeight: FontWeight.w700),
+          ),
+          centerTitle: true,
+          actions: [
+            IconButton(
+              onPressed: () =>
+                  context.read<AuthBloc>().add(AuthEvent.logoutRequested()),
+              icon: Icon(LucideIcons.logOut),
+            ),
+          ],
         ),
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-        title: Text(
-          Utils.getTranslatedLabel(profileKey),
-          style: TextStyle(fontWeight: FontWeight.w700),
+        body: Stack(
+          children: [
+            _buildProfileDetailsContainer(
+              context,
+              studentDetails: context.read<SessionsBloc>().studentDetails!,
+            ),
+          ],
         ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {
-              context.read<AuthCubit>().signOut(reason: LogoutReason.manual);
-
-              Get.offNamedUntil(BudiLuhurRoutes.auth, (route) => false);
-            },
-            icon: Icon(LucideIcons.logOut),
-          ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          _buildProfileDetailsContainer(
-            context,
-            studentDetails: context.read<AuthCubit>().getStudentDetails,
-          ),
-        ],
       ),
     );
   }
@@ -132,9 +134,9 @@ class StudentProfileScreen extends StatelessWidget {
       alignment: Alignment.topCenter,
       child: RefreshIndicator(
         onRefresh: () async {
-          final nis = context.read<AuthCubit>().getStudentDetails.nis;
-
-          context.read<DisciplineBloc>().add(DisciplineEvent.refresh(nis: nis));
+          context.read<DisciplineBloc>().add(
+            DisciplineEvent.fetchMeritAndDemerit(forceRefresh: true),
+          );
         },
         child: SingleChildScrollView(
           child: Column(
@@ -147,10 +149,10 @@ class StudentProfileScreen extends StatelessWidget {
                   shape: BoxShape.circle,
                   color: Theme.of(context).colorScheme.primary,
                 ),
-                child: BlocSelector<AuthCubit, AuthState, String?>(
+                child: BlocSelector<SessionsBloc, SessionsState, String?>(
                   selector: (state) => state.maybeWhen(
-                    authenticated: (isStudent, student, time) =>
-                        student.profileImageUrl,
+                    authenticated: (student, accessToken) =>
+                        student?.profileImageUrl,
                     orElse: () => "",
                   ),
                   builder: (context, profileImageUrl) =>
@@ -189,113 +191,114 @@ class StudentProfileScreen extends StatelessWidget {
               BlocBuilder<DisciplineBloc, DisciplineState>(
                 builder: (context, state) {
                   return state.maybeWhen(
-                    loaded: (meritList, demeritList, totalMerit, totalDemerit) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Column(
+                    success:
+                        (meritList, demeritList, totalMerit, totalDemerit) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              BlocSelector<
-                                DisciplineBloc,
-                                DisciplineState,
-                                int?
-                              >(
-                                selector: (state) => state.maybeWhen(
-                                  loaded:
-                                      (
-                                        meritList,
-                                        demeritList,
-                                        totalMerit,
-                                        totalDemerit,
-                                      ) => totalMerit,
-                                  orElse: () => 0,
-                                ),
-
-                                builder: (context, totalMerit) =>
-                                    CircleNumberIndicator(
-                                      value: totalMerit!,
-                                      progress: (totalMerit / totalMerit).clamp(
-                                        0.0,
-                                        1.0,
-                                      ),
-                                      backgroundColor: Theme.of(
-                                        context,
-                                      ).colorScheme.primaryContainer,
-                                      valueColor: Theme.of(
-                                        context,
-                                      ).colorScheme.primary,
-                                      enableAnimation: true,
+                              Column(
+                                children: [
+                                  BlocSelector<
+                                    DisciplineBloc,
+                                    DisciplineState,
+                                    int?
+                                  >(
+                                    selector: (state) => state.maybeWhen(
+                                      success:
+                                          (
+                                            meritList,
+                                            demeritList,
+                                            totalMerit,
+                                            totalDemerit,
+                                          ) => totalMerit,
+                                      orElse: () => 0,
                                     ),
+
+                                    builder: (context, totalMerit) =>
+                                        CircleNumberIndicator(
+                                          value: totalMerit!,
+                                          progress: (totalMerit / totalMerit)
+                                              .clamp(0.0, 1.0),
+                                          backgroundColor: Theme.of(
+                                            context,
+                                          ).colorScheme.primaryContainer,
+                                          valueColor: Theme.of(
+                                            context,
+                                          ).colorScheme.primary,
+                                          enableAnimation: true,
+                                        ),
+                                  ),
+
+                                  const SizedBox(height: 16),
+
+                                  Text(
+                                    Utils.getTranslatedLabel(meritKey),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.onSurface,
+                                        ),
+                                  ),
+                                ],
                               ),
 
-                              const SizedBox(height: 16),
-
-                              Text(
-                                Utils.getTranslatedLabel(meritKey),
-                                style: Theme.of(context).textTheme.bodyMedium
-                                    ?.copyWith(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.onSurface,
+                              Column(
+                                children: [
+                                  BlocSelector<
+                                    DisciplineBloc,
+                                    DisciplineState,
+                                    int?
+                                  >(
+                                    selector: (state) => state.maybeWhen(
+                                      success:
+                                          (
+                                            meritList,
+                                            demeritList,
+                                            totalMerit,
+                                            totalDemerit,
+                                          ) => totalDemerit,
+                                      orElse: () => 100,
                                     ),
+
+                                    builder: (context, totalDemerit) {
+                                      final maxDemerit = 100;
+
+                                      return CircleNumberIndicator(
+                                        value: totalDemerit!,
+                                        progress: (totalDemerit / maxDemerit)
+                                            .clamp(0.0, 1.0),
+                                        backgroundColor: Theme.of(
+                                          context,
+                                        ).colorScheme.errorContainer,
+                                        valueColor: Theme.of(
+                                          context,
+                                        ).colorScheme.error,
+                                        enableAnimation: true,
+                                      );
+                                    },
+                                  ),
+
+                                  const SizedBox(height: 16),
+
+                                  Text(
+                                    Utils.getTranslatedLabel(demeritKey),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.onSurface,
+                                        ),
+                                  ),
+                                ],
                               ),
                             ],
-                          ),
-
-                          Column(
-                            children: [
-                              BlocSelector<
-                                DisciplineBloc,
-                                DisciplineState,
-                                int?
-                              >(
-                                selector: (state) => state.maybeWhen(
-                                  loaded:
-                                      (
-                                        meritList,
-                                        demeritList,
-                                        totalMerit,
-                                        totalDemerit,
-                                      ) => totalDemerit,
-                                  orElse: () => 100,
-                                ),
-
-                                builder: (context, totalDemerit) {
-                                  final maxDemerit = 100;
-
-                                  return CircleNumberIndicator(
-                                    value: totalDemerit!,
-                                    progress: (totalDemerit / maxDemerit).clamp(
-                                      0.0,
-                                      1.0,
-                                    ),
-                                    backgroundColor: Theme.of(
-                                      context,
-                                    ).colorScheme.errorContainer,
-                                    valueColor: Theme.of(
-                                      context,
-                                    ).colorScheme.error,
-                                    enableAnimation: true,
-                                  );
-                                },
-                              ),
-
-                              const SizedBox(height: 16),
-
-                              Text(
-                                Utils.getTranslatedLabel(demeritKey),
-                                style: Theme.of(context).textTheme.bodyMedium
-                                    ?.copyWith(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.onSurface,
-                                    ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      );
-                    },
+                          );
+                        },
                     orElse: () => const SizedBox.shrink(),
                   );
                 },

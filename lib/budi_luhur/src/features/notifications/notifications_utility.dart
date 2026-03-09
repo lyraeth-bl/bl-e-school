@@ -1,5 +1,6 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:bl_e_school/budi_luhur/src/features/sessions/repository/sessions_repository.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
@@ -29,10 +30,10 @@ Future<void> firebaseMessagingBackgroundHandler(
     debugPrint("Background Notification Type: $type");
   }
 
-  final studentDetails = AuthRepository.getStudentDetails();
+  final nis = sI<SessionsRepository>().getLoggedStudentDetails()?.nis;
   NotificationsRepository.addNotificationTemporarily(
     data: NotificationsDetails(
-      nis: studentDetails.nis,
+      nis: nis ?? "",
       title: remoteMessage.notification?.title ?? "",
       body: remoteMessage.notification?.body ?? "",
       type: remoteMessage.data['type'] ?? "",
@@ -133,10 +134,11 @@ class NotificationsUtility {
     if (type == paymentNotificationType.toLowerCase()) {
       // Example: could auto-refresh a payment screen.
     } else {
+      final nis = sI<SessionsRepository>().getLoggedStudentDetails()?.nis;
       // For general notifications, add to the repository for persistence.
       NotificationsRepository.addNotification(
         notificationDetails: NotificationsDetails(
-          nis: AuthRepository.getStudentDetails().nis,
+          nis: nis ?? "",
           attachmentUrl: remoteMessage.data['image_url'] ?? "",
           type: remoteMessage.data['type'] ?? "",
           body: remoteMessage.notification?.body ?? "",

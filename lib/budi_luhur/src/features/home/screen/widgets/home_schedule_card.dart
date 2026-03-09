@@ -108,7 +108,7 @@ class _HomeScheduleCardState extends State<HomeScheduleCard> {
               ),
             ),
 
-            BlocBuilder<TimeTableCubit, TimeTableState>(
+            BlocBuilder<TimeTableBloc, TimeTableState>(
               builder: (context, state) {
                 return state.maybeWhen(
                   success: (timeTableList) {

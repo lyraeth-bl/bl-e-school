@@ -18,16 +18,18 @@ class _DemeritScreenState extends State<DemeritScreen> {
     return BlocListener<DisciplineBloc, DisciplineState>(
       listener: (context, state) {
         state.whenOrNull(
-          error: (message) {
-            return ErrorContainer(errorMessageCode: message);
+          failure: (failure) {
+            return ErrorContainer(
+              errorMessageCode: failure.messageKey.translate(),
+            );
           },
         );
       },
       child: RefreshIndicator(
         onRefresh: () async {
-          final nis = context.read<AuthCubit>().getStudentDetails.nis;
-
-          context.read<DisciplineBloc>().add(DisciplineEvent.refresh(nis: nis));
+          context.read<DisciplineBloc>().add(
+            DisciplineEvent.fetchMeritAndDemerit(forceRefresh: true),
+          );
         },
         child: SingleChildScrollView(
           padding: EdgeInsets.only(
@@ -101,7 +103,7 @@ class _DemeritScreenState extends State<DemeritScreen> {
 
                             BlocSelector<DisciplineBloc, DisciplineState, int?>(
                               selector: (state) => state.maybeWhen(
-                                loaded:
+                                success:
                                     (
                                       meritList,
                                       demeritList,
@@ -145,10 +147,12 @@ class _DemeritScreenState extends State<DemeritScreen> {
               BlocBuilder<DisciplineBloc, DisciplineState>(
                 builder: (context, state) {
                   final schoolSessionList = state.maybeWhen(
-                    loaded: (_, demeritList, _, _) => demeritList
-                        .map((merit) => merit.schoolSession)
-                        .toSet()
-                        .toList(),
+                    success:
+                        (meritList, demeritList, totalMerit, totalDemerit) =>
+                            demeritList
+                                .map((merit) => merit.schoolSession)
+                                .toSet()
+                                .toList(),
                     orElse: () => [],
                   );
 
@@ -217,7 +221,7 @@ class _DemeritScreenState extends State<DemeritScreen> {
               BlocBuilder<DisciplineBloc, DisciplineState>(
                 builder: (context, state) {
                   return state.maybeWhen(
-                    loaded: (_, demeritList, _, _) {
+                    success: (_, demeritList, _, _) {
                       final filteredList = demeritList.where((e) {
                         return e.schoolSession == _selectedSession;
                       }).toList();

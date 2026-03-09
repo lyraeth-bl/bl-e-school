@@ -24,16 +24,13 @@ class CustomTextFieldContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return CustomContainer(
+      border: Border.all(color: context.colors.outlineVariant),
       height: 50,
-      margin: EdgeInsets.only(bottom: bottomPadding ?? 20.0),
-      padding: const EdgeInsetsDirectional.only(start: 20.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Theme.of(context).colorScheme.outline),
-      ),
+      margin: EdgeInsets.only(bottom: bottomPadding ?? 24),
+      padding: const EdgeInsetsDirectional.only(start: 24.0),
       child: TextField(
-        style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+        style: TextStyle(color: context.colors.onSurface),
         controller: textEditingController,
         obscureText: hideText,
         keyboardType: keyboardType,
@@ -43,12 +40,10 @@ class CustomTextFieldContainer extends StatelessWidget {
         autofocus: false,
         decoration: InputDecoration(
           suffixIcon: suffixWidget,
-          hintStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface),
-          hintText: Utils.getTranslatedLabel(hintTextKey),
+          hintStyle: TextStyle(color: context.colors.onSurface),
+          hintText: hintTextKey,
           border: InputBorder.none,
-          contentPadding: suffixWidget != null
-              ? const EdgeInsets.only(top: 12.5)
-              : null,
+          contentPadding: suffixWidget != null ? (12.5).onlyTop : null,
         ),
       ),
     );

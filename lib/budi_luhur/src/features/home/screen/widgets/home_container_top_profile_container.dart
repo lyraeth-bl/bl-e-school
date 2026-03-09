@@ -1,4 +1,5 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:bl_e_school/budi_luhur/src/features/sessions/presentation/bloc/sessions_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -75,10 +76,10 @@ class HomeContainerTopProfileContainer extends StatelessWidget {
                     ),
                     child: Row(
                       children: [
-                        BlocSelector<AuthCubit, AuthState, String?>(
+                        BlocSelector<SessionsBloc, SessionsState, String?>(
                           selector: (state) => state.maybeWhen(
-                            authenticated: (isStudent, student, time) =>
-                                student.profileImageUrl,
+                            authenticated: (student, accessToken) =>
+                                student?.profileImageUrl,
                             orElse: () => "",
                           ),
                           builder: (context, profileImageUrl) =>
@@ -97,9 +98,9 @@ class HomeContainerTopProfileContainer extends StatelessWidget {
                             children: [
                               Text(
                                 context
-                                        .read<AuthCubit>()
-                                        .getStudentDetails
-                                        .nama ??
+                                        .read<SessionsBloc>()
+                                        .studentDetails
+                                        ?.nama ??
                                     "",
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
@@ -114,7 +115,7 @@ class HomeContainerTopProfileContainer extends StatelessWidget {
                               SizedBox(height: 4),
                               Flexible(
                                 child: Text(
-                                  "${Utils.getTranslatedLabel(classKey)} : ${context.read<AuthCubit>().getStudentDetails.kelasSaatIni} - ${context.read<AuthCubit>().getStudentDetails.noKelasSaatIni}",
+                                  "${Utils.getTranslatedLabel(classKey)} : ${context.read<SessionsBloc>().studentDetails?.kelasSaatIni} - ${context.read<SessionsBloc>().studentDetails?.noKelasSaatIni}",
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: Theme.of(context).textTheme.bodySmall

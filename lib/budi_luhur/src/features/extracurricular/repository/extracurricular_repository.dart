@@ -1,22 +1,26 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:fpdart/fpdart.dart';
 
-class ExtracurricularRepository {
-  Future<List<Extracurricular>> fetchExtracurricular({
-    required String nis,
-  }) async {
-    try {
-      final response = await ApiClient.getList(
-        url: "${ApiEndpoints.extracurricular}/$nis",
-        useAuthToken: true,
-      );
+abstract class ExtracurricularRepository {
+  Future<Result<ExtracurricularResponse>> fetchExtracurricular();
 
-      final data = response
-          .map((item) => Extracurricular.fromJson(item))
-          .toList();
+  List<Extracurricular>? getStoredExtracurricular();
 
-      return data;
-    } catch (e) {
-      rethrow;
-    }
-  }
+  Future<Unit> saveExtracurricular(List<Extracurricular> listExtracurricular);
+
+  // async {
+  //   try {
+  //     final response = await ApiClient.getList(
+  //       url: "${ApiEndpoints.extracurricular}/$nis",
+  //     );
+  //
+  //     final data = response
+  //         .map((item) => Extracurricular.fromJson(item))
+  //         .toList();
+  //
+  //     return data;
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // }
 }

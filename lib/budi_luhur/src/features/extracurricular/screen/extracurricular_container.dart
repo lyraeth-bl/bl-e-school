@@ -22,18 +22,8 @@ class _ExtracurricularContainerState extends State<ExtracurricularContainer> {
   }
 
   void _fetchExtracurricular() async {
-    final nis = context.read<AuthCubit>().getStudentDetails.nis;
-
     context.read<ExtracurricularBloc>().add(
-      ExtracurricularEvent.fetchExtracurricular(nis: nis),
-    );
-  }
-
-  void _refreshData() async {
-    final nis = context.read<AuthCubit>().getStudentDetails.nis;
-
-    context.read<ExtracurricularBloc>().add(
-      ExtracurricularEvent.refresh(nis: nis),
+      ExtracurricularEvent.fetchExtracurricular(),
     );
   }
 
@@ -79,13 +69,16 @@ class _ExtracurricularContainerState extends State<ExtracurricularContainer> {
       body: BlocListener<ExtracurricularBloc, ExtracurricularState>(
         listener: (context, state) {
           state.maybeWhen(
-            failure: (errorMessage) =>
-                ErrorContainer(errorMessageCode: errorMessage),
+            failure: (failure) => ErrorContainer(
+              errorMessageCode: failure.messageKey.translate(),
+            ),
             orElse: () {},
           );
         },
         child: RefreshIndicator(
-          onRefresh: () async => _refreshData(),
+          onRefresh: () async => context.read<ExtracurricularBloc>().add(
+            ExtracurricularEvent.fetchExtracurricular(forceRefresh: true),
+          ),
           child: SingleChildScrollView(
             padding: EdgeInsets.only(
               left: 24,

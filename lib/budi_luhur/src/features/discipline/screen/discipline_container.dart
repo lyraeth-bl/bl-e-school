@@ -22,9 +22,7 @@ class _DisciplineContainerState extends State<DisciplineContainer> {
   }
 
   Future<void> _fetchMeritAndDemerit() async {
-    final nis = context.read<AuthCubit>().getStudentDetails.nis;
-
-    context.read<DisciplineBloc>().add(DisciplineEvent.load(nis: nis));
+    context.read<DisciplineBloc>().add(DisciplineEvent.fetchMeritAndDemerit());
   }
 
   @override

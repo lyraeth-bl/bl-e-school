@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,26 +16,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 
   static Widget routeInstance() {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<FetchDailyAttendanceCubit>(
-          create: (_) => FetchDailyAttendanceCubit(AttendanceRepository()),
-        ),
-        BlocProvider<AcademicCalendarCubit>(
-          create: (_) => AcademicCalendarCubit(AcademicCalendarRepository()),
-        ),
-        BlocProvider<DisciplineBloc>(
-          create: (_) => DisciplineBloc(DisciplineRepository()),
-        ),
-        BlocProvider<ExtracurricularBloc>(
-          create: (_) => ExtracurricularBloc(ExtracurricularRepository()),
-        ),
-        BlocProvider<AcademicResultBloc>(
-          create: (_) => AcademicResultBloc(AcademicResultRepository()),
-        ),
-      ],
-      child: HomeScreen(key: HomeScreen.homeScreenKey),
-    );
+    return HomeScreen(key: HomeScreen.homeScreenKey);
   }
 }
 
@@ -100,27 +83,29 @@ class _HomeScreenState extends State<HomeScreen>
     WidgetsBinding.instance.addObserver(this);
     _animationController.forward();
 
+    updateBottomNavItems();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (fromNotifications) _fetchDailyAttendance();
+      // if (fromNotifications) _fetchDailyAttendance();
       loadTemporarilyStoredNotifications();
-      _fetchAppConfiguration();
-      _fetchDailyAttendance();
+      // _fetchDailyAttendance();
       NotificationsUtility.setUpNotificationService();
     });
   }
 
-  void _fetchAppConfiguration() =>
-      context.read<AppConfigurationCubit>().fetchAppConfiguration();
-
   void fetchDailyAttendanceFromNotification() {
-    _fetchDailyAttendance();
+    // _fetchDailyAttendance();
   }
 
-  void _fetchDailyAttendance() {
-    final detailsUser = context.read<AuthCubit>().getStudentDetails;
-    context.read<DailyAttendanceCubit>().fetchTodayDailyAttendance(
-      nis: detailsUser.nis,
-    );
+  // void _fetchDailyAttendance() {
+  //   final detailsUser = context.read<SessionsBloc>().studentDetails;
+  //   context.read<DailyAttendanceCubit>().fetchTodayDailyAttendance(
+  //     nis: detailsUser?.nis ?? "",
+  //   );
+  // }
+
+  Future<bool> _checkVersion(AppConfig appConfig) async {
+    return await Utils.compareAppVersion(appConfig);
   }
 
   @override
@@ -143,13 +128,30 @@ class _HomeScreenState extends State<HomeScreen>
       },
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
-        body: context.read<AppConfigurationCubit>().getAppMaintenance
+        body: context.read<AppConfigBloc>().isAppMaintenance
             ? const AppUnderMaintenanceContainer()
-            : BlocConsumer<AppConfigurationCubit, AppConfigurationState>(
+            : BlocConsumer<AppConfigBloc, AppConfigState>(
                 listener: (context, state) {
                   state.maybeWhen(
-                    failure: (errorMessage) => updateBottomNavItems(),
-                    success: (appConfiguration) => updateBottomNavItems(),
+                    success: (appConfiguration) async {
+                      final isVersionOutdated = await _checkVersion(
+                        appConfiguration,
+                      );
+                      final appLink = Platform.isIOS
+                          ? appConfiguration.iosAppLink
+                          : appConfiguration.androidAppLink;
+
+                      if (isVersionOutdated) {
+                        if (Get.isBottomSheetOpen != true) {
+                          Get.bottomSheet(
+                            AppUpdateBottomSheet(urlGithub: appLink ?? ""),
+                            enableDrag: true,
+                            isDismissible: true,
+                            backgroundColor: Colors.white,
+                          );
+                        }
+                      }
+                    },
                     orElse: () {},
                   );
                 },
@@ -237,6 +239,7 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void updateBottomNavItems() {
+    debugPrint("updateBottomNavItems() success");
     _bottomNavItems = [
       BottomNavIconModel(
         activeImageUrl: LucideIcons.house,

@@ -15,16 +15,6 @@ class _TimeTableContainerState extends State<TimeTableContainer>
     with SingleTickerProviderStateMixin {
   late int _currentSelectedDayIndex = DateTime.now().weekday - 1;
 
-  void _fetchTimeTable() {
-    final detailsStudent = context.read<AuthCubit>().getStudentDetails;
-    final classStudent =
-        "${detailsStudent.kelasSaatIni}${detailsStudent.noKelasSaatIni}";
-    context.read<TimeTableCubit>().fetchTimeTable(
-      kelas: classStudent,
-      forceRefresh: true,
-    );
-  }
-
   late Timer _timer;
 
   @override
@@ -34,6 +24,18 @@ class _TimeTableContainerState extends State<TimeTableContainer>
     _timer = Timer.periodic(const Duration(seconds: 30), (_) {
       if (mounted) setState(() {});
     });
+  }
+
+  void _refreshTimeTable() {
+    final studentDetails = sI<SessionsBloc>().studentDetails;
+
+    context.read<TimeTableBloc>().add(
+      TimeTableEvent.timeTableRequested(
+        kelas:
+            "${studentDetails!.kelasSaatIni!}${studentDetails.noKelasSaatIni}",
+        forceRefresh: true,
+      ),
+    );
   }
 
   @override
@@ -139,7 +141,7 @@ class _TimeTableContainerState extends State<TimeTableContainer>
   Widget _buildAppBar() {
     String getStudentClassDetails = "";
     getStudentClassDetails =
-        "${context.read<AuthCubit>().getStudentDetails.kelasSaatIni} - ${context.read<AuthCubit>().getStudentDetails.noKelasSaatIni}";
+        "${context.read<SessionsBloc>().studentDetails?.kelasSaatIni} - ${context.read<SessionsBloc>().studentDetails?.noKelasSaatIni}";
 
     return ScreenTopBackgroundContainer(
       heightPercentage: Utils.appBarMediumHeightPercentage,
@@ -409,45 +411,50 @@ class _TimeTableContainerState extends State<TimeTableContainer>
   }
 
   Widget _buildTimeTable() {
-    return BlocBuilder<TimeTableCubit, TimeTableState>(
-      builder: (context, state) {
-        return state.maybeWhen(
-          failure: (errorMessage) => ErrorContainer(
-            key: isApplicationItemAnimationOn ? UniqueKey() : null,
-            errorMessageCode: errorMessage,
-            onTapRetry: _fetchTimeTable,
-          ),
-          success: (timeTableList) {
-            final timetableSlots = _buildTimeTableSlots(timeTableList);
-
-            if (timetableSlots.isEmpty) {
-              return NoDataContainer(
-                key: isApplicationItemAnimationOn ? UniqueKey() : null,
-                titleKey: noLecturesKey,
-              );
-            }
-
-            return SizedBox(
-              height: MediaQuery.of(context).size.height * 0.7,
-              child: ListView.builder(
-                padding: EdgeInsets.only(
-                  left: 24,
-                  right: 24,
-                  bottom: Utils.getScrollViewBottomPadding(context),
-                ),
-                itemCount: timetableSlots.length,
-                itemBuilder: (context, index) {
-                  final timeTable = timetableSlots[index];
-                  return _buildTimeTableSlotDetailsContainer(
-                    timeTable: timeTable,
-                  );
-                },
-              ),
-            );
-          },
-          orElse: () => _buildTimeTableLoading(),
-        );
+    return RefreshIndicator(
+      onRefresh: () async {
+        _refreshTimeTable();
       },
+      child: BlocBuilder<TimeTableBloc, TimeTableState>(
+        builder: (context, state) {
+          return state.maybeWhen(
+            failure: (failure) => ErrorContainer(
+              key: isApplicationItemAnimationOn ? UniqueKey() : null,
+              errorMessageCode: failure.messageKey.translate(),
+              onTapRetry: _refreshTimeTable,
+            ),
+            success: (timeTableList) {
+              final timetableSlots = _buildTimeTableSlots(timeTableList);
+
+              if (timetableSlots.isEmpty) {
+                return NoDataContainer(
+                  key: isApplicationItemAnimationOn ? UniqueKey() : null,
+                  titleKey: noLecturesKey,
+                );
+              }
+
+              return SizedBox(
+                height: MediaQuery.of(context).size.height * 0.7,
+                child: ListView.builder(
+                  padding: EdgeInsets.only(
+                    left: 24,
+                    right: 24,
+                    bottom: Utils.getScrollViewBottomPadding(context),
+                  ),
+                  itemCount: timetableSlots.length,
+                  itemBuilder: (context, index) {
+                    final timeTable = timetableSlots[index];
+                    return _buildTimeTableSlotDetailsContainer(
+                      timeTable: timeTable,
+                    );
+                  },
+                ),
+              );
+            },
+            orElse: () => _buildTimeTableLoading(),
+          );
+        },
+      ),
     );
   }
 }

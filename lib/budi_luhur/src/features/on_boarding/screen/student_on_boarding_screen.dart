@@ -1,6 +1,5 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 
@@ -21,36 +20,7 @@ class _StudentOnBoardingScreenState extends State<StudentOnBoardingScreen> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _postDeviceToken();
-      _fetchTimeTable();
-      _fetchDailyAttendance();
-    });
-
     _checkFirstTimeUser();
-  }
-
-  void _postDeviceToken() {
-    context.read<DeviceTokenCubit>().postDeviceToken(
-      nis: context.read<AuthCubit>().getStudentDetails.nis,
-    );
-  }
-
-  void _fetchDailyAttendance() {
-    final detailsUser = context.read<AuthCubit>().getStudentDetails;
-    context.read<DailyAttendanceCubit>().fetchTodayDailyAttendance(
-      nis: detailsUser.nis,
-    );
-  }
-
-  void _fetchTimeTable() {
-    final detailsStudent = context.read<AuthCubit>().getStudentDetails;
-    final classStudent =
-        "${detailsStudent.kelasSaatIni}${detailsStudent.noKelasSaatIni}";
-    context.read<TimeTableCubit>().fetchTimeTable(
-      kelas: classStudent,
-      forceRefresh: true,
-    );
   }
 
   Future<void> _checkFirstTimeUser() async {

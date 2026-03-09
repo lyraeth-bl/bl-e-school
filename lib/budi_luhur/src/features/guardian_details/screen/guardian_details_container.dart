@@ -1,4 +1,5 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:bl_e_school/budi_luhur/src/features/sessions/presentation/bloc/sessions_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -7,23 +8,23 @@ class GuardianDetailsContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final studentDetails = context.read<AuthCubit>().getStudentDetails;
+    final studentDetails = context.read<SessionsBloc>().studentDetails;
 
-    final motherName = studentDetails.namaIbu;
-    final motherWork = studentDetails.pekerjaanIbu;
-    final motherLastStudy = studentDetails.pendidikanTerakhirIbu;
+    final motherName = studentDetails?.namaIbu;
+    final motherWork = studentDetails?.pekerjaanIbu;
+    final motherLastStudy = studentDetails?.pendidikanTerakhirIbu;
 
-    final fatherName = studentDetails.namaAyah;
-    final fatherWork = studentDetails.pekerjaanAyah;
-    final fatherLastStudy = studentDetails.pendidikanTerakhirAyah;
+    final fatherName = studentDetails?.namaAyah;
+    final fatherWork = studentDetails?.pekerjaanAyah;
+    final fatherLastStudy = studentDetails?.pendidikanTerakhirAyah;
 
-    final parentAddress = studentDetails.alamatOrangTua;
-    final parentNumber = studentDetails.noTeleponOrangTua;
+    final parentAddress = studentDetails?.alamatOrangTua;
+    final parentNumber = studentDetails?.noTeleponOrangTua;
 
-    final guardianName = studentDetails.namaWali;
-    final guardianNumber = studentDetails.noTeleponWali;
-    final guardianAddress = studentDetails.alamatWali;
-    final guardianWork = studentDetails.pekerjaanWali;
+    final guardianName = studentDetails?.namaWali;
+    final guardianNumber = studentDetails?.noTeleponWali;
+    final guardianAddress = studentDetails?.alamatWali;
+    final guardianWork = studentDetails?.pekerjaanWali;
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surfaceContainer,

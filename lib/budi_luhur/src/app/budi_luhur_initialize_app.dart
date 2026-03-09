@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/app/init/init_hive_open_box.dart';
 import 'package:bl_e_school/firebase_options.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -15,20 +14,6 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-/// Initializes essential application services and configurations before running the app.
-///
-/// This function ensures that all necessary setup tasks are completed, including:
-/// - Initializing the Flutter binding.
-/// - Load .env file
-/// - Initializing the HydratedBloc Storage.
-/// - Setting up Firebase services.
-/// - Overriding default HTTP behavior for development.
-/// - Registering font licenses.
-/// - Configuring system UI overlays and screen orientation.
-/// - Loading localization (translation) files.
-/// - Initializing notifications.
-/// - Initializing Hive and open required Box.
-/// - Initializing date formatting for the Indonesian locale.
 Future<void> budiLuhurInitializeApp() async {
   // Ensure that the Flutter binding is initialized before any Flutter-specific code.
   WidgetsFlutterBinding.ensureInitialized();
@@ -86,10 +71,18 @@ Future<void> budiLuhurInitializeApp() async {
   // Initialize date formatting for the Indonesian locale ('id_ID').
   await initializeDateFormatting("id", null);
 
-  final authCubit = AuthCubit(
-    AuthRepository(),
-    BiometricAuth("Please authenticate"),
-  );
+  await initPrefsDI();
+  await initSessionsDI();
+  await initAuthDI();
+  await initDeviceTokenDI();
+  await initAppConfigDI();
+  await initTimeTableDI();
+  await initDisciplineDI();
+  await initExtracurricularDI();
+  await initFeedbackDI();
+  await initDailyAttendanceDI();
+  await initAcademicCalendarDI();
+  await initAcademicResultDI();
 
   final dio = Dio(
     BaseOptions(
@@ -98,7 +91,14 @@ Future<void> budiLuhurInitializeApp() async {
     ),
   );
 
-  dio.interceptors.add(AuthInterceptor(dio: dio, authCubit: authCubit));
+  final sessionsBloc = sI<SessionsBloc>();
+
+  dio.interceptors.add(
+    AuthInterceptor(
+      sessionsBloc: sessionsBloc,
+      sessionsRepository: sI<SessionsRepository>(),
+    ),
+  );
 
   if (kDebugMode) {
     dio.interceptors.add(
@@ -112,6 +112,9 @@ Future<void> budiLuhurInitializeApp() async {
 
   ApiClient.init(dioInstance: dio);
 
+  // App Bloc Observer
+  Bloc.observer = const AppBlocObserver();
+
   // Run the main application widget.
-  runApp(BudiLuhurApp(authCubit: authCubit));
+  runApp(BudiLuhurApp());
 }

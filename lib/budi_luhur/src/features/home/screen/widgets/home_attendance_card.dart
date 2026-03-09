@@ -14,52 +14,19 @@ class HomeAttendanceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<DailyAttendanceCubit, DailyAttendanceState>(
-      listener: (context, state) {
-        state.maybeWhen(
-          hasData:
-              (
-                DailyAttendance? dailyAttendance,
-                bool hasPost,
-                bool hasCheckIn,
-                bool hasCheckOut,
-                DateTime? lastUpdate,
-              ) {
-                if (dailyAttendance != null) {
-                  context
-                      .read<DailyAttendanceCubit>()
-                      .updateDailyAttendanceData(dailyAttendance);
-                }
-              },
-          orElse: () {},
-        );
-      },
+    return BlocBuilder<TodayAttendanceBloc, TodayAttendanceState>(
       builder: (context, state) {
         final checkInText = state.maybeWhen(
-          hasData:
-              (
-                DailyAttendance? dailyAttendance,
-                bool hasPost,
-                bool hasCheckIn,
-                bool hasCheckOut,
-                DateTime? lastUpdate,
-              ) {
-                return formatOrDash(dailyAttendance?.jamCheckIn?.toLocal());
-              },
+          success: (DailyAttendance? dailyAttendance) {
+            return formatOrDash(dailyAttendance?.checkInClock?.toLocal());
+          },
           orElse: () => "-",
         );
 
         final checkOutText = state.maybeWhen(
-          hasData:
-              (
-                DailyAttendance? dailyAttendance,
-                bool hasPost,
-                bool hasCheckIn,
-                bool hasCheckOut,
-                DateTime? lastUpdate,
-              ) {
-                return formatOrDash(dailyAttendance?.jamCheckOut?.toLocal());
-              },
+          success: (DailyAttendance? dailyAttendance) {
+            return formatOrDash(dailyAttendance?.checkOutClock?.toLocal());
+          },
           orElse: () => "-",
         );
 

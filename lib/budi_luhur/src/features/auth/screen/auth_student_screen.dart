@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class AuthStudentScreen extends StatefulWidget {
   const AuthStudentScreen({super.key});
@@ -12,17 +11,12 @@ class AuthStudentScreen extends StatefulWidget {
   State<AuthStudentScreen> createState() => _AuthStudentScreenState();
 
   static Widget routeInstance() {
-    return BlocProvider<SignInCubit>(
-      create: (_) => SignInCubit(AuthRepository()),
-      child: const AuthStudentScreen(),
-    );
+    return AuthStudentScreen();
   }
 }
 
 class _AuthStudentScreenState extends State<AuthStudentScreen>
     with TickerProviderStateMixin {
-  final DateTime _now = DateTime.now();
-
   /// Animations
   late final AnimationController _animationController = AnimationController(
     vsync: this,
@@ -56,27 +50,31 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
     _animationController.forward();
 
     final args = Get.arguments as Map<String, dynamic>?;
+
     final wantBiometric = args?['biometricState'] == "true";
-    if (wantBiometric) {
+    final fromSessionBottomSheet = args?['fromSessionBottomSheet'] == "true";
+
+    if (wantBiometric && fromSessionBottomSheet) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
-        biometricLogin();
+        // biometricLogin();
       });
     }
   }
 
-  void biometricLogin() async {
-    final ok = await context.read<AuthCubit>().biometricRefreshToken();
-    if (ok && mounted) {
-      final dailyAttendanceCubit = context.read<DailyAttendanceCubit>();
-      final dailyAttendanceData = dailyAttendanceCubit.getDailyAttendance;
-
-      if (dailyAttendanceData?.tanggal.day != _now.day) {
-        dailyAttendanceCubit.clearAllData();
-      }
-
-      Get.offNamed(BudiLuhurRoutes.home);
-    } else {}
-  }
+  // void biometricLogin() async {
+  //   final ok = await context.read<AuthCubit>().biometricRefreshToken();
+  //
+  //   if (ok && mounted) {
+  //     final dailyAttendanceCubit = context.read<DailyAttendanceCubit>();
+  //     final dailyAttendanceData = dailyAttendanceCubit.getDailyAttendance;
+  //
+  //     if (dailyAttendanceData?.tanggal.day != _now.day) {
+  //       dailyAttendanceCubit.clearAllData();
+  //     }
+  //
+  //     Get.offNamed(BudiLuhurRoutes.home);
+  //   } else {}
+  // }
 
   @override
   void dispose() {
@@ -88,15 +86,30 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      //to avoid the lower pattern from hiding login form when keyboard is open
-      resizeToAvoidBottomInset: false,
-      body: Stack(
-        children: [
-          _buildLowerPattern(),
-          _buildUpperPattern(),
-          _buildLoginForm(),
-        ],
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        state.whenOrNull(
+          successLogin: (accessToken, expiresAt) {
+            context.read<SessionsBloc>().add(
+              SessionsEvent.loggedIn(token: accessToken),
+            );
+          },
+          failure: (failure) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(failure.errorMessage!)));
+          },
+        );
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Stack(
+          children: [
+            _buildLowerPattern(),
+            _buildUpperPattern(),
+            _buildLoginForm(),
+          ],
+        ),
       ),
     );
   }
@@ -106,8 +119,8 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
     if (_nisController.text.trim().isEmpty) {
       Utils.showCustomSnackBar(
         context: context,
-        errorMessage: Utils.getTranslatedLabel(pleaseEnterNisKey),
-        backgroundColor: Utils.getColorScheme(context).error,
+        errorMessage: pleaseEnterNisKey.translate(),
+        backgroundColor: context.colors.error,
       );
       return;
     }
@@ -115,16 +128,19 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
     if (_passwordController.text.trim().isEmpty) {
       Utils.showCustomSnackBar(
         context: context,
-        errorMessage: Utils.getTranslatedLabel(pleaseEnterPasswordKey),
-        backgroundColor: Utils.getColorScheme(context).error,
+        errorMessage: pleaseEnterPasswordKey.translate(),
+        backgroundColor: context.colors.error,
       );
       return;
     }
 
-    context.read<SignInCubit>().signInUser(
+    final loginParams = LoginRequest(
       nis: _nisController.text.trim(),
       password: _passwordController.text.trim(),
-      isStudentLogIn: true,
+    );
+
+    context.read<AuthBloc>().add(
+      AuthEvent.loginRequested(loginRequest: loginParams),
     );
   }
 
@@ -195,19 +211,16 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
   // }
 
   Widget _buildLoginForm() {
-    final args = Get.arguments as Map<String, dynamic>?;
-    final fromSessionBottomSheet = args?['fromSessionBottomSheet'] == "true";
-
     return Align(
       alignment: Alignment.topCenter,
       child: FadeTransition(
         opacity: _formAnimation,
         child: Padding(
           padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
+            bottom: context.viewInsets.bottom,
           ), //to make UI scrollable when keyboard is opened
           child: SizedBox(
-            height: MediaQuery.of(context).size.height,
+            height: context.screenHeight,
             child: NotificationListener(
               onNotification: (OverscrollIndicatorNotification overscroll) {
                 overscroll.disallowIndicator();
@@ -216,45 +229,45 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
               child: SingleChildScrollView(
                 physics: const ClampingScrollPhysics(),
                 padding: EdgeInsets.only(
-                  left: MediaQuery.of(context).size.width * (0.075),
-                  right: MediaQuery.of(context).size.width * (0.075),
-                  top: MediaQuery.of(context).size.height * (0.17),
+                  left: context.screenWidth * (0.075),
+                  right: context.screenWidth * (0.075),
+                  top: context.screenHeight * (0.17),
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      Utils.getTranslatedLabel(letsSignInKey),
-                      style: Theme.of(context).textTheme.headlineLarge
-                          ?.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface,
-                            fontWeight: FontWeight.w600,
-                          ),
+                      letsSignInKey.translate(),
+                      style: context.text.headlineLarge?.copyWith(
+                        color: context.colors.onSurface,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                    const SizedBox(height: 10.0),
+
+                    16.h,
+
                     Text(
-                      "${Utils.getTranslatedLabel(welcomeBackKey)}, \n${Utils.getTranslatedLabel(youHaveBeenMissedKey)}",
-                      style: Theme.of(context).textTheme.headlineSmall
-                          ?.copyWith(
-                            height: 1.5,
-                            color: Utils.getColorScheme(
-                              context,
-                            ).onSurfaceVariant,
-                          ),
+                      "${welcomeBackKey.translate()}, \n${youHaveBeenMissedKey.translate()}",
+                      style: context.text.headlineSmall?.copyWith(
+                        height: 1.5,
+                        color: context.colors.onSurfaceVariant,
+                      ),
                     ),
 
                     /// NIS field
-                    const SizedBox(height: 30.0),
+                    24.h,
+
                     CustomTextFieldContainer(
                       hideText: false,
-                      hintTextKey: Utils.getTranslatedLabel(nisKey),
+                      hintTextKey: nisKey.translate(),
                       bottomPadding: 0,
                       textEditingController: _nisController,
                     ),
 
                     /// Password field
-                    const SizedBox(height: 30.0),
+                    24.h,
+
                     CustomTextFieldContainer(
                       textEditingController: _passwordController,
                       suffixWidget: PasswordHideShowButton(
@@ -266,124 +279,68 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
                         },
                       ),
                       hideText: _hidePassword,
-                      hintTextKey: passwordKey,
+                      hintTextKey: passwordKey.translate(),
                       bottomPadding: 0,
                     ),
-                    // _buildRequestResetPasswordContainer(),
-                    const SizedBox(height: 30.0),
-                    BlocConsumer<SignInCubit, SignInState>(
-                      listener: (context, state) {
-                        state.maybeWhen(
-                          success: (isStudentLogIn, student, time) {
-                            context.read<AuthCubit>().authenticateUser(
-                              isStudent: isStudentLogIn,
-                              student: student,
-                              time: DateTime.now(),
-                            );
 
-                            Get.offNamedUntil(
-                              BudiLuhurRoutes.studentOnboarding,
-                              (Route<dynamic> route) => false,
-                            );
-                          },
-                          failure: (errorMessage) {
-                            Utils.showCustomSnackBar(
-                              context: context,
-                              errorMessage: errorMessage,
-                              backgroundColor: Theme.of(
-                                context,
-                              ).colorScheme.error,
-                            );
-                          },
-                          orElse: () {},
-                        );
-                      },
+                    // _buildRequestResetPasswordContainer(),
+                    48.h,
+
+                    BlocBuilder<AuthBloc, AuthState>(
                       builder: (context, state) {
                         final isLoading = state.maybeWhen(
                           loading: () => true,
                           orElse: () => false,
                         );
 
-                        final biometricOn = context
-                            .read<SettingsCubit>()
-                            .getBiometricLoginStatus;
-
-                        return Row(
-                          children: [
-                            if (fromSessionBottomSheet && biometricOn) ...[
-                              Container(
-                                margin: const EdgeInsets.only(right: 8),
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: IconButton(
-                                  onPressed: () async => biometricLogin(),
-                                  icon: Icon(
-                                    LucideIcons.fingerprintPattern,
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.onPrimary,
-                                  ),
-                                ),
-                              ),
-                            ],
-                            Expanded(
-                              child: FilledButton(
-                                style: FilledButton.styleFrom(
-                                  minimumSize: const Size.fromHeight(48),
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 14,
-                                    horizontal: 16,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  if (isLoading) return;
-
-                                  FocusScope.of(context).unfocus();
-
-                                  _signInStudent();
-                                },
-                                child: isLoading
-                                    // Saat loading: berikan ruang vertikal dan center spinner
-                                    ? SizedBox(
-                                        height: 20,
-                                        child: Center(
-                                          child: SizedBox(
-                                            width: 20,
-                                            height: 20,
-                                            child: CircularProgressIndicator(
-                                              strokeWidth: 2.0,
-                                              valueColor:
-                                                  AlwaysStoppedAnimation<Color>(
-                                                    Theme.of(
-                                                      context,
-                                                    ).colorScheme.onPrimary,
-                                                  ),
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    : Text(
-                                        Utils.getTranslatedLabel(signInKey),
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
+                        return CustomContainer(
+                          child: FilledButton(
+                            style: FilledButton.styleFrom(
+                              minimumSize: const Size.fromHeight(48),
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    CustomRadiusExtension.customContainerRadius,
                               ),
                             ),
-                          ],
+                            onPressed: () {
+                              if (isLoading) return;
+
+                              FocusScope.of(context).unfocus();
+
+                              _signInStudent();
+                            },
+                            child: isLoading
+                                ? SizedBox(
+                                    height: 20,
+                                    child: Center(
+                                      child: SizedBox(
+                                        width: 20,
+                                        height: 20,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2.0,
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                                context.colors.onPrimary,
+                                              ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : Text(
+                                    signInKey.translate(),
+                                    style: context.text.bodyMedium?.copyWith(
+                                      color: context.colors.onPrimary,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                          ),
                         );
                       },
                     ),
-                    const SizedBox(height: 20),
+
+                    // 20.h,
+
                     // const TermsAndConditionAndPrivacyPolicyContainer(),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * (0.025),
-                    ),
                   ],
                 ),
               ),

@@ -1,8 +1,7 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:bl_e_school/budi_luhur/src/features/sessions/presentation/bloc/sessions_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -22,7 +21,13 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     // After a 2-second delay, trigger the navigation logic.
-    Future.delayed(const Duration(seconds: 2), navigateToNextScreen);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(const Duration(seconds: 2), () => _sessionEventStarted());
+    });
+  }
+
+  void _sessionEventStarted() {
+    context.read<SessionsBloc>().add(const SessionsEvent.started());
   }
 
   /// Determines and navigates to the next screen based on authentication state
@@ -34,44 +39,44 @@ class _SplashScreenState extends State<SplashScreen> {
   ///   - If expired, it checks if biometric login is enabled.
   ///     - If biometrics are enabled, it prompts for re-authentication.
   /// - If `unauthenticated` (or any other state), it navigates to the main auth screen.
-  void navigateToNextScreen() {
-    final authState = context.read<AuthCubit>().state;
-
-    authState.maybeWhen(
-      authenticated: (isStudent, student, time) async {
-        final authCubit = context.read<AuthCubit>();
-        final settingsCubit = context.read<SettingsCubit>();
-
-        // Get the time the user originally logged in.
-        final timeSession = authCubit.getTimeLogin;
-
-        // A session is considered expired after 50 minutes.
-        final sessionExpiryTime = timeSession.add(const Duration(minutes: 50));
-
-        // Check if the current time is after the session expiry time.
-        if (_now.isAfter(sessionExpiryTime)) {
-          // If the session has expired, check if biometric login is enabled.
-          final isBiometricStatusActive = settingsCubit.getBiometricLoginStatus;
-
-          if (isBiometricStatusActive) {
-            // Navigate to the auth screen to prompt for biometric re-authentication.
-            Get.offNamed(
-              BudiLuhurRoutes.authStudent,
-              arguments: {'biometricState': "true"},
-            );
-          } else {
-            // If biometrics are not active, navigate to the standard auth flow.
-            Get.offNamed(BudiLuhurRoutes.authStudent);
-          }
-        } else {
-          // If the session is still valid, navigate to the home screen.
-          Get.offNamed(BudiLuhurRoutes.home);
-        }
-      },
-      // If the user is not authenticated, navigate to the auth screen.
-      orElse: () => Get.offNamed(BudiLuhurRoutes.auth),
-    );
-  }
+  // void navigateToNextScreen() {
+  //   final authState = context.read<AuthCubit>().state;
+  //
+  //   authState.maybeWhen(
+  //     authenticated: (isStudent, student, time) async {
+  //       final authCubit = context.read<AuthCubit>();
+  //       final settingsCubit = context.read<SettingsCubit>();
+  //
+  //       // Get the time the user originally logged in.
+  //       final timeSession = authCubit.getTimeLogin;
+  //
+  //       // A session is considered expired after 50 minutes.
+  //       final sessionExpiryTime = timeSession.add(const Duration(minutes: 50));
+  //
+  //       // Check if the current time is after the session expiry time.
+  //       if (_now.isAfter(sessionExpiryTime)) {
+  //         // If the session has expired, check if biometric login is enabled.
+  //         final isBiometricStatusActive = settingsCubit.getBiometricLoginStatus;
+  //
+  //         if (isBiometricStatusActive) {
+  //           // Navigate to the auth screen to prompt for biometric re-authentication.
+  //           Get.offNamed(
+  //             BudiLuhurRoutes.authStudent,
+  //             arguments: {'biometricState': "true"},
+  //           );
+  //         } else {
+  //           // If biometrics are not active, navigate to the standard auth flow.
+  //           Get.offNamed(BudiLuhurRoutes.authStudent);
+  //         }
+  //       } else {
+  //         // If the session is still valid, navigate to the home screen.
+  //         Get.offNamed(BudiLuhurRoutes.home);
+  //       }
+  //     },
+  //     // If the user is not authenticated, navigate to the auth screen.
+  //     orElse: () => Get.offNamed(BudiLuhurRoutes.auth),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
