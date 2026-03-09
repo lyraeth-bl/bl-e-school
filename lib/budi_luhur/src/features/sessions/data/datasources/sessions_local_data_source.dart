@@ -30,8 +30,10 @@ class SessionsLocalDataSourceImpl implements SessionsLocalDataSource {
   @override
   Future<Unit> clearSession() async {
     await secureStorage.delete(key: kAccessTokenKey);
+    debugPrint("await secureStorage.delete(key: kAccessTokenKey) success");
 
     await Hive.box(sessionsBoxKey).clear();
+    debugPrint("await Hive.box(sessionsBoxKey).clear() success");
 
     return unit;
   }

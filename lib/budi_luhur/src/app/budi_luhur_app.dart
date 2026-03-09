@@ -64,6 +64,7 @@ class BudiLuhurApp extends StatelessWidget {
                         TimeTableEvent.timeTableRequested(
                           kelas:
                               "${student!.kelasSaatIni!}${student.noKelasSaatIni}",
+                          forceRefresh: true,
                         ),
                       );
 
