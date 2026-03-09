@@ -30,6 +30,9 @@ class BudiLuhurApp extends StatelessWidget {
         BlocProvider<MonthlyAttendanceBloc>.value(
           value: sI<MonthlyAttendanceBloc>(),
         ),
+        BlocProvider<AcademicCalendarBloc>.value(
+          value: sI<AcademicCalendarBloc>(),
+        ),
 
         BlocProvider<AppLocalizationCubit>(
           create: (_) => AppLocalizationCubit(SettingsRepository()),

@@ -18,9 +18,6 @@ class HomeScreen extends StatefulWidget {
   static Widget routeInstance() {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AcademicCalendarCubit>(
-          create: (_) => AcademicCalendarCubit(AcademicCalendarRepository()),
-        ),
         BlocProvider<ExtracurricularBloc>.value(
           value: sI<ExtracurricularBloc>(),
         ),

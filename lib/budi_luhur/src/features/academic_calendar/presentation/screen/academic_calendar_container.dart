@@ -1,5 +1,4 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/sessions/presentation/bloc/sessions_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,15 +40,19 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
   }
 
   void _fetchAcademicCalendarThisMonth({bool forceRefresh = false}) {
-    final studentDetails = context.read<SessionsBloc>().studentDetails;
-    context.read<AcademicCalendarCubit>().fetchCustomAcademicCalendar(
+    final AcademicCalendarRequest data = AcademicCalendarRequest(
       year: _now.year,
       month: _now.month,
-      unit: studentDetails?.unit ?? "",
-      forceRefresh: forceRefresh,
+      unit: context.read<SessionsBloc>().studentDetails!.unit!,
+    );
+    context.read<AcademicCalendarBloc>().add(
+      AcademicCalendarEvent.fetch(
+        academicCalendarRequest: data,
+        forceRefresh: forceRefresh,
+      ),
     );
 
-    final academicState = context.read<AcademicCalendarCubit>().state;
+    final academicState = context.read<AcademicCalendarBloc>().state;
     academicState.maybeWhen(
       success: (apiList, year, month, lastUpdated) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -67,7 +70,7 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
   }
 
   void updateMonthViceAcademicCalendar() {
-    final academicCalendarState = context.read<AcademicCalendarCubit>().state;
+    final academicCalendarState = context.read<AcademicCalendarBloc>().state;
 
     final List<AcademicCalendar> dataAcademicCalendar = academicCalendarState
         .maybeWhen(
@@ -267,10 +270,19 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
             isApplicationItemAnimationOn = !isApplicationItemAnimationOn;
           });
 
+          final AcademicCalendar emptyData = AcademicCalendar(
+            id: 0,
+            judul: "",
+            unit: "",
+            tanggalMulai: "",
+            tanggalSelesai: "",
+            keterangan: "",
+          );
+
           _showAcademicBottomSheet(
             eventsForSelectedDay.isNotEmpty
                 ? eventsForSelectedDay
-                : [AcademicCalendar.empty(date: selected)],
+                : [emptyData],
           ).then((_) {
             setState(() {
               isApplicationItemAnimationOn = !isApplicationItemAnimationOn;
@@ -400,13 +412,11 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
               appBarHeightPercentage: Utils.appBarMediumHeightPercentage,
             ),
           ),
-          child: BlocConsumer<AcademicCalendarCubit, AcademicCalendarState>(
+          child: BlocConsumer<AcademicCalendarBloc, AcademicCalendarState>(
             listener: (context, state) {
               state.maybeWhen(
                 success: (_, __, ___, ____) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    updateMonthViceAcademicCalendar();
-                  });
+                  updateMonthViceAcademicCalendar();
                 },
                 orElse: () {},
               );
@@ -426,9 +436,9 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
                     ],
                   );
                 },
-                failure: (errorMessage) => Center(
+                failure: (failure) => Center(
                   child: ErrorContainer(
-                    errorMessageCode: errorMessage,
+                    errorMessageCode: failure.messageKey.translate(),
                     onTapRetry: () => updateMonthViceAcademicCalendar(),
                   ),
                 ),
@@ -490,7 +500,7 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
             ChangeCalendarMonthButton(
               onTap: () {
                 final academicCalendarState = context
-                    .read<AcademicCalendarCubit>()
+                    .read<AcademicCalendarBloc>()
                     .state;
 
                 final isLoading = academicCalendarState.maybeWhen(
@@ -541,7 +551,7 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
                 if (_disableChangeNextMonthButton()) return;
 
                 final academicCalendarState = context
-                    .read<AcademicCalendarCubit>()
+                    .read<AcademicCalendarBloc>()
                     .state;
 
                 final isLoading = academicCalendarState.maybeWhen(

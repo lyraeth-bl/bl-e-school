@@ -3,6 +3,7 @@ export 'data/datasources/feedback_remote_data_source.dart';
 export 'data/feedback/feedback.dart';
 export 'data/feedback_request/feedback_request.dart';
 export 'data/feedback_response/feedback_response.dart';
+export 'feedback_di.dart';
 export 'presentation/add_feedback_container.dart';
 export 'presentation/add_feedback_screen.dart';
 export 'presentation/bloc/feedback_bloc.dart';

@@ -51,9 +51,9 @@ class DailyAttendanceLocalDataSourceImpl
     required int month,
   }) {
     final cachedYear =
-        Hive.box(sessionsBoxKey).get(sessionsMonthlyYearKey) as int?;
+        Hive.box(sessionsBoxKey).get(sessionsMonthlyAttendanceYearKey) as int?;
     final cachedMonth =
-        Hive.box(sessionsBoxKey).get(sessionsMonthlyMonthKey) as int?;
+        Hive.box(sessionsBoxKey).get(sessionsMonthlyAttendanceMonthKey) as int?;
 
     if (cachedYear != year || cachedMonth != month) return null;
 
@@ -75,8 +75,8 @@ class DailyAttendanceLocalDataSourceImpl
         sessionsListMonthlyAttendanceKey,
         list.map((e) => e.toJson()).toList(),
       ),
-      Hive.box(sessionsBoxKey).put(sessionsMonthlyYearKey, year),
-      Hive.box(sessionsBoxKey).put(sessionsMonthlyMonthKey, month),
+      Hive.box(sessionsBoxKey).put(sessionsMonthlyAttendanceYearKey, year),
+      Hive.box(sessionsBoxKey).put(sessionsMonthlyAttendanceMonthKey, month),
     ]);
     return unit;
   }

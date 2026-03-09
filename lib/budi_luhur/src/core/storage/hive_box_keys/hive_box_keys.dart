@@ -120,6 +120,20 @@ const String sessionsListMonthlyAttendanceKey =
 const String sessionsMonthlyLastUpdatedKey =
     "sessionsBox.sessionsMonthlyLastUpdated";
 
-const String sessionsMonthlyYearKey = "sessionsBox.sessionsMonthlyYear";
+const String sessionsMonthlyAttendanceYearKey =
+    "sessionsBox.sessionsMonthlyAttendanceYear";
 
-const String sessionsMonthlyMonthKey = "sessionsBox.sessionsMonthlyMonth";
+const String sessionsMonthlyAttendanceMonthKey =
+    "sessionsBox.sessionsMonthlyAttendanceMonth";
+
+const String sessionsListMonthlyAcademicKey =
+    "sessionsBox.sessionsListMonthlyAcademic";
+
+const String sessionsMonthlyAcademicYearKey =
+    "sessionsBox.sessionsMonthlyAcademicYear";
+
+const String sessionsMonthlyAcademicMonthKey =
+    "sessionsBox.sessionsMonthlyAcademicMonth";
+
+const String sessionsMonthlyAcademicLastUpdatedKey =
+    "sessionsBox.sessionsMonthlyAcademicLastUpdated";
