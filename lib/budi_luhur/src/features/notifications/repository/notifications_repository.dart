@@ -144,7 +144,7 @@ class NotificationsRepository {
     final nis = sI<SessionsRepository>().getLoggedStudentDetails().nis;
 
     final bodyNotification = {
-      "targetNis": [nis],
+      "targetNis": "${[nis]}",
       "title": "Push Notification Aktif",
       "body":
           "Ini adalah tampilan notifikasi MyBudiLuhur yang akan muncul di device kamu",
