@@ -7,10 +7,7 @@ class FeedbackScreen extends StatelessWidget {
   const FeedbackScreen({super.key});
 
   static Widget routeInstance() {
-    return BlocProvider<FeedbackBloc>.value(
-      value: sI<FeedbackBloc>(),
-      child: FeedbackScreen(),
-    );
+    return FeedbackScreen();
   }
 
   @override

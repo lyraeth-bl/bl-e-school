@@ -44,47 +44,45 @@ class _FeedbackContainerState extends State<FeedbackContainer> {
         builder: (c, s) {
           return s.maybeWhen(
             hasData: (userFeedbackList) {
-              if (userFeedbackList.isEmpty) {
-                return ListView(
-                  padding: const EdgeInsets.all(24),
-                  children: [
-                    CustomContainer(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Lottie.asset(
-                            "assets/animations/empty-ghost.json",
-                            height: 150,
-                            width: 150,
-                          ),
-                          SizedBox(height: 24),
-                          Text(
-                            Utils.getTranslatedLabel(noDataFoundKey),
-                            style: Theme.of(context).textTheme.titleMedium
-                                ?.copyWith(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onSurface,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    SizedBox(height: 24),
-
-                    FeedbackTermsAndConditions(),
-                  ],
-                );
-              }
               return ListView(
                 padding: const EdgeInsets.all(24),
                 children: [
                   FeedbackCard(
                     feedback: userFeedbackList.first,
                     formatDate: _formatDate,
+                  ),
+
+                  SizedBox(height: 24),
+
+                  FeedbackTermsAndConditions(),
+                ],
+              );
+            },
+            emptyData: () {
+              return ListView(
+                padding: const EdgeInsets.all(24),
+                children: [
+                  CustomContainer(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Lottie.asset(
+                          "assets/animations/empty-ghost.json",
+                          height: 150,
+                          width: 150,
+                        ),
+                        SizedBox(height: 24),
+                        Text(
+                          Utils.getTranslatedLabel(noDataFoundKey),
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.onSurface,
+                                fontWeight: FontWeight.w700,
+                              ),
+                        ),
+                      ],
+                    ),
                   ),
 
                   SizedBox(height: 24),
