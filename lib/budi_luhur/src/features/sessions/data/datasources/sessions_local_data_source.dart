@@ -58,10 +58,11 @@ class SessionsLocalDataSourceImpl implements SessionsLocalDataSource {
   Future<bool> getIsStudentLoggedIn() async =>
       prefs.getBool(kSessionsIsStudentLoggedInKey) ?? false;
 
+  // TODO: Change this logic using Student?
   @override
   Student getLoggedStudentDetails() => Student.fromJson(
     Map<String, dynamic>.from(
-      Hive.box(authBoxKey).get(studentDetailsKey) ?? {},
+      Hive.box(sessionsBoxKey).get(sessionsLoggedStudentDetailKey) ?? {},
     ),
   );
 
@@ -72,9 +73,12 @@ class SessionsLocalDataSourceImpl implements SessionsLocalDataSource {
     return unit;
   }
 
+  // TODO : Change this also
   @override
   Future<Unit> setLoggedStudentDetails(Student studentDetails) async {
-    Hive.box(authBoxKey).put(studentDetailsKey, studentDetails.toJson());
+    Hive.box(
+      sessionsBoxKey,
+    ).put(sessionsLoggedStudentDetailKey, studentDetails.toJson());
 
     return unit;
   }

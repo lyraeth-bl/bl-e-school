@@ -10,11 +10,7 @@ abstract class AuthLocalDataSource {
 class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   @override
   Future<Unit> closeAndDeleteBox() async {
-    final List<String> namesBox = [
-      notificationsBoxKey,
-      attendanceBoxKey,
-      feedbackBoxKey,
-    ];
+    final List<String> namesBox = [notificationsBoxKey, sessionsBoxKey];
 
     for (var name in namesBox) {
       if (Hive.isBoxOpen(name)) {

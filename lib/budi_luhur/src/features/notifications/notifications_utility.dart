@@ -1,28 +1,19 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/sessions/repository/sessions_repository.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-/// The key for the primary notification channel used for general alerts.
 const String notificationChannelKey = "basic_channel";
 
-/// A top-level callback to handle incoming messages when the app is in the
-/// background or terminated.
-///
-/// This function must be a top-level function (not a class method) to be
-/// used as a background handler. It checks the notification `type` and, if it's
-/// a standard "Notification", it stores it in local storage to be viewed later.
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(
   RemoteMessage remoteMessage,
 ) async {
   // Initialize Hive for background processing.
   await Hive.initFlutter();
-  await Hive.openBox(authBoxKey);
   await Hive.openBox(notificationsBoxKey);
 
   final type = (remoteMessage.data['type'] ?? "").toString();
@@ -30,10 +21,10 @@ Future<void> firebaseMessagingBackgroundHandler(
     debugPrint("Background Notification Type: $type");
   }
 
-  final nis = sI<SessionsRepository>().getLoggedStudentDetails()?.nis;
+  final nis = sI<SessionsRepository>().getLoggedStudentDetails().nis;
   NotificationsRepository.addNotificationTemporarily(
     data: NotificationsDetails(
-      nis: nis ?? "",
+      nis: nis,
       title: remoteMessage.notification?.title ?? "",
       body: remoteMessage.notification?.body ?? "",
       type: remoteMessage.data['type'] ?? "",
@@ -47,40 +38,21 @@ Future<void> firebaseMessagingBackgroundHandler(
   }
 }
 
-/// A utility class responsible for managing all notification-related functionalities.
-///
-/// This class handles the setup of Firebase Cloud Messaging (FCM), manages
-/// notification permissions, and orchestrates how incoming notifications are
-/// processed and displayed, whether the app is in the foreground, background,
-/// or terminated. It uses the `awesome_notifications` package to create and
-/// manage local notifications, including specialized ones for downloads.
 class NotificationsUtility {
   // --- Notification Type Constants ---
 
-  /// Type identifier for general-purpose notifications.
   static String generalNotificationType = "general";
 
-  /// Type identifier for notifications related to assignments.
   static String assignmentNotificationType = "assignment";
 
-  /// Type identifier for notifications related to attendance.
   static String attendanceNotificationType = "attendance";
 
-  /// Type identifier for notifications related to payments.
   static String paymentNotificationType = "payment";
 
-  /// Type identifier for standard informational notifications.
   static String notificationType = "notification";
 
-  /// Type identifier for chat messages.
   static String messageType = "message";
 
-  /// Sets up the notification service by checking and requesting permissions.
-  ///
-  /// This method checks the current notification authorization status. If permissions
-  /// have not been granted or have been denied, it will request them from the user.
-  /// If permissions are authorized (either fully or provisionally), it proceeds to
-  /// initialize the notification listeners.
   static Future<void> setUpNotificationService() async {
     NotificationSettings notificationSettings = await FirebaseMessaging.instance
         .getNotificationSettings();
@@ -109,11 +81,6 @@ class NotificationsUtility {
     initNotificationListener();
   }
 
-  /// Initializes the listeners for various Firebase Messaging events.
-  ///
-  /// This sets up handlers for:
-  /// - `onBackgroundMessage`: For messages received when the app is in the background or terminated.
-  /// - `onMessageOpenedApp`: For when the user taps a notification, opening the app.
   static void initNotificationListener() {
     // Note: FirebaseMessaging.onMessage is handled directly in `main.dart`
     // or another initialization point to call `foregroundMessageListener`.
@@ -121,10 +88,6 @@ class NotificationsUtility {
     FirebaseMessaging.onMessageOpenedApp.listen(onMessageOpenedAppListener);
   }
 
-  /// Handles incoming FCM messages when the app is in the foreground.
-  ///
-  /// It processes the notification data, adds it to the local repository if applicable,
-  /// and then calls `createLocalNotification` to display a visible alert to the user.
   static Future<void> foregroundMessageListener(
     RemoteMessage remoteMessage,
   ) async {
@@ -134,7 +97,7 @@ class NotificationsUtility {
     if (type == paymentNotificationType.toLowerCase()) {
       // Example: could auto-refresh a payment screen.
     } else {
-      final nis = sI<SessionsRepository>().getLoggedStudentDetails()?.nis;
+      final nis = sI<SessionsRepository>().getLoggedStudentDetails().nis;
       // For general notifications, add to the repository for persistence.
       NotificationsRepository.addNotification(
         notificationDetails: NotificationsDetails(
@@ -155,8 +118,6 @@ class NotificationsUtility {
     createLocalNotification(dismissable: true, message: remoteMessage);
   }
 
-  /// A listener that triggers when a user taps a notification, opening the app
-  /// from a background or terminated state.
   static void onMessageOpenedAppListener(RemoteMessage remoteMessage) {
     _onTapNotificationScreenNavigateCallback(
       remoteMessage.data['type'] ?? "",
@@ -164,13 +125,6 @@ class NotificationsUtility {
     );
   }
 
-  /// Handles navigation when a notification is tapped.
-  ///
-  /// This callback determines the destination screen based on the notification's
-  /// `type` payload.
-  ///
-  /// - [type]: The notification type (e.g., 'general', 'notification').
-  /// - [data]: The full payload of the notification.
   static Future<void> _onTapNotificationScreenNavigateCallback(
     String type,
     Map<String, dynamic> data,
@@ -208,10 +162,6 @@ class NotificationsUtility {
     }
   }
 
-  /// Initializes `awesome_notifications` with the required channels.
-  ///
-  /// This sets up different channels for various notification types, such as
-  /// basic alerts, download progress, and download completion.
   static Future<void> initializeAwesomeNotification() async {
     await AwesomeNotifications().initialize(null, [
       // Channel for general notifications
@@ -244,41 +194,30 @@ class NotificationsUtility {
     ]);
   }
 
-  /// Checks if the app is permitted to display local notifications.
   static Future<bool> isLocalNotificationAllowed() async {
     const notificationPermission = Permission.notification;
     final status = await notificationPermission.status;
     return status.isGranted;
   }
 
-  /// A callback for when a new notification is created by `awesome_notifications`.
-  /// (Currently unused, but available for future logic).
   static Future<void> onNotificationCreatedMethod(
     ReceivedNotification receivedNotification,
   ) async {
     // Your code goes here
   }
 
-  /// A callback for when a new notification is displayed by `awesome_notifications`.
-  /// (Currently unused, but available for future logic).
   static Future<void> onNotificationDisplayedMethod(
     ReceivedNotification receivedNotification,
   ) async {
     // Your code goes here
   }
 
-  /// A callback for when a user dismisses a notification.
-  /// (Currently unused, but available for future logic).
   static Future<void> onDismissActionReceivedMethod(
     ReceivedAction receivedAction,
   ) async {
     // Your code goes here
   }
 
-  /// A callback for when a user taps on a notification or a notification action button.
-  ///
-  /// This is the entry point for handling taps on local notifications created by
-  /// `awesome_notifications`. It extracts the payload and navigates the user.
   static Future<void> onActionReceivedMethod(
     ReceivedAction receivedAction,
   ) async {
@@ -290,11 +229,6 @@ class NotificationsUtility {
 
   // --- Download Notification Methods ---
 
-  /// Displays an initial notification with a progress bar for a file download.
-  ///
-  /// - [notificationId]: A unique integer to identify the notification.
-  /// - [fileName]: The name of the file being downloaded.
-  /// - [progress]: The initial download progress (usually 0).
   static Future<void> showDownloadNotification({
     required int notificationId,
     required String fileName,
@@ -321,11 +255,6 @@ class NotificationsUtility {
     }
   }
 
-  /// Updates an existing download notification with the latest progress.
-  ///
-  /// - [notificationId]: The ID of the notification to update.
-  /// - [fileName]: The name of the file.
-  /// - [progress]: The current download progress (0-100).
   static Future<void> updateDownloadNotification({
     required int notificationId,
     required String fileName,
@@ -352,13 +281,6 @@ class NotificationsUtility {
     }
   }
 
-  /// Displays a notification indicating that a download has completed successfully.
-  ///
-  /// This method first dismisses the progress notification and then shows a new,
-  /// auto-dismissing "complete" notification.
-  ///
-  /// - [notificationId]: The ID of the original download notification.
-  /// - [fileName]: The name of the completed file.
   static Future<void> showDownloadCompleteNotification({
     required int notificationId,
     required String fileName,
@@ -399,11 +321,6 @@ class NotificationsUtility {
     }
   }
 
-  /// Displays a notification indicating that a download has failed.
-  ///
-  /// - [notificationId]: The ID of the original download notification.
-  /// - [fileName]: The name of the file that failed to download.
-  /// - [error]: A description of the error.
   static Future<void> showDownloadErrorNotification({
     required int notificationId,
     required String fileName,
@@ -435,13 +352,6 @@ class NotificationsUtility {
     }
   }
 
-  /// Creates and displays a local notification from a [RemoteMessage].
-  ///
-  /// This is typically used to show a notification when an FCM message is
-  /// received while the app is in the foreground.
-  ///
-  /// - [dismissable]: Whether the user can swipe to dismiss the notification.
-  /// - [message]: The incoming FCM [RemoteMessage].
   static Future<void> createLocalNotification({
     required bool dismissable,
     required RemoteMessage message,

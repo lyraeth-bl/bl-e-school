@@ -71,18 +71,7 @@ Future<void> budiLuhurInitializeApp() async {
   // Initialize date formatting for the Indonesian locale ('id_ID').
   await initializeDateFormatting("id", null);
 
-  await initPrefsDI();
-  await initSessionsDI();
-  await initAuthDI();
-  await initDeviceTokenDI();
-  await initAppConfigDI();
-  await initTimeTableDI();
-  await initDisciplineDI();
-  await initExtracurricularDI();
-  await initFeedbackDI();
-  await initDailyAttendanceDI();
-  await initAcademicCalendarDI();
-  await initAcademicResultDI();
+  await initDI();
 
   final dio = Dio(
     BaseOptions(

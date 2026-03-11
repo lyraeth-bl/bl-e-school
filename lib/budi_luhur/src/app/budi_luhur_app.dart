@@ -1,5 +1,4 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/settings/cubit/settings/settings_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -9,75 +8,38 @@ class BudiLuhurApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<SettingsCubit>(
-          create: (_) => SettingsCubit(
-            SettingsRepository(),
-            BiometricAuth("Please authenticate first"),
-          ),
-        ),
-
-        BlocProvider<SessionsBloc>.value(value: sI<SessionsBloc>()),
-        BlocProvider<AuthBloc>.value(value: sI<AuthBloc>()),
-        BlocProvider<DeviceTokenBloc>.value(value: sI<DeviceTokenBloc>()),
-        BlocProvider<AppConfigBloc>.value(value: sI<AppConfigBloc>()),
-        BlocProvider<TimeTableBloc>.value(value: sI<TimeTableBloc>()),
-        BlocProvider<ExtracurricularBloc>.value(
-          value: sI<ExtracurricularBloc>(),
-        ),
-        BlocProvider<DisciplineBloc>.value(value: sI<DisciplineBloc>()),
-        BlocProvider<TodayAttendanceBloc>.value(
-          value: sI<TodayAttendanceBloc>(),
-        ),
-        BlocProvider<MonthlyAttendanceBloc>.value(
-          value: sI<MonthlyAttendanceBloc>(),
-        ),
-        BlocProvider<AcademicCalendarBloc>.value(
-          value: sI<AcademicCalendarBloc>(),
-        ),
-        BlocProvider<AcademicResultBloc>.value(value: sI<AcademicResultBloc>()),
-        BlocProvider<FeedbackBloc>.value(value: sI<FeedbackBloc>()),
-
-        BlocProvider<AppLocalizationCubit>(
-          create: (_) => AppLocalizationCubit(SettingsRepository()),
-        ),
-      ],
+    return AppBlocProvider(
       child: Builder(
         builder: (context) {
-          return MultiBlocListener(
-            listeners: [
-              BlocListener<SessionsBloc, SessionsState>(
-                listener: (context, state) {
-                  state.whenOrNull(
-                    unauthenticated: () => Get.offNamed(BudiLuhurRoutes.auth),
-                    authenticated: (student, accessToken) {
-                      context.read<DeviceTokenBloc>().add(
-                        DeviceTokenEvent.postRequested(),
-                      );
-
-                      context.read<AppConfigBloc>().add(
-                        AppConfigEvent.appConfigRequested(),
-                      );
-
-                      context.read<TimeTableBloc>().add(
-                        TimeTableEvent.timeTableRequested(
-                          kelas:
-                              "${student!.kelasSaatIni!}${student.noKelasSaatIni}",
-                          forceRefresh: true,
-                        ),
-                      );
-
-                      context.read<TodayAttendanceBloc>().add(
-                        TodayAttendanceEvent.started(),
-                      );
-
-                      Get.offNamed(BudiLuhurRoutes.home);
-                    },
+          return BlocListener<SessionsBloc, SessionsState>(
+            listener: (context, state) {
+              state.whenOrNull(
+                unauthenticated: () => Get.offNamed(BudiLuhurRoutes.auth),
+                authenticated: (student, accessToken) {
+                  context.read<DeviceTokenBloc>().add(
+                    DeviceTokenEvent.postRequested(),
                   );
+
+                  context.read<AppConfigBloc>().add(
+                    AppConfigEvent.appConfigRequested(),
+                  );
+
+                  context.read<TimeTableBloc>().add(
+                    TimeTableEvent.timeTableRequested(
+                      kelas:
+                          "${student!.kelasSaatIni!}${student.noKelasSaatIni}",
+                      forceRefresh: true,
+                    ),
+                  );
+
+                  context.read<TodayAttendanceBloc>().add(
+                    TodayAttendanceEvent.started(),
+                  );
+
+                  Get.offNamed(BudiLuhurRoutes.home);
                 },
-              ),
-            ],
+              );
+            },
             child: GetMaterialApp(
               debugShowCheckedModeBanner: false,
               theme: BudiLuhurTheme.lightMode(),
