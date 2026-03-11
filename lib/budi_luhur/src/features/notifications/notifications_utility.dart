@@ -21,10 +21,10 @@ Future<void> firebaseMessagingBackgroundHandler(
     debugPrint("Background Notification Type: $type");
   }
 
-  final nis = sI<SessionsRepository>().getLoggedStudentDetails().nis;
+  final nis = sI<SessionsRepository>().getLoggedStudentDetails()?.nis;
   NotificationsRepository.addNotificationTemporarily(
     data: NotificationsDetails(
-      nis: nis,
+      nis: nis ?? "",
       title: remoteMessage.notification?.title ?? "",
       body: remoteMessage.notification?.body ?? "",
       type: remoteMessage.data['type'] ?? "",
@@ -97,7 +97,7 @@ class NotificationsUtility {
     if (type == paymentNotificationType.toLowerCase()) {
       // Example: could auto-refresh a payment screen.
     } else {
-      final nis = sI<SessionsRepository>().getLoggedStudentDetails().nis;
+      final nis = sI<SessionsRepository>().getLoggedStudentDetails()?.nis;
       // For general notifications, add to the repository for persistence.
       NotificationsRepository.addNotification(
         notificationDetails: NotificationsDetails(

@@ -16,7 +16,7 @@ abstract class SessionsLocalDataSource {
 
   Future<Unit> setIsStudentLoggedIn(bool value);
 
-  Student getLoggedStudentDetails();
+  Student? getLoggedStudentDetails();
 
   Future<Unit> setLoggedStudentDetails(Student studentDetails);
 
@@ -58,13 +58,14 @@ class SessionsLocalDataSourceImpl implements SessionsLocalDataSource {
   Future<bool> getIsStudentLoggedIn() async =>
       prefs.getBool(kSessionsIsStudentLoggedInKey) ?? false;
 
-  // TODO: Change this logic using Student?
   @override
-  Student getLoggedStudentDetails() => Student.fromJson(
-    Map<String, dynamic>.from(
-      Hive.box(sessionsBoxKey).get(sessionsLoggedStudentDetailKey) ?? {},
-    ),
-  );
+  Student? getLoggedStudentDetails() {
+    final raw = Hive.box(sessionsBoxKey).get(sessionsLoggedStudentDetailKey);
+
+    if (raw == null) return null;
+
+    return Student.fromJson(Map<String, dynamic>.from(raw));
+  }
 
   @override
   Future<Unit> setIsStudentLoggedIn(bool value) async {
@@ -73,10 +74,9 @@ class SessionsLocalDataSourceImpl implements SessionsLocalDataSource {
     return unit;
   }
 
-  // TODO : Change this also
   @override
   Future<Unit> setLoggedStudentDetails(Student studentDetails) async {
-    Hive.box(
+    await Hive.box(
       sessionsBoxKey,
     ).put(sessionsLoggedStudentDetailKey, studentDetails.toJson());
 
