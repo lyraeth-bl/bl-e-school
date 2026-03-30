@@ -22,11 +22,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(Duration(seconds: 3), () {
-        if (mounted) {
-          context.read<NotificationsCubit>().fetchNotifications();
-        }
-      });
+      context.read<NotificationsCubit>().fetchNotifications();
     });
     super.initState();
   }
@@ -34,7 +30,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
+      backgroundColor: context.colors.surfaceContainer,
       body: Stack(
         children: [
           BlocBuilder<NotificationsCubit, NotificationsState>(
@@ -62,11 +58,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                         padding: EdgeInsets.only(
                           bottom: 25,
                           left:
-                              MediaQuery.of(context).size.width *
+                              context.screenWidth *
                               (Utils
                                   .screenContentHorizontalPaddingInPercentage),
                           right:
-                              MediaQuery.of(context).size.width *
+                              context.screenWidth *
                               (Utils
                                   .screenContentHorizontalPaddingInPercentage),
                           top: Utils.getScrollViewTopPadding(
@@ -82,7 +78,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                               notifications.attachmentUrl.isNotEmpty;
 
                           return CustomContainer(
-                            margin: const EdgeInsets.only(bottom: 20),
+                            margin: const EdgeInsets.only(bottom: 24),
                             padding: const EdgeInsets.symmetric(
                               horizontal: 16.0,
                               vertical: 12.0,
@@ -109,7 +105,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                             context,
                                           ).colorScheme.surfaceContainerLow,
                                           borderRadius: BorderRadius.circular(
-                                            12,
+                                            16,
                                           ),
                                         ),
                                         child: Icon(
@@ -121,7 +117,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                         ),
                                       ),
 
-                                const SizedBox(width: 12),
+                                16.w,
 
                                 // Text content
                                 Expanded(
@@ -131,44 +127,41 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                     children: [
                                       Text(
                                         notifications.title,
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                          color: Theme.of(
-                                            context,
-                                          ).colorScheme.onSurface,
-                                        ),
+                                        style: context.text.titleMedium
+                                            ?.copyWith(
+                                              color: context.colors.onSurface,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                       ),
-                                      const SizedBox(height: 6),
+                                      8.h,
                                       Text(
                                         notifications.body,
-                                        style: TextStyle(
-                                          fontSize: 12.5,
-                                          color: Theme.of(
-                                            context,
-                                          ).colorScheme.onSurfaceVariant,
-                                          height: 1.3,
+                                        style: context.text.bodySmall?.copyWith(
+                                          color:
+                                              context.colors.onSurfaceVariant,
                                         ),
                                       ),
-                                      const SizedBox(height: 16),
+                                      16.h,
                                       Row(
                                         children: [
-                                          CustomChipContainer(
-                                            backgroundColor: Theme.of(
-                                              context,
-                                            ).colorScheme.primaryContainer,
-                                            child: Text(
-                                              notifications.type,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .labelSmall
-                                                  ?.copyWith(
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .onPrimaryContainer,
-                                                  ),
+                                          if (notifications.type != "") ...[
+                                            CustomChipContainer(
+                                              backgroundColor: Theme.of(
+                                                context,
+                                              ).colorScheme.primaryContainer,
+                                              child: Text(
+                                                notifications.type,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .labelSmall
+                                                    ?.copyWith(
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .onPrimaryContainer,
+                                                    ),
+                                              ),
                                             ),
-                                          ),
+                                          ],
                                           Spacer(),
                                           Text(
                                             timeago.format(

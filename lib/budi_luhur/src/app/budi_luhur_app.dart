@@ -1,4 +1,5 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -14,11 +15,19 @@ class BudiLuhurApp extends StatelessWidget {
           return BlocListener<SessionsBloc, SessionsState>(
             listener: (context, state) {
               state.whenOrNull(
-                unauthenticated: () => Get.offNamed(BudiLuhurRoutes.auth),
+                unauthenticated: () {
+                  if (!kIsWeb) {
+                    FcmService.instance.unregisterToken().ignore();
+                  }
+
+                  Get.offNamed(BudiLuhurRoutes.auth);
+                },
                 authenticated: (student, accessToken) {
-                  context.read<DeviceTokenBloc>().add(
-                    DeviceTokenEvent.postRequested(),
-                  );
+                  if (!kIsWeb) {
+                    FcmService.instance.initialize().then((_) {
+                      FcmService.instance.registerToken();
+                    });
+                  }
 
                   context.read<AppConfigBloc>().add(
                     AppConfigEvent.appConfigRequested(),

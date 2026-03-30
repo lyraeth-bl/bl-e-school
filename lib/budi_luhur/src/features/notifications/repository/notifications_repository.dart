@@ -5,6 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+const String _tempNotifKey = 'temp_notifications_queue';
+
 class NotificationsRepository {
   static Future<void> addNotification({
     required NotificationsDetails notificationDetails,
@@ -57,45 +59,61 @@ class NotificationsRepository {
     required Map<String, dynamic> data,
   }) async {
     try {
-      SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
-      await sharedPreferences.reload();
-      List<String> notifications =
-          sharedPreferences.getStringList(temporarilyStoredNotificationsKey) ??
-          List<String>.from([]);
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.reload();
 
-      notifications.add(jsonEncode(data));
+      final existing = prefs.getStringList(_tempNotifKey) ?? [];
+      existing.add(jsonEncode(data));
 
-      await sharedPreferences.setStringList(
-        temporarilyStoredNotificationsKey,
-        notifications,
+      await prefs.setStringList(_tempNotifKey, existing);
+
+      debugPrint(
+        '[Notif] addNotificationTemporarily success (total: ${existing.length})',
       );
-
-      debugPrint("addNotificationTemporarily success");
-    } catch (_) {
-      debugPrint("addNotificationTemporarily failed");
+      debugPrint('[Notif] Key used: $_tempNotifKey');
+    } catch (e) {
+      debugPrint('[Notif] addNotificationTemporarily failed: $e');
     }
   }
 
   static Future<List<Map<String, dynamic>>>
   getTemporarilyStoredNotifications() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences.reload();
-    List<String> notifications =
-        sharedPreferences.getStringList(temporarilyStoredNotificationsKey) ??
-        List<String>.from([]);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.reload();
 
-    return notifications
-        .map(
-          (notificationData) =>
-              Map<String, dynamic>.from(jsonDecode(notificationData) ?? {}),
-        )
+    // Cek kedua key — key lama (dengan titik) dan key baru — untuk migrasi.
+    // Setelah semua user pakai versi baru, bisa hapus baris key lama.
+    final fromOldKey =
+        prefs.getStringList(temporarilyStoredNotificationsKey) ?? [];
+    final fromNewKey = prefs.getStringList(_tempNotifKey) ?? [];
+
+    final all = [...fromOldKey, ...fromNewKey];
+
+    debugPrint(
+      '[Notif] getTemporarilyStoredNotifications: found ${all.length} items '
+      '(old key: ${fromOldKey.length}, new key: ${fromNewKey.length})',
+    );
+
+    if (fromOldKey.isNotEmpty) {
+      // Migrate: hapus key lama supaya tidak kebaca dobel lain kali
+      await prefs.remove(temporarilyStoredNotificationsKey);
+      debugPrint('[Notif] Migrated ${fromOldKey.length} items from old key');
+    }
+
+    return all
+        .map((item) => Map<String, dynamic>.from(jsonDecode(item)))
         .toList();
   }
 
   static Future<void> clearTemporarilyNotification() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setStringList(temporarilyStoredNotificationsKey, []);
+    final prefs = await SharedPreferences.getInstance();
+    // await wajib — kalau tidak di-await, clear bisa belum selesai
+    // sebelum fetchNotifications selesai dan notif kebaca lagi.
+    await prefs.remove(_tempNotifKey);
+    await prefs.remove(
+      temporarilyStoredNotificationsKey,
+    ); // clear key lama juga
+    debugPrint('[Notif] Temporary notifications cleared.');
   }
 
   Future<bool> sendTestNotification() async {

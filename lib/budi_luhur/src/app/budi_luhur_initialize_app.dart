@@ -1,11 +1,9 @@
 import 'dart:io';
 
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:bl_e_school/firebase_options.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -32,35 +30,15 @@ Future<void> budiLuhurInitializeApp() async {
   }
 
   await initRegisterGoogleFontsLicences();
-
   await initSystemUIOverlay();
-
   await AppTranslation.loadJsons();
-
   await initHiveOpenBox();
+  await initializeDateFormatting("id", null);
+  await initDI();
 
   if (!kIsWeb) {
-    await NotificationsUtility.initializeAwesomeNotification();
-    await NotificationsUtility.setUpNotificationService();
-
-    FirebaseMessaging.onMessage.listen(
-      NotificationsUtility.foregroundMessageListener,
-    );
-
-    AwesomeNotifications().setListeners(
-      onActionReceivedMethod: NotificationsUtility.onActionReceivedMethod,
-      onNotificationCreatedMethod:
-          NotificationsUtility.onNotificationCreatedMethod,
-      onNotificationDisplayedMethod:
-          NotificationsUtility.onNotificationDisplayedMethod,
-      onDismissActionReceivedMethod:
-          NotificationsUtility.onDismissActionReceivedMethod,
-    );
+    await DownloadNotificationService.initChannels();
   }
-
-  await initializeDateFormatting("id", null);
-
-  await initDI();
 
   final dio = Dio(
     BaseOptions(

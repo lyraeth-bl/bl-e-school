@@ -135,9 +135,12 @@ class ApiClient {
     }
   }
 
-  static Future<void> delete({required String url}) async {
+  static Future<void> delete({
+    required String url,
+    Map<String, dynamic>? data,
+  }) async {
     try {
-      await dio.delete(url);
+      await dio.delete(url, data: data);
     } on DioException catch (e) {
       _handleDioError(e);
       rethrow;

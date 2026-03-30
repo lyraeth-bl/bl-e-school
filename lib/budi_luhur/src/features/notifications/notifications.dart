@@ -4,8 +4,9 @@ export 'cubit/notifications_cubit.dart';
 export 'data/model/notifications/notifications.dart';
 export 'data/model/notifications_details/notifications_details.dart';
 export 'data/model/notifications_response/notifications_response.dart';
+export 'download_notification_service.dart';
 // Utility
-export 'notifications_utility.dart';
+export 'fcm_service.dart';
 // Repository
 export 'repository/notifications_repository.dart';
 // Screen

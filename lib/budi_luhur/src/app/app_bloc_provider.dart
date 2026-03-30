@@ -20,7 +20,6 @@ class AppBlocProvider extends StatelessWidget {
 
         BlocProvider<SessionsBloc>.value(value: sI<SessionsBloc>()),
         BlocProvider<AuthBloc>.value(value: sI<AuthBloc>()),
-        BlocProvider<DeviceTokenBloc>.value(value: sI<DeviceTokenBloc>()),
         BlocProvider<AppConfigBloc>.value(value: sI<AppConfigBloc>()),
         BlocProvider<TimeTableBloc>.value(value: sI<TimeTableBloc>()),
         BlocProvider<ExtracurricularBloc>.value(

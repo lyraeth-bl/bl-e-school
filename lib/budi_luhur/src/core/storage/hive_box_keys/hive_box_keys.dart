@@ -10,8 +10,7 @@ const String currentLanguageCodeKey = "settingsBoxCurrentLanguageCode";
 
 const String notificationsBoxKey = "notificationsBox";
 
-const String temporarilyStoredNotificationsKey =
-    "notificationsBox.temporarilyStoredNotifications";
+const String temporarilyStoredNotificationsKey = "temp_notifications_queue";
 
 const String sessionsBoxKey = "sessionsBox";
 

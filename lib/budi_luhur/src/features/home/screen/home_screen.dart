@@ -87,8 +87,6 @@ class _HomeScreenState extends State<HomeScreen>
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (fromNotifications) _fetchDailyAttendance();
-      loadTemporarilyStoredNotifications();
-      NotificationsUtility.setUpNotificationService();
     });
   }
 
@@ -219,23 +217,6 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  void loadTemporarilyStoredNotifications() {
-    NotificationsRepository.getTemporarilyStoredNotifications().then((
-      notifications,
-    ) {
-      for (var notificationData in notifications) {
-        NotificationsRepository.addNotification(
-          notificationDetails: NotificationsDetails.fromJson(
-            Map.from(notificationData),
-          ),
-        );
-      }
-      if (notifications.isNotEmpty) {
-        NotificationsRepository.clearTemporarilyNotification();
-      }
-    });
-  }
-
   void updateBottomNavItems() {
     _bottomNavItems = [
       BottomNavIconModel(
@@ -276,15 +257,6 @@ class _HomeScreenState extends State<HomeScreen>
     }
     _moreMenuBottomSheetAnimationController.dispose();
     super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-
-    if (state == AppLifecycleState.resumed) {
-      loadTemporarilyStoredNotifications();
-    }
   }
 
   bool canPopScreen() {
