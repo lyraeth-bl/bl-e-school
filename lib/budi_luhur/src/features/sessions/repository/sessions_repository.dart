@@ -16,7 +16,7 @@ abstract class SessionsRepository {
 
   Future<Unit> setIsStudentLoggedIn(bool value);
 
-  Student getLoggedStudentDetails();
+  Student? getLoggedStudentDetails();
 
   Future<Unit> setLoggedStudentDetails(Student studentDetails);
 

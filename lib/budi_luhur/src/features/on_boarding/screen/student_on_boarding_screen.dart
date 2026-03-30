@@ -24,7 +24,7 @@ class _StudentOnBoardingScreenState extends State<StudentOnBoardingScreen> {
   }
 
   Future<void> _checkFirstTimeUser() async {
-    var box = await Hive.openBox(studentBoxKey);
+    var box = await Hive.openBox(sessionsBoxKey);
     bool isFirstTime = box.get('isFirstTimeStudent', defaultValue: true);
     if (isFirstTime) {
       await box.put('isFirstTimeStudent', false);

@@ -18,17 +18,17 @@ class DailyAttendanceRepositoryImpl implements DailyAttendanceRepository {
 
     final result = await _remoteDataSource.fetchTodayAttendance();
 
-    return result.match((failure) => Left(failure), (response) async {
-      final data = response.listDailyAttendance?.firstOrNull;
+    return result.match((failure) => Left(failure), (
+      TodayAttendanceResponse todayAttendanceResponse,
+    ) async {
+      final todayAttendance = todayAttendanceResponse.dailyAttendance;
 
-      if (data == null) {
-        return Left(
-          const Failure.unexpected(errorMessage: 'noAttendanceToday'),
-        );
+      if (todayAttendance == null) {
+        return Left(Failure.unexpected(errorMessage: "noAttendanceToday"));
       }
 
-      await _localDataSource.saveStoredTodayAttendance(data);
-      return Right(data);
+      await _localDataSource.saveStoredTodayAttendance(todayAttendance);
+      return Right(todayAttendance);
     });
   }
 

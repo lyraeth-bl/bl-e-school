@@ -1,29 +1,30 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/device_tokens/data/datasources/device_token_local_data_source.dart';
 import 'package:fpdart/fpdart.dart';
 
 class DeviceTokenRepositoryImpl implements DeviceTokenRepository {
   final DeviceTokenRemoteDataSource _remoteDataSource;
-  final DeviceTokenLocalDataSource _localDataSource;
 
-  DeviceTokenRepositoryImpl(this._remoteDataSource, this._localDataSource);
+  DeviceTokenRepositoryImpl(this._remoteDataSource);
 
   @override
-  Future<Result<DeviceTokenResponse>> postDeviceToken() async {
-    final response = await _remoteDataSource.postDeviceToken();
-
-    return response.fold(
-      (failure) => Left(failure),
-      (DeviceTokenResponse deviceTokenResponse) async =>
-          Right(deviceTokenResponse),
+  Future<Result<Unit>> registerFcmToken({
+    required String token,
+    required String platform,
+    String? appVersion,
+  }) async {
+    final response = await _remoteDataSource.registerFcmToken(
+      token: token,
+      platform: platform,
+      appVersion: appVersion,
     );
+
+    return response.match((failure) => Left(failure), (res) => Right(unit));
   }
 
   @override
-  DeviceToken? getStoredDeviceToken() =>
-      _localDataSource.getStoredDeviceToken();
+  Future<Result<Unit>> removeFcmToken({required String token}) async {
+    final response = await _remoteDataSource.removeFcmToken(token: token);
 
-  @override
-  Future<Unit> storeDeviceToken(DeviceToken deviceToken) async =>
-      _localDataSource.storeDeviceToken(deviceToken);
+    return response.match((failure) => Left(failure), (res) => Right(unit));
+  }
 }

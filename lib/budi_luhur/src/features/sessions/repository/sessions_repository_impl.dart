@@ -44,7 +44,7 @@ class SessionsRepositoryImpl implements SessionsRepository {
       _sessionsLocalDataSource.getIsStudentLoggedIn();
 
   @override
-  Student getLoggedStudentDetails() =>
+  Student? getLoggedStudentDetails() =>
       _sessionsLocalDataSource.getLoggedStudentDetails();
 
   @override

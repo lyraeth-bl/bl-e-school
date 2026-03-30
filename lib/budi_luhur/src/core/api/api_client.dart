@@ -4,17 +4,13 @@ import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
-/// A simple and professional API client for making HTTP requests.
 class ApiClient {
-  /// The Dio instance for making requests.
   static late Dio dio;
 
-  /// Initializes the [ApiClient] with a [Dio] instance.
   static void init({required Dio dioInstance}) {
     dio = dioInstance;
   }
 
-  /// Sends a GET request.
   static Future<Map<String, dynamic>> get({
     required String url,
     Map<String, dynamic>? queryParameters,
@@ -60,7 +56,6 @@ class ApiClient {
     }
   }
 
-  /// Sends a PUT request.
   static Future<Map<String, dynamic>> put({
     required Map<String, dynamic> body,
     required String url,
@@ -98,7 +93,6 @@ class ApiClient {
     }
   }
 
-  /// Sends a POST request.
   static Future<Map<String, dynamic>> post({
     required Map<String, dynamic> body,
     required String url,
@@ -113,7 +107,6 @@ class ApiClient {
     return Map.from(response.data);
   }
 
-  /// Downloads a file.
   static Future<void> download({
     required String url,
     required String savePath,
@@ -142,17 +135,18 @@ class ApiClient {
     }
   }
 
-  /// Sends a DELETE request.
-  static Future<void> delete({required String url}) async {
+  static Future<void> delete({
+    required String url,
+    Map<String, dynamic>? data,
+  }) async {
     try {
-      await dio.delete(url);
+      await dio.delete(url, data: data);
     } on DioException catch (e) {
       _handleDioError(e);
       rethrow;
     }
   }
 
-  /// Handles Dio errors and throws an [ApiException].
   static void _handleDioError(DioException e) {
     if (e.error is SocketException) {
       throw ApiException(ErrorMessageKeysAndCode.noInternetCode);

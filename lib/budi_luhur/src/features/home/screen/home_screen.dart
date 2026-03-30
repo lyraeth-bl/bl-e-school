@@ -86,23 +86,19 @@ class _HomeScreenState extends State<HomeScreen>
     updateBottomNavItems();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // if (fromNotifications) _fetchDailyAttendance();
-      loadTemporarilyStoredNotifications();
-      // _fetchDailyAttendance();
-      NotificationsUtility.setUpNotificationService();
+      if (fromNotifications) _fetchDailyAttendance();
     });
   }
 
   void fetchDailyAttendanceFromNotification() {
-    // _fetchDailyAttendance();
+    _fetchDailyAttendance();
   }
 
-  // void _fetchDailyAttendance() {
-  //   final detailsUser = context.read<SessionsBloc>().studentDetails;
-  //   context.read<DailyAttendanceCubit>().fetchTodayDailyAttendance(
-  //     nis: detailsUser?.nis ?? "",
-  //   );
-  // }
+  void _fetchDailyAttendance() {
+    context.read<TodayAttendanceBloc>().add(
+      TodayAttendanceEvent.started(forceRefresh: true),
+    );
+  }
 
   Future<bool> _checkVersion(AppConfig appConfig) async {
     return await Utils.compareAppVersion(appConfig);
@@ -198,7 +194,7 @@ class _HomeScreenState extends State<HomeScreen>
                         ],
                       );
                     },
-                    orElse: () => Column(
+                    loading: () => Column(
                       children: [
                         HomeContainerTopProfileContainer(),
                         Expanded(
@@ -208,6 +204,12 @@ class _HomeScreenState extends State<HomeScreen>
                         ),
                       ],
                     ),
+                    failure: (failure) {
+                      return ErrorContainer(
+                        errorMessageCode: failure.messageKey.translate(),
+                      );
+                    },
+                    orElse: () => SizedBox.shrink(),
                   );
                 },
               ),
@@ -215,31 +217,7 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  /// Methods
-
-  void loadTemporarilyStoredNotifications() {
-    NotificationsRepository.getTemporarilyStoredNotifications().then((
-      notifications,
-    ) {
-      //
-      for (var notificationData in notifications) {
-        NotificationsRepository.addNotification(
-          notificationDetails: NotificationsDetails.fromJson(
-            Map.from(notificationData),
-          ),
-        );
-      }
-      //
-      if (notifications.isNotEmpty) {
-        NotificationsRepository.clearTemporarilyNotification();
-      }
-
-      //
-    });
-  }
-
   void updateBottomNavItems() {
-    debugPrint("updateBottomNavItems() success");
     _bottomNavItems = [
       BottomNavIconModel(
         activeImageUrl: LucideIcons.house,
@@ -253,17 +231,10 @@ class _HomeScreenState extends State<HomeScreen>
       ),
     ];
 
-    //Update the animations controller based on assignment module enable
     initAnimations();
 
     setState(() {});
   }
-
-  /// TODO : Uncomment after Assignment ready
-  // void navigateToAssignmentContainer() {
-  //   Get.until((route) => route.isFirst);
-  //   changeBottomNavItem(1);
-  // }
 
   void initAnimations() {
     for (var i = 0; i < _bottomNavItems.length; i++) {
@@ -286,15 +257,6 @@ class _HomeScreenState extends State<HomeScreen>
     }
     _moreMenuBottomSheetAnimationController.dispose();
     super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-
-    if (state == AppLifecycleState.resumed) {
-      loadTemporarilyStoredNotifications();
-    }
   }
 
   bool canPopScreen() {
@@ -396,10 +358,8 @@ class _HomeScreenState extends State<HomeScreen>
           enableShadow: false,
           alignment: Alignment.center,
           margin: EdgeInsets.only(bottom: Utils.bottomNavigationBottomMargin),
-          width: MediaQuery.of(context).size.width * (0.85),
-          height:
-              MediaQuery.of(context).size.height *
-              Utils.bottomNavigationHeightPercentage,
+          width: context.screenWidth * (0.85),
+          height: context.screenHeight * Utils.bottomNavigationHeightPercentage,
           child: LayoutBuilder(
             builder: (context, boxConstraints) {
               return Row(

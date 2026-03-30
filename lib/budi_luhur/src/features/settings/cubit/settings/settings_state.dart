@@ -24,6 +24,5 @@ abstract class SettingsState with _$SettingsState {
   /// This state contains an error message describing the failure.
   const factory SettingsState.failure(
     /// The error message.
-    String errorMessage,
-  ) = Failure;
+    String errorMessage,) = _Failure;
 }
