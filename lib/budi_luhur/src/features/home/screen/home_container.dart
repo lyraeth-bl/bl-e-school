@@ -63,16 +63,12 @@ class HomeContainer extends StatelessWidget {
             // Schedule
             HomeScheduleCard(),
 
-            SizedBox(height: 24),
-
             // Attendance
             HomeAttendanceCard(),
 
-            SizedBox(height: 24),
-
             // Feedback
             HomeFeedbackCard(),
-          ],
+          ].separatedBy(24.h),
         ),
       ),
     );

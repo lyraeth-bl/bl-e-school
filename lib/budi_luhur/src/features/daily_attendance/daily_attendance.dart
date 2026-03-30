@@ -7,6 +7,7 @@ export 'data/model/daily_attendance/daily_attendance.dart';
 export 'data/model/daily_attendance_request/daily_attendance_request.dart';
 export 'data/model/daily_attendance_response/daily_attendance_response.dart';
 export 'data/model/monthly_attendance_result/monthly_attendance_result.dart';
+export 'data/model/today_attendance_response/today_attendance_response.dart';
 export 'presentation/bloc/monthly_attendance/monthly_attendance_bloc.dart';
 export 'presentation/bloc/today_attendance/today_attendance_bloc.dart';
 export 'presentation/screen/attendance_container.dart';
