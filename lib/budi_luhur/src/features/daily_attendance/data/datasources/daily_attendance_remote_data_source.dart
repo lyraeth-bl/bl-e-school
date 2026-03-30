@@ -2,7 +2,7 @@ import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:fpdart/fpdart.dart';
 
 abstract class DailyAttendanceRemoteDataSource {
-  Future<Result<DailyAttendanceResponse>> fetchTodayAttendance();
+  Future<Result<TodayAttendanceResponse>> fetchTodayAttendance();
 
   Future<Result<DailyAttendanceResponse>> fetchMonthlyAttendance(
     DailyAttendanceRequest dailyAttendanceRequest,
@@ -30,13 +30,13 @@ class DailyAttendanceRemoteDataSourceImpl
   }
 
   @override
-  Future<Result<DailyAttendanceResponse>> fetchTodayAttendance() async {
+  Future<Result<TodayAttendanceResponse>> fetchTodayAttendance() async {
     try {
       final response = await ApiClient.get(
         url: "${ApiEndpoints.attendanceSanctum}/today",
       );
 
-      return Right(DailyAttendanceResponse.fromJson(response));
+      return Right(TodayAttendanceResponse.fromJson(response));
     } catch (e) {
       return Left(Failure.unexpected(errorMessage: "noAttendanceToday"));
     }
