@@ -6,23 +6,15 @@ import 'package:local_auth/local_auth.dart';
 part 'settings_cubit.freezed.dart';
 part 'settings_state.dart';
 
-/// {@template settings_cubit}
-/// A [Cubit] that manages the application's settings.
-/// {@endtemplate}
 class SettingsCubit extends Cubit<SettingsState> {
   final SettingsRepository _settingsRepository;
   final BiometricAuth _biometricAuth;
 
-  /// {@macro settings_cubit}
   SettingsCubit(this._settingsRepository, this._biometricAuth)
     : super(const _Initial()) {
     loadBiometricStatus();
   }
 
-  /// Loads the current biometric authentication status from storage and emits a
-  /// [SettingsState.success] state with the result.
-  ///
-  /// If an error occurs, it emits a [SettingsState.failure] state.
   Future<void> loadBiometricStatus() async {
     emit(const SettingsState.loading());
     try {
@@ -34,13 +26,6 @@ class SettingsCubit extends Cubit<SettingsState> {
     }
   }
 
-  /// Toggles the biometric login feature.
-  ///
-  /// If [enable] is `true`, this method will prompt the user for biometric
-  /// authentication. If authentication is successful, biometric login will be
-  /// enabled. If it fails, the state will revert to the previous setting.
-  ///
-  /// If [enable] is `false`, biometric login will be disabled.
   Future<void> toggleBiometricLogin({required bool enable}) async {
     final prevStatus = _settingsRepository.getBiometricStatus();
     emit(const SettingsState.loading());
@@ -81,6 +66,5 @@ class SettingsCubit extends Cubit<SettingsState> {
     }
   }
 
-  /// Gets the current status of biometric login.
   bool get getBiometricLoginStatus => _settingsRepository.getBiometricStatus();
 }

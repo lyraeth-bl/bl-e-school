@@ -65,8 +65,8 @@ class _AppUpdateButtonDownloadState extends State<AppUpdateButtonDownload> {
       });
 
       // Show initial download notification
-      await NotificationsUtility.showDownloadNotification(
-        notificationId: notificationId,
+      await DownloadNotificationService.showProgress(
+        id: notificationId,
         fileName: fileName,
         progress: 0,
       );
@@ -83,8 +83,8 @@ class _AppUpdateButtonDownloadState extends State<AppUpdateButtonDownload> {
           final progress = percentage.round();
 
           // Update notification progress
-          await NotificationsUtility.updateDownloadNotification(
-            notificationId: notificationId,
+          await DownloadNotificationService.updateProgress(
+            id: notificationId,
             fileName: fileName,
             progress: progress,
           );
@@ -94,8 +94,8 @@ class _AppUpdateButtonDownloadState extends State<AppUpdateButtonDownload> {
       // Verify file was downloaded successfully
       if (await File(path).exists()) {
         // Show completion notification
-        await NotificationsUtility.showDownloadCompleteNotification(
-          notificationId: notificationId,
+        await DownloadNotificationService.showComplete(
+          id: notificationId,
           fileName: fileName,
         );
 
@@ -108,8 +108,8 @@ class _AppUpdateButtonDownloadState extends State<AppUpdateButtonDownload> {
       return path;
     } catch (e) {
       // Show error notification
-      await NotificationsUtility.showDownloadErrorNotification(
-        notificationId: notificationId,
+      await DownloadNotificationService.showError(
+        id: notificationId,
         fileName: fileName,
         error: e.toString(),
       );

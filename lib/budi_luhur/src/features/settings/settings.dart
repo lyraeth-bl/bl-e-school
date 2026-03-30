@@ -1,6 +1,7 @@
 // Cubit
 export 'bloc/diagnosis_push_notification_bloc.dart';
 export 'cubit/app_localization/app_localization_cubit.dart';
+export 'cubit/settings/settings_cubit.dart';
 // Data
 // Repository
 export 'repository/settings_repository.dart';

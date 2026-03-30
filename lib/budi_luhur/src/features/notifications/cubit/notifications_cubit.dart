@@ -5,53 +5,44 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'notifications_cubit.freezed.dart';
 part 'notifications_state.dart';
 
-/// A [Cubit] that manages the state of notifications.
-///
-/// This cubit is responsible for fetching notifications from a repository,
-/// handling notifications received in the background, and providing the
-/// UI with a list of notifications.
 class NotificationsCubit extends Cubit<NotificationsState> {
   final NotificationsRepository _notificationsRepository;
 
-  /// Creates a new instance of [NotificationsCubit].
-  ///
-  /// Requires a [NotificationsRepository] to interact with the data layer.
   NotificationsCubit(this._notificationsRepository) : super(const _Initial());
 
-  /// Fetches all notifications.
-  ///
-  /// This method performs the following steps:
-  /// 1. Emits a [_Loading] state to indicate that notifications are being fetched.
-  /// 2. Retrieves any temporarily stored notifications that were received while
-  ///    the app was in the background.
-  /// 3. Moves the temporarily stored notifications to permanent storage (Hive).
-  /// 4. Clears the temporary notification storage.
-  /// 5. Fetches all notifications from the permanent storage.
-  /// 6. Emits a [_Success] state with the list of notifications if the fetch is successful.
-  /// 7. Emits a [_Failure] state with an error message if the fetch fails.
   void fetchNotifications() async {
+    if (state is _Loading) return;
+
     try {
       emit(const _Loading());
 
-      // Retrieve temporarily stored notifications (from background processing).
+      // Ambil notif yang disimpan sementara saat background.
       final temporarilyStoredNotifications =
           await NotificationsRepository.getTemporarilyStoredNotifications();
 
-      // Move temporary notifications to permanent storage (Hive).
       if (temporarilyStoredNotifications.isNotEmpty) {
-        for (var notificationData in temporarilyStoredNotifications) {
+        // Inject NIS yang benar sebelum flush ke Hive.
+        // Background isolate tidak bisa akses DI, jadi NIS disimpan kosong.
+        // Di sini baru kita isi dengan NIS user yang sedang login.
+        final currentNis =
+            sI<SessionsRepository>().getLoggedStudentDetails()?.nis ?? '';
+
+        for (final notificationData in temporarilyStoredNotifications) {
+          final nisFromData = notificationData['nis']?.toString() ?? '';
+
+          final dataWithNis = {
+            ...notificationData,
+            'nis': nisFromData.isNotEmpty ? nisFromData : currentNis,
+          };
+
           await NotificationsRepository.addNotification(
-            notificationDetails: NotificationsDetails.fromJson(
-              notificationData,
-            ),
+            notificationDetails: NotificationsDetails.fromJson(dataWithNis),
           );
         }
 
-        // Clear temporary notifications after moving them.
         await NotificationsRepository.clearTemporarilyNotification();
       }
 
-      // Fetch all notifications from permanent storage.
       final listNotifications = await _notificationsRepository
           .fetchNotifications();
 

@@ -1,4 +1,3 @@
-export 'bloc/device_token_bloc.dart';
 export 'data/datasources/device_token_local_data_source.dart';
 export 'data/datasources/device_token_remote_data_source.dart';
 export 'data/model/device_token.dart';

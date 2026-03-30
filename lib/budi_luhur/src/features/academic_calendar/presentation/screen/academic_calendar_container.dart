@@ -272,11 +272,11 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
 
           final AcademicCalendar emptyData = AcademicCalendar(
             id: 0,
-            judul: "",
-            unit: "",
-            tanggalMulai: "",
-            tanggalSelesai: "",
-            keterangan: "",
+            judul: noEventKey.translate(),
+            unit: "-",
+            tanggalMulai: _selectedDay.toString(),
+            tanggalSelesai: "-",
+            keterangan: "-",
           );
 
           _showAcademicBottomSheet(

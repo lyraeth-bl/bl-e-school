@@ -1,12 +1,8 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/device_tokens/data/datasources/device_token_local_data_source.dart';
 
 Future<void> initDeviceTokenDI() async {
   sI.registerLazySingleton<DeviceTokenRepository>(
-    () => DeviceTokenRepositoryImpl(
-      sI<DeviceTokenRemoteDataSource>(),
-      sI<DeviceTokenLocalDataSource>(),
-    ),
+    () => DeviceTokenRepositoryImpl(sI<DeviceTokenRemoteDataSource>()),
   );
 
   sI.registerLazySingleton<DeviceTokenRemoteDataSource>(
@@ -17,7 +13,7 @@ Future<void> initDeviceTokenDI() async {
     () => DeviceTokenLocalDataSourceImpl(),
   );
 
-  sI.registerFactory<DeviceTokenBloc>(
-    () => DeviceTokenBloc(sI<DeviceTokenRepository>()),
-  );
+  // sI.registerFactory<DeviceTokenBloc>(
+  //   () => DeviceTokenBloc(sI<DeviceTokenRepository>()),
+  // );
 }
