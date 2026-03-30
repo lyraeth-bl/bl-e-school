@@ -1,40 +1,50 @@
-import 'dart:io';
-
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 abstract class DeviceTokenRemoteDataSource {
-  Future<Result<DeviceTokenResponse>> postDeviceToken();
+  Future<Result<Unit>> registerFcmToken({
+    required String token,
+    required String platform,
+    String? appVersion,
+  });
+
+  Future<Result<Unit>> removeFcmToken({required String token});
 }
 
 class DeviceTokenRemoteDataSourceImpl implements DeviceTokenRemoteDataSource {
   @override
-  Future<Result<DeviceTokenResponse>> postDeviceToken() async {
+  Future<Result<Unit>> registerFcmToken({
+    required String token,
+    required String platform,
+    String? appVersion,
+  }) async {
     late Map<String, dynamic> data;
 
-    final PackageInfo packageInfo = await PackageInfo.fromPlatform();
-
-    final fcmToken = await FirebaseMessaging.instance.getToken();
-    final platform = Platform.isIOS ? "ios" : "android";
-    final version = packageInfo.version;
-
     data = DeviceTokenRequest(
-      token: fcmToken,
+      token: token,
       platform: platform,
-      appVersion: version,
+      appVersion: appVersion,
     ).toJson();
 
     try {
-      final response = await ApiClient.post(
-        body: data,
-        url: ApiEndpoints.deviceTokensSanctum,
-      );
+      await ApiClient.post(body: data, url: ApiEndpoints.deviceTokensSanctum);
 
-      return Right(DeviceTokenResponse.fromJson(response));
-    } catch (e) {
-      return Left(Failure.fromDio(e));
+      return Right(unit);
+    } catch (e, st) {
+      return Left(Failure.fromDio(e, st));
+    }
+  }
+
+  @override
+  Future<Result<Unit>> removeFcmToken({required String token}) async {
+    final Map<String, dynamic> data = {'token': token};
+
+    try {
+      await ApiClient.delete(url: ApiEndpoints.deviceTokensSanctum, data: data);
+
+      return Right(unit);
+    } catch (e, st) {
+      return Left(Failure.fromDio(e, st));
     }
   }
 }
