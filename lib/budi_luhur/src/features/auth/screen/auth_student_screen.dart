@@ -95,9 +95,11 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
             );
           },
           failure: (failure) {
-            ScaffoldMessenger.of(
+            AppToast.show(
               context,
-            ).showSnackBar(SnackBar(content: Text(failure.errorMessage!)));
+              message: failure.errorMessage!,
+              type: ToastType.error,
+            );
           },
         );
       },
@@ -117,19 +119,19 @@ class _AuthStudentScreenState extends State<AuthStudentScreen>
   /// Methods
   void _signInStudent() {
     if (_nisController.text.trim().isEmpty) {
-      Utils.showCustomSnackBar(
-        context: context,
-        errorMessage: pleaseEnterNisKey.translate(),
-        backgroundColor: context.colors.error,
+      AppToast.show(
+        context,
+        message: pleaseEnterNisKey.translate(),
+        type: ToastType.warning,
       );
       return;
     }
 
     if (_passwordController.text.trim().isEmpty) {
-      Utils.showCustomSnackBar(
-        context: context,
-        errorMessage: pleaseEnterPasswordKey.translate(),
-        backgroundColor: context.colors.error,
+      AppToast.show(
+        context,
+        message: pleaseEnterPasswordKey.translate(),
+        type: ToastType.warning,
       );
       return;
     }
