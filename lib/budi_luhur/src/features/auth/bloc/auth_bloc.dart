@@ -1,4 +1,5 @@
 import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -42,6 +43,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     _LogoutRequested event,
     Emitter<AuthState> emit,
   ) async {
+    if (!kIsWeb) {
+      FcmService.instance.unregisterToken().ignore();
+    }
+
     await _authRepository.logoutSanctum();
     emit(const AuthState.successLogout());
   }
