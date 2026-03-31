@@ -414,11 +414,17 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
           ),
           child: BlocConsumer<AcademicCalendarBloc, AcademicCalendarState>(
             listener: (context, state) {
-              state.maybeWhen(
+              state.whenOrNull(
                 success: (_, __, ___, ____) {
                   updateMonthViceAcademicCalendar();
                 },
-                orElse: () {},
+                failure: (failure) {
+                  AppToast.show(
+                    context,
+                    message: failure.messageKey.translate(),
+                    type: ToastType.error,
+                  );
+                },
               );
             },
             builder: (context, state) {
@@ -444,7 +450,7 @@ class _AcademicCalendarContainerState extends State<AcademicCalendarContainer> {
                 ),
                 orElse: () => Column(
                   children: [
-                    const SizedBox(height: 20),
+                    24.h,
                     ShimmerLoadingContainer(
                       child: CustomShimmerContainer(
                         height: MediaQuery.of(context).size.height * (0.425),
