@@ -16,10 +16,6 @@ class BudiLuhurApp extends StatelessWidget {
             listener: (context, state) {
               state.whenOrNull(
                 unauthenticated: () {
-                  if (!kIsWeb) {
-                    FcmService.instance.unregisterToken().ignore();
-                  }
-
                   Get.offNamed(BudiLuhurRoutes.auth);
                 },
                 authenticated: (student, accessToken) {

@@ -48,10 +48,10 @@ class _AuthScreenState extends State<AuthScreen> with TickerProviderStateMixin {
     setState(() {
       canPop = true;
     });
-    Utils.showCustomSnackBar(
-      context: context,
-      errorMessage: pressBackAgainToExitKey.translate(),
-      backgroundColor: context.colors.error,
+    AppToast.show(
+      context,
+      message: pressBackAgainToExitKey.translate(),
+      type: ToastType.warning,
     );
     Future.delayed(Duration(seconds: 2), () {
       setState(() {

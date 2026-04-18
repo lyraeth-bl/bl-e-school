@@ -456,11 +456,12 @@ class _HomeScreenState extends State<HomeScreen>
     setState(() {
       canPop = true;
     });
-    Utils.showCustomSnackBar(
-      context: context,
-      errorMessage: Utils.getTranslatedLabel(pressBackAgainToExitKey),
-      backgroundColor: Theme.of(context).colorScheme.error,
-    ); // Do not exit the app
+    AppToast.show(
+      context,
+      message: pressBackAgainToExitKey.translate(),
+      type: ToastType.warning,
+      forShowOnMenuScreen: true,
+    );
     Future.delayed(Duration(seconds: 2), () {
       setState(() {
         canPop = false;
