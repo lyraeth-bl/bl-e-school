@@ -1,5 +1,7 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../../utils/shared/ui/custom_container.dart';
+import '../../../../../utils/shared/ui/shimmer_loading_container.dart';
 
 class AcademicResultOverallSummaryShimmer extends StatelessWidget {
   const AcademicResultOverallSummaryShimmer({super.key, this.length = 3});

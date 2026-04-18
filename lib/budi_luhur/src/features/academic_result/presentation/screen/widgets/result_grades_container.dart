@@ -1,6 +1,10 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../../../../utils/shared/ui/custom_container.dart';
+import '../../../../../utils/utils.dart';
+import '../../../data/academic_result/academic_result.dart';
+import '../../../data/academic_result_summary/academic_result_summary.dart';
 
 class ResultGradesContainer extends StatelessWidget {
   const ResultGradesContainer({

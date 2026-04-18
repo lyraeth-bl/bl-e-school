@@ -5,7 +5,7 @@ import 'presentation/bloc/academic_calendar_bloc.dart';
 import 'repository/academic_calendar_repository.dart';
 import 'repository/academic_calendar_repository_impl.dart';
 
-Future<void> initAcademicCalendarDI() async {
+void initAcademicCalendarDI() {
   sI.registerLazySingleton<AcademicCalendarRepository>(
     () => AcademicCalendarRepositoryImpl(
       sI<AcademicCalendarRemoteDataSource>(),

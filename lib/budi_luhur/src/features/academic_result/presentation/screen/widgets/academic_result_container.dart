@@ -1,7 +1,12 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+
+import '../../../../../utils/utils.dart';
+import '../../bloc/academic_result_bloc.dart';
+import '../result_screen.dart';
+import 'academic_result_shimmer.dart';
+import 'result_overall_summary_container.dart';
 
 class AcademicResultContainer extends StatefulWidget {
   const AcademicResultContainer({super.key});

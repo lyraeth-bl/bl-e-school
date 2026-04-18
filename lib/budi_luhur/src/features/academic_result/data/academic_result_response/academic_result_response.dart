@@ -1,5 +1,7 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../academic_result_data/academic_result_data.dart';
+import '../academic_result_meta/academic_result_meta.dart';
 
 part 'academic_result_response.freezed.dart';
 part 'academic_result_response.g.dart';

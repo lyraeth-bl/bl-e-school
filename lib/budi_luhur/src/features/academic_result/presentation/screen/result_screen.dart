@@ -1,5 +1,11 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../utils/shared/ui/custom_container.dart';
+import '../../../../utils/utils.dart';
+import '../../data/academic_result/academic_result.dart';
+import '../../data/academic_result_overall_summary/academic_result_overall_summary.dart';
+import '../../data/academic_result_summary/academic_result_summary.dart';
+import 'widgets/result_grades_container.dart';
 
 class ResultScreen extends StatefulWidget {
   const ResultScreen({

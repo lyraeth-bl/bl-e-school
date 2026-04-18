@@ -1,5 +1,8 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../../utils/shared/ui/custom_container.dart';
+import '../../../../../utils/utils.dart';
+import '../../../data/academic_result_overall_summary/academic_result_overall_summary.dart';
 
 class ResultOverallSummaryContainer extends StatelessWidget {
   const ResultOverallSummaryContainer({
