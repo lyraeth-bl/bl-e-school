@@ -1,5 +1,11 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:fpdart/fpdart.dart';
+
+import '../../../utils/shared/types/types.dart';
+import '../data/datasources/extracurricular_local_data_source.dart';
+import '../data/datasources/extracurricular_remote_data_source.dart';
+import '../data/model/extracurricular/extracurricular.dart';
+import '../data/model/extracurricular_response/extracurricular_response.dart';
+import 'extracurricular_repository.dart';
 
 class ExtracurricularRepositoryImpl implements ExtracurricularRepository {
   final ExtracurricularLocalDataSource _localDataSource;

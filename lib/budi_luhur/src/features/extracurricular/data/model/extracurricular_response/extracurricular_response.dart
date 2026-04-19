@@ -1,5 +1,6 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../extracurricular/extracurricular.dart';
 
 part 'extracurricular_response.freezed.dart';
 part 'extracurricular_response.g.dart';

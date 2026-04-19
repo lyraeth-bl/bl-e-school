@@ -1,6 +1,11 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import '../../core/dependencies_injection/get_it_instance.dart';
+import 'data/datasources/extracurricular_local_data_source.dart';
+import 'data/datasources/extracurricular_remote_data_source.dart';
+import 'repository/extracurricular_repository.dart';
+import 'repository/extracurricular_repository_impl.dart';
+import 'screen/bloc/extracurricular_bloc.dart';
 
-Future<void> initExtracurricularDI() async {
+void initExtracurricularDI() {
   sI.registerLazySingleton<ExtracurricularRepository>(
     () => ExtracurricularRepositoryImpl(
       sI<ExtracurricularLocalDataSource>(),
