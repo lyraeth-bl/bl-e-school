@@ -1,15 +1,17 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../../../core/failure/failure.dart';
+import '../../data/model/feedback/feedback.dart';
+import '../../data/model/feedback_request/feedback_request.dart';
+import '../../repository/feedback_repository.dart';
 
 part 'feedback_bloc.freezed.dart';
 part 'feedback_event.dart';
 part 'feedback_state.dart';
 
 class FeedbackBloc extends Bloc<FeedbackEvent, FeedbackState> {
-  final FeedbackRepository _feedbackRepository;
-
   FeedbackBloc(this._feedbackRepository)
     : super(const FeedbackState.initial()) {
     on<_Started>(_onStarted);
@@ -17,6 +19,8 @@ class FeedbackBloc extends Bloc<FeedbackEvent, FeedbackState> {
     on<_EditFeedback>(_onEditFeedback);
     on<_DeleteFeedback>(_onDeleteFeedback);
   }
+
+  final FeedbackRepository _feedbackRepository;
 
   Future<void> _onStarted(_Started event, Emitter<FeedbackState> emit) async {
     emit(const FeedbackState.loading());

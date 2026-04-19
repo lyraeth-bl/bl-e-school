@@ -1,5 +1,6 @@
-import 'package:bl_e_school/budi_luhur/src/features/feedback/data/feedback/feedback.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../feedback/feedback.dart';
 
 part 'feedback_request.freezed.dart';
 part 'feedback_request.g.dart';

@@ -1,6 +1,9 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../../../app/routes/app_routes.dart';
+import '../../../../utils/shared/ui/custom_container.dart';
+import '../../../../utils/utils.dart';
 
 class FeedbackTermsAndConditions extends StatelessWidget {
   const FeedbackTermsAndConditions({super.key});

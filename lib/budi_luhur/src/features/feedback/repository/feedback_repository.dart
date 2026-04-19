@@ -1,5 +1,9 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:fpdart/fpdart.dart';
+
+import '../../../utils/shared/types/types.dart';
+import '../data/model/feedback/feedback.dart';
+import '../data/model/feedback_request/feedback_request.dart';
+import '../data/model/feedback_response/feedback_response.dart';
 
 abstract class FeedbackRepository {
   Future<Result<FeedbackResponse>> sendFeedback(

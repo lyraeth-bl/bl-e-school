@@ -1,6 +1,7 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../utils/utils.dart';
 
 class FeedbackAttachmentChip extends StatelessWidget {
   final String rawAttachment;

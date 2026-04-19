@@ -1,9 +1,8 @@
 export 'data/datasources/feedback_local_data_source.dart';
 export 'data/datasources/feedback_remote_data_source.dart';
-export 'data/feedback/feedback.dart';
-export 'data/feedback_request/feedback_request.dart';
-export 'data/feedback_response/feedback_response.dart';
-export 'feedback_di.dart';
+export 'data/model/feedback/feedback.dart';
+export 'data/model/feedback_request/feedback_request.dart';
+export 'data/model/feedback_response/feedback_response.dart';
 export 'presentation/add_feedback_container.dart';
 export 'presentation/add_feedback_screen.dart';
 export 'presentation/bloc/feedback_bloc.dart';
@@ -16,4 +15,3 @@ export 'presentation/widget/feedback_card_details_item.dart';
 export 'presentation/widget/feedback_terms_and_conditions.dart';
 export 'presentation/widget/send_feedback_form.dart';
 export 'repository/feedback_repository.dart';
-export 'repository/feedback_repository_impl.dart';
