@@ -1,7 +1,12 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+
+import '../../../../core/failure/failure.dart';
+import '../../data/model/demerit/demerit.dart';
+import '../../data/model/merit/merit.dart';
+import '../../data/model/params/discipline_params.dart';
+import '../../repository/discipline_repository.dart';
 
 part 'discipline_bloc.freezed.dart';
 part 'discipline_event.dart';
