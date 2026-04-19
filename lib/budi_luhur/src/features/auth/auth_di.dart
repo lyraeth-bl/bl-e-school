@@ -1,10 +1,11 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
-import 'package:bl_e_school/budi_luhur/src/features/auth/bloc/auth_bloc.dart';
-import 'package:bl_e_school/budi_luhur/src/features/auth/data/datasources/auth_local_data_source.dart';
-import 'package:bl_e_school/budi_luhur/src/features/auth/data/datasources/auth_remote_data_source.dart';
-import 'package:bl_e_school/budi_luhur/src/features/auth/repository/auth_repository_impl.dart';
+import '../../core/dependencies_injection/get_it_instance.dart';
+import 'bloc/auth_bloc.dart';
+import 'data/datasources/auth_local_data_source.dart';
+import 'data/datasources/auth_remote_data_source.dart';
+import 'repository/auth_repository.dart';
+import 'repository/auth_repository_impl.dart';
 
-Future<void> initAuthDI() async {
+void initAuthDI() {
   sI.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(
       sI<AuthRemoteDataSource>(),
