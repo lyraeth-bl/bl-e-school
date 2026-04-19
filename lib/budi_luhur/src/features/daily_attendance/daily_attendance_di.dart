@@ -1,6 +1,12 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import '../../core/dependencies_injection/get_it_instance.dart';
+import 'data/datasources/daily_attendance_local_data_source.dart';
+import 'data/datasources/daily_attendance_remote_data_source.dart';
+import 'presentation/bloc/monthly_attendance/monthly_attendance_bloc.dart';
+import 'presentation/bloc/today_attendance/today_attendance_bloc.dart';
+import 'repository/daily_attendance_repository.dart';
+import 'repository/daily_attendance_repository_impl.dart';
 
-Future<void> initDailyAttendanceDI() async {
+void initDailyAttendanceDI() {
   sI.registerLazySingleton<DailyAttendanceRepository>(
     () => DailyAttendanceRepositoryImpl(
       sI<DailyAttendanceRemoteDataSource>(),

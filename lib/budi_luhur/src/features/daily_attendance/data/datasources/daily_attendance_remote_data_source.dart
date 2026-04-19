@@ -1,5 +1,12 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:fpdart/fpdart.dart';
+
+import '../../../../core/api/api_client.dart';
+import '../../../../core/api/api_endpoints.dart';
+import '../../../../core/failure/failure.dart';
+import '../../../../utils/shared/types/types.dart';
+import '../model/daily_attendance_request/daily_attendance_request.dart';
+import '../model/daily_attendance_response/daily_attendance_response.dart';
+import '../model/today_attendance_response/today_attendance_response.dart';
 
 abstract class DailyAttendanceRemoteDataSource {
   Future<Result<TodayAttendanceResponse>> fetchTodayAttendance();

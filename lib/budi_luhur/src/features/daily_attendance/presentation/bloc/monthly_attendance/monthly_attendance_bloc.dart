@@ -1,6 +1,9 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../../../../core/failure/failure.dart';
+import '../../../data/model/daily_attendance/daily_attendance.dart';
+import '../../../repository/daily_attendance_repository.dart';
 
 part 'monthly_attendance_bloc.freezed.dart';
 part 'monthly_attendance_event.dart';

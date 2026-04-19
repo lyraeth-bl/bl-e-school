@@ -1,6 +1,5 @@
 library;
 
-export 'daily_attendance_di.dart';
 export 'data/datasources/daily_attendance_local_data_source.dart';
 export 'data/datasources/daily_attendance_remote_data_source.dart';
 export 'data/model/daily_attendance/daily_attendance.dart';
@@ -18,4 +17,3 @@ export 'presentation/widgets/attendance_shimmer.dart';
 export 'presentation/widgets/attendance_summary.dart';
 export 'presentation/widgets/change_calendar_month_button.dart';
 export 'repository/daily_attendance_repository.dart';
-export 'repository/daily_attendance_repository_impl.dart';
