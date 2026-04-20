@@ -1,5 +1,7 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../../../shared/model/links.dart';
+import '../notifications/notifications.dart';
 
 part 'notifications_response.freezed.dart';
 part 'notifications_response.g.dart';

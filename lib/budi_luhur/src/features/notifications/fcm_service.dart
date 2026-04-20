@@ -1,11 +1,19 @@
 import 'dart:io';
 
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+
+import '../../app/routes/app_routes.dart';
+import '../../core/dependencies_injection/get_it_instance.dart';
+import '../device_tokens/repository/device_token_repository.dart';
+import '../home/screen/home_screen.dart';
+import '../sessions/presentation/bloc/sessions_bloc.dart';
+import 'data/model/notifications_details/notifications_details.dart';
+import 'presentation/cubit/notifications_cubit.dart';
+import 'repository/notifications_repository.dart';
 
 // ---------------------------------------------------------------------------
 // Background handler — top-level function (wajib), berjalan di isolate terpisah.

@@ -1,6 +1,10 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../../../core/dependencies_injection/get_it_instance.dart';
+import '../../../sessions/repository/sessions_repository.dart';
+import '../../data/model/notifications_details/notifications_details.dart';
+import '../../repository/notifications_repository.dart';
 
 part 'notifications_cubit.freezed.dart';
 part 'notifications_state.dart';
