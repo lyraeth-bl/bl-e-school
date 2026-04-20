@@ -5,7 +5,7 @@ import '../../../utils/utils.dart';
 import '../../app_config/presentation/bloc/app_config_bloc.dart';
 import '../../daily_attendance/presentation/bloc/today_attendance/today_attendance_bloc.dart';
 import '../../sessions/presentation/bloc/sessions_bloc.dart';
-import '../../time_table/bloc/time_table_bloc.dart';
+import '../../time_table/presentation/bloc/time_table_bloc.dart';
 import 'widgets/home_attendance_card.dart';
 import 'widgets/home_container_top_profile_container.dart';
 import 'widgets/home_feedback_card.dart';
