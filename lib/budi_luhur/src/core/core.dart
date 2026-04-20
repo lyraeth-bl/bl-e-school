@@ -1,6 +1,6 @@
 library;
 
-export 'api/api.dart';
+export 'api/api_client.dart';
 export 'authentication/auth_interceptor/auth_interceptor.dart';
 export 'authentication/biometric/biometric_auth.dart';
 export 'constant/constant.dart';

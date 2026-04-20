@@ -1,5 +1,6 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../dependencies_injection/get_it_instance.dart';
 
 part 'prefs_storage_label.dart';
 
