@@ -1,5 +1,6 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
+import '../../core/storage/hive_box_keys/hive_box_keys.dart';
 
 Future<void> initHiveOpenBox() async {
   await Hive.initFlutter();

@@ -1,7 +1,8 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:get/get.dart';
 
-class BudiLuhurRoutes extends BudiLuhur {
+import '../../features/features.dart';
+
+class BudiLuhurRoutes {
   static const String auth = "/auth";
 
   static const String authStudent = "/authStudent";

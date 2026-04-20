@@ -1,7 +1,8 @@
 import 'dart:convert';
 
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/services.dart';
+
+import '../../utils/shared/languages/app_languages.dart';
 
 abstract class AppTranslation {
   static Map<String, Map<String, String>> translationsKeys = Map.fromEntries(

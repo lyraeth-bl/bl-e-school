@@ -1,8 +1,13 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+
+import '../features/features.dart';
+import '../utils/shared/theme/theme.dart';
+import 'app_bloc_provider.dart';
+import 'init/init_languages.dart';
+import 'routes/app_routes.dart';
 
 class BudiLuhurApp extends StatelessWidget {
   const BudiLuhurApp({super.key});
