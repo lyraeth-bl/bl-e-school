@@ -1,6 +1,7 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+
+import '../../../core/constant/constant.dart';
 
 List<Effect<dynamic>> listItemAppearanceEffects({
   required int itemIndex,

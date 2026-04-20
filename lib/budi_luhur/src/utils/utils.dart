@@ -3,7 +3,6 @@ library;
 import 'dart:convert' as convert;
 import 'dart:io';
 
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,22 +11,11 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-/// Animations
-export 'shared/animations/animation_configurations.dart';
-/// Error Handling
-export 'shared/error_handling/error_message_and_code.dart';
-/// Extension
-export 'shared/extensions/extension.dart';
-/// Label Keys
-export 'shared/label_keys/label_keys.dart';
-/// Languages
-export 'shared/languages/app_languages.dart';
-/// Theme
-export 'shared/theme/theme.dart';
-/// Types
-export 'shared/types/types.dart';
-/// UI
-export 'shared/ui/ui.dart';
+import '../core/constant/constant.dart';
+import '../features/app_config/data/model/app_config/app_config.dart';
+import 'shared/error_handling/error_message_and_code.dart';
+import 'shared/label_keys/label_keys.dart';
+import 'shared/ui/error_message_overlay_container.dart';
 
 /// A utility class containing static helper methods and constants for common tasks.
 ///

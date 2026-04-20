@@ -1,6 +1,8 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+
+import '../extensions/extension.dart';
+import 'svg_network_image.dart';
 
 /// A widget that properly handles different types of network images (including SVGs)
 /// This prevents errors when trying to load SVG images with CachedNetworkImageProvider

@@ -1,7 +1,9 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import '../../utils.dart';
+import '../animations/animation_configurations.dart';
 
 class NoDataContainer extends StatelessWidget {
   final Color? textColor;
