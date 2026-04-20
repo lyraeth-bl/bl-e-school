@@ -1,9 +1,13 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+
+import '../../../../app/routes/app_routes.dart';
+import '../../../../utils/utils.dart';
+import '../../../../utils/utils_export.dart';
+import '../../../time_table/presentation/bloc/time_table_bloc.dart';
 
 class HomeScheduleCard extends StatefulWidget {
   const HomeScheduleCard({super.key});

@@ -1,5 +1,7 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../utils/utils.dart';
+import 'bottom_nav_model.dart';
 
 class BottomNavContainer extends StatefulWidget {
   final BoxConstraints boxConstraints;

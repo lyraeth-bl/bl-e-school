@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../app/routes/app_routes.dart';
-import '../../../../utils/shared/ui/custom_container.dart';
 import '../../../../utils/utils.dart';
+import '../../../../utils/utils_export.dart';
 
 class FeedbackTermsAndConditions extends StatelessWidget {
   const FeedbackTermsAndConditions({super.key});

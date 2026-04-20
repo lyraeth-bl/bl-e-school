@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../utils/utils.dart';
+import '../../../../utils/utils_export.dart';
 
 class AppVersionSettingsText extends StatelessWidget {
   const AppVersionSettingsText({super.key});

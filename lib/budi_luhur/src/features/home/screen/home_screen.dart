@@ -6,8 +6,8 @@ import 'package:get/get.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../core/constant/constant.dart';
-import '../../../utils/shared/ui/custom_container.dart';
 import '../../../utils/utils.dart';
+import '../../../utils/utils_export.dart';
 import '../../academic_calendar/presentation/screen/academic_calendar_container.dart';
 import '../../academic_result/presentation/screen/widgets/academic_result_container.dart';
 import '../../app_config/data/model/app_config/app_config.dart';

@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constant/constant.dart';
-import '../../../../utils/shared/ui/custom_container.dart';
 import '../../../../utils/utils.dart';
+import '../../../../utils/utils_export.dart';
 import '../../../sessions/presentation/bloc/sessions_bloc.dart';
 import '../../data/model/time_table/time_table.dart';
 import '../bloc/time_table_bloc.dart';

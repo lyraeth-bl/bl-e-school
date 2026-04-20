@@ -5,8 +5,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/api/api_client.dart';
-import '../../../core/api/api_endpoints.dart';
-import '../../../core/api/api_helper.dart';
 import '../../../core/dependencies_injection/get_it_instance.dart';
 import '../../../core/storage/hive_box_keys/hive_box_keys.dart';
 import '../../../utils/shared/error_handling/error_message_and_code.dart';

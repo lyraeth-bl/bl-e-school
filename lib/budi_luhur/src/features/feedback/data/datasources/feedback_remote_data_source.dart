@@ -7,7 +7,6 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path/path.dart' as path;
 
 import '../../../../core/api/api_client.dart';
-import '../../../../core/api/api_endpoints.dart';
 import '../../../../core/failure/failure.dart';
 import '../../../../utils/shared/types/types.dart';
 import '../model/feedback_request/feedback_request.dart';

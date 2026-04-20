@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import '../../../../utils/shared/ui/custom_container.dart';
 import '../../../../utils/utils.dart';
+import '../../../../utils/utils_export.dart';
 import '../../data/model/merit/merit.dart';
 import '../bloc/discipline_bloc.dart';
 import 'widgets/circle_number_indicator.dart';

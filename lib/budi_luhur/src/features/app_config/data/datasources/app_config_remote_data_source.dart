@@ -1,7 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/api/api_client.dart';
-import '../../../../core/api/api_endpoints.dart';
 import '../../../../core/failure/failure.dart';
 import '../../../../utils/shared/types/types.dart';
 import '../model/app_config_response/app_config_response.dart';

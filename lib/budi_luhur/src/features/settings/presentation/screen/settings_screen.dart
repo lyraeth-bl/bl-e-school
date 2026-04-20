@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../utils/utils.dart';
+import '../../../../utils/utils_export.dart';
 import '../widgets/about_us_settings_button.dart';
 import '../widgets/app_version_settings_text.dart';
 import '../widgets/change_biometric_settings_button.dart';

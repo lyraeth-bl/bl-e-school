@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import '../../../app/routes/app_routes.dart';
 import '../../../utils/utils.dart';
+import '../../../utils/utils_export.dart';
 import 'bloc/feedback_bloc.dart';
 import 'feedback_container.dart';
 

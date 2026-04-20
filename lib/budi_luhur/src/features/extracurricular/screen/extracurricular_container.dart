@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../utils/shared/ui/custom_container.dart';
 import '../../../utils/utils.dart';
+import '../../../utils/utils_export.dart';
 import '../data/model/extracurricular/extracurricular.dart';
 import 'bloc/extracurricular_bloc.dart';
 

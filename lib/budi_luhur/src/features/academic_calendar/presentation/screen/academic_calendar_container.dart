@@ -3,8 +3,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../../../../utils/shared/ui/custom_container.dart';
 import '../../../../utils/utils.dart';
+import '../../../../utils/utils_export.dart';
 import '../../../daily_attendance/presentation/widgets/change_calendar_month_button.dart';
 import '../../../sessions/presentation/bloc/sessions_bloc.dart';
 import '../../data/model/academic_calendar/academic_calendar.dart';

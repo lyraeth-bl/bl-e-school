@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../utils/utils.dart';
+import '../../../utils/utils_export.dart';
 import '../../sessions/presentation/bloc/sessions_bloc.dart';
 
 class StudentDetailsStudentScreen extends StatelessWidget {

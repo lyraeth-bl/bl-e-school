@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import '../../../../utils/shared/ui/custom_container.dart';
 import '../../../../utils/utils.dart';
+import '../../../../utils/utils_export.dart';
 import '../widgets/contact_us_list_container.dart';
 
 class ContactUsScreen extends StatelessWidget {
