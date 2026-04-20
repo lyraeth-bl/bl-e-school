@@ -1,5 +1,6 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
+
+import 'student_time_table_container.dart';
 
 class StudentTimeTableScreen extends StatelessWidget {
   const StudentTimeTableScreen({super.key});

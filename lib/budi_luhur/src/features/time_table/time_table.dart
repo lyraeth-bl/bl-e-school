@@ -1,11 +1,11 @@
-export 'bloc/time_table_bloc.dart';
 export 'data/datasources/time_table_local_data_source.dart';
 export 'data/datasources/time_table_remote_data_source.dart';
 export 'data/model/time_table/time_table.dart';
 export 'data/model/time_table_response/time_table_response.dart';
+export 'presentation/bloc/time_table_bloc.dart';
+export 'presentation/screen/student_time_table_container.dart';
+export 'presentation/screen/student_time_table_screen.dart';
+export 'presentation/screen/widgets/realtime_progress_time.dart';
 export 'repository/time_table_repository.dart';
 export 'repository/time_table_repository_impl.dart';
-export 'screen/student_time_table_container.dart';
-export 'screen/student_time_table_screen.dart';
-export 'screen/widgets/realtime_progress_time.dart';
 export 'time_table_di.dart';

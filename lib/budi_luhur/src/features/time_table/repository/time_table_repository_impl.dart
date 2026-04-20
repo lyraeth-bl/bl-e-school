@@ -1,5 +1,11 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:fpdart/fpdart.dart';
+
+import '../../../utils/shared/types/types.dart';
+import '../data/datasources/time_table_local_data_source.dart';
+import '../data/datasources/time_table_remote_data_source.dart';
+import '../data/model/time_table/time_table.dart';
+import '../data/model/time_table_response/time_table_response.dart';
+import 'time_table_repository.dart';
 
 class TimeTableRepositoryImpl implements TimeTableRepository {
   final TimeTableLocalDataSource _localDataSource;

@@ -1,6 +1,8 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:hive/hive.dart';
+
+import '../../../../core/storage/hive_box_keys/hive_box_keys.dart';
+import '../model/time_table/time_table.dart';
 
 abstract class TimeTableLocalDataSource {
   List<TimeTable>? getStoredTimeTable();

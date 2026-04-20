@@ -1,7 +1,10 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../../../core/failure/failure.dart';
+import '../../data/model/time_table/time_table.dart';
+import '../../repository/time_table_repository.dart';
 
 part 'time_table_bloc.freezed.dart';
 part 'time_table_event.dart';

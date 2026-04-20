@@ -1,5 +1,6 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../time_table/time_table.dart';
 
 part 'time_table_response.freezed.dart';
 part 'time_table_response.g.dart';
