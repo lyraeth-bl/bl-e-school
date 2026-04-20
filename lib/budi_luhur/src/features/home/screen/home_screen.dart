@@ -17,7 +17,7 @@ import '../../daily_attendance/presentation/screen/attendance_container.dart';
 import '../../discipline/presentation/screen/discipline_container.dart';
 import '../../extracurricular/screen/extracurricular_container.dart';
 import '../../guardian_details/screen/guardian_details_container.dart';
-import '../../settings/screen/settings_screen.dart';
+import '../../settings/presentation/screen/settings_screen.dart';
 import '../../time_table/screen/student_time_table_container.dart';
 import 'home_container.dart';
 import 'widgets/bottom_nav_container.dart';

@@ -1,9 +1,11 @@
 import 'dart:ui';
 
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:get/get.dart';
+
+import '../../../../../utils/utils.dart';
+import '../../../repository/settings_repository.dart';
 
 part 'app_localization_cubit.freezed.dart';
 part 'app_localization_state.dart';

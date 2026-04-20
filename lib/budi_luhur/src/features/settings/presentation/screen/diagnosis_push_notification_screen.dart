@@ -1,8 +1,13 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+
+import '../../../../app/routes/app_routes.dart';
+import '../../../../utils/utils.dart';
+import '../../../notifications/repository/notifications_repository.dart';
+import '../../repository/settings_repository.dart';
+import '../bloc/diagnosis_push_notification_bloc.dart';
 
 class DiagnosisPushNotificationScreen extends StatelessWidget {
   const DiagnosisPushNotificationScreen({super.key});
@@ -161,17 +166,13 @@ class DiagnosisPushNotificationScreen extends StatelessWidget {
                             Utils.getTranslatedLabel(
                               diagnosisPushNotificationFailedKey,
                             ),
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .titleLarge
+                            style: Theme.of(context).textTheme.titleLarge
                                 ?.copyWith(
-                              color: Theme
-                                  .of(context)
-                                  .colorScheme
-                                  .onSurface,
-                              fontWeight: FontWeight.w700,
-                            ),
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface,
+                                  fontWeight: FontWeight.w700,
+                                ),
                           ),
                         ),
                       ],

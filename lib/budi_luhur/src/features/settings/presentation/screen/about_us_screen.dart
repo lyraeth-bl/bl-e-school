@@ -1,6 +1,10 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../../../utils/shared/label_keys/label_keys.dart';
+import '../../../../utils/shared/ui/custom_button_container.dart';
+import '../../../../utils/shared/ui/custom_material_app_bar.dart';
+import 'about_us_budi_luhur_screen.dart';
 
 class AboutUsScreen extends StatelessWidget {
   const AboutUsScreen({super.key});

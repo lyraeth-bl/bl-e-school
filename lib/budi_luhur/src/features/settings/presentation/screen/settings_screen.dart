@@ -1,5 +1,11 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../utils/utils.dart';
+import '../widgets/about_us_settings_button.dart';
+import '../widgets/app_version_settings_text.dart';
+import '../widgets/change_biometric_settings_button.dart';
+import '../widgets/change_language_settings_button.dart';
+import '../widgets/contact_us_setting_button.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
