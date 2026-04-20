@@ -1,9 +1,16 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+
+import '../../../app/routes/app_routes.dart';
+import '../../../utils/utils.dart';
+import '../../auth/bloc/auth_bloc.dart';
+import '../../auth/data/model/student/student.dart';
+import '../../discipline/presentation/bloc/discipline_bloc.dart';
+import '../../discipline/presentation/screen/widgets/circle_number_indicator.dart';
+import '../../sessions/presentation/bloc/sessions_bloc.dart';
 
 class StudentProfileScreen extends StatelessWidget {
   const StudentProfileScreen({super.key});
