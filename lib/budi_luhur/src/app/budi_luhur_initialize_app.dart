@@ -17,7 +17,6 @@ import '../core/dependencies_injection/get_it_instance.dart';
 import '../core/http_overrides/my_http_overrides.dart';
 import '../features/features.dart';
 import 'app_bloc_observer.dart';
-import 'budi_luhur_app.dart';
 import 'init/init_dependencies_injection.dart';
 import 'init/init_google_fonts_licences.dart';
 import 'init/init_hive_open_box.dart';
@@ -79,6 +78,4 @@ Future<void> budiLuhurInitializeApp() async {
   ApiClient.init(dioInstance: dio);
 
   Bloc.observer = const AppBlocObserver();
-
-  runApp(BudiLuhurApp());
 }
