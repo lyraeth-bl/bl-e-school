@@ -1,6 +1,11 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart' hide Feedback;
+
+import '../../../../utils/utils.dart';
+import '../../../../utils/utils_export.dart';
+import '../../data/model/feedback/feedback.dart';
+import 'feedback_attachment_preview.dart';
+import 'feedback_card_details_item.dart';
 
 class FeedbackCard extends StatelessWidget {
   final Feedback feedback;

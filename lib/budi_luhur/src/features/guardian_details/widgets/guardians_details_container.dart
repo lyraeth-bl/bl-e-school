@@ -1,5 +1,6 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
+
+import '../../../utils/shared/ui/custom_container.dart';
 
 class GuardiansDetailsListContainer extends StatelessWidget {
   final Widget child;

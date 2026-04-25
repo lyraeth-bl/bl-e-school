@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:local_auth_android/local_auth_android.dart';
-import 'package:local_auth_darwin/local_auth_darwin.dart';
 
 class BiometricAuth {
   final String reason;
@@ -30,13 +28,6 @@ class BiometricAuth {
       return await _localAuthentication.authenticate(
         localizedReason: reason,
         biometricOnly: true,
-        authMessages: const <AuthMessages>[
-          AndroidAuthMessages(
-            signInTitle: 'Oops! Biometric authentication required!',
-            cancelButton: 'No thanks',
-          ),
-          IOSAuthMessages(cancelButton: 'No thanks'),
-        ],
       );
     } on PlatformException catch (e) {
       debugPrint("Biometric error: ${e.code} - ${e.message}");

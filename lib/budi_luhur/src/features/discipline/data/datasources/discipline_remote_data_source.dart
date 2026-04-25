@@ -1,5 +1,11 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:fpdart/fpdart.dart';
+
+import '../../../../core/api/api_client.dart';
+import '../../../../core/failure/failure.dart';
+import '../../../../utils/shared/types/types.dart';
+import '../model/demerit_response/demerit_response.dart';
+import '../model/merit_response/merit_response.dart';
+import '../model/params/discipline_params.dart';
 
 abstract class DisciplineRemoteDataSource {
   Future<Result<MeritResponse>> fetchMerit(DisciplineParams params);

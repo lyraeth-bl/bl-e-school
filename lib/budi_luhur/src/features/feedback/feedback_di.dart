@@ -1,6 +1,11 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import '../../core/dependencies_injection/get_it_instance.dart';
+import 'data/datasources/feedback_local_data_source.dart';
+import 'data/datasources/feedback_remote_data_source.dart';
+import 'presentation/bloc/feedback_bloc.dart';
+import 'repository/feedback_repository.dart';
+import 'repository/feedback_repository_impl.dart';
 
-Future<void> initFeedbackDI() async {
+void initFeedbackDI() {
   sI.registerLazySingleton<FeedbackRepository>(
     () => FeedbackRepositoryImpl(
       sI<FeedbackRemoteDataSource>(),

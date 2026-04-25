@@ -1,5 +1,14 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:fpdart/fpdart.dart';
+
+import '../../../utils/shared/types/types.dart';
+import '../data/datasources/discipline_local_data_source.dart';
+import '../data/datasources/discipline_remote_data_source.dart';
+import '../data/model/demerit/demerit.dart';
+import '../data/model/demerit_response/demerit_response.dart';
+import '../data/model/merit/merit.dart';
+import '../data/model/merit_response/merit_response.dart';
+import '../data/model/params/discipline_params.dart';
+import 'discipline_repository.dart';
 
 class DisciplineRepositoryImpl implements DisciplineRepository {
   final DisciplineLocalDataSource _localDataSource;

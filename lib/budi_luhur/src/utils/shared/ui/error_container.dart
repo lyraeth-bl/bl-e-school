@@ -1,7 +1,12 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import '../../utils.dart';
+import '../animations/animation_configurations.dart';
+import '../error_handling/error_message_and_code.dart';
+import '../label_keys/label_keys.dart';
+import 'custom_rounded_button.dart';
 
 class ErrorContainer extends StatelessWidget {
   final String errorMessageCode;

@@ -1,7 +1,9 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+
+import '../../utils.dart';
+import '../label_keys/label_keys.dart';
 
 class CustomBottomSheet extends StatelessWidget {
   final bool success;

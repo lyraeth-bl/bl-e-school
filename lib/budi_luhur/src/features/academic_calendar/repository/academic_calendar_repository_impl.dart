@@ -1,5 +1,11 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:fpdart/fpdart.dart';
+
+import '../../../utils/shared/types/types.dart';
+import '../data/datasources/academic_calendar_local_data_source.dart';
+import '../data/datasources/academic_calendar_remote_data_source.dart';
+import '../data/model/academic_calendar_request/academic_calendar_request.dart';
+import '../data/model/academic_calendar_result/academic_calendar_result.dart';
+import 'academic_calendar_repository.dart';
 
 class AcademicCalendarRepositoryImpl implements AcademicCalendarRepository {
   final AcademicCalendarLocalDataSource _localDataSource;

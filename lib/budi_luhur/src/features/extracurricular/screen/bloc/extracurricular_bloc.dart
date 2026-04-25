@@ -1,7 +1,10 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+
+import '../../../../core/failure/failure.dart';
+import '../../data/model/extracurricular/extracurricular.dart';
+import '../../repository/extracurricular_repository.dart';
 
 part 'extracurricular_bloc.freezed.dart';
 part 'extracurricular_event.dart';

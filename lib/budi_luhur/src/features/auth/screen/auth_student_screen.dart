@@ -1,8 +1,21 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+
+import '../../../utils/shared/extensions/media_query_extension.dart';
+import '../../../utils/shared/extensions/radius_extension.dart';
+import '../../../utils/shared/extensions/space_extension.dart';
+import '../../../utils/shared/extensions/theme_extension.dart';
+import '../../../utils/shared/extensions/translate_extension.dart';
+import '../../../utils/shared/label_keys/label_keys.dart';
+import '../../../utils/shared/ui/app_toast.dart';
+import '../../../utils/shared/ui/custom_container.dart';
+import '../../../utils/shared/ui/custom_text_field_container.dart';
+import '../../../utils/shared/ui/password_hide_show_button.dart';
+import '../../sessions/presentation/bloc/sessions_bloc.dart';
+import '../bloc/auth_bloc.dart';
+import '../data/model/login_request/login_request.dart';
 
 class AuthStudentScreen extends StatefulWidget {
   const AuthStudentScreen({super.key});

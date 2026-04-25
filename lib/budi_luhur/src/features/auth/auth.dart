@@ -1,6 +1,5 @@
 library;
 
-export 'auth_di.dart';
 export 'bloc/auth_bloc.dart';
 export 'data/datasources/auth_local_data_source.dart';
 export 'data/datasources/auth_remote_data_source.dart';

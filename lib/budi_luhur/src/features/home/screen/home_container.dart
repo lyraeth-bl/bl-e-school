@@ -1,6 +1,16 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../utils/utils.dart';
+import '../../../utils/utils_export.dart';
+import '../../app_config/presentation/bloc/app_config_bloc.dart';
+import '../../daily_attendance/presentation/bloc/today_attendance/today_attendance_bloc.dart';
+import '../../sessions/presentation/bloc/sessions_bloc.dart';
+import '../../time_table/presentation/bloc/time_table_bloc.dart';
+import 'widgets/home_attendance_card.dart';
+import 'widgets/home_container_top_profile_container.dart';
+import 'widgets/home_feedback_card.dart';
+import 'widgets/home_schedule_card.dart';
 
 class HomeContainer extends StatelessWidget {
   // Need this flag in order to show the homeContainer
@@ -29,7 +39,7 @@ class HomeContainer extends StatelessWidget {
         appBarHeightPercentage: Utils.appBarBiggerHeightPercentage - 0.025,
       ),
       onRefresh: () async {
-        final studentDetails = sI<SessionsBloc>().studentDetails;
+        final studentDetails = context.read<SessionsBloc>().studentDetails;
 
         context.read<AppConfigBloc>().add(
           AppConfigEvent.appConfigRequested(forceRefresh: true),

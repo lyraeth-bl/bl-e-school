@@ -1,5 +1,8 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:fpdart/fpdart.dart';
+
+import '../../../utils/shared/types/types.dart';
+import '../data/model/login_request/login_request.dart';
+import '../data/model/login_response/login_response.dart';
 
 abstract class AuthRepository {
   Future<Result<LoginResponse>> loginSanctum(LoginRequest loginRequest);

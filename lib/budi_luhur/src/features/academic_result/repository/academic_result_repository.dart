@@ -1,4 +1,5 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import '../../../utils/shared/types/types.dart';
+import '../data/academic_result_response/academic_result_response.dart';
 
 abstract class AcademicResultRepository {
   Future<Result<AcademicResultResponse>> getResult();

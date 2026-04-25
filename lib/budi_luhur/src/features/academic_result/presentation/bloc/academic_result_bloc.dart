@@ -1,6 +1,9 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../../../core/failure/failure.dart';
+import '../../data/academic_result_response/academic_result_response.dart';
+import '../../repository/academic_result_repository.dart';
 
 part 'academic_result_bloc.freezed.dart';
 part 'academic_result_event.dart';

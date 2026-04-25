@@ -1,6 +1,11 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import '../../core/dependencies_injection/get_it_instance.dart';
+import 'data/datasources/discipline_local_data_source.dart';
+import 'data/datasources/discipline_remote_data_source.dart';
+import 'presentation/bloc/discipline_bloc.dart';
+import 'repository/discipline_repository.dart';
+import 'repository/discipline_repository_impl.dart';
 
-Future<void> initDisciplineDI() async {
+void initDisciplineDI() {
   sI.registerLazySingleton<DisciplineRepository>(
     () => DisciplineRepositoryImpl(
       sI<DisciplineRemoteDataSource>(),

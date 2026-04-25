@@ -1,5 +1,9 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:fpdart/fpdart.dart';
+
+import '../../../utils/shared/types/types.dart';
+import '../data/academic_result_response/academic_result_response.dart';
+import '../data/datasources/academic_result_remote_data_source.dart';
+import 'academic_result_repository.dart';
 
 class AcademicResultRepositoryImpl implements AcademicResultRepository {
   final AcademicResultRemoteDataSource _remoteDataSource;

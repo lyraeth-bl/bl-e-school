@@ -1,7 +1,10 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../../auth/data/model/student/student.dart';
+import '../../data/model/me_response/me_response.dart';
+import '../../repository/sessions_repository.dart';
 
 part 'sessions_bloc.freezed.dart';
 part 'sessions_event.dart';

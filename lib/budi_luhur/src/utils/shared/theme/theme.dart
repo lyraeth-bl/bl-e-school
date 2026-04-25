@@ -1,8 +1,7 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class BudiLuhurTheme extends BudiLuhur {
+class BudiLuhurTheme {
   static const Color _seedColor = Colors.blue;
 
   Color get seedColor => _seedColor;

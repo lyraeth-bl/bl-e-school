@@ -1,5 +1,6 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:fpdart/fpdart.dart';
+
+import '../../../utils/shared/types/types.dart';
 
 abstract class DeviceTokenRepository {
   Future<Result<Unit>> registerFcmToken({

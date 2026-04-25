@@ -1,5 +1,8 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:fpdart/fpdart.dart';
+
+import '../../../utils/shared/types/types.dart';
+import '../../auth/data/model/student/student.dart';
+import '../data/model/me_response/me_response.dart';
 
 abstract class SessionsRepository {
   Future<Result<MeResponse>> fetchMe();

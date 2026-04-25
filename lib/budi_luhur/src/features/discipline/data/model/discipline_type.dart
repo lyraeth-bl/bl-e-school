@@ -1,0 +1,1 @@
+enum DisciplineType { merit, demerit }

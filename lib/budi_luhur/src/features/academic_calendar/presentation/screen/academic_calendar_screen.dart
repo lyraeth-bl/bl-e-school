@@ -1,5 +1,6 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
+
+import 'academic_calendar_container.dart';
 
 class AcademicCalendarScreen extends StatelessWidget {
   const AcademicCalendarScreen({super.key});

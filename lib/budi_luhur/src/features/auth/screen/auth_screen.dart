@@ -1,7 +1,18 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+
+import '../../../app/routes/app_routes.dart';
+import '../../../utils/shared/extensions/media_query_extension.dart';
+import '../../../utils/shared/extensions/padding_extension.dart';
+import '../../../utils/shared/extensions/radius_extension.dart';
+import '../../../utils/shared/extensions/space_extension.dart';
+import '../../../utils/shared/extensions/theme_extension.dart';
+import '../../../utils/shared/extensions/translate_extension.dart';
+import '../../../utils/shared/label_keys/label_keys.dart';
+import '../../../utils/shared/ui/app_toast.dart';
+import '../../../utils/shared/ui/custom_button_container.dart';
+import '../../../utils/shared/ui/custom_container.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});

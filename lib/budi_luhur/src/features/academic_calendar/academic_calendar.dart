@@ -1,4 +1,3 @@
-export 'academic_calendar_di.dart';
 export 'data/datasources/academic_calendar_local_data_source.dart';
 export 'data/datasources/academic_calendar_remote_data_source.dart';
 export 'data/model/academic_calendar/academic_calendar.dart';
@@ -9,4 +8,3 @@ export 'presentation/bloc/academic_calendar_bloc.dart';
 export 'presentation/screen/academic_calendar_container.dart';
 export 'presentation/screen/academic_calendar_screen.dart';
 export 'repository/academic_calendar_repository.dart';
-export 'repository/academic_calendar_repository_impl.dart';

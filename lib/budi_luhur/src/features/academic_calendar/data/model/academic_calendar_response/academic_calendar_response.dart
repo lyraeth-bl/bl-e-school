@@ -1,5 +1,6 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../academic_calendar/academic_calendar.dart';
 
 part 'academic_calendar_response.freezed.dart';
 part 'academic_calendar_response.g.dart';

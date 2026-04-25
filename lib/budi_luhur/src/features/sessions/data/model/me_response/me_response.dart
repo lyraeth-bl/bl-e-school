@@ -1,5 +1,6 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../../../auth/data/model/student/student.dart';
 
 part 'me_response.freezed.dart';
 part 'me_response.g.dart';

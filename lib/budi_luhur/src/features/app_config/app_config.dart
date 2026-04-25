@@ -1,6 +1,5 @@
 library;
 
-export 'app_config_di.dart';
 export 'data/datasources/app_config_local_data_source.dart';
 export 'data/datasources/app_config_remote_data_source.dart';
 export 'data/model/app_config/app_config.dart';

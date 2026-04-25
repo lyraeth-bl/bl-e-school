@@ -1,5 +1,6 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../daily_attendance/daily_attendance.dart';
 
 part 'daily_attendance_response.freezed.dart';
 part 'daily_attendance_response.g.dart';

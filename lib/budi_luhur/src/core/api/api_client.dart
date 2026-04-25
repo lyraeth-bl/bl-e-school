@@ -1,8 +1,14 @@
 import 'dart:io';
 
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+import '../../utils/shared/error_handling/error_message_and_code.dart';
+
+part 'api_constant.dart';
+part 'api_endpoints.dart';
+part 'api_helper.dart';
 
 class ApiClient {
   static late Dio dio;

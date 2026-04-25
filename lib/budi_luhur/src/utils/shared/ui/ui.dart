@@ -9,6 +9,7 @@ export 'custom_back_button.dart';
 export 'custom_bottom_sheet.dart';
 export 'custom_button_container.dart';
 export 'custom_chip_container.dart';
+export 'custom_container.dart';
 export 'custom_material_app_bar.dart';
 export 'custom_rounded_button.dart';
 export 'custom_shimmer_container.dart';

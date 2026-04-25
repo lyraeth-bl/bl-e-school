@@ -1,5 +1,7 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../utils/utils.dart';
+import '../../../../utils/utils_export.dart';
 
 class HomeScreenDataLoadingContainer extends StatelessWidget {
   final bool addTopPadding;
@@ -30,7 +32,8 @@ class HomeScreenDataLoadingContainer extends StatelessWidget {
             borderRadius: 25,
             height:
                 MediaQuery.of(context).size.height *
-                Utils.appBarBiggerHeightPercentage * (1.15)
+                Utils.appBarBiggerHeightPercentage *
+                (1.15),
           ),
         ),
 

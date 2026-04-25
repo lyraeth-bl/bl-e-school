@@ -1,6 +1,4 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-
-part 'api_constant.dart';
+part of 'api_client.dart';
 
 class ApiEndpoints {
   static String loginSanctum = "$sanctumUrl/login";
