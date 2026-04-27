@@ -255,45 +255,6 @@ class _TimeTableContainerState extends State<TimeTableContainer>
         ((DateTime.now().weekday != (DateTime.saturday)) &&
         (DateTime.now().weekday != (DateTime.sunday)));
 
-    final lessonDay =
-        Utils.weekDaysFullFormTranslated
-            .map((e) => e.toLowerCase())
-            .toList()
-            .indexOf(timeTable.hari.toLowerCase()) +
-        1;
-
-    final isPastDay = lessonDay < now.weekday;
-    final isFutureDay = lessonDay > now.weekday;
-
-    final isBeforeLesson = isSameDay && now.isBefore(jamMulaiToDateTime!);
-    final isAfterLesson = isSameDay && now.isAfter(jamSelesaiToDateTime!);
-
-    final progress = Utils.calculateLessonProgress(
-      start: jamMulaiToDateTime!,
-      end: jamSelesaiToDateTime!,
-      now: now,
-    );
-
-    double progressValue;
-
-    if (lessonDay == 0) {
-      progressValue = 0;
-    }
-
-    if (isPastDay) {
-      progressValue = 1;
-    } else if (isFutureDay) {
-      progressValue = 0;
-    } else if (isSameDay && isBeforeLesson) {
-      progressValue = 0;
-    } else if (isSameDay && isAfterLesson) {
-      progressValue = 1;
-    } else if (isNow) {
-      progressValue = progress;
-    } else {
-      progressValue = 0;
-    }
-
     return CustomContainer(
       margin: isNow
           ? const EdgeInsets.symmetric(vertical: 12)
@@ -373,17 +334,10 @@ class _TimeTableContainerState extends State<TimeTableContainer>
                     horizontal: 4,
                     vertical: 6,
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 1),
-                  child: LinearProgressIndicator(
-                    value: progressValue,
-                    minHeight: 6,
-                    backgroundColor: Theme.of(
-                      context,
-                    ).colorScheme.surfaceContainerHigh,
-                    valueColor: AlwaysStoppedAnimation(
-                      Theme.of(context).colorScheme.primaryFixedDim,
-                    ),
-                    borderRadius: BorderRadius.circular(16),
+                  padding: const EdgeInsets.symmetric(vertical: 3),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surfaceContainer,
+                    borderRadius: BorderRadius.circular(4),
                   ),
                 ),
               ),
