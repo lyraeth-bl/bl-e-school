@@ -1,4 +1,4 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import '../academic_calendar/academic_calendar.dart';
 
 class MonthlyAcademicResult {
   final List<AcademicCalendar> list;

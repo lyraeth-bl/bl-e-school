@@ -1,7 +1,9 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:fpdart/fpdart.dart';
 
+import '../../../../core/api/api_client.dart';
+import '../../../../core/failure/failure.dart';
 import '../../../../utils/utils_export.dart';
+import '../models/academic_result_response/academic_result_response.dart';
 
 abstract class AcademicResultRemoteDataSource {
   Future<Result<AcademicResultResponse>> getResult();

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../../../utils/utils.dart';
 import '../../../../utils/utils_export.dart';
-import '../../data/academic_result/academic_result.dart';
-import '../../data/academic_result_overall_summary/academic_result_overall_summary.dart';
-import '../../data/academic_result_summary/academic_result_summary.dart';
+import '../../data/models/academic_result/academic_result.dart';
+import '../../data/models/academic_result_overall_summary/academic_result_overall_summary.dart';
+import '../../data/models/academic_result_summary/academic_result_summary.dart';
 import 'widgets/result_grades_container.dart';
 
 class ResultScreen extends StatefulWidget {

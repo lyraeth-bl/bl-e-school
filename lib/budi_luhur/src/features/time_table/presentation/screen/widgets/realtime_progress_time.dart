@@ -1,7 +1,9 @@
 import 'dart:async';
 
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../../utils/utils.dart';
+import '../../../data/model/time_table/time_table.dart';
 
 class RealtimeProgressTime extends StatefulWidget {
   final TimeTable timeTable;

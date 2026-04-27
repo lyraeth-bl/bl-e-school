@@ -1,12 +1,16 @@
 import 'dart:async';
 
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../notifications/repository/notifications_repository.dart';
+import '../../repository/settings_repository.dart';
+
 part 'diagnosis_push_notification_bloc.freezed.dart';
+
 part 'diagnosis_push_notification_event.dart';
+
 part 'diagnosis_push_notification_state.dart';
 
 class DiagnosisPushNotificationBloc

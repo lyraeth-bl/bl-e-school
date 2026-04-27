@@ -1,4 +1,4 @@
-import 'package:bl_e_school/budi_luhur/budi_luhur.dart';
+import '../../utils.dart';
 
 /// An extension on [String] to simplify the process of translating text.
 ///

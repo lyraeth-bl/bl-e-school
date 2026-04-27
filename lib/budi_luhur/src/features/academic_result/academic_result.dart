@@ -1,10 +1,3 @@
-export 'data/academic_result/academic_result.dart';
-export 'data/academic_result_categories/academic_result_categories.dart';
-export 'data/academic_result_data/academic_result_data.dart';
-export 'data/academic_result_meta/academic_result_meta.dart';
-export 'data/academic_result_overall_summary/academic_result_overall_summary.dart';
-export 'data/academic_result_response/academic_result_response.dart';
-export 'data/academic_result_summary/academic_result_summary.dart';
 export 'data/datasources/academic_result_remote_data_source.dart';
 export 'presentation/bloc/academic_result_bloc.dart';
 export 'presentation/screen/academic_result_screen.dart';

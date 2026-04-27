@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 
 import '../../../../../utils/utils.dart';
 import '../../../../../utils/utils_export.dart';
-import '../../../data/academic_result/academic_result.dart';
-import '../../../data/academic_result_summary/academic_result_summary.dart';
+import '../../../data/models/academic_result/academic_result.dart';
+import '../../../data/models/academic_result_summary/academic_result_summary.dart';
 
 class ResultGradesContainer extends StatelessWidget {
   const ResultGradesContainer({
